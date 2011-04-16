@@ -20,43 +20,25 @@ package br.octahedron.straight.bank.manager;
 
 import java.math.BigDecimal;
 
+import org.junit.Test;
+
 import br.octahedron.straight.bank.data.BankAccount;
-import br.octahedron.straight.bank.data.BankAccountDAO;
-import br.octahedron.straight.bank.data.BankTransaction;
-import br.octahedron.straight.bank.data.BankTransactionDAO;
 import br.octahedron.straight.bank.data.BankTransaction.TransactionType;
+import static org.easymock.EasyMock.*;
 
 /**
- * @author Erick Moreno
+ * @author Vítor Avelino
  *
  */
-public class AccountManager {
-	
-	private BankAccountDAO accountDAO = new BankAccountDAO();
-	private BankTransactionDAO transactionDAO = new BankTransactionDAO();
-	
-	/**
-	 * 
-	 * @param ownerId
-	 * @return
-	 */
-	public BankAccount createAccount(String ownerId){
-		BankAccount account = new BankAccount(ownerId);
-		accountDAO.save(account);
-		return account;
+public class AccountManagerTest {
+
+	@Test
+	public void doSimpleTransaction() {
+		BankAccount origin = new BankAccount("origin");
+		BankAccount destination = new BankAccount("destination");
+		AccountManager accountManager = new AccountManager();
+		
+		accountManager.transact("origin", "destination", new BigDecimal(2), "", TransactionType.TRANSFER);
 	}
 	
-	/**
-	 * @param accountOrig
-	 * @param accountDest
-	 * @param value
-	 * @param comment
-	 * @param type
-	 */
-	public void transact(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
-	}
-	
-	private BankTransaction createTransaction(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
-		return new BankTransaction(accountOrig, accountDest, value, type, comment);
-	}
 }
