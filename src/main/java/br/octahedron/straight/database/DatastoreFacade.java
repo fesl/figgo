@@ -45,7 +45,7 @@ public class DatastoreFacade {
 	 */
 
 	private int maxSize = 0;
-	private boolean detach = true;
+	private boolean detach = false;
 	protected PersistenceManagerPool pool = PersistenceManagerPool.getInstance();
 
 	public void setQueriesMaxSize(int size) {

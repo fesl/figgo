@@ -28,20 +28,10 @@ import java.util.Collection;
 public abstract class GenericDAO<T> {
 
 	private Class<T> klass;
-
-	protected DatastoreFacade datastoreFacade;
+	protected DatastoreFacade datastoreFacade = new DatastoreFacade();
 
 	public GenericDAO(Class<T> klass) {
 		this.klass = klass;
-		this.datastoreFacade = new DatastoreFacade();
-	}
-
-	/**
-	 * @param datastoreFacade
-	 *            the datastoreFacade to set
-	 */
-	public void setDatastoreFacade(DatastoreFacade datastoreFacade) {
-		this.datastoreFacade = datastoreFacade;
 	}
 
 	/**
