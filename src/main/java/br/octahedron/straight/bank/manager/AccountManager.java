@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.bank.Manager;
+package br.octahedron.straight.bank.manager;
 
 import br.octahedron.straight.bank.data.BankAccount;
 import br.octahedron.straight.bank.data.BankAccountDAO;
