@@ -68,17 +68,15 @@ public class AccountManager {
 	/*
 	 * Just for tests.
 	 */
-	protected void setTransactionDAO(BankTransactionDAO transactionDAO)
-	{
-		
+	protected void setTransactionDAO(BankTransactionDAO transactionDAO)	{
+		this.transactionDAO = transactionDAO;
 	}
 	
 	/*
 	 * Just for tests.
 	 */
-	protected void setAccountDAO(BankAccountDAO accountDAO)
-	{
-		
+	protected void setAccountDAO(BankAccountDAO accountDAO)	{
+		this.accountDAO = accountDAO;
 	}
 
 	
