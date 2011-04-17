@@ -19,6 +19,7 @@
 package br.octahedron.straight.bank.manager;
 
 import java.math.BigDecimal;
+import java.util.logging.Logger;
 
 import br.octahedron.straight.bank.data.BankAccount;
 import br.octahedron.straight.bank.data.BankAccountDAO;
@@ -28,13 +29,16 @@ import br.octahedron.straight.bank.data.BankTransaction.TransactionType;
 
 /**
  * @author Erick Moreno
+ * @author Vítor Avelino
  *
  */
 public class AccountManager {
-	
+
 	private BankAccountDAO accountDAO = new BankAccountDAO();
 	private BankTransactionDAO transactionDAO = new BankTransactionDAO();
-	
+
+	private static final Logger logger = Logger.getLogger(AccountManager.class.getName());
+
 	/**
 	 * 
 	 * @param ownerId
@@ -45,13 +49,13 @@ public class AccountManager {
 		accountDAO.save(account);
 		return account;
 	}
-	
+
 	public BigDecimal getBalance(long accountId){
 		BankAccount account = accountDAO.get(accountId);
 		account.setTransactionInfoService(this.transactionDAO);
 		return account.getBalance();
 	}
-	
+
 	/**
 	 * @param accountOrig
 	 * @param accountDest
@@ -59,14 +63,36 @@ public class AccountManager {
 	 * @param comment
 	 * @param type
 	 */
-	public void transact(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
-		BankTransaction transaction = createTransaction(accountOrig, accountDest, value, comment, type);
-		BankAccount accountOrigin = accountDAO.get(accountOrig);
-		if (accountOrigin.getBalance().compareTo(value) >= 0) {
+	public void transact(String accountOrigId, String accountDestId, BigDecimal value, String comment, TransactionType type) {
+		BankTransaction transaction = createTransaction(accountOrigId, accountDestId, value, comment, type);
+		BankAccount accountOrig = getValidAccount(accountOrigId);
+		getValidAccount(accountDestId); // just to check validation of destination
+		
+		if (hasSufficientBalance(accountOrig, value)) {
 			transactionDAO.save(transaction);
-		}
+		} else {
+			logger.info(accountOrigId + " has insufficient balance to make this transaction (" + transaction + ") ");
+			throw new InsufficientBalanceException(accountOrigId + " has insufficient balance to make transaction");
+		} 
 	}
 	
+	protected boolean hasSufficientBalance(BankAccount account, BigDecimal value) {
+		return account.getBalance().compareTo(value) >= 0;
+	}
+
+	protected BankAccount getValidAccount(String accountId) {
+		BankAccount account = accountDAO.get(accountId);
+		if (account == null) {	
+			logger.info("Does not exist an account associated to '" + accountId + "' id on bank");
+			throw new InexistentBankAccountException("Does not exist an account associated to '" + accountId + "' id on bank");
+		} else if (!account.isEnabled()) {
+			logger.info("'" + accountId + "' account is disabled.");
+			throw new DisabledBankAccountException("'" + accountId + "' account is disabled.");
+		} else {
+			return account;
+		}
+	}
+
 	private BankTransaction createTransaction(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
 		return new BankTransaction(accountOrig, accountDest, value, type, comment);
 	}
@@ -77,7 +103,7 @@ public class AccountManager {
 	protected void setTransactionDAO(BankTransactionDAO transactionDAO)	{
 		this.transactionDAO = transactionDAO;
 	}
-	
+
 	/*
 	 * Just for tests.
 	 */

@@ -58,21 +58,84 @@ public class AccountManagerTest {
 		accountManager.setAccountDAO(accountDAO);
 		accountManager.setTransactionDAO(transactionDAO);
 	}
-	
+
+	@Test
+	public void getValidAccount() {
+		BankAccount account = createMock(BankAccount.class);
+
+		expect(accountDAO.get("origin")).andReturn(account);
+		expect(account.isEnabled()).andReturn(true);
+		replay(accountDAO, account);
+
+		accountManager.getValidAccount("origin");
+
+		verify(accountDAO, account);
+	}
+
+	@Test(expected = DisabledBankAccountException.class)
+	public void getValidAccountDisabled() {
+		BankAccount account = createMock(BankAccount.class);
+		try {
+			expect(accountDAO.get("origin")).andReturn(account);
+			expect(account.isEnabled()).andReturn(false);
+			replay(accountDAO, account);
+
+			accountManager.getValidAccount("origin");
+		} finally {
+			verify(accountDAO, account);
+		}
+	}
+
+	@Test(expected = InexistentBankAccountException.class)
+	public void getValidAccountNull() {
+		BankAccount account = createMock(BankAccount.class);
+
+		try {
+			expect(accountDAO.get("origin")).andReturn(null);
+			replay(accountDAO, account);
+
+			accountManager.getValidAccount("origin");
+		} finally{
+			verify(accountDAO, account);
+		}
+	}
+
 	@Test
 	public void doSimpleTransaction() {
 		BankAccount origin = createMock(BankAccount.class);
 		BankAccount destination = createMock(BankAccount.class);
+		
 		expect(accountDAO.get("origin")).andReturn(origin);
+		expect(origin.isEnabled()).andReturn(true);
 		expect(accountDAO.get("destination")).andReturn(destination);
+		expect(destination.isEnabled()).andReturn(true);
+
 		expect(origin.getBalance()).andReturn(new BigDecimal(10));
 		transactionDAO.save(notNull(BankTransaction.class));
 		replay(accountDAO, transactionDAO, origin, destination);
-		
+
 		accountManager.transact("origin", "destination", new BigDecimal(2), "", TransactionType.TRANSFER);
 		verify(accountDAO, transactionDAO, origin, destination);
 	}
 
+	@Test(expected = InsufficientBalanceException.class)
+	public void doSimpleInsufficientTransaction() {
+		BankAccount origin = createMock(BankAccount.class);
+		BankAccount destination = createMock(BankAccount.class);
+		try {
+			expect(accountDAO.get("origin")).andReturn(origin);
+			expect(origin.isEnabled()).andReturn(true);
+			expect(accountDAO.get("destination")).andReturn(destination);
+			expect(destination.isEnabled()).andReturn(true);
+			
+			expect(origin.getBalance()).andReturn(new BigDecimal(10));
+			replay(accountDAO, transactionDAO, origin, destination);
+
+			accountManager.transact("origin", "destination", new BigDecimal(20), "", TransactionType.TRANSFER);
+		} finally {
+			verify(accountDAO, transactionDAO, origin, destination);
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	@Test
@@ -86,6 +149,5 @@ public class AccountManagerTest {
 		
 		assertEquals(new BigDecimal(0), accountManager.getBalance(accID));
 		verify(accountDAO, transactionDAO);
-	}
-	
+	}	
 }
