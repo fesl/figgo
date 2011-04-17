@@ -25,6 +25,8 @@ import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.jdo.Query;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -51,6 +53,9 @@ public class BankTransactionDAOTest {
 	public void testGetLastTransactions() {
 		Long myId = new Long(10);
 		Long otherId = new Long(9);
+		
+		Query query1 = createMock(Query.class);
+		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query1);
 		List<BankTransaction> transactions1 = new LinkedList<BankTransaction>();
 		for(int i = 1; i < 6; i++) {
 			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
@@ -59,8 +64,7 @@ public class BankTransactionDAOTest {
 		for(int i = 6; i < 11; i++) {
 			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
 		}
-		expect(this.datastore.getObjectsByQuery(BankTransaction.class, "id > '0' && accountOrig == '10'", "id asc")).andReturn(transactions1);
-		expect(this.datastore.getObjectsByQuery(BankTransaction.class, "id > '0' && accountDest == '10'", "id asc")).andReturn(transactions2);
+//		expect(this.datastore.getObjectsByQuery(BankTransaction.class, "id > '0' && accountDest == '10'", "id asc")).andReturn(transactions2);
 		replay(this.datastore);
 		
 		List<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
@@ -85,9 +89,9 @@ public class BankTransactionDAOTest {
 		for(int i = 6; i < 11; i++) {
 			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
 		}
-		expect(this.datastore.getObjectsByQuery(BankTransaction.class, "id > '0' && accountOrig == '10'", "id asc")).andReturn(transactions1);
-		expect(this.datastore.getObjectsByQuery(BankTransaction.class, "id > '0' && accountDest == '10'", "id asc")).andReturn(transactions2);
-		replay(this.datastore);
+//		expect(this.datastore.getObjectsByQuery(BankTransaction.class, "id > '0' && accountOrig == '10'", "id asc")).andReturn(transactions1);
+//		expect(this.datastore.getObjectsByQuery(BankTransaction.class, "id > '0' && accountDest == '10'", "id asc")).andReturn(transactions2);
+//		replay(this.datastore);
 		
 		List<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
 		assertEquals(10, result.size());

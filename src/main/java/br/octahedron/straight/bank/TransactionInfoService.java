@@ -18,14 +18,41 @@
  */
 package br.octahedron.straight.bank;
 
+import java.util.Date;
 import java.util.List;
 
 import br.octahedron.straight.bank.data.BankTransaction;
 
 /**
- * @author Erick Moreno
+ * An Information Service to recover {@link BankTransaction} informations.
  * 
+ * @author Erick Moreno
+ * @author Danilo Queiroz
  */
 public interface TransactionInfoService {
+	
+	/**
+	 * Return the last transactions for an account, with id greater with the given last used
+	 * transaction id.
+	 * 
+	 * @param accountId
+	 *            the account id
+	 * @param lastUsedTransactionId
+	 *            the last {@link BankTransaction}. All {@link BankTransaction} returned will have
+	 *            id greater than this id.
+	 * @return A list that contains all transactions for the given user, starting from the given
+	 *         {@link BankTransaction} id.
+	 */
 	public List<BankTransaction> getLastTransactions(Long accountId, Long lastUsedTransactioId);
+	
+	/**
+	 * Get the transactions for a accountId, by date range.
+	 * TODO improve
+	 * 
+	 * @param accountId
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public List<BankTransaction> getTransactionsByDateRange(Long accountId, Date startDate, Date endDate);
 }
