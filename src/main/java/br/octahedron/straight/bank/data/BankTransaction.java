@@ -29,21 +29,24 @@ import javax.jdo.annotations.PrimaryKey;
 
 /**
  * @author Erick Moreno
- *
+ * 
  */
 @PersistenceCapable
 public class BankTransaction implements Serializable {
-	
+
 	private static final long serialVersionUID = -7989889136597879006L;
-	public enum TransactionType {TRANSFER, PAYMENT, FINE, DEPOSIT};
-	
+
+	public enum TransactionType {
+		TRANSFER, PAYMENT, FINE, DEPOSIT
+	};
+
 	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private long id;
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Long id;
 	@Persistent
-	private String accountOrig;
+	private Long accountOrig;
 	@Persistent
-	private String accountDest;
+	private Long accountDest;
 	@Persistent
 	private Date date;
 	@Persistent
@@ -52,7 +55,7 @@ public class BankTransaction implements Serializable {
 	private String comment;
 	@Persistent
 	private TransactionType type;
-	
+
 	/**
 	 * 
 	 * @param accountOrig
@@ -61,57 +64,62 @@ public class BankTransaction implements Serializable {
 	 * @param type
 	 * @param comment
 	 */
-	public BankTransaction(String accountOrig, String accountDest, BigDecimal value, TransactionType type, String comment){
+	public BankTransaction(Long accountOrig, Long accountDest, BigDecimal value, TransactionType type, String comment) {
 		this.accountOrig = accountOrig;
 		this.accountDest = accountDest;
 		this.value = value;
 		this.type = type;
 		this.comment = comment;
-		
+
 	}
-	
+
 	/**
 	 * @return the id
 	 */
-	public long getId() {
-		return id;
+	public Long getId() {
+		return this.id;
 	}
+
 	/**
 	 * @return the accountOrig
 	 */
-	public String getAccountOrig() {
-		return accountOrig;
+	public Long getAccountOrig() {
+		return this.accountOrig;
 	}
+
 	/**
 	 * @return the accountDest
 	 */
-	public String getAccountDest() {
-		return accountDest;
+	public Long getAccountDest() {
+		return this.accountDest;
 	}
+
 	/**
 	 * @return the date
 	 */
 	public Date getDate() {
-		return date;
+		return this.date;
 	}
+
 	/**
 	 * @return the value
 	 */
 	public BigDecimal getValue() {
-		return value;
+		return this.value;
 	}
+
 	/**
 	 * @return the comment
 	 */
 	public String getComment() {
-		return comment;
+		return this.comment;
 	}
+
 	/**
 	 * @return the type
 	 */
 	public TransactionType getType() {
-		return type;
+		return this.type;
 	}
-	
 
 }

@@ -23,13 +23,12 @@ import java.math.BigDecimal;
 import java.util.Collection;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
-import javax.persistence.Transient;
 
 import br.octahedron.straight.bank.TransactionInfoService;
-import br.octahedron.straight.bank.manager.AccountManager;
 
 /**
  * @author Danilo Queiroz
@@ -40,8 +39,8 @@ public class BankAccount implements Serializable {
 	private static final long serialVersionUID = 7892638707825018254L;
 
 	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private long id;
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Long id;
 	@Persistent
 	private String ownerId;
 	@Persistent
@@ -50,86 +49,88 @@ public class BankAccount implements Serializable {
 	private boolean enabled;
 	@Persistent
 	private Balance balance;
-	@Transient
+	@NotPersistent
 	private TransactionInfoService transactionInfoService;
-	
-	public BankAccount(String ownerId, long id) {
+
+	public BankAccount(String ownerId, Long id) {
 		this.id = id;
 		this.ownerId = ownerId;
 		this.balance = new Balance();
 	}
-	
+
 	public BankAccount(String ownerId) {
 		this.ownerId = ownerId;
 		this.balance = new Balance();
 	}
-	
-	public void setTransactionInfoService(TransactionInfoService tInfoService){
+
+	public void setTransactionInfoService(TransactionInfoService tInfoService) {
 		this.transactionInfoService = tInfoService;
 	}
-	
+
 	/**
 	 * @return the password
 	 */
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
+
 	/**
-	 * @param password the password to set
+	 * @param password
+	 *            the password to set
 	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	/**
 	 * @return the enabled
 	 */
 	public boolean isEnabled() {
-		return enabled;
+		return this.enabled;
 	}
-	
+
 	/**
-	 * @param enabled the enabled to set
+	 * @param enabled
+	 *            the enabled to set
 	 */
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-	
+
 	/**
 	 * @return the id
 	 */
-	public long getId() {
-		return id;
+	public Long getId() {
+		return this.id;
 	}
-	
+
 	/**
 	 * @return the ownerId
 	 */
 	public String getOwnerId() {
-		return ownerId;
+		return this.ownerId;
 	}
-	
+
 	/**
 	 * @return the balance's value
 	 */
 	public BigDecimal getBalance() {
-		if (transactionInfoService == null){
+		if (this.transactionInfoService == null) {
 			throw new IllegalStateException("TransactionInfoService cannot be null. Must be set before balance operations");
 		}
-		
-		Collection<BankTransaction> transactions = transactionInfoService.getLastTransactions(this.id, 
-				this.balance.getLastTransactionId());
-		
+
+		Collection<BankTransaction> transactions = this.transactionInfoService.getLastTransactions(this.id, this.balance.getLastTransactionId());
+
 		BigDecimal transactionsBalance = new BigDecimal(0);
-		
+
 		for (BankTransaction bankTransaction : transactions) {
 			transactionsBalance.add(bankTransaction.getValue());
 		}
-		
-		//We need to know what happens if this sum result if lower than zero
-		//TODO LOG this event as a warning
-		balance.setValue(balance.getValue().add(transactionsBalance));
-		
-		return balance.getValue();
+
+		// We need to know what happens if this sum result if lower than zero
+		// TODO LOG this event as a warning
+		this.balance.setValue(this.balance.getValue().add(transactionsBalance));
+
+		return this.balance.getValue();
 	}
 }

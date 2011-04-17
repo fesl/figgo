@@ -20,7 +20,7 @@ package br.octahedron.straight.bank.manager;
 
 /**
  * @author vitoravelino
- *
+ * 
  */
 public class DisabledBankAccountException extends RuntimeException {
 

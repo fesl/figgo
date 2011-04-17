@@ -20,7 +20,7 @@ package br.octahedron.straight.bank.manager;
 
 /**
  * @author Vítor Avelino
- *
+ * 
  */
 public class InsufficientBalanceException extends RuntimeException {
 

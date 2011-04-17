@@ -24,13 +24,13 @@ import java.util.logging.Logger;
 import br.octahedron.straight.bank.data.BankAccount;
 import br.octahedron.straight.bank.data.BankAccountDAO;
 import br.octahedron.straight.bank.data.BankTransaction;
-import br.octahedron.straight.bank.data.BankTransactionDAO;
 import br.octahedron.straight.bank.data.BankTransaction.TransactionType;
+import br.octahedron.straight.bank.data.BankTransactionDAO;
 
 /**
  * @author Erick Moreno
  * @author Vítor Avelino
- *
+ * 
  */
 public class AccountManager {
 
@@ -39,19 +39,33 @@ public class AccountManager {
 
 	private static final Logger logger = Logger.getLogger(AccountManager.class.getName());
 
+	/*
+	 * Just for tests.
+	 */
+	protected void setTransactionDAO(BankTransactionDAO transactionDAO) {
+		this.transactionDAO = transactionDAO;
+	}
+
+	/*
+	 * Just for tests.
+	 */
+	protected void setAccountDAO(BankAccountDAO accountDAO) {
+		this.accountDAO = accountDAO;
+	}
+
 	/**
 	 * 
 	 * @param ownerId
 	 * @return
 	 */
-	public BankAccount createAccount(String ownerId){
+	public BankAccount createAccount(String ownerId) {
 		BankAccount account = new BankAccount(ownerId);
-		accountDAO.save(account);
+		this.accountDAO.save(account);
 		return account;
 	}
 
-	public BigDecimal getBalance(long accountId){
-		BankAccount account = accountDAO.get(accountId);
+	public BigDecimal getBalance(long accountId) {
+		BankAccount account = this.getValidAccount(accountId);
 		account.setTransactionInfoService(this.transactionDAO);
 		return account.getBalance();
 	}
@@ -63,26 +77,30 @@ public class AccountManager {
 	 * @param comment
 	 * @param type
 	 */
-	public void transact(String accountOrigId, String accountDestId, BigDecimal value, String comment, TransactionType type) {
-		BankTransaction transaction = createTransaction(accountOrigId, accountDestId, value, comment, type);
-		BankAccount accountOrig = getValidAccount(accountOrigId);
-		getValidAccount(accountDestId); // just to check validation of destination
-		
-		if (hasSufficientBalance(accountOrig, value)) {
-			transactionDAO.save(transaction);
+	public void transact(Long accountOrigId, Long accountDestId, BigDecimal value, String comment, TransactionType type) {
+		BankTransaction transaction = this.createTransaction(accountOrigId, accountDestId, value, comment, type);
+		BankAccount accountOrig = this.getValidAccount(accountOrigId);
+		this.getValidAccount(accountDestId); // just to check validation of destination
+
+		if (this.hasSufficientBalance(accountOrig, value)) {
+			this.transactionDAO.save(transaction);
 		} else {
 			logger.info(accountOrigId + " has insufficient balance to make this transaction (" + transaction + ") ");
 			throw new InsufficientBalanceException(accountOrigId + " has insufficient balance to make transaction");
-		} 
+		}
 	}
-	
+
+	private BankTransaction createTransaction(Long accountOrig, Long accountDest, BigDecimal value, String comment, TransactionType type) {
+		return new BankTransaction(accountOrig, accountDest, value, type, comment);
+	}
+
 	protected boolean hasSufficientBalance(BankAccount account, BigDecimal value) {
 		return account.getBalance().compareTo(value) >= 0;
 	}
 
-	protected BankAccount getValidAccount(String accountId) {
-		BankAccount account = accountDAO.get(accountId);
-		if (account == null) {	
+	protected BankAccount getValidAccount(Long accountId) {
+		BankAccount account = this.accountDAO.get(accountId);
+		if (account == null) {
 			logger.info("Does not exist an account associated to '" + accountId + "' id on bank");
 			throw new InexistentBankAccountException("Does not exist an account associated to '" + accountId + "' id on bank");
 		} else if (!account.isEnabled()) {
@@ -91,23 +109,5 @@ public class AccountManager {
 		} else {
 			return account;
 		}
-	}
-
-	private BankTransaction createTransaction(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
-		return new BankTransaction(accountOrig, accountDest, value, type, comment);
-	}
-
-	/*
-	 * Just for tests.
-	 */
-	protected void setTransactionDAO(BankTransactionDAO transactionDAO)	{
-		this.transactionDAO = transactionDAO;
-	}
-
-	/*
-	 * Just for tests.
-	 */
-	protected void setAccountDAO(BankAccountDAO accountDAO)	{
-		this.accountDAO = accountDAO;
 	}
 }

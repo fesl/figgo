@@ -24,7 +24,7 @@ import br.octahedron.straight.bank.data.BankTransaction;
 
 /**
  * @author Erick Moreno
- *
+ * 
  */
 public interface TransactionInfoService {
 	public Collection<BankTransaction> getLastTransactions(long accountId, long lastUsedTransactioId);

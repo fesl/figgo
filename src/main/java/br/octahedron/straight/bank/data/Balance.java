@@ -31,19 +31,19 @@ import javax.jdo.annotations.PrimaryKey;
  */
 @PersistenceCapable
 public class Balance implements Serializable {
-	
+
 	private static final long serialVersionUID = 1316539659486997084L;
 
 	@PrimaryKey
-    @Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private long id; 
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Long id;
 	@Persistent(mappedBy = "balance")
 	private BankAccount bankAccount;
 	@Persistent
 	private BigDecimal value;
 	@Persistent
 	private long lastTransactionId;
-	
+
 	/**
 	 * 
 	 */
@@ -51,34 +51,39 @@ public class Balance implements Serializable {
 		this.value = new BigDecimal(0);
 		this.lastTransactionId = 0;
 	}
-	
+
 	/**
 	 * @return the value
 	 */
 	public BigDecimal getValue() {
-		return value;
+		return this.value;
 	}
+
 	/**
-	 * @param value the value to set
+	 * @param value
+	 *            the value to set
 	 */
 	protected void setValue(BigDecimal value) {
 		this.value = value;
 	}
+
 	/**
 	 * @return the id
 	 */
-	public long getId() {
-		return id;
+	public Long getId() {
+		return this.id;
 	}
+
 	/**
 	 * @return the bankAccount
 	 */
 	public BankAccount getBankAccount() {
-		return bankAccount;
+		return this.bankAccount;
 	}
 
 	/**
-	 * @param lastTransactionId the lastTransactionId to set
+	 * @param lastTransactionId
+	 *            the lastTransactionId to set
 	 */
 	public void setLastTransactionId(long lastTransactionId) {
 		this.lastTransactionId = lastTransactionId;
@@ -88,6 +93,6 @@ public class Balance implements Serializable {
 	 * @return the lastTransactionId
 	 */
 	public long getLastTransactionId() {
-		return lastTransactionId;
+		return this.lastTransactionId;
 	}
 }

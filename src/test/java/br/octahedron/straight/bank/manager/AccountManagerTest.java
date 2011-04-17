@@ -39,7 +39,8 @@ import br.octahedron.straight.bank.data.BankTransactionDAO;
 
 /**
  * @author Vítor Avelino
- *
+ * @author Erick Moreno
+ * 
  */
 public class AccountManagerTest {
 
@@ -52,102 +53,111 @@ public class AccountManagerTest {
 	 */
 	@Before
 	public void setUp() {
-		accountDAO = createMock(BankAccountDAO.class);
-		transactionDAO = createMock(BankTransactionDAO.class);
-		accountManager = new AccountManager();
-		accountManager.setAccountDAO(accountDAO);
-		accountManager.setTransactionDAO(transactionDAO);
+		this.accountDAO = createMock(BankAccountDAO.class);
+		this.transactionDAO = createMock(BankTransactionDAO.class);
+		this.accountManager = new AccountManager();
+		this.accountManager.setAccountDAO(this.accountDAO);
+		this.accountManager.setTransactionDAO(this.transactionDAO);
 	}
 
 	@Test
 	public void getValidAccount() {
 		BankAccount account = createMock(BankAccount.class);
 
-		expect(accountDAO.get("origin")).andReturn(account);
+		Long origin = new Long(1);
+		expect(this.accountDAO.get(origin)).andReturn(account);
 		expect(account.isEnabled()).andReturn(true);
-		replay(accountDAO, account);
+		replay(this.accountDAO, account);
 
-		accountManager.getValidAccount("origin");
+		this.accountManager.getValidAccount(origin);
 
-		verify(accountDAO, account);
+		verify(this.accountDAO, account);
 	}
 
 	@Test(expected = DisabledBankAccountException.class)
 	public void getValidAccountDisabled() {
+		Long origin = new Long(1);
 		BankAccount account = createMock(BankAccount.class);
 		try {
-			expect(accountDAO.get("origin")).andReturn(account);
+			expect(this.accountDAO.get(origin)).andReturn(account);
 			expect(account.isEnabled()).andReturn(false);
-			replay(accountDAO, account);
+			replay(this.accountDAO, account);
 
-			accountManager.getValidAccount("origin");
+			this.accountManager.getValidAccount(origin);
 		} finally {
-			verify(accountDAO, account);
+			verify(this.accountDAO, account);
 		}
 	}
 
 	@Test(expected = InexistentBankAccountException.class)
 	public void getValidAccountNull() {
+		Long origin = new Long(1);
 		BankAccount account = createMock(BankAccount.class);
 
 		try {
-			expect(accountDAO.get("origin")).andReturn(null);
-			replay(accountDAO, account);
+			expect(this.accountDAO.get(origin)).andReturn(null);
+			replay(this.accountDAO, account);
 
-			accountManager.getValidAccount("origin");
-		} finally{
-			verify(accountDAO, account);
+			this.accountManager.getValidAccount(origin);
+		} finally {
+			verify(this.accountDAO, account);
 		}
 	}
 
 	@Test
 	public void doSimpleTransaction() {
+		Long originId = new Long(1);
+		Long destId = new Long(2);
+
 		BankAccount origin = createMock(BankAccount.class);
 		BankAccount destination = createMock(BankAccount.class);
-		
-		expect(accountDAO.get("origin")).andReturn(origin);
+
+		expect(this.accountDAO.get(originId)).andReturn(origin);
 		expect(origin.isEnabled()).andReturn(true);
-		expect(accountDAO.get("destination")).andReturn(destination);
+		expect(this.accountDAO.get(destId)).andReturn(destination);
 		expect(destination.isEnabled()).andReturn(true);
 
 		expect(origin.getBalance()).andReturn(new BigDecimal(10));
-		transactionDAO.save(notNull(BankTransaction.class));
-		replay(accountDAO, transactionDAO, origin, destination);
+		this.transactionDAO.save(notNull(BankTransaction.class));
+		replay(this.accountDAO, this.transactionDAO, origin, destination);
 
-		accountManager.transact("origin", "destination", new BigDecimal(2), "", TransactionType.TRANSFER);
-		verify(accountDAO, transactionDAO, origin, destination);
+		this.accountManager.transact(originId, destId, new BigDecimal(2), "", TransactionType.TRANSFER);
+		verify(this.accountDAO, this.transactionDAO, origin, destination);
 	}
 
 	@Test(expected = InsufficientBalanceException.class)
 	public void doSimpleInsufficientTransaction() {
+		Long originId = new Long(1);
+		Long destId = new Long(2);
 		BankAccount origin = createMock(BankAccount.class);
 		BankAccount destination = createMock(BankAccount.class);
 		try {
-			expect(accountDAO.get("origin")).andReturn(origin);
+			expect(this.accountDAO.get(originId)).andReturn(origin);
 			expect(origin.isEnabled()).andReturn(true);
-			expect(accountDAO.get("destination")).andReturn(destination);
+			expect(this.accountDAO.get(destId)).andReturn(destination);
 			expect(destination.isEnabled()).andReturn(true);
-			
-			expect(origin.getBalance()).andReturn(new BigDecimal(10));
-			replay(accountDAO, transactionDAO, origin, destination);
 
-			accountManager.transact("origin", "destination", new BigDecimal(20), "", TransactionType.TRANSFER);
+			expect(origin.getBalance()).andReturn(new BigDecimal(10));
+			replay(this.accountDAO, this.transactionDAO, origin, destination);
+
+			this.accountManager.transact(originId, destId, new BigDecimal(20), "", TransactionType.TRANSFER);
 		} finally {
-			verify(accountDAO, transactionDAO, origin, destination);
+			verify(this.accountDAO, this.transactionDAO, origin, destination);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getBalance(){
+	public void getBalance() {
 		Long accID = new Long(12345);
 		Long transID = new Long(0);
-		BankAccount account = new BankAccount("teste", accID); 
-		expect(accountDAO.get(accID)).andReturn(account);
-		expect(transactionDAO.getLastTransactions(accID, transID)).andReturn(Collections.EMPTY_LIST);
-		replay(accountDAO, transactionDAO);
-		
-		assertEquals(new BigDecimal(0), accountManager.getBalance(accID));
-		verify(accountDAO, transactionDAO);
-	}	
+		BankAccount account = new BankAccount("teste", accID);
+		account.setEnabled(true);
+		expect(this.accountDAO.get(accID)).andReturn(account);
+		expect(this.transactionDAO.getLastTransactions(accID, transID)).andReturn(Collections.EMPTY_LIST);
+		replay(this.accountDAO, this.transactionDAO);
+
+		assertEquals(new BigDecimal(0), this.accountManager.getBalance(accID));
+		verify(this.accountDAO, this.transactionDAO);
+	}
 }

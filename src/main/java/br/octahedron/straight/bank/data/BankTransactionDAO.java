@@ -26,7 +26,7 @@ import br.octahedron.straight.database.GenericDAO;
 /**
  * @author Danilo Queiroz
  */
-public class BankTransactionDAO extends GenericDAO<BankTransaction>  implements TransactionInfoService {
+public class BankTransactionDAO extends GenericDAO<BankTransaction> implements TransactionInfoService {
 
 	public BankTransactionDAO() {
 		super(BankTransaction.class);
@@ -37,8 +37,11 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction>  implements 
 	 * @param j
 	 * @return
 	 */
+	@Override
 	public Collection<BankTransaction> getLastTransactions(long accountId, long lastUsedTransactionId) {
-		
+		/*
+		 * (accountOri = accId || accountDest = accId) && tId > lastId
+		 */
 		return null;
 	}
 

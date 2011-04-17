@@ -27,90 +27,99 @@ import javax.jdo.annotations.PrimaryKey;
 
 /**
  * @author Erick Moreno
- *
+ * 
  */
 @PersistenceCapable
 public class Bank {
-	
+
 	@Persistent
 	private String currency;
-	@PrimaryKey @Persistent
+	@PrimaryKey
+	@Persistent
 	private String name;
 	@Persistent
 	private String currencyAbreviation;
 	@Persistent
 	private Set<String> operatorsIds;
-	
+
 	/**
 	 * 
 	 * @param name
 	 * @param currency
 	 * @param operatorId
 	 */
-	public Bank(String name, String currency, String operatorId){
+	public Bank(String name, String currency, String operatorId) {
 		this.name = name;
 		this.currency = currency;
 		this.operatorsIds = new LinkedHashSet<String>();
 		this.operatorsIds.add(operatorId);
 	}
-	
-	
+
 	/**
 	 * @return the currency
 	 */
 	public String getCurrency() {
-		return currency;
+		return this.currency;
 	}
+
 	/**
-	 * @param currency the currency to set
+	 * @param currency
+	 *            the currency to set
 	 */
 	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
+
 	/**
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
+
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	/**
 	 * @return the currencyAbreviation
 	 */
 	public String getCurrencyAbreviation() {
-		return currencyAbreviation;
+		return this.currencyAbreviation;
 	}
+
 	/**
-	 * @param currencyAbreviation the currencyAbreviation to set
+	 * @param currencyAbreviation
+	 *            the currencyAbreviation to set
 	 */
 	public void setCurrencyAbreviation(String currencyAbreviation) {
 		this.currencyAbreviation = currencyAbreviation;
 	}
+
 	/**
 	 * @return the operatorsIds
 	 */
 	public Set<String> getOperatorsIds() {
-		return operatorsIds;
+		return this.operatorsIds;
 	}
-	
+
 	/**
 	 * 
 	 * @param operatorId
 	 */
-	public void addOperator(String operatorId){
+	public void addOperator(String operatorId) {
 		this.operatorsIds.add(operatorId);
 	}
-	
+
 	/**
 	 * 
 	 * @param operatorId
 	 */
-	public void removeOperator(String operatorId){
+	public void removeOperator(String operatorId) {
 		this.operatorsIds.remove(operatorId);
 	}
 

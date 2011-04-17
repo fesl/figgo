@@ -52,10 +52,13 @@ public abstract class GenericDAO<T> {
 	}
 
 	/**
-	 * Saves an entity. It doesn't verify if the object already exists, it just saves, overwriting the previous object, if exists. 
-	 * @param entity The entity to be save
+	 * Saves an entity. It doesn't verify if the object already exists, it just saves, overwriting
+	 * the previous object, if exists.
+	 * 
+	 * @param entity
+	 *            The entity to be save
 	 */
-	public void save(T entity)  {
+	public void save(T entity) {
 		this.datastoreFacade.saveObject(entity);
 	}
 
@@ -68,7 +71,9 @@ public abstract class GenericDAO<T> {
 
 	/**
 	 * Gets an T entity.
-	 * @param key the entity's key.
+	 * 
+	 * @param key
+	 *            the entity's key.
 	 * @return The entity with the given key, if exists, null otherwise.
 	 */
 	public T get(Object key) {
@@ -77,7 +82,9 @@ public abstract class GenericDAO<T> {
 
 	/**
 	 * Checks if exists an entity with the given key.
-	 * @param key the entity's key
+	 * 
+	 * @param key
+	 *            the entity's key
 	 * @return <code>true</code> if exists, <code>false</code> otherwise.
 	 */
 	public boolean exists(Object key) {

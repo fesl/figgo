@@ -23,13 +23,13 @@ import br.octahedron.straight.bank.data.BankDAO;
 
 /**
  * @author vitoravelino
- *
+ * 
  */
 public class BankManager {
 
 	private BankDAO dao = new BankDAO();
-	
+
 	public void create(String name, String currency, String operatorId) {
-		dao.save(new Bank(name, currency, operatorId));
+		this.dao.save(new Bank(name, currency, operatorId));
 	}
 }

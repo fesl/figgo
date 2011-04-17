@@ -73,7 +73,7 @@ public class DatastoreFacade {
 		}
 	}
 
-	public <T> void saveAllObjects(Collection<T> persistentObjects){
+	public <T> void saveAllObjects(Collection<T> persistentObjects) {
 		PersistenceManager pm = this.pool.getPersistenceManagerForThread();
 		Transaction tx = pm.currentTransaction();
 		try {
@@ -89,6 +89,7 @@ public class DatastoreFacade {
 		}
 
 	}
+
 	public <T> void deleteObject(T persistentObject) {
 		PersistenceManager pm = this.pool.getPersistenceManagerForThread();
 		try {
@@ -116,7 +117,6 @@ public class DatastoreFacade {
 	public <T> void deleteObjects(Class<T> klass) {
 		this.deleteObjectsByQuery(klass, null);
 	}
-
 
 	public <T> void deleteObjectsByQuery(Class<T> klass, String filter) {
 		PersistenceManager pm = this.pool.getPersistenceManagerForThread();

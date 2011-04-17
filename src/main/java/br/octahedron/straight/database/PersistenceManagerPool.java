@@ -27,7 +27,7 @@ import br.octahedron.straight.database.DatastoreFacade.PMFWrapper;
 /**
  * @see PersistenceManagerPool
  * 
- * @author Danilo Penna Queiroz  
+ * @author Danilo Penna Queiroz
  */
 public class PersistenceManagerPool {
 
