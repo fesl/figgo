@@ -1,0 +1,2 @@
+serviceClass: br.octahedron.straight.gwt.client.BankFacade
+path: C7B54F073E7CD3836EAAD684DC0CF159.gwt.rpc

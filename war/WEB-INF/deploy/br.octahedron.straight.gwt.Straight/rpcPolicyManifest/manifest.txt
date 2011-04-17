@@ -1,0 +1,2 @@
+# Module br.octahedron.straight.gwt.Straight
+# RPC service class, partial path of RPC policy file
