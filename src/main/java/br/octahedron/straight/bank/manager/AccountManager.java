@@ -48,6 +48,7 @@ public class AccountManager {
 	
 	public BigDecimal getBalance(long accountId){
 		BankAccount account = accountDAO.get(accountId);
+		account.setTransactionInfoService(this.transactionDAO);
 		return account.getBalance();
 	}
 	
@@ -83,6 +84,4 @@ public class AccountManager {
 	protected void setAccountDAO(BankAccountDAO accountDAO)	{
 		this.accountDAO = accountDAO;
 	}
-
-	
 }
