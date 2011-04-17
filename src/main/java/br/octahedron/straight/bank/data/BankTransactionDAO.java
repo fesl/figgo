@@ -21,6 +21,7 @@ package br.octahedron.straight.bank.data;
 import java.util.List;
 
 import br.octahedron.straight.bank.TransactionInfoService;
+import br.octahedron.straight.database.DatastoreFacade;
 import br.octahedron.straight.database.GenericDAO;
 
 /**
@@ -31,6 +32,10 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	public BankTransactionDAO() {
 		super(BankTransaction.class);
 	}
+	
+	protected void setDatastoreFacade(DatastoreFacade dsFacade) {
+		this.datastoreFacade = dsFacade;
+	}
 
 	/**
 	 * @param i
@@ -38,11 +43,31 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 * @return
 	 */
 	@Override
-	public List<BankTransaction> getLastTransactions(long accountId, long lastUsedTransactionId) {
+	public List<BankTransaction> getLastTransactions(Long accountId, Long lastUsedTransactionId) {
 		/*
 		 * (accountOri = accId || accountDest = accId) && tId > lastId
 		 */
-		return null;
-	}
+		List<BankTransaction> transactions1 = this.datastoreFacade.getObjectsByQuery(BankTransaction.class, "id > '" + lastUsedTransactionId + "' && accountOrig == '" + accountId + "'",
+				"id asc");
+		List<BankTransaction> transactions2 = this.datastoreFacade.getObjectsByQuery(BankTransaction.class, "id > '" + lastUsedTransactionId + "' && accountDest == '" + accountId + "'",
+				"id asc");
 
+		BankTransaction last1 = (!transactions1.isEmpty()) ? transactions1.get(transactions1.size() - 1) : null;
+		BankTransaction last2 = (!transactions2.isEmpty()) ? transactions2.get(transactions2.size() - 1) : null;
+
+		if (last1 != null && last2 != null) {
+			Long id1 = last1.getId();
+			Long id2 = last2.getId();
+			if (id1.compareTo(id2) >= 0) {
+				transactions2.addAll(transactions1);
+				return transactions2;
+			} else {
+				transactions1.addAll(transactions2);
+				return transactions1;
+			}
+		} else {
+			transactions1.addAll(transactions2);
+			return transactions1;
+		}
+	}
 }

@@ -165,7 +165,6 @@ public class AccountManagerTest {
 		verify(this.accountDAO, this.transactionDAO);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Test
 	public void getBalanceSomeTransactions() {
 		Long accID = new Long(12345);

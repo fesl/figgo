@@ -134,5 +134,36 @@ public class BankTransaction implements Serializable {
 	public TransactionType getType() {
 		return this.type;
 	}
-
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof BankTransaction) {
+			BankTransaction other = (BankTransaction) obj;
+			return this.getId().equals(other.getId());
+		} else {
+			return false;
+		}
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return this.id.hashCode();
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "id: " + this.id + 
+			" orig: " + this.accountOrig +
+			" dest: " + this.accountDest + 
+			" value: " + this.getValue();
+	}
 }

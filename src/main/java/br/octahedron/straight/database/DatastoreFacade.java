@@ -170,16 +170,16 @@ public class DatastoreFacade {
 		return null;
 	}
 
-	public <T> Collection<T> getObjects(Class<T> klass) {
+	public <T> List<T> getObjects(Class<T> klass) {
 		return this.getObjectsByQuery(klass, null);
 	}
 
-	public <T> Collection<T> getObjectsByQuery(Class<T> klass, String filter) {
+	public <T> List<T> getObjectsByQuery(Class<T> klass, String filter) {
 		return this.getObjectsByQuery(klass, filter, null);
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> Collection<T> getObjectsByQuery(Class<T> klass, String filter, String orderingAtts) {
+	public <T> List<T> getObjectsByQuery(Class<T> klass, String filter, String orderingAtts) {
 		PersistenceManager pm = this.pool.getPersistenceManagerForThread();
 		try {
 			Query query = this.prepareQuery(klass, filter, orderingAtts, pm);
@@ -192,7 +192,7 @@ public class DatastoreFacade {
 				objs = (List<T>) query.execute();
 			}
 			if (this.detach) {
-				return pm.detachCopyAll(objs);
+				return (List<T>) pm.detachCopyAll(objs);
 			} else {
 				return objs;
 			}
