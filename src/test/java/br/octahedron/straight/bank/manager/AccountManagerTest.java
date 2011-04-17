@@ -120,6 +120,7 @@ public class AccountManagerTest {
 		expect(this.accountDAO.get(destId)).andReturn(destination);
 		expect(destination.isEnabled()).andReturn(true);
 
+		origin.setTransactionInfoService(this.transactionDAO);
 		expect(origin.getBalance()).andReturn(new BigDecimal(10));
 		this.transactionDAO.save(notNull(BankTransaction.class));
 		replay(this.accountDAO, this.transactionDAO, origin, destination);
@@ -139,7 +140,7 @@ public class AccountManagerTest {
 			expect(origin.isEnabled()).andReturn(true);
 			expect(this.accountDAO.get(destId)).andReturn(destination);
 			expect(destination.isEnabled()).andReturn(true);
-
+			origin.setTransactionInfoService(this.transactionDAO);
 			expect(origin.getBalance()).andReturn(new BigDecimal(10));
 			replay(this.accountDAO, this.transactionDAO, origin, destination);
 

@@ -65,7 +65,10 @@ public class AccountManager {
 	}
 
 	public BigDecimal getBalance(long accountId) {
-		BankAccount account = this.getValidAccount(accountId);
+		return this.getBalance(this.getValidAccount(accountId));
+	}
+	
+	protected BigDecimal getBalance(BankAccount account) {
 		account.setTransactionInfoService(this.transactionDAO);
 		return account.getBalance();
 	}
@@ -95,7 +98,7 @@ public class AccountManager {
 	}
 
 	protected boolean hasSufficientBalance(BankAccount account, BigDecimal value) {
-		return account.getBalance().compareTo(value) >= 0;
+		return this.getBalance(account).compareTo(value) >= 0;
 	}
 
 	protected BankAccount getValidAccount(Long accountId) {
