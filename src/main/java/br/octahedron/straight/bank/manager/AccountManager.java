@@ -19,7 +19,9 @@
 package br.octahedron.straight.bank.manager;
 
 import java.math.BigDecimal;
+import java.util.logging.Logger;
 
+import br.octahedron.golddigger.event.EventService;
 import br.octahedron.straight.bank.data.BankAccount;
 import br.octahedron.straight.bank.data.BankAccountDAO;
 import br.octahedron.straight.bank.data.BankTransaction;
@@ -28,12 +30,15 @@ import br.octahedron.straight.bank.data.BankTransaction.TransactionType;
 
 /**
  * @author Erick Moreno
+ * @author Vítor Avelino
  *
  */
 public class AccountManager {
 	
 	private BankAccountDAO accountDAO = new BankAccountDAO();
 	private BankTransactionDAO transactionDAO = new BankTransactionDAO();
+	
+	private static final Logger logger = Logger.getLogger(AccountManager.class.getName());
 	
 	/**
 	 * 
@@ -58,6 +63,9 @@ public class AccountManager {
 		BankAccount accountOrigin = accountDAO.get(accountOrig);
 		if (accountOrigin.getBalance().compareTo(value) >= 0) {
 			transactionDAO.save(transaction);
+		} else {
+			logger.info(accountOrigin.getId() + " has insufficient balance to make this transaction (" + transaction + ") ");
+			throw new InsufficientBalanceException(accountOrigin.getId() + " has insufficient balance to make transaction");
 		}
 	}
 	
