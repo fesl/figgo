@@ -54,6 +54,7 @@ public class AccountManagerTest {
 		replay(accountDAO, transactionDAO, origin, destination);
 		
 		accountManager.transact("origin", "destination", new BigDecimal(2), "", TransactionType.TRANSFER);
+		verify(accountDAO, transactionDAO, origin, destination);
 	}
 	
 }

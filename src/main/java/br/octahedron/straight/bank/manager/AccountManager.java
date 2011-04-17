@@ -54,9 +54,32 @@ public class AccountManager {
 	 * @param type
 	 */
 	public void transact(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
+		BankTransaction transaction = createTransaction(accountOrig, accountDest, value, comment, type);
+		BankAccount accountOrigin = accountDAO.get(accountOrig);
+		if (accountOrigin.getBalance().compareTo(value) >= 0) {
+			transactionDAO.save(transaction);
+		}
 	}
 	
 	private BankTransaction createTransaction(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
 		return new BankTransaction(accountOrig, accountDest, value, type, comment);
 	}
+
+	/*
+	 * Just for tests.
+	 */
+	protected void setTransactionDAO(BankTransactionDAO transactionDAO)
+	{
+		
+	}
+	
+	/*
+	 * Just for tests.
+	 */
+	protected void setAccountDAO(BankAccountDAO accountDAO)
+	{
+		
+	}
+
+	
 }
