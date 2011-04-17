@@ -18,14 +18,17 @@
  */
 package br.octahedron.straight.bank.manager;
 
-import static org.easymock.EasyMock.*;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.notNull;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.math.BigDecimal;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import br.octahedron.straight.bank.data.Balance;
 import br.octahedron.straight.bank.data.BankAccount;
 import br.octahedron.straight.bank.data.BankAccountDAO;
 import br.octahedron.straight.bank.data.BankTransaction;
@@ -46,7 +49,7 @@ public class AccountManagerTest {
 	 * 
 	 */
 	@Before
-	private void setUp() {
+	public void setUp() {
 		accountDAO = createMock(BankAccountDAO.class);
 		transactionDAO = createMock(BankTransactionDAO.class);
 		accountManager = new AccountManager();
@@ -55,17 +58,31 @@ public class AccountManagerTest {
 	}
 	
 	@Test
-	public void doSimpleTransaction() {
+	public void doSimpleTransaction() throws InsufficientBalanceException {
 		BankAccount origin = createMock(BankAccount.class);
 		BankAccount destination = createMock(BankAccount.class);
 		expect(accountDAO.get("origin")).andReturn(origin);
-		expect(accountDAO.get("destination")).andReturn(destination);
 		expect(origin.getBalance()).andReturn(new BigDecimal(10));
 		transactionDAO.save(notNull(BankTransaction.class));
 		replay(accountDAO, transactionDAO, origin, destination);
 		
 		accountManager.transact("origin", "destination", new BigDecimal(2), "", TransactionType.TRANSFER);
 		verify(accountDAO, transactionDAO, origin, destination);
+	}
+	
+	@Test(expected = InsufficientBalanceException.class)
+	public void doSimpleInsufficientTransaction() throws InsufficientBalanceException {
+		BankAccount origin = createMock(BankAccount.class);
+		BankAccount destination = createMock(BankAccount.class);
+		try {
+			expect(accountDAO.get("origin")).andReturn(origin);
+			expect(origin.getBalance()).andReturn(new BigDecimal(10));
+			replay(accountDAO, transactionDAO, origin, destination);
+
+			accountManager.transact("origin", "destination", new BigDecimal(20), "", TransactionType.TRANSFER);
+		} finally {
+			verify(accountDAO, transactionDAO, origin, destination);
+		}
 	}
 
 

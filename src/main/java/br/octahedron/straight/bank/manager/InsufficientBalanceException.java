@@ -22,7 +22,7 @@ package br.octahedron.straight.bank.manager;
  * @author Vítor Avelino
  *
  */
-public class InsufficientBalanceException extends Exception {
+public class InsufficientBalanceException extends RuntimeException {
 
 	private static final long serialVersionUID = -4742603411538216323L;
 

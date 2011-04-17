@@ -21,7 +21,6 @@ package br.octahedron.straight.bank.manager;
 import java.math.BigDecimal;
 import java.util.logging.Logger;
 
-import br.octahedron.golddigger.event.EventService;
 import br.octahedron.straight.bank.data.BankAccount;
 import br.octahedron.straight.bank.data.BankAccountDAO;
 import br.octahedron.straight.bank.data.BankTransaction;
@@ -62,15 +61,16 @@ public class AccountManager {
 	 * @param value
 	 * @param comment
 	 * @param type
+	 * @throws InsufficientBalanceException 
 	 */
-	public void transact(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
+	public void transact(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) throws InsufficientBalanceException {
 		BankTransaction transaction = createTransaction(accountOrig, accountDest, value, comment, type);
 		BankAccount accountOrigin = accountDAO.get(accountOrig);
 		if (accountOrigin.getBalance().compareTo(value) >= 0) {
 			transactionDAO.save(transaction);
 		} else {
-			logger.info(accountOrigin.getId() + " has insufficient balance to make this transaction (" + transaction + ") ");
-			throw new InsufficientBalanceException(accountOrigin.getId() + " has insufficient balance to make transaction");
+			logger.info(accountOrig + " has insufficient balance to make this transaction (" + transaction + ") ");
+			throw new InsufficientBalanceException(accountOrig + " has insufficient balance to make transaction");
 		}
 	}
 	
