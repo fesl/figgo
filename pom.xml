@@ -300,5 +300,20 @@
 			<type>jar</type>
 			<scope>runtime</scope>
 		</dependency>
+		<!-- JDO L2 Cache -->
+		<dependency>
+			<groupId>org.datanucleus</groupId>
+			<artifactId>datanucleus-cache</artifactId>
+			<version>1.1.1</version>
+			<type>jar</type>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.jsr107cache</groupId>
+			<artifactId>jsr107cache</artifactId>
+			<version>1.1</version>
+			<type>jar</type>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 </project>

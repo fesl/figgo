@@ -11,8 +11,8 @@
         <property name="javax.jdo.option.NontransactionalWrite" value="true"/>
         <property name="javax.jdo.option.RetainValues" value="true"/>
         <property name="datanucleus.appengine.autoCreateDatastoreTxns" value="true"/>
-		<!-- L2 cache configuration using jcache 
+		<!-- L2 cache configuration using jcache -->
 		<property name="datanucleus.cache.level2.type" value="javax.cache"/>
-		<property name="datanucleus.cache.level2.cacheName" value="memcache"/> -->
+		<property name="datanucleus.cache.level2.cacheName" value="memcache"/>
     </persistence-manager-factory>
 </jdoconfig>
