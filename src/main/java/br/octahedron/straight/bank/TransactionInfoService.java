@@ -18,7 +18,7 @@
  */
 package br.octahedron.straight.bank;
 
-import java.util.Collection;
+import java.util.List;
 
 import br.octahedron.straight.bank.data.BankTransaction;
 
@@ -27,5 +27,5 @@ import br.octahedron.straight.bank.data.BankTransaction;
  * 
  */
 public interface TransactionInfoService {
-	public Collection<BankTransaction> getLastTransactions(long accountId, long lastUsedTransactioId);
+	public List<BankTransaction> getLastTransactions(long accountId, long lastUsedTransactioId);
 }

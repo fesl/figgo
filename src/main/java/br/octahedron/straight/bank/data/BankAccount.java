@@ -20,7 +20,7 @@ package br.octahedron.straight.bank.data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Collection;
+import java.util.List;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.NotPersistent;
@@ -48,19 +48,21 @@ public class BankAccount implements Serializable {
 	@Persistent
 	private boolean enabled;
 	@Persistent
-	private Balance balance;
+	private BigDecimal value;
+	@Persistent
+	private Long lastTransactionId;
 	@NotPersistent
 	private TransactionInfoService transactionInfoService;
 
 	public BankAccount(String ownerId, Long id) {
+		this(ownerId);
 		this.id = id;
-		this.ownerId = ownerId;
-		this.balance = new Balance();
 	}
 
 	public BankAccount(String ownerId) {
 		this.ownerId = ownerId;
-		this.balance = new Balance();
+		this.value = new BigDecimal(0);
+		this.lastTransactionId = new Long(0);
 	}
 
 	public void setTransactionInfoService(TransactionInfoService tInfoService) {
@@ -119,18 +121,26 @@ public class BankAccount implements Serializable {
 			throw new IllegalStateException("TransactionInfoService cannot be null. Must be set before balance operations");
 		}
 
-		Collection<BankTransaction> transactions = this.transactionInfoService.getLastTransactions(this.id, this.balance.getLastTransactionId());
+		List<BankTransaction> transactions = this.transactionInfoService.getLastTransactions(this.id, this.lastTransactionId);
+		
+		if (!transactions.isEmpty()) {
+			BigDecimal transactionsBalance = new BigDecimal(0);
 
-		BigDecimal transactionsBalance = new BigDecimal(0);
+			for (BankTransaction bankTransaction : transactions) {
+				if (bankTransaction.getAccountOrig().equals(this.id)) {
+					transactionsBalance = transactionsBalance.subtract(bankTransaction.getValue());
+				} else {
+					transactionsBalance = transactionsBalance.add(bankTransaction.getValue());
+				}
 
-		for (BankTransaction bankTransaction : transactions) {
-			transactionsBalance.add(bankTransaction.getValue());
+			}
+
+			// We need to know what happens if this sum result if lower than zero
+			// TODO LOG this event as a warning
+			this.value = this.value.add(transactionsBalance);
+			this.lastTransactionId = transactions.get(transactions.size() - 1).getId();
 		}
 
-		// We need to know what happens if this sum result if lower than zero
-		// TODO LOG this event as a warning
-		this.balance.setValue(this.balance.getValue().add(transactionsBalance));
-
-		return this.balance.getValue();
+		return this.value;
 	}
 }

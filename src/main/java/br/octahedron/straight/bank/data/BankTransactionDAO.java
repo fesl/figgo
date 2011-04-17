@@ -18,7 +18,7 @@
  */
 package br.octahedron.straight.bank.data;
 
-import java.util.Collection;
+import java.util.List;
 
 import br.octahedron.straight.bank.TransactionInfoService;
 import br.octahedron.straight.database.GenericDAO;
@@ -38,7 +38,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 * @return
 	 */
 	@Override
-	public Collection<BankTransaction> getLastTransactions(long accountId, long lastUsedTransactionId) {
+	public List<BankTransaction> getLastTransactions(long accountId, long lastUsedTransactionId) {
 		/*
 		 * (accountOri = accId || accountDest = accId) && tId > lastId
 		 */

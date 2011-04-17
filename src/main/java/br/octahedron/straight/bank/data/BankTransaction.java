@@ -72,6 +72,19 @@ public class BankTransaction implements Serializable {
 		this.comment = comment;
 
 	}
+	
+	/**
+	 * Created only for tests purposes
+	 * @param accountOrig
+	 * @param accountDest
+	 * @param value
+	 * @param type
+	 * @param comment
+	 */
+	public BankTransaction(Long accountOrig, Long accountDest, BigDecimal value, TransactionType type, String comment, Long transactionId) {
+		this(accountOrig, accountDest, value, type, comment);
+		this.id = transactionId;
+	}
 
 	/**
 	 * @return the id

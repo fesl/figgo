@@ -26,7 +26,10 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -148,7 +151,7 @@ public class AccountManagerTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getBalance() {
+	public void getBalanceInicialValue() {
 		Long accID = new Long(12345);
 		Long transID = new Long(0);
 		BankAccount account = new BankAccount("teste", accID);
@@ -158,6 +161,37 @@ public class AccountManagerTest {
 		replay(this.accountDAO, this.transactionDAO);
 
 		assertEquals(new BigDecimal(0), this.accountManager.getBalance(accID));
+		verify(this.accountDAO, this.transactionDAO);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void getBalanceSomeTransactions() {
+		Long accID = new Long(12345);
+		Long accID2 = new Long (54321);
+		Long transID = new Long(0);
+		Long transID1 = new Long(3);
+		Long transID2 = new Long(6);
+		Long transID3 = new Long(234);
+		BigDecimal value1 = new BigDecimal(2.01);
+		BigDecimal value2 = new BigDecimal(123456.91);
+		BigDecimal value3 = new BigDecimal(23.31);
+		
+		BankAccount account = new BankAccount("teste", accID);
+		account.setEnabled(true);
+		expect(this.accountDAO.get(accID)).andReturn(account);
+		List<BankTransaction> transactions = new LinkedList<BankTransaction>();
+		
+		transactions.add(new BankTransaction(accID, accID2, value1, BankTransaction.TransactionType.TRANSFER, "1", transID1));
+		transactions.add(new BankTransaction(accID2, accID, value2, BankTransaction.TransactionType.TRANSFER, "2", transID2));
+		transactions.add(new BankTransaction(accID2, accID, value3, BankTransaction.TransactionType.TRANSFER, "3", transID3));
+		
+		expect(this.transactionDAO.getLastTransactions(accID, transID)).andReturn(transactions);
+		
+		replay(this.accountDAO, this.transactionDAO);
+
+		assertEquals(new BigDecimal(123478.21).round(new MathContext(2)), this.accountManager.getBalance(accID).round(new MathContext(2)));
+		
 		verify(this.accountDAO, this.transactionDAO);
 	}
 }
