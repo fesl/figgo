@@ -51,6 +51,11 @@ public class AccountManager {
 		return account;
 	}
 	
+	public BigDecimal getBalance(long accountId){
+		BankAccount account = accountDAO.get(accountId);
+		return account.getBalance();
+	}
+	
 	/**
 	 * @param accountOrig
 	 * @param accountDest

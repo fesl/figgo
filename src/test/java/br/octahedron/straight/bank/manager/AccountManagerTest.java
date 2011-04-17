@@ -22,6 +22,7 @@ import static org.easymock.EasyMock.*;
 
 import java.math.BigDecimal;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import br.octahedron.straight.bank.data.Balance;
@@ -37,16 +38,26 @@ import br.octahedron.straight.bank.data.BankTransaction.TransactionType;
  */
 public class AccountManagerTest {
 
+	private BankAccountDAO accountDAO;
+	private BankTransactionDAO transactionDAO;
+	private AccountManager accountManager;
+
+	/**
+	 * 
+	 */
+	@Before
+	private void setUp() {
+		accountDAO = createMock(BankAccountDAO.class);
+		transactionDAO = createMock(BankTransactionDAO.class);
+		accountManager = new AccountManager();
+		accountManager.setAccountDAO(accountDAO);
+		accountManager.setTransactionDAO(transactionDAO);
+	}
+	
 	@Test
 	public void doSimpleTransaction() {
 		BankAccount origin = createMock(BankAccount.class);
 		BankAccount destination = createMock(BankAccount.class);
-		BankAccountDAO accountDAO = createMock(BankAccountDAO.class);
-		BankTransactionDAO transactionDAO = createMock(BankTransactionDAO.class);
-		AccountManager accountManager = new AccountManager();
-		accountManager.setAccountDAO(accountDAO);
-		accountManager.setTransactionDAO(transactionDAO);
-		
 		expect(accountDAO.get("origin")).andReturn(origin);
 		expect(accountDAO.get("destination")).andReturn(destination);
 		expect(origin.getBalance()).andReturn(new BigDecimal(10));
@@ -55,6 +66,12 @@ public class AccountManagerTest {
 		
 		accountManager.transact("origin", "destination", new BigDecimal(2), "", TransactionType.TRANSFER);
 		verify(accountDAO, transactionDAO, origin, destination);
+	}
+
+
+	
+	public void getBalance(){
+		
 	}
 	
 }
