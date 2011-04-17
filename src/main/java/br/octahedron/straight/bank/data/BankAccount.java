@@ -19,6 +19,7 @@
 package br.octahedron.straight.bank.data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
@@ -62,34 +63,39 @@ public class BankAccount implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
 	/**
 	 * @return the enabled
 	 */
 	public boolean isEnabled() {
 		return enabled;
 	}
+	
 	/**
 	 * @param enabled the enabled to set
 	 */
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+	
 	/**
 	 * @return the id
 	 */
 	public long getId() {
 		return id;
 	}
+	
 	/**
 	 * @return the ownerId
 	 */
 	public String getOwnerId() {
 		return ownerId;
 	}
+	
 	/**
-	 * @return the balance
+	 * @return the balance's value
 	 */
-	public Balance getBalance() {
-		return balance;
+	public BigDecimal getBalance() {
+		return balance.getValue();
 	}
 }
