@@ -61,7 +61,7 @@ public class Balance implements Serializable {
 	/**
 	 * @param value the value to set
 	 */
-	public void setValue(BigDecimal value) {
+	protected void setValue(BigDecimal value) {
 		this.value = value;
 	}
 	/**

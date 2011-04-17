@@ -18,6 +18,7 @@
  */
 package br.octahedron.straight.bank.manager;
 
+import static junit.framework.Assert.assertEquals;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.notNull;
@@ -25,6 +26,7 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,8 +34,8 @@ import org.junit.Test;
 import br.octahedron.straight.bank.data.BankAccount;
 import br.octahedron.straight.bank.data.BankAccountDAO;
 import br.octahedron.straight.bank.data.BankTransaction;
-import br.octahedron.straight.bank.data.BankTransactionDAO;
 import br.octahedron.straight.bank.data.BankTransaction.TransactionType;
+import br.octahedron.straight.bank.data.BankTransactionDAO;
 
 /**
  * @author Vítor Avelino
@@ -116,7 +118,6 @@ public class AccountManagerTest {
 		verify(accountDAO, transactionDAO, origin, destination);
 	}
 
-
 	@Test(expected = InsufficientBalanceException.class)
 	public void doSimpleInsufficientTransaction() {
 		BankAccount origin = createMock(BankAccount.class);
@@ -136,8 +137,17 @@ public class AccountManagerTest {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	@Test
 	public void getBalance(){
-
-	}
-
+		Long accID = new Long(12345);
+		Long transID = new Long(0);
+		BankAccount account = new BankAccount("teste", accID); 
+		expect(accountDAO.get(accID)).andReturn(account);
+		expect(transactionDAO.getLastTransactions(accID, transID)).andReturn(Collections.EMPTY_LIST);
+		replay(accountDAO, transactionDAO);
+		
+		assertEquals(new BigDecimal(0), accountManager.getBalance(accID));
+		verify(accountDAO, transactionDAO);
+	}	
 }

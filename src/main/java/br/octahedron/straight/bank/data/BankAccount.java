@@ -20,11 +20,16 @@ package br.octahedron.straight.bank.data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+import javax.persistence.Transient;
+
+import br.octahedron.straight.bank.TransactionInfoService;
+import br.octahedron.straight.bank.manager.AccountManager;
 
 /**
  * @author Danilo Queiroz
@@ -45,10 +50,22 @@ public class BankAccount implements Serializable {
 	private boolean enabled;
 	@Persistent
 	private Balance balance;
+	@Transient
+	private TransactionInfoService transactionInfoService;
+	
+	public BankAccount(String ownerId, long id) {
+		this.id = id;
+		this.ownerId = ownerId;
+		this.balance = new Balance();
+	}
 	
 	public BankAccount(String ownerId) {
 		this.ownerId = ownerId;
 		this.balance = new Balance();
+	}
+	
+	public void setTransactionInfoService(TransactionInfoService tInfoService){
+		this.transactionInfoService = tInfoService;
 	}
 	
 	/**
@@ -96,6 +113,23 @@ public class BankAccount implements Serializable {
 	 * @return the balance's value
 	 */
 	public BigDecimal getBalance() {
+		if (transactionInfoService == null){
+			throw new IllegalStateException("TransactionInfoService cannot be null. Must be set before balance operations");
+		}
+		
+		Collection<BankTransaction> transactions = transactionInfoService.getLastTransactions(this.id, 
+				this.balance.getLastTransactionId());
+		
+		BigDecimal transactionsBalance = new BigDecimal(0);
+		
+		for (BankTransaction bankTransaction : transactions) {
+			transactionsBalance.add(bankTransaction.getValue());
+		}
+		
+		//We need to know what happens if this sum result if lower than zero
+		//TODO LOG this event as a warning
+		balance.setValue(balance.getValue().add(transactionsBalance));
+		
 		return balance.getValue();
 	}
 }

@@ -16,30 +16,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.bank.data;
+package br.octahedron.straight.bank;
 
 import java.util.Collection;
 
-import br.octahedron.straight.bank.TransactionInfoService;
-import br.octahedron.straight.database.GenericDAO;
+import br.octahedron.straight.bank.data.BankTransaction;
 
 /**
- * @author Danilo Queiroz
+ * @author Erick Moreno
+ *
  */
-public class BankTransactionDAO extends GenericDAO<BankTransaction>  implements TransactionInfoService {
-
-	public BankTransactionDAO() {
-		super(BankTransaction.class);
-	}
-
-	/**
-	 * @param i
-	 * @param j
-	 * @return
-	 */
-	public Collection<BankTransaction> getLastTransactions(long accountId, long lastUsedTransactionId) {
-		
-		return null;
-	}
-
+public interface TransactionInfoService {
+	public Collection<BankTransaction> getLastTransactions(long accountId, long lastUsedTransactioId);
 }
