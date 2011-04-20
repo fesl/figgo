@@ -6,20 +6,12 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.Hyperlink;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.VerticalPanel;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.InlineLabel;
-import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
-import com.google.gwt.user.client.ui.Hyperlink;
-import com.google.gwt.user.client.ui.VerticalSplitPanel;
-import com.google.gwt.user.client.ui.HorizontalSplitPanel;
-import com.google.gwt.user.client.ui.LayoutPanel;
-import com.google.gwt.event.logical.shared.AttachEvent.Handler;
-import com.google.gwt.event.logical.shared.AttachEvent;
 
 /**
  * Entry point classes define <code>onModuleLoad()</code>.
@@ -44,17 +36,17 @@ public class Straight implements EntryPoint {
 		Label label = new Label("Perfil");
 		label.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				facade.myMethod("lalala", new AsyncCallback<String>() {
+				facade.myMethod("funfou!", new AsyncCallback<String>() {
 					
 					@Override
 					public void onSuccess(String result) {
-						Window.alert("lalala");
+						Window.alert(result);
 						
 					}
 					
 					@Override
 					public void onFailure(Throwable caught) {
-						Window.alert("lalala");
+						Window.alert("ferrou");
 						
 					}
 				});

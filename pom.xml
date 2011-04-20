@@ -72,7 +72,7 @@
 			<id>mvnsearch</id>
 			<url>http://www.mvnsearch.org/maven2</url>
 		</repository>
-	</repositories>	
+	</repositories>
 	<!-- Profiles (used by hudson) -->
 	<profiles>
         <!-- Hudson by default defines a property BUILD_NUMBER which is used to enable the profile. -->
@@ -151,6 +151,7 @@
     		<build>
 				<defaultGoal>test</defaultGoal>
 				<plugins>
+					<!-- Compiler plugin -->
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-compiler-plugin</artifactId>
@@ -160,32 +161,8 @@
 							<debug>true</debug>
 						</configuration>
 					</plugin>
-					<!-- attach source and javadoc to package -->
+					<!-- Datanucleus Enhancer plugin -->
 					<plugin>
-					  <groupId>org.apache.maven.plugins</groupId>
-					  <artifactId>maven-source-plugin</artifactId>
-					  <executions>
-					    <execution>
-					      <id>attach-sources</id>
-					      <goals>
-					        <goal>jar</goal>
-					      </goals>
-					    </execution>
-					  </executions>
-					</plugin>
-					<plugin>
-					  <groupId>org.apache.maven.plugins</groupId>
-					  <artifactId>maven-javadoc-plugin</artifactId>
-					  <executions>
-					    <execution>
-					      <id>attach-javadocs</id>
-					      <goals>
-					        <goal>jar</goal>
-					      </goals>
-					    </execution>
-					  </executions>
-					</plugin>
-					 <plugin>
 						<groupId>org.datanucleus</groupId>
 						<artifactId>maven-datanucleus-plugin</artifactId>
 						<version>1.1.4</version>
@@ -224,13 +201,38 @@
 				          </dependency>
 				        </dependencies> 
 					</plugin>
+					<!-- GAE plugin -->
+					<plugin>
+						<groupId>net.kindleit</groupId>
+						<artifactId>maven-gae-plugin</artifactId>
+						<version>0.8.4 </version>
+						<configuration>
+							<sdkDir>/usr/lib/gae-sdk/java/</sdkDir>
+							<passIn>true</passIn>
+						</configuration>
+					</plugin>
+					<!-- GWT plugin -->
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<version>2.2.0</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>compile</goal>
+									<goal>generateAsync</goal>
+									<goal>test</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
     </profiles>
 	<!-- dependencies -->
 	<dependencies>
-		<!-- Test Scope -->
+		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -245,31 +247,7 @@
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
-		<!-- Other Dependencies -->
-		<dependency>
-			<groupId>javax.jdo</groupId>
-			<artifactId>jdo2-api</artifactId>
-			<version>2.3-eb</version>
-			<scope>compile</scope>
-			<exclusions>
-				<exclusion>
-                    <groupId>javax.transaction</groupId>
-                    <artifactId>transaction-api</artifactId>
-                </exclusion>
-                <exclusion>
-                	<groupId>org.apache.geronimo.specs</groupId>
-      				<artifactId>geronimo-jpa_3.0_spec</artifactId>
-      			</exclusion>
-            </exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.geronimo.specs</groupId>
-			<artifactId>geronimo-servlet_2.5_spec</artifactId>
-			<version>1.2</version>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<!-- GAE Dependencies - its still here due m2clipse plugin failure -->
+		<!-- GAE Dependencies -->
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-testing</artifactId>
@@ -340,25 +318,40 @@
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>2.2.0</version>
-			<type>jar</type>
+			<groupId>javax.jdo</groupId>
+			<artifactId>jdo2-api</artifactId>
+			<version>2.3-eb</version>
 			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+                    <groupId>javax.transaction</groupId>
+                    <artifactId>transaction-api</artifactId>
+                </exclusion>
+                <exclusion>
+                	<groupId>org.apache.geronimo.specs</groupId>
+      				<artifactId>geronimo-jpa_3.0_spec</artifactId>
+      			</exclusion>
+            </exclusions>
 		</dependency>
 		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-dev</artifactId>
-			<version>2.2.0</version>
+			<groupId>org.apache.geronimo.specs</groupId>
+			<artifactId>geronimo-servlet_2.5_spec</artifactId>
+			<version>1.2</version>
 			<type>jar</type>
-			<scope>compile</scope>
+			<scope>provided</scope>
 		</dependency>
+		<!--  GWT dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
 			<version>2.2.0</version>
-			<type>jar</type>
 			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>2.2.0</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- JDO L2 Cache -->
 		<dependency>
