@@ -16,28 +16,32 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.gwt.server;
-
-import br.octahedron.straight.bank.manager.AccountManager;
-import br.octahedron.straight.gwt.client.BankFacade;
-
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+package br.octahedron.straight.gwt.client.panel;
 
 /**
  * @author vitoravelino
  *
  */
-public class BankFacadeImpl extends RemoteServiceServlet implements BankFacade {
+public enum PanelType {
 
-	private static final long serialVersionUID = -7717580296373453814L;
+	BANK("bank");
 	
-	private AccountManager accountManager = new AccountManager();
+	private String type;
 	
-	public String myMethod(String s) {
-		return s;
+	private PanelType(String type) {
+		this.type = type;
 	}
 	
-	public void createAccount(String ownerId) {
-		accountManager.createAccount(ownerId);
+	public String getType() {
+		return this.type;
+	}
+	
+	public static PanelType getPanelType(String type) {
+		for (PanelType panelType : values()) {
+			if (panelType.getType().equals(type)) {
+				return panelType;
+			}
+		}
+		return null;
 	}
 }

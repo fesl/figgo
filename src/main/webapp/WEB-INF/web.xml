@@ -13,7 +13,7 @@
 	</servlet>
 	<servlet-mapping>
 	  <servlet-name>bankFacadeImpl</servlet-name>
-	  <url-pattern>/br.octahedron.straight.client.Straight/bank</url-pattern>
+	  <url-pattern>/br.octahedron.straight.gwt.Straight/bank</url-pattern>
 	</servlet-mapping>
 	
 	<listener>

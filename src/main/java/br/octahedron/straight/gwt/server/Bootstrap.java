@@ -57,9 +57,9 @@ public class Bootstrap implements ServletContextListener {
 		accountDAO.save(system);
 		accountDAO.save(account1);
 		accountDAO.save(account2);
-		accountManager.transact(0L, 2L, new BigDecimal(100), "", BankTransaction.TransactionType.DEPOSIT);
-		accountManager.transact(0L, 3L, new BigDecimal(250.50), "", BankTransaction.TransactionType.DEPOSIT);
-		accountManager.transact(2L, 3L, new BigDecimal(50), "", BankTransaction.TransactionType.DEPOSIT);
+//		accountManager.transact(1L, 2L, new BigDecimal(100), "", BankTransaction.TransactionType.DEPOSIT);
+//		accountManager.transact(1L, 3L, new BigDecimal(250.50), "", BankTransaction.TransactionType.DEPOSIT);
+//		accountManager.transact(2L, 3L, new BigDecimal(50), "", BankTransaction.TransactionType.DEPOSIT);
 	}
 
 }

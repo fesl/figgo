@@ -27,5 +27,5 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 public interface BankFacadeAsync {
 
 	public void myMethod(String s, AsyncCallback<String> callback);
-
+	
 }
