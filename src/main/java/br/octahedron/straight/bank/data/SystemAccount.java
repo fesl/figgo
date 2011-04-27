@@ -20,19 +20,17 @@ package br.octahedron.straight.bank.data;
 
 import java.math.BigDecimal;
 
-import javax.jdo.annotations.PersistenceCapable;
-
 /**
  * @author vitoravelino
  *
  */
-@PersistenceCapable
 public class SystemAccount extends BankAccount {
 
 	private static final long serialVersionUID = 7342767364513878827L;
 	
 	public SystemAccount() {
 		super("Banco", 0L);
+		
 	}
 	
 	@Override

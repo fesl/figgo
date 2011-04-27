@@ -24,9 +24,25 @@ import br.octahedron.straight.database.GenericDAO;
  * @author Danilo Queiroz
  */
 public class BankAccountDAO extends GenericDAO<BankAccount> {
+	
+	private static final Long SYSTEM_ACCOUNT_ID = new Long(0L);
+	private static final BankAccount SYSTEM_ACCOUNT = new SystemAccount();
 
 	public BankAccountDAO() {
 		super(BankAccount.class);
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.database.GenericDAO#get(java.lang.Object)
+	 */
+	@Override
+	public BankAccount get(Object key) {
+		Long keyLong = (Long) key;
+		if ( keyLong.equals(SYSTEM_ACCOUNT_ID)) {
+			return SYSTEM_ACCOUNT;
+		} else {
+			return super.get(key);
+		}
 	}
 
 }

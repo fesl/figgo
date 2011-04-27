@@ -63,6 +63,7 @@ public class BankAccount implements Serializable {
 		this.ownerId = ownerId;
 		this.value = new BigDecimal(0);
 		this.lastTransactionId = new Long(0);
+		this.enabled = true;
 	}
 
 	public void setTransactionInfoService(TransactionInfoService tInfoService) {

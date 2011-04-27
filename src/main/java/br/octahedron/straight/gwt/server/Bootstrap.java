@@ -26,7 +26,6 @@ import javax.servlet.ServletContextListener;
 import br.octahedron.straight.bank.data.BankAccount;
 import br.octahedron.straight.bank.data.BankAccountDAO;
 import br.octahedron.straight.bank.data.BankTransaction;
-import br.octahedron.straight.bank.data.SystemAccount;
 import br.octahedron.straight.bank.manager.AccountManager;
 
 /**
@@ -51,15 +50,13 @@ public class Bootstrap implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent arg0) {
 		AccountManager accountManager = new AccountManager();
 		BankAccountDAO accountDAO = new BankAccountDAO();
-		BankAccount system = new SystemAccount();
 		BankAccount account1 = new BankAccount("joao", 2L);
 		BankAccount account2 = new BankAccount("maria", 3L);
-		accountDAO.save(system);
 		accountDAO.save(account1);
 		accountDAO.save(account2);
-//		accountManager.transact(1L, 2L, new BigDecimal(100), "", BankTransaction.TransactionType.DEPOSIT);
-//		accountManager.transact(1L, 3L, new BigDecimal(250.50), "", BankTransaction.TransactionType.DEPOSIT);
-//		accountManager.transact(2L, 3L, new BigDecimal(50), "", BankTransaction.TransactionType.DEPOSIT);
+		accountManager.transact(0L, 2L, new BigDecimal(100), "", BankTransaction.TransactionType.DEPOSIT);
+		accountManager.transact(0L, 3L, new BigDecimal(250.50), "", BankTransaction.TransactionType.DEPOSIT);
+		accountManager.transact(2L, 3L, new BigDecimal(50), "", BankTransaction.TransactionType.DEPOSIT);
 	}
 
 }
