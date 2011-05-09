@@ -211,28 +211,6 @@
 							<passIn>true</passIn>
 						</configuration>
 					</plugin>
-					<!-- GWT plugin -->
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<version>2.2.0</version>
-						<configuration>
-							<appEngineHome>/usr/lib/gae-sdk/java/</appEngineHome>
-							<server>com.google.appengine.tools.development.gwt.AppEngineLauncher</server>
-							<runTarget>/Straight.html</runTarget>
-							<webXml>src/main/webapp/WEB-INF/web.xml</webXml>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>compile</phase>
-								<goals>
-									<goal>compile</goal>
-									<!-- <goal>generateAsync</goal>
-									<goal>test</goal> -->
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -345,19 +323,6 @@
 			<artifactId>geronimo-servlet_2.5_spec</artifactId>
 			<version>1.2</version>
 			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<!--  GWT dependencies -->
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-servlet</artifactId>
-			<version>2.2.0</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
-			<version>2.2.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<!-- JDO L2 Cache -->
