@@ -19,111 +19,69 @@
 package br.octahedron.straight.bank.data;
 
 import static junit.framework.Assert.*;
-import static org.easymock.EasyMock.*;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
 import java.util.List;
-
-import javax.jdo.Query;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import br.octahedron.straight.bank.data.BankTransaction.TransactionType;
-import br.octahedron.straight.database.DatastoreFacade;
+
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 /**
  * @author Danilo Queiroz
- * 
  */
 public class BankTransactionDAOTest {
-
-	private DatastoreFacade datastore;
-	private BankTransactionDAO transactionDAO;
-
+	
+	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+	private final BankTransactionDAO transactionDAO = new BankTransactionDAO();
+	
 	@Before
 	public void setUp() {
-		this.datastore = createMock(DatastoreFacade.class);
-		this.transactionDAO = new BankTransactionDAO();
-		this.transactionDAO.setDatastoreFacade(this.datastore);
+		helper.setUp();
 	}
-
-	@Test
-	public void testGetLastTransactions() {
-		Long myId = new Long(10);
-		Long otherId = new Long(9);
-		Long lastTransactionId = new Long(0);
-		
-		Query query1 = createMock(Query.class);
-		List<BankTransaction> transactions1 = new LinkedList<BankTransaction>();
-		for(int i = 1; i < 6; i++) {
-			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
-		}
-		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query1);
-		query1.setFilter("id > transactionId && accountOrig == accId");
-		query1.declareParameters("Long transactionId");
-		query1.declareParameters("Long accId");
-		query1.setOrdering("id asc");
-		expect(query1.execute(lastTransactionId, myId)).andReturn(transactions1);
-		
-		Query query2 = createMock(Query.class);
-		List<BankTransaction> transactions2 = new LinkedList<BankTransaction>();
-		for(int i = 6; i < 11; i++) {
-			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
-		}
-		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query2);
-		query2.setFilter("id > transactionId && accountDest == accId");
-		query2.declareParameters("Long transactionId");
-		query2.declareParameters("Long accId");
-		query2.setOrdering("id asc");
-		expect(query2.execute(lastTransactionId, myId)).andReturn(transactions2);
-
-		replay(this.datastore, query1, query2);
-		
-		List<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
-		assertEquals(10, result.size());
-		assertEquals(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(1)), result.get(0));
-		assertEquals(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(10)), result.get(9));
-		verify(this.datastore, query1, query2);
+	
+	public void createTransactions() {
+		// storing transactions
+		this.transactionDAO.save(new BankTransaction(0l, 1l, new BigDecimal(100), TransactionType.DEPOSIT, "1"));
+		this.transactionDAO.save(new BankTransaction(0l, 1l, new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+		this.transactionDAO.save(new BankTransaction(1l, 0l, new BigDecimal(50), TransactionType.DEPOSIT, "3"));
 	}
 	
 	@Test
-	public void testGetLastTransactions2() {
-		Long myId = new Long(10);
-		Long otherId = new Long(9);
-		Long lastTransactionId = new Long(0);
-		
-		Query query1 = createMock(Query.class);
-		List<BankTransaction> transactions1 = new LinkedList<BankTransaction>();
-		for(int i = 6; i < 11; i++) {
-			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
-		}
-		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query1);
-		query1.setFilter("id > transactionId && accountOrig == accId");
-		query1.declareParameters("Long transactionId");
-		query1.declareParameters("Long accId");
-		query1.setOrdering("id asc");
-		expect(query1.execute(lastTransactionId, myId)).andReturn(transactions1);
-		
-		Query query2 = createMock(Query.class);
-		List<BankTransaction> transactions2 = new LinkedList<BankTransaction>();
-		for(int i = 1; i < 6; i++) {
-			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
-		}
-		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query2);
-		query2.setFilter("id > transactionId && accountDest == accId");
-		query2.declareParameters("Long transactionId");
-		query2.declareParameters("Long accId");
-		query2.setOrdering("id asc");
-		expect(query2.execute(lastTransactionId, myId)).andReturn(transactions2);
-
-		replay(this.datastore, query1, query2);
-		
-		List<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
-		assertEquals(10, result.size());
-		assertEquals(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(1)), result.get(0));
-		assertEquals(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(10)), result.get(9));
-		verify(this.datastore, query1, query2);
+	public void getLastTransactionsTest() {
+		this.createTransactions();
+		//recovering all last transactions for account 1l
+		List<BankTransaction> transactions = this.transactionDAO.getLastTransactions(1l,null);
+		assertEquals(3, transactions.size());
+		//recovering last transactions for account 1l
+		transactions = this.transactionDAO.getLastTransactions(1l,1l);
+		assertEquals(2, transactions.size());
+		//recovering last transactions for account 1l
+		transactions = this.transactionDAO.getLastTransactions(1l,3l);
+		assertTrue(transactions.isEmpty());
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void illegalStateTest() {
+		this.createTransactions();
+		BankAccount account = new BankAccount("tester", 1l);
+		assertEquals(new BigDecimal(150), account.getBalance());
+	}
+	
+	@Test
+	public void getBalanceTest() {
+		this.createTransactions();
+		BankAccount account = new BankAccount("tester", 1l);
+		account.setTransactionInfoService(this.transactionDAO);
+		assertEquals(new BigDecimal(150), account.getBalance());
+		this.transactionDAO.save(new BankTransaction(1l, 0l, new BigDecimal(50), TransactionType.DEPOSIT, "4"));
+		assertEquals(new BigDecimal(100), account.getBalance());
+		this.transactionDAO.save(new BankTransaction(1l, 0l, new BigDecimal(50), TransactionType.DEPOSIT, "5"));
+		this.transactionDAO.save(new BankTransaction(1l, 0l, new BigDecimal(50), TransactionType.DEPOSIT, "6"));
+		assertEquals(new BigDecimal(0), account.getBalance());
 	}
 }

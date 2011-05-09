@@ -30,24 +30,27 @@ import br.octahedron.straight.bank.data.BankTransaction;
  * @author Danilo Queiroz
  */
 public interface TransactionInfoService {
-	
+
 	/**
 	 * Return the last transactions for an account, with id greater with the given last used
 	 * transaction id.
+	 * 
+	 * This method ensures that the list's last element will be the one with the greater id.
+	 * However, there is no order guarantee for elements.
 	 * 
 	 * @param accountId
 	 *            the account id
 	 * @param lastUsedTransactionId
 	 *            the last {@link BankTransaction}. All {@link BankTransaction} returned will have
-	 *            id greater than this id.
+	 *            id greater than this id. If you want to get all transactions for an account,
+	 *            lastUsedTransactionId should be <code>null</code>;
 	 * @return A list that contains all transactions for the given user, starting from the given
 	 *         {@link BankTransaction} id.
 	 */
 	public List<BankTransaction> getLastTransactions(Long accountId, Long lastUsedTransactioId);
-	
+
 	/**
-	 * Get the transactions for a accountId, by date range.
-	 * TODO improve
+	 * Get the transactions for a accountId, by date range. TODO improve
 	 * 
 	 * @param accountId
 	 * @param startDate

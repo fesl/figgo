@@ -19,6 +19,7 @@
 package br.octahedron.straight.bank.data;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.jdo.Query;
@@ -34,14 +35,6 @@ import br.octahedron.straight.database.GenericDAO;
  */
 public class BankTransactionDAO extends GenericDAO<BankTransaction> implements TransactionInfoService { 
 	
-	/*
-	 * accountOrig == 'accID' && date >= 'startDate' && date < 'endDate'
-	 * accountDest == 'accID' && date >= 'startDate' && date < 'endDate'
-	 * 
-	 * accountOrig == 'accID' && id > 'lastID'
-	 * accountDest == 'accID' && id > 'lastID'
-	 */
-
 	public BankTransactionDAO() {
 		super(BankTransaction.class);
 	}
@@ -57,45 +50,16 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	/* (non-Javadoc)
 	 * @see br.octahedron.straight.bank.TransactionInfoService#getLastTransactions(java.lang.Long, java.lang.Long)
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<BankTransaction> getLastTransactions(Long accountId, Long lastUsedTransactionId) {
-		/*
-		 * (accountOri = accId || accountDest = accId) && tId > lastId
-		 */
-		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
-		query.setFilter("id > transactionId && accountOrig == accId");
-		query.declareParameters("Long transactionId");
-		query.declareParameters("Long accId");
-		query.setOrdering("id asc");
-		List<BankTransaction> transactions1 = (List<BankTransaction>) query.execute(lastUsedTransactionId, accountId); 
-		
-		query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
-		query.setFilter("id > transactionId && accountDest == accId");
-		query.declareParameters("Long transactionId");
-		query.declareParameters("Long accId");
-		query.setOrdering("id asc");
-		List<BankTransaction> transactions2 = (List<BankTransaction>) query.execute(lastUsedTransactionId, accountId); 
-
-		BankTransaction last1 = (!transactions1.isEmpty()) ? transactions1.get(transactions1.size() - 1) : null;
-		BankTransaction last2 = (!transactions2.isEmpty()) ? transactions2.get(transactions2.size() - 1) : null;
-
-		if (last1 != null && last2 != null) {
-			Long id1 = last1.getId();
-			Long id2 = last2.getId();
-			if (id1.compareTo(id2) >= 0) {
-				transactions2.addAll(transactions1);
-				return transactions2;
-			} else {
-				transactions1.addAll(transactions2);
-				return transactions1;
-			}
+		if ( lastUsedTransactionId == null) {
+			return getAllTransactions(accountId);
 		} else {
-			transactions1.addAll(transactions2);
-			return transactions1;
+			return getLastTransactionsFrom(accountId, lastUsedTransactionId);
 		}
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see br.octahedron.straight.bank.TransactionInfoService#getTransactionsByDateRange(java.lang.Long, java.util.Date, java.util.Date)
 	 */
@@ -106,4 +70,70 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		
 		return null;
 	}
+
+	/**
+	 * Get last transactions with id greater than the given lastUsedTransactionId
+	 */
+	@SuppressWarnings("unchecked")
+	private List<BankTransaction> getLastTransactionsFrom(Long accountId, Long lastUsedTransactionId) {
+		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		query.setFilter("id > transactionId && accountOrig == accId");
+		query.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
+		query.setOrdering("id asc");
+		List<BankTransaction> transactions1 = (List<BankTransaction>) query.execute(lastUsedTransactionId, accountId); 
+		
+		query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		query.setFilter("id > transactionId && accountDest == accId");
+		query.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
+		query.setOrdering("id asc");
+		List<BankTransaction> transactions2 = (List<BankTransaction>) query.execute(lastUsedTransactionId, accountId); 
+	
+		return mergeTransactions(transactions1, transactions2);
+	}
+
+	/**
+	 * Get all transactions for an account
+	 */
+	@SuppressWarnings("unchecked")
+	private List<BankTransaction> getAllTransactions(Long accountId) {
+		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		query.setFilter("accountOrig == accId");
+		query.declareParameters("java.lang.Long accId");
+		query.setOrdering("id asc");
+		List<BankTransaction> transactions1 = (List<BankTransaction>) query.execute(accountId); 
+		
+		query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		query.setFilter("accountDest == accId");
+		query.declareParameters("java.lang.Long accId");
+		query.setOrdering("id asc");
+		List<BankTransaction> transactions2 = (List<BankTransaction>) query.execute(accountId); 
+	
+		return mergeTransactions(transactions1, transactions2);
+	}
+
+	/**
+	 * Merges two transactions list ordering transactions by id (lower to higher)
+	 * @return a list with transactions from the two lists, ordered by id.
+	 */
+	private List<BankTransaction> mergeTransactions(List<BankTransaction> transactions1, List<BankTransaction> transactions2) {
+		List<BankTransaction> result = new LinkedList<BankTransaction>();
+	
+		BankTransaction last1 = (!transactions1.isEmpty()) ? transactions1.get(transactions1.size() - 1) : null;
+		BankTransaction last2 = (!transactions2.isEmpty()) ? transactions2.get(transactions2.size() - 1) : null;
+		if (last1 != null && last2 != null) {
+			Long id1 = last1.getId();
+			Long id2 = last2.getId();
+			if (id1.compareTo(id2) >= 0) {
+				result.addAll(transactions2);
+				result.addAll(transactions1);
+			} else {
+				result.addAll(transactions1);
+				result.addAll(transactions2);
+			}
+		} else {
+			result.addAll(transactions1);
+			result.addAll(transactions2);
+		}
+		return result;
+	} 
 }

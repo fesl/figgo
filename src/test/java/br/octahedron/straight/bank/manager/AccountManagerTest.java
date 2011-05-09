@@ -154,11 +154,10 @@ public class AccountManagerTest {
 	@Test
 	public void getBalanceInicialValue() {
 		Long accID = new Long(12345);
-		Long transID = new Long(0);
 		BankAccount account = new BankAccount("teste", accID);
 		account.setEnabled(true);
 		expect(this.accountDAO.get(accID)).andReturn(account);
-		expect(this.transactionDAO.getLastTransactions(accID, transID)).andReturn(Collections.EMPTY_LIST);
+		expect(this.transactionDAO.getLastTransactions(accID, null)).andReturn(Collections.EMPTY_LIST);
 		replay(this.accountDAO, this.transactionDAO);
 
 		assertEquals(new BigDecimal(0), this.accountManager.getBalance(accID));
@@ -169,7 +168,6 @@ public class AccountManagerTest {
 	public void getBalanceSomeTransactions() {
 		Long accID = new Long(12345);
 		Long accID2 = new Long (54321);
-		Long transID = new Long(0);
 		Long transID1 = new Long(3);
 		Long transID2 = new Long(6);
 		Long transID3 = new Long(234);
@@ -186,7 +184,7 @@ public class AccountManagerTest {
 		transactions.add(new BankTransaction(accID2, accID, value2, BankTransaction.TransactionType.TRANSFER, "2", transID2));
 		transactions.add(new BankTransaction(accID2, accID, value3, BankTransaction.TransactionType.TRANSFER, "3", transID3));
 		
-		expect(this.transactionDAO.getLastTransactions(accID, transID)).andReturn(transactions);
+		expect(this.transactionDAO.getLastTransactions(accID, null)).andReturn(transactions);
 		
 		replay(this.accountDAO, this.transactionDAO);
 

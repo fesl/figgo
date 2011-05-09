@@ -164,6 +164,7 @@ public class BankTransaction implements Serializable {
 		return "id: " + this.id + 
 			" orig: " + this.accountOrig +
 			" dest: " + this.accountDest + 
-			" value: " + this.getValue();
+			" value: " + this.getValue() + 
+			" comment: " + this.comment;
 	}
 }

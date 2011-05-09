@@ -62,7 +62,7 @@ public class BankAccount implements Serializable {
 	public BankAccount(String ownerId) {
 		this.ownerId = ownerId;
 		this.value = new BigDecimal(0);
-		this.lastTransactionId = new Long(0);
+		this.lastTransactionId = null;
 		this.enabled = true;
 	}
 
