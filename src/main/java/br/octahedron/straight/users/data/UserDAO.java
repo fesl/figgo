@@ -26,9 +26,6 @@ import br.octahedron.straight.database.GenericDAO;
  */
 public class UserDAO extends GenericDAO<User>{
 
-	/**
-	 * @param klass
-	 */
 	public UserDAO() {
 		super(User.class);
 	}
