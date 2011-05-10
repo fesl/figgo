@@ -17,16 +17,12 @@
 	<!-- Static files -->
 	<static-files>
 		<exclude path="/WEB-INF/**.groovy" />
-        <exclude path="**.gtpl" />
+        <exclude path="/templates/**.vm" />
 		<exclude path="/i18n/**.i18n" />
-		<exclude path="/templates/**.vm" />
 		<include path="/images/**" />
 		<include path="/css/**.css" />
 		<include path="/js/**.js" />
 		<include path="/favicon.ico" />
-		<include path="**.html" />
-		<include path="**.js" />
-		<include path="**.css" />
 	</static-files>
 
 	<!-- Resource Files -->

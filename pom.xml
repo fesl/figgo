@@ -380,5 +380,13 @@
 			<artifactId>gaelyk</artifactId>
 			<version>${gaelyk.version}</version>
 		</dependency>
+		<!-- Template -->
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
+			<type>jar</type>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 </project>
