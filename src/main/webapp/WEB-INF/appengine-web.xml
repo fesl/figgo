@@ -13,9 +13,11 @@
 	<warmup-requests-enabled>true</warmup-requests-enabled>
 	<!-- Enables concurrent requests -->
 	<threadsafe>true</threadsafe>
-
+	
 	<!-- Static files -->
 	<static-files>
+		<exclude path="/WEB-INF/**.groovy" />
+        <exclude path="**.gtpl" />
 		<exclude path="/i18n/**.i18n" />
 		<exclude path="/templates/**.vm" />
 		<include path="/images/**" />
@@ -36,6 +38,7 @@
 	<!-- System Propertis e Env-Variables -->
 	<system-properties>
 		<property name="DEFAULT_ENCODING" value="UTF-8" />
+		<property name="groovy.source.encoding" value="UTF-8"/>
 		<property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
 	</system-properties>
 

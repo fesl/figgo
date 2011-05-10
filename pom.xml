@@ -11,10 +11,12 @@
 	<name>Straight</name>
 	<description></description>
 	<url></url>
+	
 	<organization>
 		<name>Octahedron</name>
 		<url>http://www.octahedron.com.br</url>
 	</organization>
+	
 	<licenses>
   		<license>
     		<name>GPL v3</name>
@@ -22,11 +24,13 @@
     		<distribution>repo</distribution>   		
   		</license>
 	</licenses>
+	
 	<scm>
 		<connection>scm:git:git://github.com/Octahedron/straight.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com:Octahedron/straight.git</developerConnection>
 		<url>http://github.com/Octahedron/straight/</url>
 	</scm>
+	
 	<developers>
 		<developer>
 			<id>daniloqueiroz</id>
@@ -62,17 +66,29 @@
 			<timezone>-3</timezone>
 		</developer>
 	</developers>
+	
 	<!-- properties -->
 	<properties>
+		<gaelyk.version>0.6.1</gaelyk.version>
+		<gmaven.version>1.3</gmaven.version>
+        <gae.version>1.4.3</gae.version>  
+		<gaeplugin.version>0.8.4</gaeplugin.version>
 		<project_charset>UTF-8</project_charset>
 	</properties>
+	
 	<!-- repositories -->
 	<repositories>
 		<repository>
 			<id>mvnsearch</id>
 			<url>http://www.mvnsearch.org/maven2</url>
 		</repository>
+		<repository>
+			<id>maven-gaelyk-repo</id>
+			<name>maven-gaelyk repository</name>
+			<url>http://maven-gaelyk.googlecode.com/svn/repository</url>
+		</repository>
 	</repositories>
+	
 	<!-- Profiles (used by hudson) -->
 	<profiles>
         <!-- Hudson by default defines a property BUILD_NUMBER which is used to enable the profile. -->
@@ -161,6 +177,24 @@
 							<debug>true</debug>
 						</configuration>
 					</plugin>
+					<plugin>
+						<groupId>org.codehaus.gmaven</groupId>
+						<artifactId>gmaven-plugin</artifactId>
+						<version>${gmaven.version}</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>generateStubs</goal>
+									<goal>compile</goal>
+									<goal>generateTestStubs</goal>
+									<goal>testCompile</goal>
+								</goals>
+		                        <configuration>
+		 							<providerSelection>1.7</providerSelection>
+		                        </configuration>						
+							</execution>
+						</executions>
+					</plugin>
 					<!-- Datanucleus Enhancer plugin -->
 					<plugin>
 						<groupId>org.datanucleus</groupId>
@@ -205,7 +239,7 @@
 					<plugin>
 						<groupId>net.kindleit</groupId>
 						<artifactId>maven-gae-plugin</artifactId>
-						<version>0.8.4 </version>
+						<version>${gaeplugin.version}</version>
 						<configuration>
 							<sdkDir>/usr/lib/gae-sdk/java/</sdkDir>
 							<passIn>true</passIn>
@@ -236,28 +270,28 @@
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-testing</artifactId>
-			<version>1.4.3</version>
+			<version>${gae.version}</version>
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-stubs</artifactId>
-			<version>1.4.3</version>
+			<version>${gae.version}</version>
 			<type>jar</type>
 			<scope>test</scope>
 		</dependency>
         <dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-1.0-sdk</artifactId>
-			<version>1.4.3</version>
+			<version>${gae.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.appengine</groupId>
 			<artifactId>appengine-api-labs</artifactId>
-			<version>1.4.3</version>
+			<version>${gae.version}</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
@@ -339,6 +373,12 @@
 			<version>1.1</version>
 			<type>jar</type>
 			<scope>runtime</scope>
+		</dependency>
+		<!--  Gaelyk -->
+		<dependency>
+			<groupId>groovyx.gaelyk</groupId>
+			<artifactId>gaelyk</artifactId>
+			<version>${gaelyk.version}</version>
 		</dependency>
 	</dependencies>
 </project>
