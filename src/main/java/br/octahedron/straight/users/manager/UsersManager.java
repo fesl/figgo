@@ -52,6 +52,4 @@ public class UsersManager implements Serializable{
 		userDAO.save(user);
 		return user;
 	}
-	
-	
 }
