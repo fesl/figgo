@@ -34,7 +34,7 @@ public class UsersManager implements Serializable{
 
 	private static final long serialVersionUID = -8418976983506795060L;
 	
-	private UserDAO userDAO;
+	private UserDAO userDAO = new UserDAO();
 	
 	/**
 	 * Creates a system user
@@ -51,5 +51,24 @@ public class UsersManager implements Serializable{
 		
 		userDAO.save(user);
 		return user;
+	}
+	
+	/**
+	 * Updates a system user parameters
+	 * 
+	 * @param userId
+	 * @param name
+	 * @param phoneNumber
+	 * @param avatar
+	 * @param description
+	 */
+	public void update(String userId, String name, String phoneNumber, String avatar, String description){
+		User user = userDAO.get(userId);
+		
+		user.setName(name);
+		user.setPhoneNumber(phoneNumber);
+		user.setAvatar(avatar);
+		user.setDescription(description);
+		//This object will be updated to the DB by JDO persistence manager
 	}
 }
