@@ -16,18 +16,22 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.users.data;
+package br.octahedron.straight.configuration;
 
-import br.octahedron.straight.database.GenericDAO;
+import br.octahedron.straight.configuration.data.ModuleConfiguration;
 
 /**
- * @author Erick Moreno
- *
+ * A builder for {@link ModuleConfiguration}.
+ * 
+ * All Modules should implements this class, and the builder should have an empty constructor.
+ * 
+ * @author Danilo Queiroz
  */
-public class UserDAO extends GenericDAO<User>{
+public interface ModuleConfigurationBuilder {
 
-	public UserDAO() {
-		super(User.class);
-	}
+	/**
+	 * @return the {@link ModuleConfiguration}
+	 */
+	public ModuleConfigurationInfoService createModuleConfiguration();
 
 }

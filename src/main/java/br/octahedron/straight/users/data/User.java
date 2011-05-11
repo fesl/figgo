@@ -132,7 +132,4 @@ public class User implements Serializable{
 	public String getUserId() {
 		return userId;
 	}
-	
-	
-	
 }

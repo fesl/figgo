@@ -16,18 +16,40 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.users.data;
+package br.octahedron.straight.configuration;
 
-import br.octahedron.straight.database.GenericDAO;
+import java.util.Set;
 
 /**
- * @author Erick Moreno
+ * @author danilo
  *
  */
-public class UserDAO extends GenericDAO<User>{
+public interface ModuleConfigurationInfoService {
 
-	public UserDAO() {
-		super(User.class);
-	}
+	/**
+	 * @return the moduleFacade
+	 */
+	public abstract Class<?> getModuleFacade();
+
+	/**
+	 * @return a set with all configuration keys.
+	 */
+	public abstract Set<String> getPropertiesKeys();
+
+	/**
+	 * @return The property's value or the default property's value.
+	 */
+	public abstract String getPropertyValue(String propertyKey);
+
+	/**
+	 * @return the default value for a given property
+	 */
+	public abstract String getPropertyDefaultValue(String propertyKey);
+
+	/**
+	 * @return the property's regex. This regex defines the acceptable formats for values. It should
+	 *         be used to validade the values.
+	 */
+	public abstract String getPropertyRegex(String propertyKey);
 
 }

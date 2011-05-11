@@ -18,24 +18,16 @@
  */
 package br.octahedron.straight.users.manager;
 
-import java.io.Serializable;
-
-import javax.jdo.annotations.PersistenceCapable;
-
 import br.octahedron.straight.users.data.User;
 import br.octahedron.straight.users.data.UserDAO;
 
 /**
  * @author Erick Moreno
- *
  */
-@PersistenceCapable
-public class UsersManager implements Serializable{
+public class UsersManager {
 
-	private static final long serialVersionUID = -8418976983506795060L;
-	
-	private UserDAO userDAO;
-	
+	private UserDAO userDAO = new UserDAO();
+
 	/**
 	 * Creates a system user
 	 * 
@@ -45,11 +37,49 @@ public class UsersManager implements Serializable{
 	 * @param avatar
 	 * @return
 	 */
-	public User createUser(String userId, String name, String phoneNumber, String avatar, String description){
-		
+	public User createUser(String userId, String name, String phoneNumber, String avatar, String description) {
+
 		User user = new User(userId, name, phoneNumber, avatar, description);
-		
+
 		userDAO.save(user);
 		return user;
+	}
+
+	/**
+	 * Updates a system user parameters
+	 * 
+	 * @param userId
+	 * @param name
+	 * @param phoneNumber
+	 * @param avatar
+	 * @param description
+	 */
+	public void update(String userId, String name, String phoneNumber, String avatar, String description) {
+		User user = userDAO.get(userId);
+
+		user.setName(name);
+		user.setPhoneNumber(phoneNumber);
+		user.setAvatar(avatar);
+		user.setDescription(description);
+		// This object will be updated to the DB by JDO persistence manager
+	}
+
+	/**
+	 * Gets the {@link User} with the given id
+	 * 
+	 * @return the {@link User} with the given id, if exists, or <code>null</code>, if doesn't
+	 *         exists a user with the given id.
+	 */
+	public User getUser(String userId) {
+		return this.userDAO.get(userId);
+	}
+
+	/**
+	 * Checks if exists a {@link User} with the given id.
+	 * 
+	 * @return <code>true</code> if exists, <code>false</code> otherwise.
+	 */
+	public boolean existsUser(String userId) {
+		return this.userDAO.exists(userId);
 	}
 }

@@ -16,18 +16,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.users.data;
-
-import br.octahedron.straight.database.GenericDAO;
+package br.octahedron.straight.configuration;
 
 /**
- * @author Erick Moreno
+ * @author danilo
  *
  */
-public class UserDAO extends GenericDAO<User>{
+public enum Modules {
 
-	public UserDAO() {
-		super(User.class);
+	Lalala(null);
+	
+	private Class<? extends ModuleConfigurationBuilder> builderClass;
+	
+	private Modules(Class<? extends ModuleConfigurationBuilder> builder) {
+		this.builderClass = builder;
 	}
-
+	
+	/**
+	 * @return the builder
+	 */
+	public Class<? extends ModuleConfigurationBuilder> getBuilderClass() {
+		return builderClass;
+	}
 }
