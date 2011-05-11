@@ -5,5 +5,4 @@ get "/failure", forward: "/failure.gtpl"
 
 get "/favicon.ico", redirect: "/images/favicon.png"
 
-get "/arroz", forward: "/templates/index.vm"
-get "/feijao/@name", forward: "/index.groovy?name=@name"
+get "/@name", forward: "/index.groovy?name=@name"

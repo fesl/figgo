@@ -22,9 +22,11 @@ import groovy.lang.Writable;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.LinkedHashMap;
+import java.util.Enumeration;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
@@ -54,13 +56,16 @@ public class VelocityTemplateWrapper implements groovy.text.Template {
 		logger.fine("Parsing request parameters to velocity template pages");
 		return new Writable() {
 			public Writer writeTo(Writer out) throws IOException {
-				Map params = (LinkedHashMap) map.get("params");
+				HttpServletRequest request = (HttpServletRequest) map.get("request");
+				Enumeration<?> attributesName = request.getAttributeNames();
 				context = new VelocityContext();
-				if (params != null) {
-					for (Object key : params.keySet()) {
-						context.put(key.toString(), params.get(key));
-					}
-				}					
+				while (attributesName.hasMoreElements()) {
+					 String key = attributesName.nextElement().toString();
+					 Object object = request.getAttribute(key);
+					 if (object != null) {
+						 context.put(key, object);
+					 }
+				}
 				template.merge(context, out);
 				return out;
 			}

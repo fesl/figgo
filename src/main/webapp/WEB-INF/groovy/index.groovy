@@ -1,3 +1,3 @@
-request.name2 = "tchau"
+request.hello = "Olá, " + params.name 
 
 forward "/templates/index.vm"
