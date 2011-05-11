@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 import br.octahedron.straight.bank.data.BankAccount;
 import br.octahedron.straight.bank.data.BankAccountDAO;
 import br.octahedron.straight.bank.data.BankTransaction;
-import br.octahedron.straight.bank.data.BankTransaction.TransactionType;
 import br.octahedron.straight.bank.data.BankTransactionDAO;
+import br.octahedron.straight.bank.data.BankTransaction.TransactionType;
 
 /**
  * @author Erick Moreno
@@ -67,7 +67,7 @@ public class AccountManager {
 	public BigDecimal getBalance(long accountId) {
 		return this.getBalance(this.getValidAccount(accountId));
 	}
-	
+
 	protected BigDecimal getBalance(BankAccount account) {
 		account.setTransactionInfoService(this.transactionDAO);
 		return account.getBalance();

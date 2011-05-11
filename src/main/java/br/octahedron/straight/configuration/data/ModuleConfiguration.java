@@ -69,37 +69,52 @@ public class ModuleConfiguration implements Serializable, ModuleConfigurationInf
 		this.properties.put(property.getKey(), property);
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.configuration.ModuleConfigurationInfoService#getModuleName()
 	 */
 	public String getModuleName() {
 		return this.moduleName;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.configuration.ModuleConfigurationInfoService#existsProperty(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.straight.configuration.ModuleConfigurationInfoService#existsProperty(java.lang
+	 * .String)
 	 */
 	public boolean existsProperty(String propertyKey) {
 		return this.properties.containsKey(propertyKey);
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getModuleFacade()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getModuleFacade()
 	 */
 	public Class<?> getModuleFacade() {
 		return this.moduleFacade;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getPropertiesKeys()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getPropertiesKeys()
 	 */
 	public Set<String> getPropertiesKeys() {
 		return this.properties.keySet();
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getPropertyValue(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getPropertyValue
+	 * (java.lang.String)
 	 */
 	public String getPropertyValue(String propertyKey) {
 		if (this.values.containsKey(propertyKey)) {
@@ -109,15 +124,23 @@ public class ModuleConfiguration implements Serializable, ModuleConfigurationInf
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getPropertyDefaultValue(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getPropertyDefaultValue
+	 * (java.lang.String)
 	 */
 	public String getPropertyDefaultValue(String propertyKey) {
 		return this.properties.get(propertyKey).getDefaultValue();
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getPropertyRegex(java.lang.String)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getPropertyRegex
+	 * (java.lang.String)
 	 */
 	public String getPropertyRegex(String propertyKey) {
 		return this.properties.get(propertyKey).getRegex();
@@ -138,21 +161,25 @@ public class ModuleConfiguration implements Serializable, ModuleConfigurationInf
 	public void restoreDefaults() {
 		this.values.clear();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		return this.moduleName.hashCode() ^ this.moduleFacade.hashCode();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if ( obj instanceof ModuleConfiguration) {
+		if (obj instanceof ModuleConfiguration) {
 			ModuleConfiguration other = (ModuleConfiguration) obj;
 			return this.moduleName.equals(other.getModuleName()) && this.moduleFacade.equals(other.getModuleFacade());
 		} else {

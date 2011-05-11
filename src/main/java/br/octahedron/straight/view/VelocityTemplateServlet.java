@@ -30,31 +30,37 @@ import javax.servlet.ServletException;
 
 /**
  * @author vitoravelino
- *
+ * 
  */
 public class VelocityTemplateServlet extends TemplateServlet {
 
 	private static final Logger logger = Logger.getLogger(VelocityTemplateServlet.class.getName());
 	private static final long serialVersionUID = -6755680559427788645L;
-	private static final String TEMPLATE_FOLDER = "templates/"; 
-	
+	private static final String TEMPLATE_FOLDER = "templates/";
+
 	private TemplateEngine engine = new VelocityTemplateEngine();
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see groovy.servlet.TemplateServlet#getTemplate(java.io.File)
 	 */
+	@Override
 	protected Template getTemplate(File file) throws ServletException {
 		try {
 			logger.fine("Creating groovy template object from '" + file.getName() + "'");
-			return engine.createTemplate(TEMPLATE_FOLDER + file.getName());
+			return this.engine.createTemplate(TEMPLATE_FOLDER + file.getName());
 		} catch (Exception e) {
 			throw new ServletException("Creation of template failed " + e);
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see groovy.servlet.TemplateServlet#initTemplateEngine(javax.servlet.ServletConfig)
 	 */
+	@Override
 	protected TemplateEngine initTemplateEngine(ServletConfig config) {
 		return this.engine;
 	}

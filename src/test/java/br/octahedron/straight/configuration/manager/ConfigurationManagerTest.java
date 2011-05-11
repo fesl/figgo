@@ -62,7 +62,7 @@ public class ConfigurationManagerTest {
 		this.configurationManager.setDomainConfigurationDAO(this.domainDAO);
 		this.configurationManager.setModuleConfigurationDAO(this.moduleDAO);
 		this.result = new LinkedList<DomainConfiguration>();
-		result.add(this.domain);
+		this.result.add(this.domain);
 	}
 
 	@Test
@@ -171,7 +171,7 @@ public class ConfigurationManagerTest {
 		verify(this.domainDAO, this.moduleDAO);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void setPropertyInvalidKeyTest() {
 		// mock setup
 		this.domain.addModule("TEST");
@@ -255,7 +255,7 @@ public class ConfigurationManagerTest {
 		// check mocks
 		verify(this.domainDAO, this.moduleDAO);
 	}
-	
+
 	@Test
 	public void restorePropertiesDisabledModuleTest() {
 		// mock setup

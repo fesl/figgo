@@ -30,29 +30,32 @@ import org.codehaus.groovy.control.CompilationFailedException;
 
 /**
  * @author vitoravelino
- *
+ * 
  */
 public class VelocityTemplateEngine extends TemplateEngine {
 
 	private static final Logger logger = Logger.getLogger(VelocityTemplateEngine.class.getName());
 	private static final long serialVersionUID = -6755680559427788645L;
 	private static final VelocityEngine engine = new VelocityEngine();
-	
+
 	static {
 		engine.init();
 	}
-	
+
+	@Override
 	public Template createTemplate(String filename) throws CompilationFailedException, ClassNotFoundException, IOException {
 		logger.info("Criando template wrapper... " + filename);
 		return new VelocityTemplateWrapper(engine.getTemplate(filename));
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see groovy.text.TemplateEngine#createTemplate(java.io.Reader)
 	 */
 	@Override
 	public Template createTemplate(Reader reader) throws CompilationFailedException, ClassNotFoundException, IOException {
 		throw new RuntimeException("Never say never!");
 	}
-	
+
 }

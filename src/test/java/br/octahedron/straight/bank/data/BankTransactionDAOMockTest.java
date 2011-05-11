@@ -18,8 +18,11 @@
  */
 package br.octahedron.straight.bank.data;
 
-import static junit.framework.Assert.*;
-import static org.easymock.EasyMock.*;
+import static junit.framework.Assert.assertEquals;
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.replay;
+import static org.easymock.EasyMock.verify;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -54,10 +57,10 @@ public class BankTransactionDAOMockTest {
 		Long myId = new Long(10);
 		Long otherId = new Long(9);
 		Long lastTransactionId = new Long(0);
-		
+
 		Query query1 = createMock(Query.class);
 		List<BankTransaction> transactions1 = new LinkedList<BankTransaction>();
-		for(int i = 1; i < 6; i++) {
+		for (int i = 1; i < 6; i++) {
 			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query1);
@@ -65,10 +68,10 @@ public class BankTransactionDAOMockTest {
 		query1.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
 		query1.setOrdering("id asc");
 		expect(query1.execute(lastTransactionId, myId)).andReturn(transactions1);
-		
+
 		Query query2 = createMock(Query.class);
 		List<BankTransaction> transactions2 = new LinkedList<BankTransaction>();
-		for(int i = 6; i < 11; i++) {
+		for (int i = 6; i < 11; i++) {
 			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query2);
@@ -78,23 +81,23 @@ public class BankTransactionDAOMockTest {
 		expect(query2.execute(lastTransactionId, myId)).andReturn(transactions2);
 
 		replay(this.datastore, query1, query2);
-		
+
 		List<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
 		assertEquals(10, result.size());
 		assertEquals(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(1)), result.get(0));
 		assertEquals(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(10)), result.get(9));
 		verify(this.datastore, query1, query2);
 	}
-	
+
 	@Test
 	public void testGetLastTransactions2() {
 		Long myId = new Long(10);
 		Long otherId = new Long(9);
 		Long lastTransactionId = new Long(0);
-		
+
 		Query query1 = createMock(Query.class);
 		List<BankTransaction> transactions1 = new LinkedList<BankTransaction>();
-		for(int i = 6; i < 11; i++) {
+		for (int i = 6; i < 11; i++) {
 			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query1);
@@ -102,10 +105,10 @@ public class BankTransactionDAOMockTest {
 		query1.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
 		query1.setOrdering("id asc");
 		expect(query1.execute(lastTransactionId, myId)).andReturn(transactions1);
-		
+
 		Query query2 = createMock(Query.class);
 		List<BankTransaction> transactions2 = new LinkedList<BankTransaction>();
-		for(int i = 1; i < 6; i++) {
+		for (int i = 1; i < 6; i++) {
 			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query2);
@@ -115,7 +118,7 @@ public class BankTransactionDAOMockTest {
 		expect(query2.execute(lastTransactionId, myId)).andReturn(transactions2);
 
 		replay(this.datastore, query1, query2);
-		
+
 		List<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
 		assertEquals(10, result.size());
 		assertEquals(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(1)), result.get(0));

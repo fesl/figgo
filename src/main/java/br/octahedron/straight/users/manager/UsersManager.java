@@ -41,7 +41,7 @@ public class UsersManager {
 
 		User user = new User(userId, name, phoneNumber, avatar, description);
 
-		userDAO.save(user);
+		this.userDAO.save(user);
 		return user;
 	}
 
@@ -55,7 +55,7 @@ public class UsersManager {
 	 * @param description
 	 */
 	public void update(String userId, String name, String phoneNumber, String avatar, String description) {
-		User user = userDAO.get(userId);
+		User user = this.userDAO.get(userId);
 
 		user.setName(name);
 		user.setPhoneNumber(phoneNumber);

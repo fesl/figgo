@@ -72,9 +72,10 @@ public class BankTransaction implements Serializable {
 		this.comment = comment;
 
 	}
-	
+
 	/**
 	 * Created only for tests purposes
+	 * 
 	 * @param accountOrig
 	 * @param accountDest
 	 * @param value
@@ -134,8 +135,10 @@ public class BankTransaction implements Serializable {
 	public TransactionType getType() {
 		return this.type;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -147,24 +150,25 @@ public class BankTransaction implements Serializable {
 			return false;
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		return this.id.hashCode();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
-		return "id: " + this.id + 
-			" orig: " + this.accountOrig +
-			" dest: " + this.accountDest + 
-			" value: " + this.getValue() + 
-			" comment: " + this.comment;
+		return "id: " + this.id + " orig: " + this.accountOrig + " dest: " + this.accountDest + " value: " + this.getValue() + " comment: "
+				+ this.comment;
 	}
 }

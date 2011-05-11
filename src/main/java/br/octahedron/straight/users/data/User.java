@@ -26,13 +26,13 @@ import javax.jdo.annotations.PrimaryKey;
 
 /**
  * @author Erick Moreno
- *
+ * 
  */
 @PersistenceCapable
-public class User implements Serializable{
-	
+public class User implements Serializable {
+
 	private static final long serialVersionUID = 3496196911059199158L;
-	
+
 	@Persistent
 	@PrimaryKey
 	private String userId;
@@ -44,92 +44,87 @@ public class User implements Serializable{
 	private String avatar;
 	@Persistent
 	private String description;
-	
-	public User(String userId, String name, String phoneNumber, String avatar, String description){
+
+	public User(String userId, String name, String phoneNumber, String avatar, String description) {
 		this.userId = userId;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
 		this.avatar = avatar;
 		this.description = description;
 	}
-	
-	
+
 	/**
 	 * @return the description
 	 */
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
-
 	/**
-	 * @param description the description to set
+	 * @param description
+	 *            the description to set
 	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-
 	/**
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
-
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
-
 	/**
 	 * @return the phoneNumber
 	 */
 	public String getPhoneNumber() {
-		return phoneNumber;
+		return this.phoneNumber;
 	}
 
-
 	/**
-	 * @param phoneNumber the phoneNumber to set
+	 * @param phoneNumber
+	 *            the phoneNumber to set
 	 */
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
-
 	/**
 	 * @return the avatar
 	 */
 	public String getAvatar() {
-		return avatar;
+		return this.avatar;
 	}
 
-
 	/**
-	 * @param avatar the avatar to set
+	 * @param avatar
+	 *            the avatar to set
 	 */
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
 
-
 	/**
-	 * @param userId the userId to set
+	 * @param userId
+	 *            the userId to set
 	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
-
 	/**
 	 * @return the userId
 	 */
 	public String getUserId() {
-		return userId;
+		return this.userId;
 	}
 }

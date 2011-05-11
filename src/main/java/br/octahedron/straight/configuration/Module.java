@@ -28,8 +28,7 @@ import br.octahedron.straight.configuration.data.ModuleProperty;
  */
 public enum Module {
 
-	TEST(TestBuilder.class),
-	BANK(BankConfigurationBuilder.class);
+	TEST(TestBuilder.class), BANK(BankConfigurationBuilder.class);
 
 	private Class<? extends ModuleConfigurationBuilder> builderClass;
 

@@ -123,7 +123,7 @@ public class BankAccount implements Serializable {
 		}
 
 		List<BankTransaction> transactions = this.transactionInfoService.getLastTransactions(this.id, this.lastTransactionId);
-		
+
 		if (!transactions.isEmpty()) {
 			BigDecimal transactionsBalance = new BigDecimal(0);
 
