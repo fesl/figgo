@@ -18,24 +18,45 @@
  */
 package br.octahedron.straight.configuration;
 
+import br.octahedron.straight.bank.BankConfigurationBuilder;
+import br.octahedron.straight.configuration.data.ModuleConfiguration;
+import br.octahedron.straight.configuration.data.ModuleProperty;
+
 /**
  * @author danilo
- *
+ * 
  */
-public enum Modules {
+public enum Module {
 
-	Lalala(null);
-	
+	TEST(TestBuilder.class), BANK(BankConfigurationBuilder.class);
+
 	private Class<? extends ModuleConfigurationBuilder> builderClass;
-	
-	private Modules(Class<? extends ModuleConfigurationBuilder> builder) {
+
+	private Module(Class<? extends ModuleConfigurationBuilder> builder) {
 		this.builderClass = builder;
 	}
-	
+
 	/**
 	 * @return the builder
 	 */
 	public Class<? extends ModuleConfigurationBuilder> getBuilderClass() {
-		return builderClass;
+		return this.builderClass;
+	}
+
+	public static class TestBuilder implements ModuleConfigurationBuilder {
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * br.octahedron.straight.configuration.ModuleConfigurationBuilder#createModuleConfiguration
+		 * ()
+		 */
+		@Override
+		public ModuleConfiguration createModuleConfiguration() {
+			ModuleConfiguration config = new ModuleConfiguration("TEST", TestBuilder.class);
+			config.addProperty(new ModuleProperty("some.property", "some.value"));
+			config.addProperty(new ModuleProperty("int", "0", "[-]?\\d+", "integer value."));
+			return config;
+		}
 	}
 }

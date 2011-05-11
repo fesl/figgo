@@ -22,9 +22,20 @@ import java.util.Set;
 
 /**
  * @author danilo
- *
+ * 
  */
 public interface ModuleConfigurationInfoService {
+
+	/**
+	 * @return the moduleName
+	 */
+	public abstract String getModuleName();
+
+	/**
+	 * @return <code>true</code> if the module has an property with the given propertyKey,
+	 *         <code>false</code> otherwise.
+	 */
+	public abstract boolean existsProperty(String propertyKey);
 
 	/**
 	 * @return the moduleFacade

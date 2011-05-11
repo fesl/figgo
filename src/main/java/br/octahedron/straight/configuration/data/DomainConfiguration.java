@@ -34,6 +34,10 @@ import javax.jdo.annotations.PrimaryKey;
 @PersistenceCapable
 public class DomainConfiguration implements Serializable {
 
+	/*
+	 * TODO missing data as description, avatar, mail-list address, site url
+	 */
+
 	private static final long serialVersionUID = -1578869999667248765L;
 
 	@PrimaryKey
@@ -51,7 +55,7 @@ public class DomainConfiguration implements Serializable {
 	 * @return the domainName
 	 */
 	public String getDomainName() {
-		return domainName;
+		return this.domainName;
 	}
 
 	public void addModule(String moduleName) {
@@ -69,6 +73,31 @@ public class DomainConfiguration implements Serializable {
 
 	public boolean isModuleEnabled(String moduleName) {
 		return this.modulesEnabled.contains(moduleName);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return this.domainName.hashCode() << 3;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof DomainConfiguration) {
+			DomainConfiguration other = (DomainConfiguration) obj;
+			return this.getDomainName().equals(other.getDomainName());
+		} else {
+			return false;
+		}
 	}
 
 }

@@ -22,20 +22,20 @@ import java.math.BigDecimal;
 
 /**
  * @author vitoravelino
- *
+ * 
  */
 public class SystemAccount extends BankAccount {
 
 	private static final long serialVersionUID = 7342767364513878827L;
-	
+
 	public SystemAccount() {
 		super("Banco", 0L);
-		
+
 	}
-	
+
 	@Override
 	public BigDecimal getBalance() {
 		return new BigDecimal(Long.MAX_VALUE);
-	} 
+	}
 
 }

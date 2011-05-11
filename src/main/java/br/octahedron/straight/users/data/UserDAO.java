@@ -22,9 +22,9 @@ import br.octahedron.straight.database.GenericDAO;
 
 /**
  * @author Erick Moreno
- *
+ * 
  */
-public class UserDAO extends GenericDAO<User>{
+public class UserDAO extends GenericDAO<User> {
 
 	public UserDAO() {
 		super(User.class);

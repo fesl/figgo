@@ -32,6 +32,6 @@ public interface ModuleConfigurationBuilder {
 	/**
 	 * @return the {@link ModuleConfiguration}
 	 */
-	public ModuleConfigurationInfoService createModuleConfiguration();
+	public ModuleConfiguration createModuleConfiguration();
 
 }

@@ -33,7 +33,7 @@ public abstract class GenericDAO<T> {
 	public GenericDAO(Class<T> klass) {
 		this.klass = klass;
 	}
-	
+
 	/**
 	 * Deletes an object. The given parameter can be the object to be deleted, it means an instance
 	 * of T, or can be the key for the object to be deleted.

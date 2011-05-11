@@ -33,13 +33,12 @@ import org.apache.velocity.VelocityContext;
 
 /**
  * @author vitoravelino
- *
+ * 
  */
 public class VelocityTemplateWrapper implements groovy.text.Template {
 
-	
 	private static final Logger logger = Logger.getLogger(VelocityTemplateWrapper.class.getName());
-	
+
 	private final Template template;
 	private VelocityContext context;
 
@@ -58,15 +57,15 @@ public class VelocityTemplateWrapper implements groovy.text.Template {
 			public Writer writeTo(Writer out) throws IOException {
 				HttpServletRequest request = (HttpServletRequest) map.get("request");
 				Enumeration<?> attributesName = request.getAttributeNames();
-				context = new VelocityContext();
+				VelocityTemplateWrapper.this.context = new VelocityContext();
 				while (attributesName.hasMoreElements()) {
-					 String key = attributesName.nextElement().toString();
-					 Object object = request.getAttribute(key);
-					 if (object != null) {
-						 context.put(key, object);
-					 }
+					String key = attributesName.nextElement().toString();
+					Object object = request.getAttribute(key);
+					if (object != null) {
+						VelocityTemplateWrapper.this.context.put(key, object);
+					}
 				}
-				template.merge(context, out);
+				VelocityTemplateWrapper.this.template.merge(VelocityTemplateWrapper.this.context, out);
 				return out;
 			}
 		};

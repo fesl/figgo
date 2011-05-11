@@ -56,8 +56,8 @@ public class PersistenceManagerFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
 		chain.doFilter(req, resp);
-		if (pmp.isPersistenceManagerOpened()) {
-			pmp.close();
+		if (this.pmp.isPersistenceManagerOpened()) {
+			this.pmp.close();
 		}
 	}
 

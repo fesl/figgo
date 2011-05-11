@@ -33,41 +33,46 @@ import br.octahedron.straight.database.GenericDAO;
  * 
  * @author Danilo Queiroz
  */
-public class BankTransactionDAO extends GenericDAO<BankTransaction> implements TransactionInfoService { 
-	
+public class BankTransactionDAO extends GenericDAO<BankTransaction> implements TransactionInfoService {
+
 	public BankTransactionDAO() {
 		super(BankTransaction.class);
 	}
 
 	/**
-	 * Method to be used by tests. 
+	 * Method to be used by tests.
 	 */
 	protected void setDatastoreFacade(DatastoreFacade dsFacade) {
 		this.datastoreFacade = dsFacade;
 	}
 
-
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.bank.TransactionInfoService#getLastTransactions(java.lang.Long, java.lang.Long)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see br.octahedron.straight.bank.TransactionInfoService#getLastTransactions(java.lang.Long,
+	 * java.lang.Long)
 	 */
 	@Override
 	public List<BankTransaction> getLastTransactions(Long accountId, Long lastUsedTransactionId) {
-		if ( lastUsedTransactionId == null) {
-			return getAllTransactions(accountId);
+		if (lastUsedTransactionId == null) {
+			return this.getAllTransactions(accountId);
 		} else {
-			return getLastTransactionsFrom(accountId, lastUsedTransactionId);
+			return this.getLastTransactionsFrom(accountId, lastUsedTransactionId);
 		}
 	}
 
-	
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.bank.TransactionInfoService#getTransactionsByDateRange(java.lang.Long, java.util.Date, java.util.Date)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.straight.bank.TransactionInfoService#getTransactionsByDateRange(java.lang.Long,
+	 * java.util.Date, java.util.Date)
 	 */
 	@Override
 	public List<BankTransaction> getTransactionsByDateRange(Long accountId, Date startDate, Date endDate) {
-//		List<BankTransaction> transactions = this.datastoreFacade.getObjectsByQuery(BankTransaction.class, "")
-		
-		
+		// List<BankTransaction> transactions =
+		// this.datastoreFacade.getObjectsByQuery(BankTransaction.class, "")
+
 		return null;
 	}
 
@@ -80,15 +85,15 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		query.setFilter("id > transactionId && accountOrig == accId");
 		query.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
 		query.setOrdering("id asc");
-		List<BankTransaction> transactions1 = (List<BankTransaction>) query.execute(lastUsedTransactionId, accountId); 
-		
+		List<BankTransaction> transactions1 = (List<BankTransaction>) query.execute(lastUsedTransactionId, accountId);
+
 		query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("id > transactionId && accountDest == accId");
 		query.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
 		query.setOrdering("id asc");
-		List<BankTransaction> transactions2 = (List<BankTransaction>) query.execute(lastUsedTransactionId, accountId); 
-	
-		return mergeTransactions(transactions1, transactions2);
+		List<BankTransaction> transactions2 = (List<BankTransaction>) query.execute(lastUsedTransactionId, accountId);
+
+		return this.mergeTransactions(transactions1, transactions2);
 	}
 
 	/**
@@ -100,24 +105,25 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		query.setFilter("accountOrig == accId");
 		query.declareParameters("java.lang.Long accId");
 		query.setOrdering("id asc");
-		List<BankTransaction> transactions1 = (List<BankTransaction>) query.execute(accountId); 
-		
+		List<BankTransaction> transactions1 = (List<BankTransaction>) query.execute(accountId);
+
 		query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("accountDest == accId");
 		query.declareParameters("java.lang.Long accId");
 		query.setOrdering("id asc");
-		List<BankTransaction> transactions2 = (List<BankTransaction>) query.execute(accountId); 
-	
-		return mergeTransactions(transactions1, transactions2);
+		List<BankTransaction> transactions2 = (List<BankTransaction>) query.execute(accountId);
+
+		return this.mergeTransactions(transactions1, transactions2);
 	}
 
 	/**
 	 * Merges two transactions list ordering transactions by id (lower to higher)
+	 * 
 	 * @return a list with transactions from the two lists, ordered by id.
 	 */
 	private List<BankTransaction> mergeTransactions(List<BankTransaction> transactions1, List<BankTransaction> transactions2) {
 		List<BankTransaction> result = new LinkedList<BankTransaction>();
-	
+
 		BankTransaction last1 = (!transactions1.isEmpty()) ? transactions1.get(transactions1.size() - 1) : null;
 		BankTransaction last2 = (!transactions2.isEmpty()) ? transactions2.get(transactions2.size() - 1) : null;
 		if (last1 != null && last2 != null) {
@@ -135,5 +141,5 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 			result.addAll(transactions2);
 		}
 		return result;
-	} 
+	}
 }

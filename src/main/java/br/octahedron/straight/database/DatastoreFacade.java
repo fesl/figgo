@@ -65,7 +65,7 @@ public class DatastoreFacade {
 			pm.close();
 		}
 	}
-	
+
 	public <T> Query createQueryForClass(Class<T> klass) {
 		PersistenceManager pm = this.pool.getPersistenceManagerForThread();
 		return pm.newQuery(klass);
