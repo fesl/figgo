@@ -3,3 +3,5 @@
 #else
 	<a href="$login_url">login</a>
 #end
+
+Olá, $user
