@@ -39,23 +39,19 @@
           </controlProperties>
         </control>
         <control controlID="8" controlTypeID="com.balsamiq.mockups::HRule" x="15" y="139" w="498" h="-1" measuredW="100" measuredH="5" zOrder="4" locked="false" isInGroup="10"/>
-        <control controlID="9" controlTypeID="com.balsamiq.mockups::Image" x="549" y="15" w="123" h="123" measuredW="77" measuredH="79" zOrder="5" locked="false" isInGroup="10">
-          <controlProperties>
-            <text>Crie%20sua%20conta%21</text>
-          </controlProperties>
-        </control>
-        <control controlID="10" controlTypeID="com.balsamiq.mockups::Label" x="535" y="159" w="-1" h="-1" measuredW="156" measuredH="25" zOrder="6" locked="false" isInGroup="10">
-          <controlProperties>
-            <text>Se%20voc%EA%20j%E1%20possui%20conta%2C</text>
-          </controlProperties>
-        </control>
-        <control controlID="11" controlTypeID="com.balsamiq.mockups::Button" x="569" y="184" w="-1" h="-1" measuredW="81" measuredH="28" zOrder="7" locked="false" isInGroup="10">
+        <control controlID="9" controlTypeID="com.balsamiq.mockups::Image" x="538" y="15" w="141" h="141" measuredW="77" measuredH="79" zOrder="5" locked="false" isInGroup="10">
           <controlProperties>
             <href>dashboard%26bm%3Bdashboard.bmml%26bm%3Bdashboard.bmml%26bm%3Bdashboard.bmml</href>
-            <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22728%2C321%2C809%2C349%22%20href%3D%22dashboard.bmml%22%20alt%3D%22dashboard%22%20id%3D%2211%22/%3E</map>
-            <text>Logue-se</text>
+            <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22697%2C152%2C838%2C293%22%20href%3D%22dashboard.bmml%22%20alt%3D%22dashboard%22%20id%3D%229%22/%3E</map>
+            <text>Entrar%21</text>
           </controlProperties>
         </control>
+        <control controlID="13" controlTypeID="com.balsamiq.mockups::Paragraph" x="531" y="189" w="157" h="108" measuredW="200" measuredH="140" zOrder="6" locked="false" isInGroup="10">
+          <controlProperties>
+            <text>Obs%3A%20%C9%20preciso%20uma%20conta%20google%20para%20usar%20o%20sistema.%20Caso%20voc%EA%20ainda%20n%E3o%20possua%2C%20clique%20%5Baqui%5D.</text>
+          </controlProperties>
+        </control>
+        <control controlID="14" controlTypeID="com.balsamiq.mockups::HRule" x="531" y="173" w="157" h="-1" measuredW="100" measuredH="5" zOrder="7" locked="false" isInGroup="10"/>
       </groupChildrenDescriptors>
     </control>
   </controls>
