@@ -69,11 +69,19 @@ public class ModuleConfiguration implements Serializable, ModuleConfigurationInf
 		this.properties.put(property.getKey(), property);
 	}
 
-	/**
-	 * @return the moduleName
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.configuration.ModuleConfigurationInfoService#getModuleName()
 	 */
 	public String getModuleName() {
 		return this.moduleName;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.configuration.ModuleConfigurationInfoService#existsProperty(java.lang.String)
+	 */
+	public boolean existsProperty(String propertyKey) {
+		return this.properties.containsKey(propertyKey);
 	}
 
 	/* (non-Javadoc)
@@ -130,97 +138,25 @@ public class ModuleConfiguration implements Serializable, ModuleConfigurationInf
 	public void restoreDefaults() {
 		this.values.clear();
 	}
-
-	/**
-	 * It represents a module's configuration property.
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
 	 */
-	public static class ModuleProperty implements Serializable {
-
-		private static final long serialVersionUID = 7010512484660278160L;
-		private String key;
-		private String defaultValue = "";
-		private String regex = ".*";
-		private String description = "";
-
-		/**
-		 * @param key
-		 *            The property key
-		 */
-		public ModuleProperty(String key) {
-			this.key = key;
-		}
-
-		/**
-		 * @param key
-		 *            The property key
-		 * @param defaultValue
-		 *            The property default value
-		 */
-		public ModuleProperty(String key, String defaultValue) {
-			this(key);
-			this.defaultValue = defaultValue;
-		}
-
-		/**
-		 * @param key
-		 *            The property key
-		 * @param defaultValue
-		 *            The property default value
-		 * @param regex
-		 *            The property regex (used to validation)
-		 * @param description
-		 *            The property description
-		 */
-		public ModuleProperty(String key, String defaultValue, String regex, String description) {
-			this(key, defaultValue);
-			this.regex = regex;
-			this.description = description;
-		}
-
-		/**
-		 * @return the key
-		 */
-		public String getKey() {
-			return this.key;
-		}
-
-		/**
-		 * @return the defaultValue
-		 */
-		public String getDefaultValue() {
-			return this.defaultValue;
-		}
-
-		/**
-		 * @return the regex
-		 */
-		public String getRegex() {
-			return this.regex;
-		}
-
-		/**
-		 * @return the description
-		 */
-		public String getDescription() {
-			return this.description;
-		}
-
-		/**
-		 * Sets the property regex (used to validation)
-		 * 
-		 * @param regex
-		 *            the regex to set
-		 */
-		public void setRegex(String regex) {
-			this.regex = regex;
-		}
-
-		/**
-		 * @param description
-		 *            the description to set
-		 */
-		public void setDescription(String description) {
-			this.description = description;
+	@Override
+	public int hashCode() {
+		return this.moduleName.hashCode() ^ this.moduleFacade.hashCode();
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if ( obj instanceof ModuleConfiguration) {
+			ModuleConfiguration other = (ModuleConfiguration) obj;
+			return this.moduleName.equals(other.getModuleName()) && this.moduleFacade.equals(other.getModuleFacade());
+		} else {
+			return false;
 		}
 	}
 }
