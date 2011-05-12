@@ -59,7 +59,7 @@
         </control>
         <control controlID="1" controlTypeID="__group__" x="13" y="36" w="549" h="334" measuredW="549" measuredH="334" zOrder="1" locked="false" isInGroup="7">
           <groupChildrenDescriptors>
-            <control controlID="2" controlTypeID="com.balsamiq.mockups::DataGrid" x="15" y="27" w="519" h="292" measuredW="311" measuredH="148" zOrder="1" locked="false" isInGroup="1">
+            <control controlID="2" controlTypeID="com.balsamiq.mockups::DataGrid" x="15" y="27" w="519" h="292" measuredW="295" measuredH="148" zOrder="1" locked="false" isInGroup="1">
               <controlProperties>
                 <borderStyle>square</borderStyle>
                 <hasHeader>true</hasHeader>
@@ -73,6 +73,11 @@
             <control controlID="6" controlTypeID="com.balsamiq.mockups::FieldSet" x="0" y="0" w="549" h="334" measuredW="200" measuredH="170" zOrder="0" locked="false" isInGroup="1">
               <controlProperties>
                 <text>Minha%20conta</text>
+              </controlProperties>
+            </control>
+            <control controlID="7" controlTypeID="com.balsamiq.mockups::DataGrid" x="15" y="174" w="505" h="28" measuredW="128" measuredH="28" zOrder="2" locked="false" isInGroup="1">
+              <controlProperties>
+                <text>%2C%20%2C%20SALDO%2C%2010%0A%7B22%2C%2020%2C%2048%2C%2010R%7D</text>
               </controlProperties>
             </control>
           </groupChildrenDescriptors>
