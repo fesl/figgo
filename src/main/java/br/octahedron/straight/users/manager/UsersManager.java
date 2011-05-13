@@ -54,7 +54,7 @@ public class UsersManager {
 	 * @param avatar
 	 * @param description
 	 */
-	public void update(String userId, String name, String phoneNumber, String avatar, String description) {
+	public void updateUser(String userId, String name, String phoneNumber, String avatar, String description) {
 		User user = this.userDAO.get(userId);
 
 		user.setName(name);
