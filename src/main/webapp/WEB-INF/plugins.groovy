@@ -1,1 +1,1 @@
-install athenticatePlugin
+install authenticatePlugin
