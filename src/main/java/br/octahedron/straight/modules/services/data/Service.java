@@ -27,15 +27,11 @@ import javax.jdo.annotations.PrimaryKey;
 
 /**
  * @author Erick Moreno
- *
  */
-public class Service implements Serializable{
+public class Service implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1270664240981744528L;
-	
+
 	@PrimaryKey
 	@Persistent
 	private String name;
@@ -46,58 +42,60 @@ public class Service implements Serializable{
 	@Persistent
 	private Set<String> providers;
 
-	public Service(String name, String value, String description){
+	public Service(String name, String value, String description) {
 		this.name = name;
 		this.value = value;
 		this.description = description;
 		this.providers = new TreeSet<String>();
 	}
-	
-	public void addProvider(String userId){
-		providers.add(userId);
+
+	public void addProvider(String userId) {
+		this.providers.add(userId);
 	}
-	
-	public void removeProvdider(String userId){
-		providers.remove(userId);
+
+	public void removeProvider(String userId) {
+		this.providers.remove(userId);
 	}
-	
+
 	/**
 	 * @return the providers
 	 */
 	public Set<String> getProviders() {
-		return providers;
+		return this.providers;
 	}
-	
+
 	/**
 	 * @return the name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/**
 	 * @return the value
 	 */
 	public String getValue() {
-		return value;
+		return this.value;
 	}
-	
+
 	/**
-	 * @param value the value to set
+	 * @param value
+	 *            the value to set
 	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
+
 	/**
 	 * @return the description
 	 */
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
-	
+
 	/**
-	 * @param description the description to set
+	 * @param description
+	 *            the description to set
 	 */
 	public void setDescription(String description) {
 		this.description = description;

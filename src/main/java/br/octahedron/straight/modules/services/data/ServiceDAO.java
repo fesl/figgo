@@ -21,33 +21,32 @@ package br.octahedron.straight.modules.services.data;
 import java.util.Collection;
 
 import javax.jdo.Query;
+
 import br.octahedron.straight.database.GenericDAO;
 
 /**
  * @author Erick Moreno
- *
  */
-public class ServiceDAO extends GenericDAO<Service>{
+public class ServiceDAO extends GenericDAO<Service> {
 
-	/**
-	 * @param klass
-	 */
 	public ServiceDAO() {
 		super(Service.class);
 	}
-	
+
 	/**
-	 * This method returns all services that has the specified {@link User} (represented by his userId) as a provider.  
+	 * This method returns all services that has the specified {@link User} (represented by his
+	 * userId) as a provider.
 	 * 
-	 * @param userId The key that identifies a {@link User}
+	 * @param userId
+	 *            The key that identifies a {@link User}
 	 * @return A collection with all services that has the passed user as provider.
 	 */
 	@SuppressWarnings("unchecked")
-	public Collection<Service> getUserServices(String userId){
+	public Collection<Service> getUserServices(String userId) {
 		Query query = this.datastoreFacade.createQueryForClass(Service.class);
 		query.setFilter("providers == userId");
 		query.declareParameters("java.lang.String userId");
-		
+
 		return (Collection<Service>) query.execute(userId);
 	}
 
