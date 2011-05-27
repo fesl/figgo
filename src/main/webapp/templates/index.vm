@@ -1,5 +1,1 @@
-#if( $user )
-	<a href="$logout_url">logout</a>
-#else
-	<a href="$login_url">login</a>
-#end
+<a href="$login_url">login</a>

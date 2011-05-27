@@ -1,0 +1,3 @@
+<a href="$logout_url">logout</a>
+
+Olá, $user

@@ -1,0 +1,28 @@
+<html>
+	<head>
+        <title>Teste</title>
+		<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+    </head>
+	<body>
+        <p>Você está logando pela primeira vez no !@#$%*()</p>
+        
+        <p>Preencha o formulário abaixo:</p>
+        
+        <form action="/user/create" method="post">
+        	<input type="hidden" name="userId" value="$user" />
+        	<label for="name">
+        		Nome: <input type="text" name="name" />
+        	</label><br />
+        	<label for="phoneNumber">
+                Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" />
+        	</label><br />
+        	<label for="avatar">
+                URL avatar: <input type="text" name="avatar" />
+        	</label><br />
+        	<label for="description">
+        		Descrição: <textarea name="description"></textarea>
+        	</label><br />
+			<input type="submit" value="Cadastrar!" />
+        </form>
+    </body>
+</html>

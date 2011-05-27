@@ -1,1 +1,1 @@
-forward "/templates/dashboard.vm"
+forward "dashboard/index.vm"

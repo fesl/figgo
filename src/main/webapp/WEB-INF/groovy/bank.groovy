@@ -1,0 +1,1 @@
+forward "bank/index.vm"
