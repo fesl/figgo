@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight;
+package br.octahedron.straight.test;
 
 import java.util.logging.Logger;
 
@@ -26,6 +26,7 @@ import br.octahedron.straight.modules.users.manager.UsersManager;
  * @author vitoravelino
  *
  */
+@SuppressWarnings("unused")
 public class Facade {
 	
 	private static final Logger logger = Logger.getLogger(Facade.class.getName());
