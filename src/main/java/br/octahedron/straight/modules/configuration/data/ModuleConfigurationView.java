@@ -16,15 +16,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.modules.configuration;
+package br.octahedron.straight.modules.configuration.data;
 
 import java.util.Set;
 
 /**
- * @author danilo
+ * A read-only interface for the {@link ModuleConfiguration}
  * 
+ * @author Danilo Queiroz
  */
-public interface ModuleConfigurationInfoService {
+public interface ModuleConfigurationView {
 
 	/**
 	 * @return the moduleName

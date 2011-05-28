@@ -27,7 +27,6 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import br.octahedron.straight.modules.configuration.ModuleConfigurationInfoService;
 
 /**
  * Represents the configurations for a given module. It contains the module facade class, and all
@@ -36,7 +35,7 @@ import br.octahedron.straight.modules.configuration.ModuleConfigurationInfoServi
  * @author Danilo Penna Queiroz
  */
 @PersistenceCapable
-public class ModuleConfiguration implements Serializable, ModuleConfigurationInfoService {
+public class ModuleConfiguration implements Serializable, ModuleConfigurationView {
 
 	private static final long serialVersionUID = -2814532770225964507L;
 
