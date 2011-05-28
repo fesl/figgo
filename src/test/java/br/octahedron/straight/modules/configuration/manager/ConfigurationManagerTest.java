@@ -21,7 +21,6 @@ package br.octahedron.straight.modules.configuration.manager;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertNull;
 import static junit.framework.Assert.assertTrue;
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
@@ -34,14 +33,15 @@ import java.util.LinkedList;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.octahedron.straight.modules.DataAlreadyExistsException;
+import br.octahedron.straight.modules.DataDoesNotExistsException;
 import br.octahedron.straight.modules.configuration.Module;
-import br.octahedron.straight.modules.configuration.ModuleConfigurationInfoService;
 import br.octahedron.straight.modules.configuration.Module.TestBuilder;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationDAO;
 import br.octahedron.straight.modules.configuration.data.ModuleConfiguration;
 import br.octahedron.straight.modules.configuration.data.ModuleConfigurationDAO;
-import br.octahedron.straight.modules.configuration.manager.ConfigurationManager;
+import br.octahedron.straight.modules.configuration.data.ModuleConfigurationView;
 
 /**
  * @author Danilo Queiroz
@@ -67,26 +67,70 @@ public class ConfigurationManagerTest {
 	}
 
 	@Test
-	public void createDomainConfigurationTest() {
+	public void getDomainConfigurationOkTest() throws DataAlreadyExistsException {
 		// mock setup
-		expect(this.domainDAO.count()).andReturn(0);
-		expect(this.domainDAO.count()).andReturn(0);
-		this.domainDAO.save(this.domain);
-		expect(this.domainDAO.count()).andReturn(1);
+		expect(this.domainDAO.count()).andReturn(1).times(2);
 		expect(this.domainDAO.getAll()).andReturn(this.result);
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
 		// test
-		assertFalse(this.configurationManager.existsDomainConfiguration());
+		assertTrue(this.configurationManager.existsDomainConfiguration());
 		DomainConfiguration domainConfig = this.configurationManager.getDomainConfiguration();
-		assertNull(domainConfig);
-		this.configurationManager.createDomainConfiguration("test");
-		domainConfig = this.configurationManager.getDomainConfiguration();
 		assertNotNull(domainConfig);
-		assertEquals("test", domainConfig.getDomainName());
-		assertEquals(0, domainConfig.getModulesEnabled().size());
-		// check mocks
-		verify(this.domainDAO, this.moduleDAO);
+	}
+
+	@Test(expected = DataDoesNotExistsException.class)
+	public void getDomainConfigurationInexistentTest() throws DataAlreadyExistsException {
+		// mock setup
+		expect(this.domainDAO.count()).andReturn(0);
+		// enable mock
+		replay(this.domainDAO, this.moduleDAO);
+		try {
+			// test
+			this.configurationManager.getDomainConfiguration();
+		} finally {
+			verify(this.domainDAO, this.moduleDAO);
+		}
+	}
+
+	@Test(expected = DataAlreadyExistsException.class)
+	public void createDomainConfigurationTest() throws DataAlreadyExistsException {
+		// mock setup
+		expect(this.domainDAO.count()).andReturn(0).times(2);
+		this.domainDAO.save(this.domain);
+		expect(this.domainDAO.count()).andReturn(1);
+		expect(this.domainDAO.getAll()).andReturn(this.result);
+		expect(this.domainDAO.count()).andReturn(1);
+		// enable mock
+		replay(this.domainDAO, this.moduleDAO);
+		// test
+		try {
+			assertFalse(this.configurationManager.existsDomainConfiguration());
+			this.configurationManager.createDomainConfiguration("test");
+			DomainConfiguration domainConfig = this.configurationManager.getDomainConfiguration();
+			assertNotNull(domainConfig);
+			assertEquals("test", domainConfig.getDomainName());
+			assertEquals(0, domainConfig.getModulesEnabled().size());
+			this.configurationManager.createDomainConfiguration("test");
+		} finally {
+			// check mocks
+			verify(this.domainDAO, this.moduleDAO);
+		}
+	}
+
+	@Test(expected = DataAlreadyExistsException.class)
+	public void createExistentDomainConfigurationTest() throws DataAlreadyExistsException {
+		try {
+			// mock setup
+			expect(this.domainDAO.count()).andReturn(1);
+			// enable mock
+			replay(this.domainDAO, this.moduleDAO);
+			// test
+			this.configurationManager.createDomainConfiguration("test");
+			// check mocks
+		} finally {
+			verify(this.domainDAO, this.moduleDAO);
+		}
 	}
 
 	@Test
@@ -94,18 +138,19 @@ public class ConfigurationManagerTest {
 		// mock setup
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
+		expect(this.moduleDAO.exists(Module.TEST.name())).andReturn(false);
 		this.moduleDAO.save(new TestBuilder().createModuleConfiguration());
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
 		// test
 		DomainConfiguration domainConfig = this.configurationManager.getDomainConfiguration();
 		assertEquals(0, domainConfig.getModulesEnabled().size());
-		this.configurationManager.enableModules(Module.TEST);
+		this.configurationManager.enableModule(Module.TEST);
 		domainConfig = this.configurationManager.getDomainConfiguration();
 		assertEquals(1, domainConfig.getModulesEnabled().size());
 		assertTrue(domainConfig.isModuleEnabled(Module.TEST.name()));
 		// enabling already enabled module. nothing happens
-		this.configurationManager.enableModules(Module.TEST);
+		this.configurationManager.enableModule(Module.TEST);
 		// check mocks
 		verify(this.domainDAO, this.moduleDAO);
 	}
@@ -113,7 +158,7 @@ public class ConfigurationManagerTest {
 	@Test
 	public void disableModuleTest() {
 		// mock setup
-		this.domain.addModule("TEST");
+		this.domain.enableModule("TEST");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
 		// enable mock
@@ -122,7 +167,7 @@ public class ConfigurationManagerTest {
 		DomainConfiguration domainConfig = this.configurationManager.getDomainConfiguration();
 		assertEquals(1, domainConfig.getModulesEnabled().size());
 		assertTrue(domainConfig.isModuleEnabled(Module.TEST.name()));
-		this.configurationManager.disableModules(Module.TEST);
+		this.configurationManager.disableModule(Module.TEST);
 		domainConfig = this.configurationManager.getDomainConfiguration();
 		assertEquals(0, domainConfig.getModulesEnabled().size());
 		assertFalse(domainConfig.isModuleEnabled(Module.TEST.name()));
@@ -130,10 +175,10 @@ public class ConfigurationManagerTest {
 		verify(this.domainDAO, this.moduleDAO);
 	}
 
-	@Test
+	@Test(expected = DataDoesNotExistsException.class)
 	public void getModuleTest() {
 		// mock setup
-		this.domain.addModule("TEST");
+		this.domain.enableModule("TEST");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		Collection<DomainConfiguration> result = new LinkedList<DomainConfiguration>();
 		result.add(this.domain);
@@ -141,20 +186,22 @@ public class ConfigurationManagerTest {
 		expect(this.moduleDAO.get("TEST")).andReturn(new TestBuilder().createModuleConfiguration());
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
-		// test
-		ModuleConfigurationInfoService moduleInfo = this.configurationManager.getModuleConfigurationInfoService(Module.TEST);
-		assertNotNull(moduleInfo);
-		this.configurationManager.disableModules(Module.TEST);
-		moduleInfo = this.configurationManager.getModuleConfigurationInfoService(Module.TEST);
-		assertNull(moduleInfo);
-		// check mocks
-		verify(this.domainDAO, this.moduleDAO);
+		try {
+			// test
+			ModuleConfigurationView moduleInfo = this.configurationManager.getModuleConfiguration(Module.TEST);
+			assertNotNull(moduleInfo);
+			this.configurationManager.disableModule(Module.TEST);
+			this.configurationManager.getModuleConfiguration(Module.TEST);
+		} finally {
+			// check mocks
+			verify(this.domainDAO, this.moduleDAO);
+		}
 	}
 
 	@Test
 	public void setPropertyTest() {
 		// mock setup
-		this.domain.addModule("TEST");
+		this.domain.enableModule("TEST");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
 		ModuleConfiguration moduleConf = new TestBuilder().createModuleConfiguration();
@@ -163,10 +210,10 @@ public class ConfigurationManagerTest {
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
 		// test
-		ModuleConfigurationInfoService moduleInfo = this.configurationManager.getModuleConfigurationInfoService(Module.TEST);
+		ModuleConfigurationView moduleInfo = this.configurationManager.getModuleConfiguration(Module.TEST);
 		assertEquals("some.value", moduleInfo.getPropertyValue("some.property"));
 		this.configurationManager.setModuleProperty(Module.TEST, "some.property", "other.value");
-		moduleInfo = this.configurationManager.getModuleConfigurationInfoService(Module.TEST);
+		moduleInfo = this.configurationManager.getModuleConfiguration(Module.TEST);
 		assertEquals("other.value", moduleInfo.getPropertyValue("some.property"));
 		// check mocks
 		verify(this.domainDAO, this.moduleDAO);
@@ -175,7 +222,7 @@ public class ConfigurationManagerTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void setPropertyInvalidKeyTest() {
 		// mock setup
-		this.domain.addModule("TEST");
+		this.domain.enableModule("TEST");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
 		ModuleConfiguration moduleConf = new TestBuilder().createModuleConfiguration();
@@ -195,7 +242,7 @@ public class ConfigurationManagerTest {
 	@Test
 	public void setPropertyValidationTest() {
 		// mock setup
-		this.domain.addModule("TEST");
+		this.domain.enableModule("TEST");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
 		ModuleConfiguration moduleConf = new TestBuilder().createModuleConfiguration();
@@ -204,10 +251,10 @@ public class ConfigurationManagerTest {
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
 		// test
-		ModuleConfigurationInfoService moduleInfo = this.configurationManager.getModuleConfigurationInfoService(Module.TEST);
+		ModuleConfigurationView moduleInfo = this.configurationManager.getModuleConfiguration(Module.TEST);
 		assertEquals("0", moduleInfo.getPropertyValue("int"));
 		this.configurationManager.setModuleProperty(Module.TEST, "int", "10");
-		moduleInfo = this.configurationManager.getModuleConfigurationInfoService(Module.TEST);
+		moduleInfo = this.configurationManager.getModuleConfiguration(Module.TEST);
 		assertEquals("10", moduleInfo.getPropertyValue("int"));
 		// check mocks
 		verify(this.domainDAO, this.moduleDAO);
@@ -216,7 +263,7 @@ public class ConfigurationManagerTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void setPropertyValidationIllegalTest() {
 		// mock setup
-		this.domain.addModule("TEST");
+		this.domain.enableModule("TEST");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
 		ModuleConfiguration moduleConf = new TestBuilder().createModuleConfiguration();
@@ -226,7 +273,7 @@ public class ConfigurationManagerTest {
 		replay(this.domainDAO, this.moduleDAO);
 		try {
 			// test
-			ModuleConfigurationInfoService moduleInfo = this.configurationManager.getModuleConfigurationInfoService(Module.TEST);
+			ModuleConfigurationView moduleInfo = this.configurationManager.getModuleConfiguration(Module.TEST);
 			assertEquals("0", moduleInfo.getPropertyValue("int"));
 			this.configurationManager.setModuleProperty(Module.TEST, "int", "a");
 		} finally {
@@ -236,9 +283,9 @@ public class ConfigurationManagerTest {
 	}
 
 	@Test
-	public void restorePropertiesTest() {
+	public void restorePropertiesTest() throws DataDoesNotExistsException {
 		// mock setup
-		this.domain.addModule("TEST");
+		this.domain.enableModule("TEST");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
 		ModuleConfiguration moduleConf = new TestBuilder().createModuleConfiguration();
@@ -248,25 +295,43 @@ public class ConfigurationManagerTest {
 		replay(this.domainDAO, this.moduleDAO);
 		// test
 		this.configurationManager.setModuleProperty(Module.TEST, "int", "10");
-		ModuleConfigurationInfoService moduleInfo = this.configurationManager.getModuleConfigurationInfoService(Module.TEST);
+		ModuleConfigurationView moduleInfo = this.configurationManager.getModuleConfiguration(Module.TEST);
 		assertEquals("10", moduleInfo.getPropertyValue("int"));
 		this.configurationManager.restoreModuleProperties(Module.TEST);
-		moduleInfo = this.configurationManager.getModuleConfigurationInfoService(Module.TEST);
+		moduleInfo = this.configurationManager.getModuleConfiguration(Module.TEST);
 		assertEquals("0", moduleInfo.getPropertyValue("int"));
 		// check mocks
 		verify(this.domainDAO, this.moduleDAO);
 	}
 
-	@Test
-	public void restorePropertiesDisabledModuleTest() {
+	@Test(expected = DataDoesNotExistsException.class)
+	public void restorePropertiesDisabledModuleTest() throws DataDoesNotExistsException {
 		// mock setup
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
-		// test
-		this.configurationManager.restoreModuleProperties(Module.TEST);
-		// check mocks
-		verify(this.domainDAO, this.moduleDAO);
+		try {
+			// test
+			this.configurationManager.restoreModuleProperties(Module.TEST);
+		} finally {
+			// check mocks
+			verify(this.domainDAO, this.moduleDAO);
+		}
+	}
+
+	@Test(expected = DataDoesNotExistsException.class)
+	public void restorePropertiesExistentDomainTest() throws DataDoesNotExistsException {
+		// mock setup
+		expect(this.domainDAO.count()).andReturn(0);
+		// enable mock
+		replay(this.domainDAO, this.moduleDAO);
+		try {
+			// test
+			this.configurationManager.restoreModuleProperties(Module.TEST);
+		} finally {
+			// check mocks
+			verify(this.domainDAO, this.moduleDAO);
+		}
 	}
 }

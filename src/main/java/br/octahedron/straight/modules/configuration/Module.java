@@ -23,8 +23,9 @@ import br.octahedron.straight.modules.configuration.data.ModuleConfiguration;
 import br.octahedron.straight.modules.configuration.data.ModuleProperty;
 
 /**
- * @author danilo
+ * Especify the existents modules and the respective {@link ModuleConfigurationBuilder} for each one.
  * 
+ * @author Danilo Queiroz
  */
 public enum Module {
 
@@ -37,12 +38,15 @@ public enum Module {
 	}
 
 	/**
-	 * @return the builder
+	 * @return Gets the {@link ModuleConfigurationBuilder} for the module
 	 */
 	public Class<? extends ModuleConfigurationBuilder> getBuilderClass() {
 		return this.builderClass;
 	}
 
+	/**
+	 *	Module used by TESTS.
+	 */
 	public static class TestBuilder implements ModuleConfigurationBuilder {
 		/*
 		 * (non-Javadoc)

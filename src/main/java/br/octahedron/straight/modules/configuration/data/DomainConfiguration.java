@@ -26,13 +26,14 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+
 /**
  * Represents an domain configuration, as the domain name, and the enabled modules.
  * 
  * @author Danilo Queiroz
  */
 @PersistenceCapable
-public class DomainConfiguration implements Serializable {
+public class DomainConfiguration implements Serializable, DomainConfigurationView {
 
 	/*
 	 * TODO missing data as description, avatar, mail-list address, site url
@@ -52,25 +53,37 @@ public class DomainConfiguration implements Serializable {
 	}
 
 	/**
-	 * @return the domainName
+	 * @return the domain name 
 	 */
 	public String getDomainName() {
 		return this.domainName;
 	}
 
-	public void addModule(String moduleName) {
+	/**
+	 * Enables a module for this domain 
+	 */
+	public void enableModule(String moduleName) {
 		this.modulesEnabled.add(moduleName);
 	}
 
-	public void removeModule(String moduleName) {
+	/**
+	 * Disables a module for this domain
+	 */
+	public void disableModule(String moduleName) {
 		this.modulesEnabled.remove(moduleName);
 	}
 
+	/**
+	 * @return a {@link Set} of all enabled modules for this domain.  
+	 */
 	@SuppressWarnings("unchecked")
 	public Set<String> getModulesEnabled() {
 		return (Set<String>) this.modulesEnabled.clone();
 	}
 
+	/**
+	 * @return <code>true</code> if the module with the given name is enabled, <code>false</code> otherwise.
+	 */
 	public boolean isModuleEnabled(String moduleName) {
 		return this.modulesEnabled.contains(moduleName);
 	}
