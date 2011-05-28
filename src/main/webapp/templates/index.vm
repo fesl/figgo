@@ -1,1 +1,8 @@
-<a href="$login_url">login</a>
+#set( $title = "!@#$%*() - Início" )
+#parse( "templates/layout.vm" )
+
+#@body()
+	<a href="$login_url">login</a>
+#end
+
+#scripts()

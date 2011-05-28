@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<project basedir=".." name="Straight" default="deploy">
+	<desciption>Ant script for generation of css and js deployment files</desciption>
+	
+	<property name="css.dir" location="${basedir}/src/main/webapp/css/"/>
+	<property name="js.dir" location="${basedir}/src/main/webapp/js/"/>
+	
+	<target name="init">
+    	<tstamp/>
+	</target>
+  
+	<target name="deploy" depends="init, generate-css, generate-js">
+		<echo>Generating css and js files</echo>
+	</target>
+	
+	<target name="generate-css">
+		<exec executable="${basedir}/extra/build_files.sh">
+			<arg value="-css"/>
+		</exec>
+	</target>
+	
+	<target name="generate-js">
+		<exec executable="${basedir}/extra/build_files.sh">
+			<arg value="-js"/>
+		</exec>
+	</target>
+</project>

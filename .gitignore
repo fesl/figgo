@@ -1,4 +1,2 @@
-target/
-src/main/webapp/br.octahedron.straight*
-.gwt/.gwt-log
-src/main/webapp/WEB-INF/deploy/
+target
+.sass-cache
