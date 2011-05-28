@@ -16,34 +16,39 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.modules.configuration.data;
+package br.octahedron.straight.modules.authorization.data;
 
 import java.util.Set;
 
-
 /**
- * A read-only interface for the {@link DomainConfiguration}
- * 
- * @see DomainConfiguration
+ * A read-only interface for the {@link Role}
  * 
  * @author Danilo Queiroz
- * @author Erick Moreno
  */
-public interface DomainConfigurationView {
-	
-	/**
-	 * @see DomainConfiguration#getDomainName()
-	 */
-	public abstract String getDomainName();
+public interface RoleView {
 
 	/**
-	 * @see DomainConfiguration#getModulesEnabled()
+	 * @return the id
 	 */
-	public abstract Set<String> getModulesEnabled();
+	public abstract String getId();
 
 	/**
-	 * @see DomainConfiguration#isModuleEnabled(String)
+	 * @return the domain
 	 */
-	public abstract boolean isModuleEnabled(String moduleName);
+	public abstract String getDomain();
 
+	/**
+	 * @return the name
+	 */
+	public abstract String getName();
+
+	/**
+	 * @return the activities
+	 */
+	public abstract Set<String> getActivities();
+
+	/**
+	 * @return the users
+	 */
+	public abstract Set<String> getUsers();
 }

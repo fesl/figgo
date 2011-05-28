@@ -16,34 +16,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.modules.configuration.data;
+package br.octahedron.straight.modules.authorization.data;
 
-import java.util.Set;
-
+import br.octahedron.straight.database.GenericDAO;
 
 /**
- * A read-only interface for the {@link DomainConfiguration}
- * 
- * @see DomainConfiguration
- * 
  * @author Danilo Queiroz
- * @author Erick Moreno
  */
-public interface DomainConfigurationView {
-	
-	/**
-	 * @see DomainConfiguration#getDomainName()
-	 */
-	public abstract String getDomainName();
+public class RoleDAO extends GenericDAO<Role> {
 
-	/**
-	 * @see DomainConfiguration#getModulesEnabled()
-	 */
-	public abstract Set<String> getModulesEnabled();
-
-	/**
-	 * @see DomainConfiguration#isModuleEnabled(String)
-	 */
-	public abstract boolean isModuleEnabled(String moduleName);
+	public RoleDAO() {
+		super(Role.class);
+	}
 
 }

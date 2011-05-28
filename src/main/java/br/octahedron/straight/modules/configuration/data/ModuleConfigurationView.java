@@ -21,8 +21,9 @@ package br.octahedron.straight.modules.configuration.data;
 import java.util.Set;
 
 /**
- * @author Danilo Queiroz
+ * A read-only interface for the {@link ModuleConfiguration}
  * 
+ * @author Danilo Queiroz
  */
 public interface ModuleConfigurationView {
 
