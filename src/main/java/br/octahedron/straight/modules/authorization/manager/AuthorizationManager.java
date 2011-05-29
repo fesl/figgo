@@ -30,7 +30,6 @@ import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
 import br.octahedron.straight.modules.authorization.data.Role;
 import br.octahedron.straight.modules.authorization.data.RoleDAO;
-import br.octahedron.straight.modules.authorization.data.RoleView;
 
 /**
  * This entity is responsible to manage authorization issues, such as roles operations
@@ -103,7 +102,7 @@ public class AuthorizationManager {
 	 * @throws DataDoesNotExistsException
 	 *             if theres no such role
 	 */
-	public RoleView getRole(String domainName, String roleName) {
+	public Role getRole(String domainName, String roleName) {
 		if (this.existsRole(domainName, roleName)) {
 			return this.roleDAO.get(createRoleKey(domainName, roleName));
 		} else {

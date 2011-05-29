@@ -165,7 +165,7 @@ public class ConfigurationManager {
 	 * @return The {@link ModuleConfigurationView} for the given module, if module is enabled for
 	 *         the current domain. If module isn't enabled, it returns <code>null</code>.
 	 */
-	public ModuleConfigurationView getModuleConfiguration(Module module) {
+	public ModuleConfiguration getModuleConfiguration(Module module) {
 		DomainConfiguration domainConfig = this.getDomainConfiguration();
 		if (domainConfig.isModuleEnabled(module.name())) {
 			return this.moduleDAO.get(module.name());
