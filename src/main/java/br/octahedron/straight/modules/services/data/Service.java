@@ -28,7 +28,7 @@ import javax.jdo.annotations.PrimaryKey;
 /**
  * @author Erick Moreno
  */
-public class Service implements Serializable {
+public class Service implements Serializable, ServiceView {
 
 	private static final long serialVersionUID = -1270664240981744528L;
 
@@ -57,23 +57,26 @@ public class Service implements Serializable {
 		this.providers.remove(userId);
 	}
 
-	/**
-	 * @return the providers
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.services.data.ServiceView#getProviders()
 	 */
+	@Override
 	public Set<String> getProviders() {
 		return this.providers;
 	}
 
-	/**
-	 * @return the name
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.services.data.ServiceView#getName()
 	 */
+	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	/**
-	 * @return the value
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.services.data.ServiceView#getValue()
 	 */
+	@Override
 	public String getValue() {
 		return this.value;
 	}
@@ -86,9 +89,10 @@ public class Service implements Serializable {
 		this.value = value;
 	}
 
-	/**
-	 * @return the description
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.services.data.ServiceView#getDescription()
 	 */
+	@Override
 	public String getDescription() {
 		return this.description;
 	}
