@@ -29,7 +29,7 @@ import javax.jdo.annotations.PrimaryKey;
  * 
  */
 @PersistenceCapable
-public class User implements Serializable {
+public class User implements Serializable, UserView {
 
 	private static final long serialVersionUID = 3496196911059199158L;
 
@@ -53,9 +53,10 @@ public class User implements Serializable {
 		this.description = description;
 	}
 
-	/**
-	 * @return the description
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.users.data.UserView#getDescription()
 	 */
+	@Override
 	public String getDescription() {
 		return this.description;
 	}
@@ -68,9 +69,10 @@ public class User implements Serializable {
 		this.description = description;
 	}
 
-	/**
-	 * @return the name
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.users.data.UserView#getName()
 	 */
+	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -83,9 +85,10 @@ public class User implements Serializable {
 		this.name = name;
 	}
 
-	/**
-	 * @return the phoneNumber
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.users.data.UserView#getPhoneNumber()
 	 */
+	@Override
 	public String getPhoneNumber() {
 		return this.phoneNumber;
 	}
@@ -98,9 +101,10 @@ public class User implements Serializable {
 		this.phoneNumber = phoneNumber;
 	}
 
-	/**
-	 * @return the avatar
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.users.data.UserView#getAvatar()
 	 */
+	@Override
 	public String getAvatar() {
 		return this.avatar;
 	}
@@ -121,9 +125,10 @@ public class User implements Serializable {
 		this.userId = userId;
 	}
 
-	/**
-	 * @return the userId
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.users.data.UserView#getUserId()
 	 */
+	@Override
 	public String getUserId() {
 		return this.userId;
 	}

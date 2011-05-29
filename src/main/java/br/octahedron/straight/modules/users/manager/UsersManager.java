@@ -20,6 +20,7 @@ package br.octahedron.straight.modules.users.manager;
 
 import br.octahedron.straight.modules.users.data.User;
 import br.octahedron.straight.modules.users.data.UserDAO;
+import br.octahedron.straight.modules.users.data.UserView;
 
 /**
  * @author Erick Moreno
@@ -29,7 +30,7 @@ public class UsersManager {
 	private UserDAO userDAO = new UserDAO();
 
 	/**
-	 * Creates a system user
+	 * Creates a system {@link User}
 	 * 
 	 * @param userId
 	 * @param name
@@ -37,7 +38,7 @@ public class UsersManager {
 	 * @param avatar
 	 * @return
 	 */
-	public User createUser(String userId, String name, String phoneNumber, String avatar, String description) {
+	public UserView createUser(String userId, String name, String phoneNumber, String avatar, String description) {
 
 		User user = new User(userId, name, phoneNumber, avatar, description);
 
@@ -46,7 +47,7 @@ public class UsersManager {
 	}
 
 	/**
-	 * Updates a system user parameters
+	 * Updates a system {@link User} parameters
 	 * 
 	 * @param userId
 	 * @param name
@@ -54,7 +55,7 @@ public class UsersManager {
 	 * @param avatar
 	 * @param description
 	 */
-	public void updateUser(String userId, String name, String phoneNumber, String avatar, String description) {
+	public UserView updateUser(String userId, String name, String phoneNumber, String avatar, String description) {
 		User user = this.userDAO.get(userId);
 
 		user.setName(name);
@@ -62,6 +63,7 @@ public class UsersManager {
 		user.setAvatar(avatar);
 		user.setDescription(description);
 		// This object will be updated to the DB by JDO persistence manager
+		return user;
 	}
 
 	/**
@@ -70,7 +72,7 @@ public class UsersManager {
 	 * @return the {@link User} with the given id, if exists, or <code>null</code>, if doesn't
 	 *         exists a user with the given id.
 	 */
-	public User getUser(String userId) {
+	public UserView getUser(String userId) {
 		return this.userDAO.get(userId);
 	}
 
