@@ -143,7 +143,7 @@ public class AuthorizationManager {
 	}
 
 	/**
-	 * @return <code>true</code> if the given user is authorized to perform the given activity on
+	 * @return <code>true</code> if the given user is authorized to perform the given activity at
 	 *         the given domain, <code>false</code> otherwise.
 	 */
 	public boolean isAuthorized(String domainName, String username, String activityName) {

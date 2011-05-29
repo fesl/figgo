@@ -19,8 +19,6 @@
 package br.octahedron.straight.modules.configuration.manager;
 
 import java.util.Collection;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
@@ -43,8 +41,6 @@ import br.octahedron.straight.modules.configuration.data.ModuleProperty;
  * @author Danilo Queiroz
  */
 public class ConfigurationManager {
-
-	private Logger logger = Logger.getLogger(ConfigurationManager.class.getName());
 
 	private DomainConfigurationDAO domainDAO = new DomainConfigurationDAO();
 	private ModuleConfigurationDAO moduleDAO = new ModuleConfigurationDAO();
@@ -73,16 +69,8 @@ public class ConfigurationManager {
 	 * @return The {@link ModuleConfigurationView} for the given module
 	 */
 	private ModuleConfiguration createModuleConfig(Module module) {
-		ModuleConfigurationBuilder builder;
-		try {
-			builder = module.getBuilderClass().newInstance();
-			return builder.createModuleConfiguration();
-		} catch (Exception ex) {
-			String message = "Unable to create ModuleConfigurationBuilder for module " + module.name()
-					+ ". The builder should have an empty and public constructor!";
-			this.logger.log(Level.SEVERE, message, ex);
-			throw new RuntimeException(message, ex);
-		}
+		ModuleConfigurationBuilder builder = module.getModuleBuilder();
+		return builder.createModuleConfiguration();
 	}
 
 	/**
