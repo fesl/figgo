@@ -7,24 +7,30 @@ http://www.oracle.com/technetwork/java/codeconv-138413.html
 
 The source files are organized in packages named using Octahedron domain and project name. Inside the project, source files can be divided in specific package:
 
-*   database
-Source files in this package are used to interact with real database API and implement some abstractions used by other system parts.
+### database
 
-*    modules
+  Source files in this package are used to interact with real database API and implement some abstractions used by other system parts.
+
+### modules
+
 Code in this package implements software modules, that are an independent set of functionalities that solves/describe a real world need. Modules files are divided follow packages:
 
-    * data
-	     * Code that implements DAOs. These classes must be named with DAO.
-	     * Types that will be persisted to the Database;
-	     * Read only types that will not be persisted but represent views of persisted data. These classes must be named with View.
-    * manager
-	        Code that implements modules functionalities and business logic
-	* root
-	        For the other cases 
-	* test
-	    For the test files.
-	* view
-	    Used to view layer files.
+* data
+	* Code that implements DAOs. These classes must be named with DAO.
+	* Types that will be persisted to the Database;
+	* Read only types that will not be persisted but represent views of persisted data. These classes must be named with View.
+* manager
+	* Code that implements modules functionalities and business logic
+* root
+	* For the other cases 
+
+### test
+
+For the test files.
+
+### view
+
+Used to view layer files.
 	    
 ## Facades
 
