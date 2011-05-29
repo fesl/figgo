@@ -18,12 +18,18 @@
  */
 package br.octahedron.straight.modules.configuration;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import br.octahedron.straight.modules.bank.BankConfigurationBuilder;
 import br.octahedron.straight.modules.configuration.data.ModuleConfiguration;
 import br.octahedron.straight.modules.configuration.data.ModuleProperty;
 
 /**
- * Especify the existents modules and the respective {@link ModuleConfigurationBuilder} for each one.
+ * Especify the existents modules and the respective {@link ModuleConfigurationBuilder} for each
+ * one.
  * 
  * @author Danilo Queiroz
  */
@@ -31,6 +37,7 @@ public enum Module {
 
 	TEST(TestBuilder.class), BANK(BankConfigurationBuilder.class);
 
+	private static final Logger logger = Logger.getLogger(Module.class.getName());
 	private Class<? extends ModuleConfigurationBuilder> builderClass;
 
 	private Module(Class<? extends ModuleConfigurationBuilder> builder) {
@@ -40,12 +47,19 @@ public enum Module {
 	/**
 	 * @return Gets the {@link ModuleConfigurationBuilder} for the module
 	 */
-	public Class<? extends ModuleConfigurationBuilder> getBuilderClass() {
-		return this.builderClass;
+	public ModuleConfigurationBuilder getModuleBuilder() {
+		try {
+			return this.builderClass.newInstance();
+		} catch (Exception ex) {
+			String message = "Unable to create ModuleConfigurationBuilder for module " + this.name()
+					+ ". The builder should have an empty and public constructor!";
+			logger.log(Level.SEVERE, message, ex);
+			throw new RuntimeException(message, ex);
+		}
 	}
 
 	/**
-	 *	Module used by TESTS.
+	 * Module used by TESTS.
 	 */
 	public static class TestBuilder implements ModuleConfigurationBuilder {
 		/*
@@ -61,6 +75,22 @@ public enum Module {
 			config.addProperty(new ModuleProperty("some.property", "some.value"));
 			config.addProperty(new ModuleProperty("int", "0", "[-]?\\d+", "integer value."));
 			return config;
+		}
+
+		/* (non-Javadoc)
+		 * @see br.octahedron.straight.modules.configuration.ModuleConfigurationBuilder#getAdministrativeModuleActivities()
+		 */
+		@Override
+		public Collection<String> getAdministrativeModuleActivities() {
+			return Collections.emptyList();
+		}
+
+		/* (non-Javadoc)
+		 * @see br.octahedron.straight.modules.configuration.ModuleConfigurationBuilder#getAllModuleActivities()
+		 */
+		@Override
+		public Collection<String> getAllModuleActivities() {
+			return Collections.emptyList();
 		}
 	}
 }

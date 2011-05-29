@@ -23,15 +23,13 @@ import java.util.logging.Logger;
 import com.google.appengine.api.NamespaceManager;
 
 /**
- * @author Erick Moreno
+ * This entity is responsible performs the namespace management.
  * 
+ * @author Erick Moreno
  */
 public class NamespaceCommons {
 
 	private static Logger logger = Logger.getLogger(NamespaceCommons.class.getName());
-	/**
-	 * 
-	 */
 	private static final ThreadLocal<String> oldNamespace = new ThreadLocal<String>();
 
 	/**
@@ -43,7 +41,8 @@ public class NamespaceCommons {
 	}
 
 	/**
-	 * Changing namespace to global namespace
+	 * Changes current namespace to global namespace, storing the actual namespace to be restored
+	 * later.
 	 */
 	public static void changeToGlobalNamespace() {
 		oldNamespace.set((NamespaceManager.get() != null) ? NamespaceManager.get() : "");
@@ -52,9 +51,10 @@ public class NamespaceCommons {
 	}
 
 	/**
-	 * Changing namespace from global to original namespace
+	 * Changes the current namespace to the previous one namespace
 	 */
 	public static void backToOldNamespace() {
+		// REVIEW what happens if I call this without sets the changeToGlobalNamespace before?
 		String old = oldNamespace.get();
 		logger.fine("Changing namespace from global to original namespace: " + old);
 		NamespaceManager.set(old);

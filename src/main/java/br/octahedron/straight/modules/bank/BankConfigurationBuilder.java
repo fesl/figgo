@@ -18,6 +18,9 @@
  */
 package br.octahedron.straight.modules.bank;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import br.octahedron.straight.modules.configuration.Module;
 import br.octahedron.straight.modules.configuration.ModuleConfigurationBuilder;
 import br.octahedron.straight.modules.configuration.data.ModuleConfiguration;
@@ -32,7 +35,7 @@ import br.octahedron.straight.modules.configuration.data.ModuleProperty;
  * @author Danilo Queiroz
  */
 public class BankConfigurationBuilder implements ModuleConfigurationBuilder {
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -49,4 +52,19 @@ public class BankConfigurationBuilder implements ModuleConfigurationBuilder {
 		return bankConfig;
 	}
 
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.configuration.ModuleConfigurationBuilder#getAllModuleActivities()
+	 */
+	@Override
+	public Collection<String> getAllModuleActivities() {
+		return Arrays.asList("1", "2", "3"); // TODO set available activities
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.configuration.ModuleConfigurationBuilder#getAdministrativeModuleActivities()
+	 */
+	@Override
+	public Collection<String> getAdministrativeModuleActivities() {
+		return Arrays.asList("1", "2"); // TODO set admin activities
+	}
 }
