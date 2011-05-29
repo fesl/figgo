@@ -28,6 +28,11 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -151,17 +156,47 @@ public class AuthorizationManagerTest {
 			verify(this.roleDAO);
 		}
 	}
-	
 
+	@SuppressWarnings("unchecked")
 	@Test
-	public void aTest() {
+	public void getDomainForUserTest() {
 		// setup mock
-		Role role = new Role("domain", "role");
-		String key = createRoleKey("domain", "role");
-		
+		List<Role> roles = new LinkedList<Role>();
+		Role role = new Role("domain1", "user");
+		role.addUsers("tester");
+		roles.add(role);
+		role = new Role("domain2", "admin");
+		role.addUsers("tester");
+		roles.add(role);
+		role = new Role("domain2", "user");
+		role.addUsers("tester");
+		roles.add(role);
+		expect(this.roleDAO.getUserRoles("tester")).andReturn(roles);
+		expect(this.roleDAO.getUserRoles("newuser")).andReturn(Collections.EMPTY_LIST);
 		replay(this.roleDAO);
 		// test
+		Collection<String> domains = this.authManager.getUserDomains("tester");
+		assertEquals(2, domains.size());
+		domains = this.authManager.getUserDomains("newuser");
+		assertTrue(domains.isEmpty());
+		// verify
+		verify(this.roleDAO);
+	}	
 
+	@Test
+	public void authorizeTest() {
+		// setup mock
+		expect(this.roleDAO.existsRoleFor("domain1", "reviewer", "commit_code")).andReturn(false);
+		expect(this.roleDAO.existsRoleFor("domain1", "reviewer", "pull_code")).andReturn(true);
+		expect(this.roleDAO.existsRoleFor("domain2", "tester", "commit_code")).andReturn(true);
+		expect(this.roleDAO.existsRoleFor("domain1", "developer", "commit_code")).andReturn(true);
+		replay(this.roleDAO);
+		// test
+		assertFalse(this.authManager.isAuthorized("domain1", "reviewer", "commit_code"));
+		assertTrue(this.authManager.isAuthorized("domain1", "reviewer", "pull_code"));
+		assertTrue(this.authManager.isAuthorized("domain2", "tester", "commit_code"));
+		assertTrue(this.authManager.isAuthorized("domain1", "developer", "commit_code"));
+		
 		// verify
 		verify(this.roleDAO);
 	}

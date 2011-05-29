@@ -18,6 +18,10 @@
  */
 package br.octahedron.straight.modules.authorization.data;
 
+import java.util.List;
+
+import javax.jdo.Query;
+
 import br.octahedron.straight.database.GenericDAO;
 
 /**
@@ -29,4 +33,26 @@ public class RoleDAO extends GenericDAO<Role> {
 		super(Role.class);
 	}
 
+	/**
+	 * @return A list with all user's roles
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Role> getUserRoles(String username) {
+		Query query = this.datastoreFacade.createQueryForClass(Role.class);
+		query.setFilter("users == username");
+		query.declareParameters("java.lang.String username");
+		return (List<Role>) query.execute(username);
+	}
+
+	/**
+	 * @return <code>true</code> if exists at least one role that match the given domain, user and
+	 *         activity, <code>false</code> if doesn't exists such role.
+	 */
+	public boolean existsRoleFor(String domainName, String username, String activityName) {
+		Query query = this.datastoreFacade.createQueryForClass(Role.class);
+		query.setFilter("domain == domainName && users == username && activities == activity");
+		query.declareParameters("java.lang.String domainName, java.lang.String username, java.lang.String activity");
+		query.setResult("count(this)");
+		return ((Integer) query.execute(domainName, username, activityName)) != 0;
+	}
 }

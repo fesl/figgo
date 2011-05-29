@@ -19,6 +19,13 @@
 package br.octahedron.straight.modules.authorization.manager;
 
 import static br.octahedron.straight.modules.authorization.data.Role.createRoleKey;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
 import br.octahedron.straight.modules.authorization.data.Role;
@@ -105,22 +112,41 @@ public class AuthorizationManager {
 	}
 
 	/**
-	 * 
+	 * Adds the given users to a specific role.
 	 */
 	public void addUsersToRole(String domainName, String roleName, String... users) {
 		((Role) this.getRole(domainName, roleName)).addUsers(users);
 	}
 
 	/**
+	 * Adds the given activities to a specific role.
 	 */
 	public void addActivitiesToRole(String domainName, String roleName, String... activities) {
 		((Role) this.getRole(domainName, roleName)).addActivities(activities);
 	}
 
-	/*
-	 * get domains(user)
-	 * 
-	 * authorize(domain, user, activity)
+	/**
+	 * @return All domains that the user has some role.
 	 */
+	public Collection<String> getUserDomains(String username) {
+		List<Role> roles = this.roleDAO.getUserRoles(username);
 
+		if (!roles.isEmpty()) {
+			Set<String> domains = new TreeSet<String>();
+			for (Role role : roles) {
+				domains.add(role.getDomain());
+			}
+			return domains;
+		} else {
+			return Collections.emptySet();
+		}
+	}
+
+	/**
+	 * @return <code>true</code> if the given user is authorized to perform the given activity on
+	 *         the given domain, <code>false</code> otherwise.
+	 */
+	public boolean isAuthorized(String domainName, String username, String activityName) {
+		return this.roleDAO.existsRoleFor(domainName, username, activityName);
+	}
 }
