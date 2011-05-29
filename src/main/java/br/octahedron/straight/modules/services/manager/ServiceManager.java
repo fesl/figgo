@@ -47,12 +47,14 @@ public class ServiceManager {
 	/**
 	 * Updates an service
 	 */
-	public void updateService(String name, String value, String description) {
+	public Service updateService(String name, String value, String description) {
 		Service serv = this.dao.get(name);
 
 		serv.setValue(value);
 		serv.setDescription(description);
 		// This object will be updated to the DB by JDO persistence manager
+		
+		return serv;
 	}
 
 	/**

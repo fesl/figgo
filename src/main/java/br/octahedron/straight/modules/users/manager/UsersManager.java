@@ -20,7 +20,6 @@ package br.octahedron.straight.modules.users.manager;
 
 import br.octahedron.straight.modules.users.data.User;
 import br.octahedron.straight.modules.users.data.UserDAO;
-import br.octahedron.straight.modules.users.data.UserView;
 
 /**
  * @author Erick Moreno
@@ -38,7 +37,7 @@ public class UsersManager {
 	 * @param avatar
 	 * @return
 	 */
-	public UserView createUser(String userId, String name, String phoneNumber, String avatar, String description) {
+	public User createUser(String userId, String name, String phoneNumber, String avatar, String description) {
 
 		User user = new User(userId, name, phoneNumber, avatar, description);
 
@@ -55,7 +54,7 @@ public class UsersManager {
 	 * @param avatar
 	 * @param description
 	 */
-	public UserView updateUser(String userId, String name, String phoneNumber, String avatar, String description) {
+	public User updateUser(String userId, String name, String phoneNumber, String avatar, String description) {
 		User user = this.userDAO.get(userId);
 
 		user.setName(name);
@@ -72,7 +71,7 @@ public class UsersManager {
 	 * @return the {@link User} with the given id, if exists, or <code>null</code>, if doesn't
 	 *         exists a user with the given id.
 	 */
-	public UserView getUser(String userId) {
+	public User getUser(String userId) {
 		return this.userDAO.get(userId);
 	}
 
