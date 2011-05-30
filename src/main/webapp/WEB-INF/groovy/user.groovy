@@ -1,4 +1,4 @@
-import br.octahedron.straight.Facade;
+import br.octahedron.straight.test.Facade;
 
 def actions = ['create', 'new']
 def action = "notfound"

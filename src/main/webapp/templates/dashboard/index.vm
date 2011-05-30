@@ -1,3 +1,9 @@
-<a href="$logout_url">logout</a>
+#set( $title = "!@#$%*() - Início" )
+#parse( "templates/layout.vm" )
 
-Olá, $user
+#@body()
+	Olá, $user
+	<a href="$logout_url">logout</a>
+#end
+
+#scripts()

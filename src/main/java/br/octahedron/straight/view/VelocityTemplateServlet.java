@@ -32,13 +32,17 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
 /**
- * @author Vítor Avelino
+ * VelocityTemplateServlet is responsible for rendering velocity templates.
  * 
+ * Generally used to handle request directly to velocity templates. For example,
+ * a request sent to '/templates/index.vm' with some attributes to be rendered.
+ * 
+ * @author Vítor Avelino
  */
 public class VelocityTemplateServlet extends HttpServlet {
 
-	private static final Logger logger = Logger.getLogger(VelocityTemplateServlet.class.getName());
 	private static final long serialVersionUID = -6755680559427788645L;
+	private static final Logger logger = Logger.getLogger(VelocityTemplateServlet.class.getName());
 	private static final String TEMPLATE_FOLDER = "templates/";
 	
 	private static final VelocityEngine engine = new VelocityEngine();
@@ -47,6 +51,9 @@ public class VelocityTemplateServlet extends HttpServlet {
 		engine.init();
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#service(javax.servlet.ServletRequest, javax.servlet.ServletResponse)
+	 */
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		logger.fine("Getting template from " + TEMPLATE_FOLDER + req.getRequestURI());
