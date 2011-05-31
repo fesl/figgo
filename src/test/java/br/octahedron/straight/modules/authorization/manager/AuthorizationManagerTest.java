@@ -36,6 +36,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
+
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
 import br.octahedron.straight.modules.authorization.data.Role;
@@ -49,9 +52,11 @@ public class AuthorizationManagerTest {
 
 	private RoleDAO roleDAO;
 	private AuthorizationManager authManager;
+	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalUserServiceTestConfig()).setEnvIsLoggedIn(true);
 
 	@Before
 	public void setUp() {
+		helper.setUp();
 		this.roleDAO = createMock(RoleDAO.class);
 		this.authManager = new AuthorizationManager();
 		this.authManager.setRoleDAO(this.roleDAO);
@@ -135,7 +140,7 @@ public class AuthorizationManagerTest {
 			verify(this.roleDAO);
 		}
 	}
-	
+
 	@Test(expected = DataDoesNotExistsException.class)
 	public void addActivitiesTest() {
 		// setup mock
@@ -181,7 +186,7 @@ public class AuthorizationManagerTest {
 		assertTrue(domains.isEmpty());
 		// verify
 		verify(this.roleDAO);
-	}	
+	}
 
 	@Test
 	public void authorizeTest() {
@@ -196,7 +201,7 @@ public class AuthorizationManagerTest {
 		assertTrue(this.authManager.isAuthorized("domain1", "reviewer", "pull_code"));
 		assertTrue(this.authManager.isAuthorized("domain2", "tester", "commit_code"));
 		assertTrue(this.authManager.isAuthorized("domain1", "developer", "commit_code"));
-		
+
 		// verify
 		verify(this.roleDAO);
 	}

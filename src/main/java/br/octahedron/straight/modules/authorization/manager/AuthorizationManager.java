@@ -41,13 +41,7 @@ import br.octahedron.straight.modules.authorization.data.RoleDAO;
  */
 public class AuthorizationManager {
 
-	/*
-	 * open questions
-	 * 
-	 * will it add default roles for domains (admin, users) how will it get the activities for each
-	 * module?
-	 */
-
+	private GoogleAuthorizer googleAuthorizer = new GoogleAuthorizer();
 	private RoleDAO roleDAO = new RoleDAO();
 
 	/**
@@ -146,6 +140,6 @@ public class AuthorizationManager {
 	 *         the given domain, <code>false</code> otherwise.
 	 */
 	public boolean isAuthorized(String domainName, String username, String activityName) {
-		return this.roleDAO.existsRoleFor(domainName, username, activityName);
+		return this.googleAuthorizer.isApplicationAdmin() || this.roleDAO.existsRoleFor(domainName, username, activityName);
 	}
 }
