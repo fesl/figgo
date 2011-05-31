@@ -1,0 +1,5 @@
+#column-about {
+  img {
+    @include shadow(0, 0, 3px);
+  }
+}
