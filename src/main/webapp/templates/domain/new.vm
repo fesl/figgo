@@ -1,0 +1,22 @@
+#set( $title = "!@#$%*() - Novo domínio" )
+#parse( "templates/layout.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<h1>Novo domínio</h1>
+		<p>Preencha o formulário abaixo:</p>
+		<form action="/admin/domain/create" method="post">
+        	<label for="name">
+        		Domínio: <input type="text" name="name" /> .figgo.com.br
+        	</label><br />
+    		<label for="name">
+        		Administrador: <input type="text" name="userId" />
+        	</label><br />
+    		<input type="submit" value="Criar" />
+        </form>
+	</div>
+#end
+
+#scripts()

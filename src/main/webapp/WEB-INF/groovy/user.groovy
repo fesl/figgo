@@ -1,5 +1,3 @@
-import br.octahedron.straight.test.Facade;
-
 def actions = ['create', 'new']
 def action = "notfound"
 
@@ -8,7 +6,7 @@ if (params.action) {
 }
 
 def action_create() {
-	Facade.getInstance().createUser(params.userId, params.name, params.phoneNumber, params.avatar, params.description)
+	usersFacade.createUser(request.user.email, params.name, params.phoneNumber, params.avatar, params.description)
 	redirect '/dashboard'
 }
 

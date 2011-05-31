@@ -1,2 +1,3 @@
 install facadePlugin
-install authenticatePlugin
+install authenticationPlugin
+install authorizationPlugin

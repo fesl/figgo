@@ -1,0 +1,39 @@
+#set( $title = "!@#$%*() - Novo domínio" )
+#parse( "templates/layout.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+	<table>
+		<thead>
+		<tr>
+			<th>
+				Nome
+			</th>
+			<th>
+				Domínio
+			</th>
+			<th>
+				Administrador
+			</th>
+		</tr>
+        </thead>
+		<tbody>
+        #foreach( $domain in $domains )
+    		<tr>
+    			<td>
+    				$domain.Name
+    			</td>
+    			<td>
+    				$domain.DomainName
+    			</td>
+    			<td>
+    				$domain.Admin
+    			</td>
+    		</tr>
+        #end
+        </tbody>
+    </table>
+#end
+
+#scripts()

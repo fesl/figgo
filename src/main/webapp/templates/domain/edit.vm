@@ -1,0 +1,21 @@
+#set( $title = "!@#$%*() - Editar configurações do domínio" )
+#parse( "templates/layout.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<h1>Configurações do domínio</h1>
+    	<p>Preencha o formulário abaixo:</p>
+        <form action="/domain/edit" method="post">
+    		<input type="hidden" name="_method" value="put" />
+    		Domínio: ${domain.DomainName} <br />
+    		<label for="name">
+    			Nome: <small>(e.g.: Coletivo Mundo)</small> <input type="text" name="name" value="$domain.Name"/>
+            </label><br />
+    		<input type="submit" value="Editar" />
+        </form>
+	</div>
+#end
+
+#scripts()

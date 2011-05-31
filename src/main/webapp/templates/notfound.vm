@@ -2,10 +2,7 @@
 #parse( "templates/layout.vm" )
 
 #@body()
-	<div id="main" class="center">
-		<h1>Figgo</h1>
-		<a href="$login_url">login</a>
-	</div>
+	404 not found
 #end
 
 #scripts()

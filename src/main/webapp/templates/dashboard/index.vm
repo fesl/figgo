@@ -2,8 +2,47 @@
 #parse( "templates/layout.vm" )
 
 #@body()
-	Olá, $user
-	<a href="$logout_url">logout</a>
+	<div id="top-bar">
+		<a href="$logout_url">logout</a>
+	</div>
+	
+	<div id="main" class="center">
+		<h1>Dashboard</h1>
+		<div id="dashboard">
+			<div id="column-about">
+				<img src="/img/blank.png" alt="Avatar do usuário" />
+                <section id="about">
+    				<h2>Nome</h2>
+    				<small>test@example.com</small><br />
+    				<small>+55 83 8888 8888</small>
+					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+					Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,
+					when an unknown printer took a galley of type and scrambled it to make a type 
+                    specimen book.</p>
+    			</section>
+				<hr />
+				<section id="organizations">
+                    <h3>Coletivos associados</h3>
+					<section class="organization">
+						<h4>Coletivo Mundo</h4>
+						<ul class="inline">
+							<li><a>Banco</a></li>
+							<li><a>Serviços</a></li>
+                        </ul>
+					</section>
+                </section>
+			</div>
+			<div id="column-notifications">
+    			<section id="notifications">
+					<h3>Notificações</h3>
+					<ul>
+						<li>Notificação 1</li>
+                        <li>Notificação 2</li>
+                    </ul>
+				</section>
+            </div>
+		</div>
+	</div>
 #end
 
 #scripts()

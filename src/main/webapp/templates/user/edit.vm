@@ -1,0 +1,29 @@
+#set( $title = "!@#$%*() - Início" )
+#parse( "templates/layout.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+        <h1>Editar usuário</h1>
+    	<p>Preencha o formulário abaixo:</p>
+        <form action="/user/edit" method="post">
+    		<input type="hidden" name="_method" value="put" />
+        	<label for="name">
+        		Nome: <input type="text" name="name" value="$user.Name" />
+        	</label><br />
+        	<label for="phoneNumber">
+                Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$user.PhoneNumber"/>
+        	</label><br />
+        	<label for="avatar">
+                URL avatar: <input type="text" name="avatar" value="$user.Avatar" />
+        	</label><br />
+        	<label for="description">
+        		Descrição: <textarea name="description">$user.Description</textarea>
+        	</label><br />
+    		<input type="submit" value="Editar" />
+        </form>
+	</div>
+#end
+
+#scripts()
