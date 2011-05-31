@@ -33,6 +33,11 @@ public class UsersExternalFacade {
 	
 	private UsersManager usersManager;
 	
+
+	public UsersExternalFacade() {
+		this.usersManager = new UsersManager();
+	}
+	
 	/**
 	 * 
 	 * @param usersManager

@@ -1,8 +1,10 @@
-import br.octahedron.straight.view.plugins.FacadePluginManager
+import br.octahedron.straight.modules.users.UsersExternalFacade
+import br.octahedron.straight.modules.configuration.ConfigurationExternalFacade
 
 def log = new groovyx.gaelyk.logging.GroovyLogger("br.octahedron.straight.view.plugins.facadePlugin")
 log.info "Registering facade plugin"
 
 binding {
-	usersManager = FacadePluginManager.instance.usersManager
+	usersFacade = new UsersExternalFacade() 
+	configurationFacade = new ConfigurationExternalFacade()
 }

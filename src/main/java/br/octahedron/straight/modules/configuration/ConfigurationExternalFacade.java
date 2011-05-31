@@ -39,6 +39,10 @@ public class ConfigurationExternalFacade {
 
 	private ConfigurationManager configurationManager;
 
+	public ConfigurationExternalFacade() {
+		this.configurationManager = new ConfigurationManager();
+	}
+
 	public void setConfigurationManager(ConfigurationManager confManager) {
 		this.configurationManager = confManager;
 	}
