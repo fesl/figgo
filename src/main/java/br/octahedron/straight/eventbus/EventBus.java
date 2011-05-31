@@ -55,14 +55,17 @@ public class EventBus {
 	 * types be published by any one.
 	 */
 	public static void subscribe(Subscriber subscriber, Class<? extends Event>... interestedEvents) {
-		monitor.lock();
-		for (Class<? extends Event> interestedEvent : interestedEvents) {
-			if (!subscribers.containsKey(interestedEvent)) {
-				subscribers.put(interestedEvent, new LinkedList<Subscriber>());
+		try {
+			monitor.lock();
+			for (Class<? extends Event> interestedEvent : interestedEvents) {
+				if (!subscribers.containsKey(interestedEvent)) {
+					subscribers.put(interestedEvent, new LinkedList<Subscriber>());
+				}
+				subscribers.get(interestedEvent).add(subscriber);
 			}
-			subscribers.get(interestedEvent).add(subscriber);
+		} finally {
+			monitor.unlock();
 		}
-		monitor.unlock();
 	}
 
 	/**
@@ -70,10 +73,13 @@ public class EventBus {
 	 */
 	@SuppressWarnings("unchecked")
 	public static void publish(Event event) {
-		monitor.lock();
-		if (subscribers.containsKey(event.getClass())) {
-			eventPublisher.publish((LinkedList<Subscriber>) subscribers.get(event.getClass()).clone(), event);
+		try {
+			monitor.lock();
+			if (subscribers.containsKey(event.getClass())) {
+				eventPublisher.publish((LinkedList<Subscriber>) subscribers.get(event.getClass()).clone(), event);
+			}
+		} finally {
+			monitor.unlock();
 		}
-		monitor.unlock();
 	}
 }

@@ -52,7 +52,7 @@ public class BankAccount implements Serializable {
 	@Persistent
 	private Long lastTransactionId;
 	@NotPersistent
-	private TransactionInfoService transactionInfoService;
+	private transient TransactionInfoService transactionInfoService;
 
 	public BankAccount(String ownerId, Long id) {
 		this(ownerId);
