@@ -4,26 +4,26 @@
 #@body()
 	<a href="$logout_url">logout</a>
 	
-	<p>Você está logando pela primeira vez no !@#$%*()</p>
-        
-    <p>Preencha o formulário abaixo:</p>
-    
-    <form action="/user/create" method="post">
-    	<input type="hidden" name="userId" value="$user" />
-    	<label for="name">
-    		Nome: <input type="text" name="name" />
-    	</label><br />
-    	<label for="phoneNumber">
-            Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" />
-    	</label><br />
-    	<label for="avatar">
-            URL avatar: <input type="text" name="avatar" />
-    	</label><br />
-    	<label for="description">
-    		Descrição: <textarea name="description"></textarea>
-    	</label><br />
-		<input type="submit" value="Cadastrar!" />
-    </form>
+	<div id="main" class="center">
+        <h1>Novo usuário</h1>
+		<p>Você está logando pela primeira vez no !@#$%*()</p>
+		<p>Preencha o formulário abaixo:</p>
+        <form action="/user/create" method="post">
+        	<label for="name">
+        		Nome: <input type="text" name="name" />
+        	</label><br />
+        	<label for="phoneNumber">
+                Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" />
+        	</label><br />
+        	<label for="avatar">
+                URL avatar: <input type="text" name="avatar" />
+        	</label><br />
+        	<label for="description">
+        		Descrição: <textarea name="description"></textarea>
+        	</label><br />
+    		<input type="submit" value="Cadastrar" />
+        </form>
+	</div>
 #end
 
 #scripts()

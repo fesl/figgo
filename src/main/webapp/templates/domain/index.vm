@@ -1,0 +1,12 @@
+#set( $title = "!@#$%*() - Editar configurações do domínio" )
+#parse( "templates/layout.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<h1>$domain.Name</h1>
+	</div>
+#end
+	
+#scripts()

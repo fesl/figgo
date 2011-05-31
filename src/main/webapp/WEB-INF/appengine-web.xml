@@ -19,10 +19,12 @@
 		<exclude path="/WEB-INF/**.groovy" />
         <exclude path="/templates/**.vm" />
 		<exclude path="/i18n/**.i18n" />
+		<exclude path="/css/**.scss" />
 		<include path="/img/**" />
 		<include path="/css/**.css" />
 		<include path="/js/**.js" />
-		<include path="/favicon.png" />
+		<include path="/robots.txt" />
+		<include path="/favicon.ico" />
 	</static-files>
 
 	<!-- Resource Files -->
