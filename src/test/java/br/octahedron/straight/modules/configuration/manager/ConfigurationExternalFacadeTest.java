@@ -34,9 +34,9 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.bank.BankConfigurationBuilder;
 import br.octahedron.straight.modules.configuration.ConfigurationExternalFacade;
-import br.octahedron.straight.modules.configuration.Module;
 import br.octahedron.straight.modules.configuration.ModulesInfoService;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationView;

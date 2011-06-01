@@ -21,6 +21,7 @@ package br.octahedron.straight.modules.configuration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationView;
 

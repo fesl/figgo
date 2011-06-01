@@ -16,28 +16,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.eventbus;
-
-import java.io.Serializable;
+package br.octahedron.straight.inject;
 
 /**
- * Subscribers receive notifications each time an {@link Event} of this {@link Subscriber} interest
- * is published. This interface defines this notification mechanism.
- * 
- * However, to start receive notifications, the subscriber should subscribe to {@link EventBus}. See
- * the {@link EventBus#subscribe(Subscriber, Class...)} documentation.
- * 
- * @author Danilo Penna Queiroz
+ * TODO comments
+ * @author Danilo Queiroz
  */
-public interface Subscriber extends Serializable {
+public abstract class SelfInjectable {
 	
-	/**
-	 * Inits the subscriber. Use this method to subscribe to interested events.
-	 */
-	public void init();
+	private static final InstanceHandler handler = new InstanceHandler();
 
-	/**
-	 * Notify about a published {@link Event}
-	 */
-	public void eventPublished(Event event);
+	public SelfInjectable() {
+		handler.inject(this);
+	}
 }

@@ -22,7 +22,7 @@ import java.util.Collection;
 
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
-import br.octahedron.straight.modules.configuration.Module;
+import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.configuration.ModuleConfigurationBuilder;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationDAO;

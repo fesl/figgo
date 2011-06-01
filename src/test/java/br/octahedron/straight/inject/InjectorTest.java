@@ -16,28 +16,31 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.eventbus;
+package br.octahedron.straight.inject;
 
-import java.io.Serializable;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
+
+import org.junit.Test;
+
+import br.octahedron.straight.database.DatastoreFacade;
 
 /**
- * Subscribers receive notifications each time an {@link Event} of this {@link Subscriber} interest
- * is published. This interface defines this notification mechanism.
- * 
- * However, to start receive notifications, the subscriber should subscribe to {@link EventBus}. See
- * the {@link EventBus#subscribe(Subscriber, Class...)} documentation.
- * 
- * @author Danilo Penna Queiroz
+ * @author Danilo Penna Queiroz - daniloqueiroz@octahedron.com.br
  */
-public interface Subscriber extends Serializable {
+public class InjectorTest {
 	
-	/**
-	 * Inits the subscriber. Use this method to subscribe to interested events.
-	 */
-	public void init();
+	private InstanceHandler handler = new InstanceHandler();
 
-	/**
-	 * Notify about a published {@link Event}
-	 */
-	public void eventPublished(Event event);
+	@Test
+	public void testInjection() throws InstantiationException {
+		UserFacade facade = handler.getInstance(UserFacade.class);
+		assertNotNull(facade);
+		UserService service = facade.getUserService();
+		assertNotNull(service);
+		UserDAO userDAO = service.getUserDAO();
+		assertNotNull(userDAO);
+		DatastoreFacade ds = userDAO.getDatastoreFacade();
+		assertTrue(ds instanceof DatastoreFacade);
+	}
 }

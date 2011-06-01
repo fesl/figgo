@@ -35,7 +35,7 @@ import com.google.appengine.api.taskqueue.TaskOptions;
  */
 public class AppEngineEventPublisher implements EventPublisher {
 
-	private static final String QUEUE_NAME = "EVENTBUS";
+	private static final String QUEUE_NAME = "eventbus";
 	private static final Logger logger = Logger.getLogger(AppEngineEventPublisher.class.getName());
 	private Queue taskQueue;
 

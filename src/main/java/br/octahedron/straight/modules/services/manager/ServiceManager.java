@@ -31,7 +31,7 @@ import br.octahedron.straight.modules.users.data.User;
  */
 public class ServiceManager {
 
-	private ServiceDAO dao = new ServiceDAO();
+	private ServiceDAO serviceDAO = new ServiceDAO();
 
 	/**
 	 * Creates and saves a new service
@@ -40,7 +40,7 @@ public class ServiceManager {
 	 */
 	public Service createService(String name, String value, String description) {
 		Service service = new Service(name, value, description);
-		this.dao.save(service);
+		this.serviceDAO.save(service);
 		return service;
 	}
 
@@ -48,7 +48,7 @@ public class ServiceManager {
 	 * Updates an service
 	 */
 	public Service updateService(String name, String value, String description) {
-		Service serv = this.dao.get(name);
+		Service serv = this.serviceDAO.get(name);
 
 		serv.setValue(value);
 		serv.setDescription(description);
@@ -64,7 +64,7 @@ public class ServiceManager {
 	 *         exists a user with the given id.
 	 */
 	public Service getService(String name) {
-		return this.dao.get(name);
+		return this.serviceDAO.get(name);
 	}
 
 	/**
@@ -73,7 +73,7 @@ public class ServiceManager {
 	 * @return <code>true</code> if exists, <code>false</code> otherwise.
 	 */
 	public boolean existsService(String name) {
-		return this.dao.exists(name);
+		return this.serviceDAO.exists(name);
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class ServiceManager {
 	 * @param userId
 	 */
 	public void addProvider(String serviceName, String userId) {
-		Service serv = this.dao.get(serviceName);
+		Service serv = this.serviceDAO.get(serviceName);
 		serv.addProvider(userId);
 	}
 
@@ -94,7 +94,7 @@ public class ServiceManager {
 	 * @param userId
 	 */
 	public void removeProvider(String serviceName, String userId) {
-		Service serv = this.dao.get(serviceName);
+		Service serv = this.serviceDAO.get(serviceName);
 		serv.removeProvider(userId);
 	}
 
@@ -105,7 +105,7 @@ public class ServiceManager {
 	 * @return An collection with userId
 	 */
 	public Collection<String> getServiceProviders(String serviceName) {
-		Service serv = this.dao.get(serviceName);
+		Service serv = this.serviceDAO.get(serviceName);
 		return serv.getProviders();
 	}
 
@@ -118,7 +118,7 @@ public class ServiceManager {
 	 * @return A collection with all services that has the passed user as provider.
 	 */
 	public Collection<Service> getUserServices(String userId) {
-		return this.dao.getUserServices(userId);
+		return this.serviceDAO.getUserServices(userId);
 	}
 
 }

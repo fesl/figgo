@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <queue-entries>
+	<queue>
+		<name>eventbus</name>
+		<rate>10/s</rate>
+		<bucket-size>5</bucket-size>
+		<mode>push</mode>
+	</queue>
 <!-- 
 	<queue>
 		<name>mail-queue</name>
