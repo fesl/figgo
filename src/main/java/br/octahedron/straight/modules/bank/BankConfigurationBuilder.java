@@ -21,7 +21,7 @@ package br.octahedron.straight.modules.bank;
 import java.util.Arrays;
 import java.util.Collection;
 
-import br.octahedron.straight.modules.configuration.Module;
+import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.configuration.ModuleConfigurationBuilder;
 import br.octahedron.straight.modules.configuration.data.ModuleConfiguration;
 import br.octahedron.straight.modules.configuration.data.ModuleProperty;

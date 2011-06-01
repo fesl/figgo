@@ -35,8 +35,8 @@ import org.junit.Test;
 
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
-import br.octahedron.straight.modules.configuration.Module;
-import br.octahedron.straight.modules.configuration.Module.TestBuilder;
+import br.octahedron.straight.modules.Module;
+import br.octahedron.straight.modules.Module.TestBuilder;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationDAO;
 import br.octahedron.straight.modules.configuration.data.ModuleConfiguration;

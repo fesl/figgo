@@ -16,14 +16,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.modules.configuration;
+package br.octahedron.straight.modules;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import br.octahedron.straight.eventbus.Subscriber;
 import br.octahedron.straight.modules.bank.BankConfigurationBuilder;
+import br.octahedron.straight.modules.configuration.ModuleConfigurationBuilder;
 import br.octahedron.straight.modules.configuration.data.ModuleConfiguration;
 import br.octahedron.straight.modules.configuration.data.ModuleProperty;
 
@@ -35,21 +37,35 @@ import br.octahedron.straight.modules.configuration.data.ModuleProperty;
  */
 public enum Module {
 
-	TEST(TestBuilder.class), BANK(BankConfigurationBuilder.class);
+	TEST(TestBuilder.class, null), BANK(BankConfigurationBuilder.class, null);
 
 	private static final Logger logger = Logger.getLogger(Module.class.getName());
 	private Class<? extends ModuleConfigurationBuilder> builderClass;
+	private Class<? extends Subscriber> subscriberClass;
 
-	private Module(Class<? extends ModuleConfigurationBuilder> builder) {
+	private Module(Class<? extends ModuleConfigurationBuilder> builder, Class<? extends Subscriber> subscriber) {
 		this.builderClass = builder;
+		this.subscriberClass = subscriber;
+	}
+	
+	public Subscriber getSubscriber() {
+		if (this.subscriberClass != null) {
+			return this.newInstance(this.subscriberClass);
+		} else {
+			return null;
+		}
 	}
 
 	/**
 	 * @return Gets the {@link ModuleConfigurationBuilder} for the module
 	 */
 	public ModuleConfigurationBuilder getModuleBuilder() {
+		return this.newInstance(this.builderClass);
+	}
+	
+	private <T> T newInstance(Class<T> klass) {
 		try {
-			return this.builderClass.newInstance();
+			return klass.newInstance();
 		} catch (Exception ex) {
 			String message = "Unable to create ModuleConfigurationBuilder for module " + this.name()
 					+ ". The builder should have an empty and public constructor!";

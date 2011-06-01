@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import br.octahedron.straight.inject.Inject;
+import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationView;
 import br.octahedron.straight.modules.configuration.data.ModuleConfigurationView;
