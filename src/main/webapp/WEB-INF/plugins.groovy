@@ -1,3 +1,3 @@
-install facadePlugin
-install authenticationPlugin
+install injectionPlugin
+//install authenticationPlugin
 install authorizationPlugin

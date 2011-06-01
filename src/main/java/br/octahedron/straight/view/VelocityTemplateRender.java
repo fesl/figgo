@@ -53,7 +53,7 @@ public class VelocityTemplateRender {
 	
 	public static void render(String templatePath, HttpServletRequest req, HttpServletResponse res) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
 		logger.fine("Getting template from " + TEMPLATE_FOLDER + templatePath);
-		Template template = engine.getTemplate(TEMPLATE_FOLDER + templatePath);
+		Template template = engine.getTemplate(TEMPLATE_FOLDER + templatePath, "utf-8");
 		Enumeration<?> attributesName = req.getAttributeNames();
 		VelocityContext context = new VelocityContext();
 		while (attributesName.hasMoreElements()) {
@@ -64,7 +64,7 @@ public class VelocityTemplateRender {
 			}
 		}
 		template.merge(context, res.getWriter());
-		logger.config(context.toString());
 		logger.fine("Written template in response writer");
+		res.flushBuffer();
 	}
 }

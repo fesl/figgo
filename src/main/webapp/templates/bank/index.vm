@@ -1,51 +1,52 @@
-#set( $title = "!@#$%*() - Nome do coletivo - Banco" )
+#set( $title = "Figgo - Nome do coletivo - Banco" )
 #parse( "templates/layout.vm" )
 
 #@body()
 	<a href="$logout_url">logout</a>
 	
     <div id="main" class="center">
-		<h1>$domain.Name</h1>
-		<ul>
-            <li><a href="$url/#">Dashboard</a></li>
-            <li class="selected"><a href="$url/bank">Banco</a></li>
-            <li><a href="$url/services#">Serviços</a></li>
-		</ul>
-		<div id="dashboard">
+		<header>
+    		<h1>Nome do coletivo</h1>
+    		<nav id="tabs">
+        		<ul class="inline">
+                    <li><a href="$url/#">Dashboard</a></li>
+                    <li class="selected"><a href="$url/bank">Banco</a></li>
+                    <li><a href="$url/services#">Serviços</a></li>
+        		</ul>
+    		</nav>
+		</header>
+		<div id="bank">
 			<div id="column-statement">
-                <section id="about">
+                <section id="balance">
+                    <h3>Minha conta</h3>
     				<table>
                 		<thead>
-                		<tr>
-                			<th>
-                				Data
-                			</th>
-							<th>
-                				Destino
-                			</th>
-							<th>
-                				Descrição
-                			</th>
-							<th>
-                				Descrição
-                			</th>
-                		</tr>
+                    		<tr>
+                    			<th>Data</th>
+    							<th>Destino</th>
+    							<th>Descrição</th>
+    							<th>Valor</th>
+                    		</tr>
                         </thead>
                 		<tbody>
                         ##foreach( $transation in $account.LatestTransations )
                     		<tr>
-                    			<td>
-                    				transaction.Date
-                    			</td>
-								<td>
-                    				transaction.To
-                    			</td>
-								<td>
-                    				transaction.Description
-                    			</td>
-								<td>
-                    				transaction.Value
-                    			</td>
+                    			<td>transaction.Date</td>
+								<td>transaction.To</td>
+								<td>transaction.Description</td>
+								<td>transaction.Value</td>
+                    		</tr>
+							<tr>
+                    			<td>transaction.Date</td>
+								<td>transaction.To</td>
+								<td>transaction.Description</td>
+								<td>transaction.Value</td>
+                    		</tr>
+							<tr>
+                    			<td>transaction.Date</td>
+								<td>transaction.To</td>
+								<td>transaction.Description</td>
+								<td>transaction.Value</td>
                     		</tr>
                         ##end
                         </tbody>
@@ -59,8 +60,8 @@
     			</section>
 				<hr />
 			</div>
-			<div id="column-notifications">
-    			<section id="notifications">
+			<div id="column-quickmenu">
+    			<section id="menu">
 					<h3>Acesso rápido</h3>
 					<ul>
 						<li><a href="$url/bank/">Minha conta</a></li>
