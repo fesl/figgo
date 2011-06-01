@@ -14,7 +14,7 @@
 	<!-- Persistence Manager Filter -->
     <filter>
         <filter-name>PersistenceManagerFilter</filter-name>
-        <filter-class>br.octahedron.straight.database.PersistenceManagerFilter</filter-class>
+        <filter-class>br.octahedron.commons.database.PersistenceManagerFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>PersistenceManagerFilter</filter-name>
