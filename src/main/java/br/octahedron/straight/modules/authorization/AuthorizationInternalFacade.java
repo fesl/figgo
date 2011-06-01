@@ -18,7 +18,7 @@
  */
 package br.octahedron.straight.modules.authorization;
 
-import static br.octahedron.commons.database.NamespaceCommons.backToOldNamespace;
+import static br.octahedron.commons.database.NamespaceCommons.backToPreviousNamespace;
 import static br.octahedron.commons.database.NamespaceCommons.changeToGlobalNamespace;
 
 import java.util.Collection;
@@ -58,7 +58,7 @@ public class AuthorizationInternalFacade {
 			changeToGlobalNamespace();
 			return this.authorizationManager.isAuthorized(domain, username, activity);
 		} finally {
-			backToOldNamespace();
+			backToPreviousNamespace();
 		}
 	}
 	
@@ -73,7 +73,7 @@ public class AuthorizationInternalFacade {
 			changeToGlobalNamespace();
 			return this.authorizationManager.getUserDomains(username);
 		} finally {
-			backToOldNamespace();
+			backToPreviousNamespace();
 		}
 	}
 }

@@ -20,9 +20,24 @@ package br.octahedron.commons.eventbus;
 
 
 /**
- * @author danilo
- *
+ * Namespace events are events that refers to a given namespace.
+ * 
+ * @author Danilo Queiroz
  */
-public class NamespaceEvent implements Event {
+public abstract class NamespaceEvent implements Event {
 
+	private static final long serialVersionUID = 6843928544469411033L;
+	private String namespace;
+
+	public NamespaceEvent(String namespace) {
+		this.namespace = namespace;
+	}
+	
+	/**
+	 * @return the namespace fot this event
+	 */
+	public String getNamespace() {
+		return namespace;
+	}
+	
 }

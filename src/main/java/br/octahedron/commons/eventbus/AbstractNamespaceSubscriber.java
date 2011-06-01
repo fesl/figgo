@@ -18,6 +18,8 @@
  */
 package br.octahedron.commons.eventbus;
 
+import static br.octahedron.commons.database.NamespaceCommons.backToPreviousNamespace;
+import static br.octahedron.commons.database.NamespaceCommons.changeToNamespace;
 
 /**
  * A subscriber that deals with different namespaces, when receiving NamespaceEvents.
@@ -26,25 +28,40 @@ package br.octahedron.commons.eventbus;
  */
 public abstract class AbstractNamespaceSubscriber implements Subscriber {
 	
-	public AbstractNamespaceSubscriber(Class<? extends NamespaceEvent> event) {
-		
+	private static final long serialVersionUID = -1528408209684378010L;
+	private Class<? extends NamespaceEvent>[] events;
+
+	public AbstractNamespaceSubscriber(Class<? extends NamespaceEvent> ... events) {
+		this.events = events;
 	}
 	
 	/* (non-Javadoc)
 	 * @see br.octahedron.commons.eventbus.Subscriber#init()
 	 */
 	@Override
-	public abstract void init();
+	public void init() {
+		EventBus.subscribe(this, this.events);
+	}
 
 	/* (non-Javadoc)
 	 * @see br.octahedron.commons.eventbus.Subscriber#eventPublished(br.octahedron.commons.eventbus.Event)
 	 */
 	@Override
 	public final void eventPublished(Event event) {
-		if (event instanceof NamespaceEvent ) {
-			
+		try {
+			if (event instanceof NamespaceEvent) {
+				changeToNamespace(((NamespaceEvent)event).getNamespace());
+			}
+			this.processEvent(event);
+		} finally {
+			backToPreviousNamespace();
 		}
 	}
+
+	/**
+	 * @see Subscriber#eventPublished(Event)
+	 */
+	protected abstract void processEvent(Event event);
 
 
 }

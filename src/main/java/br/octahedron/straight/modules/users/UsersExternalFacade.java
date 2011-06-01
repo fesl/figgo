@@ -53,7 +53,7 @@ public class UsersExternalFacade {
 			NamespaceCommons.changeToGlobalNamespace();
 			return usersManager.existsUser(userId);
 		} finally{ 
-			NamespaceCommons.backToOldNamespace();
+			NamespaceCommons.backToPreviousNamespace();
 		}
 	}
 	
@@ -68,7 +68,7 @@ public class UsersExternalFacade {
 			NamespaceCommons.changeToGlobalNamespace();
 			return usersManager.getUser(userId);
 		} finally{ 
-			NamespaceCommons.backToOldNamespace();
+			NamespaceCommons.backToPreviousNamespace();
 		}
 	}
 	
@@ -86,7 +86,7 @@ public class UsersExternalFacade {
 			NamespaceCommons.changeToGlobalNamespace();
 			return usersManager.createUser(userId, name, phoneNumber, avatar, description);
 		} finally{ 
-			NamespaceCommons.backToOldNamespace();
+			NamespaceCommons.backToPreviousNamespace();
 		}
 	}
 	
@@ -104,7 +104,7 @@ public class UsersExternalFacade {
 			NamespaceCommons.changeToGlobalNamespace();
 			return usersManager.updateUser(userId, name, phoneNumber, avatar, description);
 		} finally{ 
-			NamespaceCommons.backToOldNamespace();
+			NamespaceCommons.backToPreviousNamespace();
 		}
 	}
 	                          

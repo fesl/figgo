@@ -30,14 +30,23 @@ import com.google.appengine.api.NamespaceManager;
 public class NamespaceCommons {
 
 	private static Logger logger = Logger.getLogger(NamespaceCommons.class.getName());
-	private static final ThreadLocal<String> oldNamespace = new ThreadLocal<String>();
+	private static final ThreadLocal<String> previousNamespaces = new ThreadLocal<String>();
 
 	/**
 	 * 
-	 * @return
 	 */
 	public static String getGlobalNamespace() {
 		return NamespaceManager.getGoogleAppsNamespace();
+	}
+
+	/**
+	 * Changes current namespace to the given one, storing the actual namespace to be restored
+	 * later.
+	 */
+	public static void changeToNamespace(String namespace) {
+		logger.fine("Changing namespace to namespace: " + namespace);
+		previousNamespaces.set((NamespaceManager.get() != null) ? NamespaceManager.get() : "");
+		NamespaceManager.set(namespace);
 	}
 
 	/**
@@ -45,18 +54,20 @@ public class NamespaceCommons {
 	 * later.
 	 */
 	public static void changeToGlobalNamespace() {
-		oldNamespace.set((NamespaceManager.get() != null) ? NamespaceManager.get() : "");
-		logger.fine("Changing namespace to global namespace: " + getGlobalNamespace());
-		NamespaceManager.set(getGlobalNamespace());
+		changeToNamespace(getGlobalNamespace());
+
 	}
 
 	/**
 	 * Changes the current namespace to the previous one namespace
 	 */
-	public static void backToOldNamespace() {
-		// REVIEW what happens if I call this without sets the changeToGlobalNamespace before?
-		String old = oldNamespace.get();
-		logger.fine("Changing namespace from global to original namespace: " + old);
-		NamespaceManager.set(old);
+	public static void backToPreviousNamespace() {
+		String previous = previousNamespaces.get();
+		if (previous!= null) {
+			logger.fine("Changing namespace from global to original namespace: " + previous);
+			NamespaceManager.set(previous);
+		} else {
+			logger.fine("No previous namespace store, keeping the actual one.");
+		}
 	}
 }
