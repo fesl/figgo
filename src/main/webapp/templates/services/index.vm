@@ -1,3 +1,80 @@
-<a href="$logout_url">logout</a>
+#set( $title = "!@#$%*() - Nome do coletivo - Serviços" )
+#parse( "templates/layout.vm" )
 
-Olá, $user
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<h1>$domain.Name</h1>
+		<ul>
+            <li><a href="$url/#">Dashboard</a></li>
+            <li><a href="$url/bank">Banco</a></li>
+            <li class="selected"><a href="$url/services#">Serviços</a></li>
+		</ul>
+		<div id="services">
+			<div id="column-my-services">
+				<section id="my-services">
+					<table>
+                		<thead>
+                		<tr>
+                			<th>
+                				Meus serviços
+                			</th>
+                		</tr>
+                        </thead>
+                		<tbody>
+                        #foreach( $service in $myServices )
+                    		<tr>
+                    			<td>
+                    				$service.Name
+                    			</td>
+                    		</tr>
+                        #end
+                        </tbody>
+                    </table>
+                </section>
+			</div>
+			<div id="column-services">
+    			<section id="oranization-services">
+					<h3>Serviços a serem contratados</h3>
+					<form>
+						<input type="text" name="service" placeholder="Busca por serviço" />
+                    </form>
+					<table>
+                		<thead>
+                		<tr>
+                			<th>
+                				Serviço
+                			</th>
+							<th>
+                				Valor
+                			</th>
+							<th>
+                				Eu faço!
+                			</th>
+                		</tr>
+                        </thead>
+                		<tbody>
+                        #foreach( $service in $myServices )
+                    		<tr>
+                    			<td>
+                    				$service.Name
+                    			</td>
+								<td>
+                    				$service.Value
+                    			</td>
+								<td>
+                    				<input type="checkbox" checked disabled/>
+                    			</td>
+                    		</tr>
+                        #end
+                        </tbody>
+                        <button>Sugerir serviço</button>
+                    </table>
+				</section>
+            </div>
+		</div>
+	</div>
+#end
+	
+#scripts()

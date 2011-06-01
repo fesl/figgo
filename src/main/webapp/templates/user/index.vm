@@ -1,4 +1,4 @@
-#set( $title = "!@#$%*() - Início" )
+#set( $title = "Figgo - Dashboard" )
 #parse( "templates/layout.vm" )
 
 #@body()
@@ -10,26 +10,26 @@
 		<h1>Dashboard</h1>
 		<div id="dashboard">
 			<div id="column-about">
-				<img src="/img/blank.png" alt="Avatar do usuário" />
+				<img src="$user.Avatar" alt="Avatar do usuário" />
                 <section id="about">
-    				<h2>Nome</h2>
-    				<small>test@example.com</small><br />
-    				<small>+55 83 8888 8888</small>
-					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-					Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,
-					when an unknown printer took a galley of type and scrambled it to make a type 
-                    specimen book.</p>
+    				<h2>$user.Name</h2>
+    				<small>$user.UserId</small><br />
+    				<small>$user.PhoneNumber</small>
+					<p>$user.Description</p>
     			</section>
 				<hr />
 				<section id="organizations">
                     <h3>Coletivos associados</h3>
+					#foreach( $organization in $organizations )
 					<section class="organization">
-						<h4>Coletivo Mundo</h4>
+						<h4>$organization.Name</h4>
 						<ul class="inline">
-							<li><a>Banco</a></li>
-							<li><a>Serviços</a></li>
+							#foreach( $module in $organization.Modules )
+							<li><a href="$serverName/$module.Url">$module.Name</a></li>
+							#end
                         </ul>
 					</section>
+					#end
                 </section>
 			</div>
 			<div id="column-notifications">

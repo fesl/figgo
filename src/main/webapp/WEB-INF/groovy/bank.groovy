@@ -1,1 +1,1 @@
-forward "bank/index.vm"
+render 'bank/index.vm', request, response
