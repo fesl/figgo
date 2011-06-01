@@ -23,6 +23,7 @@ import static br.octahedron.straight.database.NamespaceCommons.changeToGlobalNam
 
 import java.util.Collection;
 
+import br.octahedron.straight.inject.Inject;
 import br.octahedron.straight.modules.authorization.data.Role;
 import br.octahedron.straight.modules.authorization.manager.AuthorizationManager;
 
@@ -35,6 +36,7 @@ import br.octahedron.straight.modules.authorization.manager.AuthorizationManager
  */
 public class AuthorizationInternalFacade {
 
+	@Inject
 	private AuthorizationManager authorizationManager;
 
 	/**

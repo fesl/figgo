@@ -27,6 +27,13 @@ import br.octahedron.straight.modules.users.data.UserDAO;
 public class UsersManager {
 
 	private UserDAO userDAO = new UserDAO();
+	
+	/**
+	 * @param userDAO the userDAO to set
+	 */
+	protected void setUserDAO(UserDAO userDAO) {
+		this.userDAO = userDAO;
+	}
 
 	/**
 	 * Creates a system {@link User}

@@ -20,6 +20,8 @@ package br.octahedron.straight.database;
 
 import java.util.Collection;
 
+import br.octahedron.straight.inject.Inject;
+
 /**
  * An generic DAO interface to be extended.
  * 
@@ -27,11 +29,20 @@ import java.util.Collection;
  */
 public abstract class GenericDAO<T> {
 
-	private Class<T> klass;
+	@Inject
 	protected DatastoreFacade datastoreFacade = new DatastoreFacade();
+	private Class<T> klass;
+	
 
 	public GenericDAO(Class<T> klass) {
 		this.klass = klass;
+	}
+	
+	/**
+	 * @param datastoreFacade the datastoreFacade to set
+	 */
+	public void setDatastoreFacade(DatastoreFacade datastoreFacade) {
+		this.datastoreFacade = datastoreFacade;
 	}
 
 	/**

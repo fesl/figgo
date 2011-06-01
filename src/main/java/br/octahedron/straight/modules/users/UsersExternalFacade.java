@@ -19,6 +19,7 @@
 package br.octahedron.straight.modules.users;
 
 import br.octahedron.straight.database.NamespaceCommons;
+import br.octahedron.straight.inject.Inject;
 import br.octahedron.straight.modules.users.data.User;
 import br.octahedron.straight.modules.users.data.UserView;
 import br.octahedron.straight.modules.users.manager.UsersManager;
@@ -31,12 +32,8 @@ import br.octahedron.straight.modules.users.manager.UsersManager;
  */
 public class UsersExternalFacade {
 	
+	@Inject
 	private UsersManager usersManager;
-	
-
-	public UsersExternalFacade() {
-		this.usersManager = new UsersManager();
-	}
 	
 	/**
 	 * 

@@ -20,6 +20,7 @@ package br.octahedron.straight.modules.services;
 
 import java.util.Collection;
 
+import br.octahedron.straight.inject.Inject;
 import br.octahedron.straight.modules.services.data.ServiceView;
 import br.octahedron.straight.modules.services.manager.ServiceManager;
 
@@ -35,6 +36,7 @@ import br.octahedron.straight.modules.services.manager.ServiceManager;
  */
 public class ServiceExternalFacade {
 	
+	@Inject
 	private ServiceManager serviceManager;
 	
 	public void setServiceManager(ServiceManager serviceManager){

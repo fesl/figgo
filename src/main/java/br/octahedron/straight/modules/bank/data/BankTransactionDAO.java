@@ -24,7 +24,6 @@ import java.util.List;
 
 import javax.jdo.Query;
 
-import br.octahedron.straight.database.DatastoreFacade;
 import br.octahedron.straight.database.GenericDAO;
 import br.octahedron.straight.modules.bank.TransactionInfoService;
 
@@ -39,12 +38,6 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		super(BankTransaction.class);
 	}
 
-	/**
-	 * Method to be used by tests.
-	 */
-	protected void setDatastoreFacade(DatastoreFacade dsFacade) {
-		this.datastoreFacade = dsFacade;
-	}
 
 	/*
 	 * (non-Javadoc)
