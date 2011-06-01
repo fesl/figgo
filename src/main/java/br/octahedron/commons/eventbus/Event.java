@@ -16,31 +16,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.inject;
+package br.octahedron.commons.eventbus;
 
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
-
-import org.junit.Test;
-
-import br.octahedron.straight.database.DatastoreFacade;
+import java.io.Serializable;
 
 /**
- * @author Danilo Penna Queiroz - daniloqueiroz@octahedron.com.br
+ * An Event to be delivered by the {@link EventBus}.
+ * 
+ * @see {@link EventBus}
+ * 
+ * @author Danilo Penna Queiroz
  */
-public class InjectorTest {
-	
-	private InstanceHandler handler = new InstanceHandler();
+public interface Event extends Serializable {
 
-	@Test
-	public void testInjection() throws InstantiationException {
-		UserFacade facade = handler.getInstance(UserFacade.class);
-		assertNotNull(facade);
-		UserService service = facade.getUserService();
-		assertNotNull(service);
-		UserDAO userDAO = service.getUserDAO();
-		assertNotNull(userDAO);
-		DatastoreFacade ds = userDAO.getDatastoreFacade();
-		assertTrue(ds instanceof DatastoreFacade);
-	}
 }

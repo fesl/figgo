@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.eventbus;
+package br.octahedron.commons.eventbus;
 
 import java.util.HashMap;
 import java.util.LinkedList;

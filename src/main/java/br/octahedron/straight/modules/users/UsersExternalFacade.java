@@ -18,8 +18,8 @@
  */
 package br.octahedron.straight.modules.users;
 
-import br.octahedron.straight.database.NamespaceCommons;
-import br.octahedron.straight.inject.Inject;
+import br.octahedron.commons.database.NamespaceCommons;
+import br.octahedron.commons.inject.Inject;
 import br.octahedron.straight.modules.users.data.User;
 import br.octahedron.straight.modules.users.data.UserView;
 import br.octahedron.straight.modules.users.manager.UsersManager;

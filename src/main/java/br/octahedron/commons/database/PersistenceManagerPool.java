@@ -16,13 +16,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.database;
+package br.octahedron.commons.database;
 
 import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 
-import br.octahedron.straight.database.DatastoreFacade.PMFWrapper;
+import br.octahedron.commons.database.DatastoreFacade.PMFWrapper;
 
 /**
  * @see PersistenceManagerPool

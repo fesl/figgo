@@ -16,28 +16,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.eventbus;
+package br.octahedron.commons.eventbus;
 
-import java.io.Serializable;
+import java.util.Collection;
 
 /**
- * Subscribers receive notifications each time an {@link Event} of this {@link Subscriber} interest
- * is published. This interface defines this notification mechanism.
- * 
- * However, to start receive notifications, the subscriber should subscribe to {@link EventBus}. See
- * the {@link EventBus#subscribe(Subscriber, Class...)} documentation.
+ * Publishes events to subscribers.
  * 
  * @author Danilo Penna Queiroz
  */
-public interface Subscriber extends Serializable {
-	
-	/**
-	 * Inits the subscriber. Use this method to subscribe to interested events.
-	 */
-	public void init();
+public interface EventPublisher {
 
 	/**
-	 * Notify about a published {@link Event}
+	 * Publishes the given event to the given subscribers.
 	 */
-	public void eventPublished(Event event);
+	public void publish(Collection<Subscriber> subscribers, Event event);
+
 }

@@ -16,12 +16,12 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.inject;
+package br.octahedron.commons.inject;
 
-import static br.octahedron.straight.inject.DependencyManager.containsImplementation;
-import static br.octahedron.straight.inject.DependencyManager.getImplementation;
-import static br.octahedron.straight.inject.DependencyManager.registerImplementation;
-import static br.octahedron.straight.inject.DependencyManager.resolveDependency;
+import static br.octahedron.commons.inject.DependencyManager.containsImplementation;
+import static br.octahedron.commons.inject.DependencyManager.getImplementation;
+import static br.octahedron.commons.inject.DependencyManager.registerImplementation;
+import static br.octahedron.commons.inject.DependencyManager.resolveDependency;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;

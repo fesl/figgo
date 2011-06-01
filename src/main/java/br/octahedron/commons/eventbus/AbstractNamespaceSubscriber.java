@@ -16,17 +16,35 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.eventbus;
+package br.octahedron.commons.eventbus;
 
-import java.io.Serializable;
 
 /**
- * An Event to be delivered by the {@link EventBus}.
- * 
- * @see {@link EventBus}
+ * A subscriber that deals with different namespaces, when receiving NamespaceEvents.
  * 
  * @author Danilo Penna Queiroz
  */
-public interface Event extends Serializable {
+public abstract class AbstractNamespaceSubscriber implements Subscriber {
+	
+	public AbstractNamespaceSubscriber(Class<? extends NamespaceEvent> event) {
+		
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.octahedron.commons.eventbus.Subscriber#init()
+	 */
+	@Override
+	public abstract void init();
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.commons.eventbus.Subscriber#eventPublished(br.octahedron.commons.eventbus.Event)
+	 */
+	@Override
+	public final void eventPublished(Event event) {
+		if (event instanceof NamespaceEvent ) {
+			
+		}
+	}
+
 
 }

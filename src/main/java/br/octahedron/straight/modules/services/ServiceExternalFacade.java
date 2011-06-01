@@ -20,7 +20,7 @@ package br.octahedron.straight.modules.services;
 
 import java.util.Collection;
 
-import br.octahedron.straight.inject.Inject;
+import br.octahedron.commons.inject.Inject;
 import br.octahedron.straight.modules.services.data.ServiceView;
 import br.octahedron.straight.modules.services.manager.ServiceManager;
 

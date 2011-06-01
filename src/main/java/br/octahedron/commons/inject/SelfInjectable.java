@@ -16,20 +16,17 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.eventbus;
-
-import java.util.Collection;
+package br.octahedron.commons.inject;
 
 /**
- * Publishes events to subscribers.
- * 
- * @author Danilo Penna Queiroz
+ * TODO comments
+ * @author Danilo Queiroz
  */
-public interface EventPublisher {
+public abstract class SelfInjectable {
+	
+	private static final InstanceHandler handler = new InstanceHandler();
 
-	/**
-	 * Publishes the given event to the given subscribers.
-	 */
-	public void publish(Collection<Subscriber> subscribers, Event event);
-
+	public SelfInjectable() {
+		handler.inject(this);
+	}
 }

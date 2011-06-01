@@ -16,29 +16,32 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.test;
+package br.octahedron.commons.inject;
 
-import java.util.Collection;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
-import javax.jdo.Query;
+import org.junit.Test;
 
-import br.octahedron.commons.database.GenericDAO;
+import br.octahedron.commons.database.DatastoreFacade;
+import br.octahedron.commons.inject.InstanceHandler;
 
 /**
- * @author Danilo Queiroz
+ * @author Danilo Penna Queiroz - daniloqueiroz@octahedron.com.br
  */
-public class EntityDAO extends GenericDAO<Entity> {
-
-	public EntityDAO() {
-		super(Entity.class);
-	}
+public class InjectorTest {
 	
-	@SuppressWarnings("unchecked")
-	public Collection<Entity> getEntitiesWithElement(String element) {
-		Query query = this.datastoreFacade.createQueryForClass(Entity.class);
-		query.setFilter("elements == value");
-		query.declareParameters("java.lang.String value");
-		return (Collection<Entity>) query.execute(element);
-	}
+	private InstanceHandler handler = new InstanceHandler();
 
+	@Test
+	public void testInjection() throws InstantiationException {
+		UserFacade facade = handler.getInstance(UserFacade.class);
+		assertNotNull(facade);
+		UserService service = facade.getUserService();
+		assertNotNull(service);
+		UserDAO userDAO = service.getUserDAO();
+		assertNotNull(userDAO);
+		DatastoreFacade ds = userDAO.getDatastoreFacade();
+		assertTrue(ds instanceof DatastoreFacade);
+	}
 }

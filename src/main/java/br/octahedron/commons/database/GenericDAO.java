@@ -16,11 +16,11 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.database;
+package br.octahedron.commons.database;
 
 import java.util.Collection;
 
-import br.octahedron.straight.inject.Inject;
+import br.octahedron.commons.inject.Inject;
 
 /**
  * An generic DAO interface to be extended.

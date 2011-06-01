@@ -18,7 +18,7 @@
  */
 package br.octahedron.straight.modules.users.data;
 
-import br.octahedron.straight.database.GenericDAO;
+import br.octahedron.commons.database.GenericDAO;
 
 /**
  * @author Erick Moreno

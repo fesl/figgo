@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import br.octahedron.straight.eventbus.Subscriber;
+import br.octahedron.commons.eventbus.Subscriber;
 import br.octahedron.straight.modules.bank.BankConfigurationBuilder;
 import br.octahedron.straight.modules.configuration.ModuleConfigurationBuilder;
 import br.octahedron.straight.modules.configuration.data.ModuleConfiguration;

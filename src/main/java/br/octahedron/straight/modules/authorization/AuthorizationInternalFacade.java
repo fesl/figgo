@@ -18,12 +18,12 @@
  */
 package br.octahedron.straight.modules.authorization;
 
-import static br.octahedron.straight.database.NamespaceCommons.backToOldNamespace;
-import static br.octahedron.straight.database.NamespaceCommons.changeToGlobalNamespace;
+import static br.octahedron.commons.database.NamespaceCommons.backToOldNamespace;
+import static br.octahedron.commons.database.NamespaceCommons.changeToGlobalNamespace;
 
 import java.util.Collection;
 
-import br.octahedron.straight.inject.Inject;
+import br.octahedron.commons.inject.Inject;
 import br.octahedron.straight.modules.authorization.data.Role;
 import br.octahedron.straight.modules.authorization.manager.AuthorizationManager;
 

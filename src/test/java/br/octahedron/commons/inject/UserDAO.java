@@ -14,21 +14,25 @@
  *  You should have received a copy of the Lesser GNU General Public License
  *  along with Cotopaxi. If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.inject;
+package br.octahedron.commons.inject;
+
+import br.octahedron.commons.database.DatastoreFacade;
+import br.octahedron.commons.inject.Inject;
 
 /**
  * @author Danilo Penna Queiroz - daniloqueiroz@octahedron.com.br
  */
-public class UserFacade {
+public class UserDAO {
+
 	@Inject
-	private UserService userService;
+	private DatastoreFacade datastoreFacade;
 
-	public UserService getUserService() {
-		return this.userService;
+
+	public DatastoreFacade getDatastoreFacade() {
+		return this.datastoreFacade;
 	}
 
-	public void setUserService(UserService userService) {
-		this.userService = userService;
+	public void setDatastoreFacade(DatastoreFacade datastoreFacade) {
+		this.datastoreFacade = datastoreFacade;
 	}
-
 }

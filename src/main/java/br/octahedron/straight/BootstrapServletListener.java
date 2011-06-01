@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import br.octahedron.straight.eventbus.Subscriber;
+import br.octahedron.commons.eventbus.Subscriber;
 import br.octahedron.straight.modules.Module;
 
 /**

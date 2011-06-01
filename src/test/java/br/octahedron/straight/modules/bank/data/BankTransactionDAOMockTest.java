@@ -33,7 +33,7 @@ import javax.jdo.Query;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.octahedron.straight.database.DatastoreFacade;
+import br.octahedron.commons.database.DatastoreFacade;
 import br.octahedron.straight.modules.bank.data.BankTransaction;
 import br.octahedron.straight.modules.bank.data.BankTransactionDAO;
 import br.octahedron.straight.modules.bank.data.BankTransaction.TransactionType;

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.eventbus;
+package br.octahedron.commons.eventbus;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -29,6 +29,11 @@ import static org.easymock.EasyMock.verify;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import br.octahedron.commons.eventbus.AppEngineEventPublisher;
+import br.octahedron.commons.eventbus.Event;
+import br.octahedron.commons.eventbus.EventBus;
+import br.octahedron.commons.eventbus.Subscriber;
 
 import com.google.appengine.api.taskqueue.Queue;
 

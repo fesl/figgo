@@ -16,35 +16,28 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.modules.bank.data;
+package br.octahedron.commons.eventbus;
 
-import br.octahedron.commons.database.GenericDAO;
+import java.io.Serializable;
 
 /**
- * @author Danilo Queiroz
+ * Subscribers receive notifications each time an {@link Event} of this {@link Subscriber} interest
+ * is published. This interface defines this notification mechanism.
+ * 
+ * However, to start receive notifications, the subscriber should subscribe to {@link EventBus}. See
+ * the {@link EventBus#subscribe(Subscriber, Class...)} documentation.
+ * 
+ * @author Danilo Penna Queiroz
  */
-public class BankAccountDAO extends GenericDAO<BankAccount> {
-
-	private static final Long SYSTEM_ACCOUNT_ID = new Long(0L);
-	private static final BankAccount SYSTEM_ACCOUNT = new SystemAccount();
-
-	public BankAccountDAO() {
-		super(BankAccount.class);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.database.GenericDAO#get(java.lang.Object)
+public interface Subscriber extends Serializable {
+	
+	/**
+	 * Inits the subscriber. Use this method to subscribe to interested events.
 	 */
-	@Override
-	public BankAccount get(Object key) {
-		Long keyLong = (Long) key;
-		if (keyLong.equals(SYSTEM_ACCOUNT_ID)) {
-			return SYSTEM_ACCOUNT;
-		} else {
-			return super.get(key);
-		}
-	}
+	public void init();
 
+	/**
+	 * Notify about a published {@link Event}
+	 */
+	public void eventPublished(Event event);
 }

@@ -18,7 +18,7 @@
  */
 package br.octahedron.straight.modules.configuration.data;
 
-import br.octahedron.straight.database.GenericDAO;
+import br.octahedron.commons.database.GenericDAO;
 
 /**
  * @author Danilo Queiroz

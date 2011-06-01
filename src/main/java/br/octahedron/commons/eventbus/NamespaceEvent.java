@@ -16,17 +16,13 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.inject;
+package br.octahedron.commons.eventbus;
+
 
 /**
- * TODO comments
- * @author Danilo Queiroz
+ * @author danilo
+ *
  */
-public abstract class SelfInjectable {
-	
-	private static final InstanceHandler handler = new InstanceHandler();
+public class NamespaceEvent implements Event {
 
-	public SelfInjectable() {
-		handler.inject(this);
-	}
 }
