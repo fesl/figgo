@@ -40,14 +40,6 @@ public class BootstrapServletListener implements ServletContextListener {
 	 */
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
-		logger.info("System is going down!");
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)
-	 */
-	@Override
-	public void contextDestroyed(ServletContextEvent arg0) {
 		logger.info("Booting...");
 		for(Module module : Module.values()) {
 			Subscriber subscriber = module.getSubscriber();
@@ -56,6 +48,14 @@ public class BootstrapServletListener implements ServletContextListener {
 			}
 		}
 		logger.info("Up and running!");
+	}
+
+	/* (non-Javadoc)
+	 * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)
+	 */
+	@Override
+	public void contextDestroyed(ServletContextEvent arg0) {
+		logger.info("System is going down!");
 	}
 
 }
