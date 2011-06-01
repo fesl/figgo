@@ -18,21 +18,19 @@
  */
 package br.octahedron.commons.eventbus;
 
-import java.io.Serializable;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Subscribers receive notifications each time an {@link Event} of this {@link Subscriber} interest
- * is published. This interface defines this notification mechanism.
  * 
- * However, to start receive notifications, the subscriber should subscribe to {@link EventBus}. See
- * the {@link EventBus#subscribe(Subscriber, Class...)} documentation.
  * 
- * @author Danilo Penna Queiroz
+ * @author Danilo Queiroz
  */
-public interface Subscriber extends Serializable {
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface InterestedEvent {
 
-	/**
-	 * Notify about a published {@link Event}
-	 */
-	public void eventPublished(Event event);
+	Class<? extends Event>[] events();
 }

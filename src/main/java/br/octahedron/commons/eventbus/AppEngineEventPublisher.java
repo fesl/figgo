@@ -21,7 +21,10 @@ package br.octahedron.commons.eventbus;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import br.octahedron.commons.inject.InstanceHandler;
 
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
@@ -37,6 +40,7 @@ public class AppEngineEventPublisher implements EventPublisher {
 
 	private static final String QUEUE_NAME = "eventbus";
 	private static final Logger logger = Logger.getLogger(AppEngineEventPublisher.class.getName());
+	private InstanceHandler instanceHandler = new InstanceHandler();
 	private Queue taskQueue;
 
 	protected AppEngineEventPublisher() {
@@ -54,10 +58,14 @@ public class AppEngineEventPublisher implements EventPublisher {
 	 * br.octahedron.straight.eventbus.Event)
 	 */
 	@Override
-	public void publish(Collection<Subscriber> subscribers, Event event) {
+	public void publish(Collection<Class<? extends Subscriber>> subscribers, Event event) {
 		Collection<TaskOptions> tasks = new LinkedList<TaskOptions>();
-		for (Subscriber subscriber : subscribers) {
-			tasks.add(TaskOptions.Builder.withPayload(new PublishTask(subscriber, event)));
+		for (Class<? extends Subscriber> subscriber : subscribers) {
+			try {
+				tasks.add(TaskOptions.Builder.withPayload(new PublishTask(instanceHandler.getInstance(subscriber), event)));
+			} catch (InstantiationException e) {
+				logger.log(Level.WARNING, "Unable to deliver event to subscriber : " + subscriber.getName(), e);
+			}
 		}
 		logger.fine("Adding " + tasks.size() + " PublishTasks to " + QUEUE_NAME + " queue. EventClass: " + event.getClass());
 		this.taskQueue.add(tasks);

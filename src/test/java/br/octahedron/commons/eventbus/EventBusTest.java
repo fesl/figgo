@@ -64,7 +64,6 @@ public class EventBusTest {
 		verify(this.consumerOne, this.consumerTwo, this.queue);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void subscribeTest() {
 		replay(this.consumerOne, this.consumerTwo, this.queue);
@@ -72,8 +71,8 @@ public class EventBusTest {
 		assertFalse(EventBus.subscribers.containsKey(EventOne.class));
 		assertFalse(EventBus.subscribers.containsKey(EventTwo.class));
 
-		EventBus.subscribe(this.consumerOne, EventOne.class, EventTwo.class);
-		EventBus.subscribe(this.consumerTwo, EventTwo.class);
+		EventBus.subscribe(SubscriberOne.class);
+		EventBus.subscribe(SubscriberTwo.class);
 
 		assertTrue(EventBus.subscribers.containsKey(EventOne.class));
 		assertEquals(1, EventBus.subscribers.get(EventOne.class).size());
@@ -95,18 +94,10 @@ public class EventBusTest {
 		expect(this.queue.add(notNull(Iterable.class))).andReturn(null);
 		replay(this.consumerOne, this.consumerTwo, this.queue);
 
-		EventBus.subscribe(this.consumerOne, EventOne.class, EventTwo.class);
-		EventBus.subscribe(this.consumerTwo, EventTwo.class);
+		EventBus.subscribe(SubscriberOne.class);
+		EventBus.subscribe(SubscriberTwo.class);
 		EventBus.publish(event);
 
 		verify(this.consumerOne, this.consumerTwo, this.queue);
-	}
-
-	private static class EventOne implements Event {
-		private static final long serialVersionUID = 1L;
-	}
-
-	private static class EventTwo implements Event {
-		private static final long serialVersionUID = 1L;
 	}
 }

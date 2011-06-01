@@ -31,8 +31,8 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class EventBus {
 
-	private static Lock monitor = new ReentrantLock();
-	protected static Map<Class<? extends Event>, LinkedList<Subscriber>> subscribers = new HashMap<Class<? extends Event>, LinkedList<Subscriber>>();
+	private static final Lock monitor = new ReentrantLock();
+	protected static final Map<Class<? extends Event>, LinkedList<Class<? extends Subscriber>>> subscribers = new HashMap<Class<? extends Event>, LinkedList<Class<? extends Subscriber>>>();
 	protected static EventPublisher eventPublisher = new AppEngineEventPublisher();
 
 	/**
@@ -54,14 +54,17 @@ public class EventBus {
 	 * subscriber will start receive notifications each time an {@link Event} of one of the given
 	 * types be published by any one.
 	 */
-	public static void subscribe(Subscriber subscriber, Class<? extends Event>... interestedEvents) {
+	public static void subscribe(Class<? extends Subscriber> subscriber) {
 		try {
 			monitor.lock();
-			for (Class<? extends Event> interestedEvent : interestedEvents) {
-				if (!subscribers.containsKey(interestedEvent)) {
-					subscribers.put(interestedEvent, new LinkedList<Subscriber>());
+			if (subscriber.isAnnotationPresent(InterestedEvent.class)) {
+				InterestedEvent ann = subscriber.getAnnotation(InterestedEvent.class);
+				for (Class<? extends Event> interestedEvent : ann.events()) {
+					if (!subscribers.containsKey(interestedEvent)) {
+						subscribers.put(interestedEvent, new LinkedList<Class<? extends Subscriber>>());
+					}
+					subscribers.get(interestedEvent).add(subscriber);
 				}
-				subscribers.get(interestedEvent).add(subscriber);
 			}
 		} finally {
 			monitor.unlock();
@@ -76,7 +79,7 @@ public class EventBus {
 		try {
 			monitor.lock();
 			if (subscribers.containsKey(event.getClass())) {
-				eventPublisher.publish((LinkedList<Subscriber>) subscribers.get(event.getClass()).clone(), event);
+				eventPublisher.publish((LinkedList<Class<? extends Subscriber>>) subscribers.get(event.getClass()).clone(), event);
 			}
 		} finally {
 			monitor.unlock();

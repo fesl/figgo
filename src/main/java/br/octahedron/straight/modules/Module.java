@@ -48,24 +48,16 @@ public enum Module {
 		this.subscriberClass = subscriber;
 	}
 	
-	public Subscriber getSubscriber() {
-		if (this.subscriberClass != null) {
-			return this.newInstance(this.subscriberClass);
-		} else {
-			return null;
-		}
+	public Class<? extends Subscriber> getSubscriberClass() {
+			return this.subscriberClass;
 	}
 
 	/**
 	 * @return Gets the {@link ModuleConfigurationBuilder} for the module
 	 */
 	public ModuleConfigurationBuilder getModuleBuilder() {
-		return this.newInstance(this.builderClass);
-	}
-	
-	private <T> T newInstance(Class<T> klass) {
 		try {
-			return klass.newInstance();
+			return this.builderClass.newInstance();
 		} catch (Exception ex) {
 			String message = "Unable to create ModuleConfigurationBuilder for module " + this.name()
 					+ ". The builder should have an empty and public constructor!";
@@ -73,7 +65,7 @@ public enum Module {
 			throw new RuntimeException(message, ex);
 		}
 	}
-
+	
 	/**
 	 * Module used by TESTS.
 	 */

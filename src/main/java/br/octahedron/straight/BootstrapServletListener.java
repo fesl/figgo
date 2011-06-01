@@ -18,6 +18,8 @@
  */
 package br.octahedron.straight;
 
+import static br.octahedron.commons.eventbus.EventBus.subscribe;
+
 import java.util.logging.Logger;
 
 import javax.servlet.ServletContextEvent;
@@ -32,25 +34,30 @@ import br.octahedron.straight.modules.Module;
  * @author Danilo Queiroz
  */
 public class BootstrapServletListener implements ServletContextListener {
-	
+
 	private static final Logger logger = Logger.getLogger(BootstrapServletListener.class.getName());
 
-	/* (non-Javadoc)
-	 * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
 	 */
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		logger.info("Booting...");
-		for(Module module : Module.values()) {
-			Subscriber subscriber = module.getSubscriber();
-			if ( subscriber != null ) {
-				subscriber.init();
+		for (Module module : Module.values()) {
+			Class<? extends Subscriber> subscriber = module.getSubscriberClass();
+			if (subscriber != null) {
+				subscribe(subscriber);
 			}
 		}
 		logger.info("Up and running!");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)
 	 */
 	@Override
