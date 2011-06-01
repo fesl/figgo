@@ -6,7 +6,7 @@ if (params.action) {
 
 def action_get_edit() {
 	// request.domain = configurationFacade.getDomainConfiguration(request.serverName)
-	forward 'domain/edit.vm'
+	render 'domain/edit.vm', request, response
 }
 
 def action_post_edit() {
@@ -15,7 +15,7 @@ def action_post_edit() {
 }
 
 def notfound() {
-	forward 'notfound.vm'
+	render 'notfound.vm', request, response
 }
 
 "$action"()

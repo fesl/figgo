@@ -1,3 +1,77 @@
-<a href="$logout_url">logout</a>
+#set( $title = "!@#$%*() - Nome do coletivo - Banco" )
+#parse( "templates/layout.vm" )
 
-Olá, $user
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<h1>$domain.Name</h1>
+		<ul>
+            <li><a href="$url/#">Dashboard</a></li>
+            <li class="selected"><a href="$url/bank">Banco</a></li>
+            <li><a href="$url/services#">Serviços</a></li>
+		</ul>
+		<div id="dashboard">
+			<div id="column-statement">
+                <section id="about">
+    				<table>
+                		<thead>
+                		<tr>
+                			<th>
+                				Data
+                			</th>
+							<th>
+                				Destino
+                			</th>
+							<th>
+                				Descrição
+                			</th>
+							<th>
+                				Descrição
+                			</th>
+                		</tr>
+                        </thead>
+                		<tbody>
+                        ##foreach( $transation in $account.LatestTransations )
+                    		<tr>
+                    			<td>
+                    				transaction.Date
+                    			</td>
+								<td>
+                    				transaction.To
+                    			</td>
+								<td>
+                    				transaction.Description
+                    			</td>
+								<td>
+                    				transaction.Value
+                    			</td>
+                    		</tr>
+                        ##end
+                        </tbody>
+						<tfoot>
+							<td />
+							<td />
+                            <td>SALDO</td>
+                            <td>$account.Balance</td>
+                        </tfoot>
+                    </table>
+    			</section>
+				<hr />
+			</div>
+			<div id="column-notifications">
+    			<section id="notifications">
+					<h3>Acesso rápido</h3>
+					<ul>
+						<li><a href="$url/bank/">Minha conta</a></li>
+                        <li><a href="$url/bank/transaction">Trasferência</a></li>
+						<li><a href="$url/bank/statement">Extrato</a></li>
+						<li><a href="$url/bank/other">Outras consultas</a></li>
+                    </ul>
+				</section>
+            </div>
+		</div>
+	</div>
+#end
+	
+#scripts()

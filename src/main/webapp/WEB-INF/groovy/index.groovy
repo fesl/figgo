@@ -1,12 +1,12 @@
 def index() {
-	if (request.serverName != "figgo.com.br") {
-		forward 'index.vm'
+	if (request.serverName == "figgo.com.br") {
+		render 'index.vm', request, response
 	} else {
 		// request.domain = configurationFacade.getDomainConfiguration(request.serverName)
-		if (!request.domain.isEmpty())
-			forward 'domain/index.vm'
-		else
-			redirect '/domain/edit'
+		//if (!request.domain.isEmpty())
+			render 'domain/index.vm', request, response
+		//else
+		//	redirect '/domain/edit'
 	}
 }
 

@@ -11,7 +11,7 @@ def action_create() {
 }
 
 def action_new() {
-	forward 'user/new.vm'
+	render 'user/new.vm', request, response
 }
 
 "$action"()

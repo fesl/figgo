@@ -7,7 +7,7 @@ if (params.module && params.action) {
 }
 
 def notfound() {
-	forward 'notfound.vm'
+	render 'notfound.vm', request, response
 }
 
 // DOMAIN CONFIGURATION
@@ -17,7 +17,7 @@ def action_domain_post_create() {
 }
 
 def action_domain_get_new() {
-	forward 'domain/new.vm'
+	render 'domain/new.vm', request, response
 }
 
 "$action"()

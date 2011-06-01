@@ -1,1 +1,1 @@
-forward "services/index.vm"
+render 'services/index.vm', request, response
