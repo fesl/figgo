@@ -3,7 +3,7 @@
 	<!-- Listeners -->
 	<!-- Boostraps the system -->
 	<listener>
-        <listener-class> br.octahedron.straight.BootstrapServlet</listener-class>
+        <listener-class> br.octahedron.straight.BootstrapServletListener</listener-class>
     </listener>
 	<!-- Gaelyk required -->
 	<listener>
