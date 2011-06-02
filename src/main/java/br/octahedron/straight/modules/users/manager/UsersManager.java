@@ -18,13 +18,14 @@
  */
 package br.octahedron.straight.modules.users.manager;
 
+import br.octahedron.straight.modules.users.UsersIF;
 import br.octahedron.straight.modules.users.data.User;
 import br.octahedron.straight.modules.users.data.UserDAO;
 
 /**
  * @author Erick Moreno
  */
-public class UsersManager {
+public class UsersManager implements UsersIF{
 
 	private UserDAO userDAO = new UserDAO();
 	
