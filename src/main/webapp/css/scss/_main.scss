@@ -1,15 +1,18 @@
-@import "main/user-column-about";
-@import "main/user-column-notifications";
-@import "main/bank-column-statement";
-@import "main/bank-column-quickmenu";
+@import "main/user-column-left";
+@import "main/user-column-right";
+@import "main/bank-column-left";
+@import "main/bank-column-right";
+@import "main/services-column-left";
+@import "main/services-column-right";
 
 #main {
   margin: 30px auto 0;
   width: 735px;
 }
 
-#dashboard, #bank {
+#dashboard, #bank, #services {
   display: table;
+  width: 735px;
   padding: 10px;
   border: 3px solid #eee;
 }
@@ -42,3 +45,41 @@
     }
   } // li
 }
+
+#balance table, #services table {
+  width: 100%;
+  font-size: 14px;
+  text-align: left;
+  border-collapse: collapse;
+
+  tbody, tfoter {
+    td {
+      padding: 3px;
+    }
+  }
+  
+  thead {
+    background-color: #ddd;
+    
+    th {
+      padding: 2px;
+    }
+  }
+
+  tbody {
+    td {
+    }
+    
+    tr:nth-child(2n) {
+      background-color: #eee;
+    }
+  }
+
+  tfoot {
+    tr {
+      font-weight: bold;
+      background-color: #ddd;
+    }
+  }
+} 
+
