@@ -22,10 +22,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import br.octahedron.commons.inject.Inject;
-import br.octahedron.straight.modules.Module;
+import br.octahedron.straight.modules.Modules;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationView;
-import br.octahedron.straight.modules.configuration.data.ModuleConfigurationView;
+import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfigurationView;
 import br.octahedron.straight.modules.configuration.manager.ConfigurationManager;
 
 /**
@@ -80,7 +80,7 @@ public class ConfigurationExternalFacade {
 	 * @see ConfigurationManager#enableModule(Module)
 	 * @see ConfigurationManager#disableModule(Module)
 	 */
-	public void changeModuleState(Module module, boolean enabled) {
+	public void changeModuleState(Modules module, boolean enabled) {
 		if (enabled) {
 			this.configurationManager.enableModule(module);
 		} else {
@@ -91,14 +91,14 @@ public class ConfigurationExternalFacade {
 	/**
 	 * @see ConfigurationManager#getModuleConfiguration(Module)
 	 */
-	public ModuleConfigurationView getModuleConfiguration(Module module) {
+	public DomainSpecificModuleConfigurationView getModuleConfiguration(Modules module) {
 		return this.configurationManager.getModuleConfiguration(module);
 	}
 
 	/**
 	 * @see ConfigurationManager#restoreModuleProperties(Module)
 	 */
-	public void restoreModuleConfiguration(Module module) {
+	public void restoreModuleConfiguration(Modules module) {
 		this.configurationManager.restoreModuleProperties(module);
 	}
 
@@ -107,7 +107,7 @@ public class ConfigurationExternalFacade {
 	 * 
 	 * @see ConfigurationManager#setModuleProperty(Module, String, String)
 	 */
-	public void updateModuleConfiguration(Module module, Map<String, String> moduleProperties) {
+	public void updateModuleConfiguration(Modules module, Map<String, String> moduleProperties) {
 		for (Entry<String, String> entry : moduleProperties.entrySet()) {
 			this.configurationManager.setModuleProperty(module, entry.getKey(), entry.getValue());
 		}

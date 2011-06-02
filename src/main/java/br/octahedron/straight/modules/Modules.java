@@ -16,17 +16,35 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.modules.configuration.data;
+package br.octahedron.straight.modules;
 
-import br.octahedron.commons.database.GenericDAO;
+import br.octahedron.straight.modules.authorization.AuthorizationSpec;
+import br.octahedron.straight.modules.bank.BankSpec;
 
 /**
+ * All the Modules existent at the project
+ * 
  * @author Danilo Queiroz
  */
-public class ModuleConfigurationDAO extends GenericDAO<DomainSpecificModuleConfiguration> {
+public enum Modules {
 
-	public ModuleConfigurationDAO() {
-		super(DomainSpecificModuleConfiguration.class);
+	BANK(new BankSpec()), AUTHORIZATION(new AuthorizationSpec());
+
+	private ModuleSpec moduleSpec;
+
+	private Modules(ModuleSpec moduleSpecification) {
+		this.moduleSpec = moduleSpecification;
 	}
-
+	
+	public ModuleSpec getModuleSpec() {
+		return this.moduleSpec;
+	}
+	
+	public static ModuleSpec getModuleSpec(Modules module) {
+		return module.getModuleSpec();
+	}
+	
+	public static ModuleSpec getModuleSpec(String moduleName) {
+		return Modules.valueOf(moduleName).getModuleSpec();
+	}
 }

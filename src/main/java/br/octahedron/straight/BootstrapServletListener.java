@@ -20,13 +20,15 @@ package br.octahedron.straight;
 
 import static br.octahedron.commons.eventbus.EventBus.subscribe;
 
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import br.octahedron.commons.eventbus.Subscriber;
-import br.octahedron.straight.modules.Module;
+import br.octahedron.straight.modules.ModuleSpec;
+import br.octahedron.straight.modules.Modules;
 
 /**
  * A {@link ServletContextListener} that bootstraps the system.
@@ -46,10 +48,14 @@ public class BootstrapServletListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		logger.info("Booting...");
-		for (Module module : Module.values()) {
-			Class<? extends Subscriber> subscriber = module.getSubscriberClass();
-			if (subscriber != null) {
-				subscribe(subscriber);
+		for (Modules module : Modules.values()) {
+			ModuleSpec spec = module.getModuleSpec();
+			if ( spec.hasSubscribers() ) {
+				Set<Class<? extends Subscriber>> subscribers = spec.getSubscribers();
+				for (Class<? extends Subscriber> subscriber : subscribers) {
+					logger.info("Registering Subscriber to EventBus: " + subscriber.getName());
+					subscribe(subscriber);
+				}
 			}
 		}
 		logger.info("Up and running!");
