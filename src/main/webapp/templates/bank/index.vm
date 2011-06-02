@@ -10,12 +10,12 @@
     		<nav id="tabs">
         		<ul class="inline">
                     <li><a href="$url/#">Dashboard</a></li>
-                    <li class="selected"><a href="$url/bank">Banco</a></li>
-                    <li><a href="$url/services#">Serviços</a></li>
+                    <li class="selected"><a href="$url/bank#">Banco</a></li>
+                    <li><a href="$url/services">Serviços</a></li>
         		</ul>
     		</nav>
 		</header>
-		<div id="bank">
+		<div id="services">
 			<div id="column-statement">
                 <section id="balance">
                     <h3>Minha conta</h3>

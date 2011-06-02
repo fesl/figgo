@@ -1,0 +1,59 @@
+#set( $title = "Figgo - Nome do coletivo - Banco - Transações" )
+#parse( "templates/layout.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<header>
+    		<h1>Nome do coletivo</h1>
+    		<nav id="tabs">
+        		<ul class="inline">
+                    <li><a href="$url/#">Dashboard</a></li>
+                    <li class="selected"><a href="$url/bank#">Banco</a></li>
+                    <li><a href="$url/services">Serviços</a></li>
+        		</ul>
+    		</nav>
+		</header>
+		<div id="services">
+			<div id="column-statement">
+                <section id="balance">
+                    <h3>Transferência</h3>
+					<form action="/bank/transfer" method="post">
+						<label for="userId">
+                    		Usuário: <input type="text" name="userId" />
+                    	</label><br />
+                    	<label for="amount">
+                            Valor: </small> <input type="text" name="amount" />
+                    	</label><br />
+                    	<label for="type">
+                            Tipo:
+							<select type="text" name="type">
+                                <option value="payment">Pagamento</option>
+								<option value="transfer">Transferência</option>
+                            </select>
+                    	</label><br />
+                    	<label for="comment">
+                    		Comentário (opcional): <textarea name="comment"></textarea>
+                    	</label><br />
+                		<input type="submit" value="Transferir" />
+                    </form>
+    			</section>
+				<hr />
+			</div>
+			<div id="column-quickmenu">
+    			<section id="menu">
+					<h3>Acesso rápido</h3>
+					<ul>
+						<li><a href="bank/">Minha conta</a></li>
+                        <li><a href="bank/transfer">Trasferência</a></li>
+						<li><a href="bank/statement">Extrato</a></li>
+						<li><a href="bank/other">Outras consultas</a></li>
+                    </ul>
+				</section>
+            </div>
+		</div>
+	</div>
+#end
+	
+#scripts()
