@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ChangeResourceRecordSetsRequest xmlns="https://route53.amazonaws.com/doc/2011-05-05/">
+   <ChangeBatch>
+      <Comment>
+      MX setup using GoogleApps
+      </Comment>
+      <Changes>
+         <Change>
+            <Action>CREATE</Action>
+            <ResourceRecordSet>
+               <Name>figgo.com.br.</Name>
+               <Type>MX</Type>
+               <TTL>400</TTL>
+               <ResourceRecords>
+                  <ResourceRecord>
+                     <Value>1 ASPMX.L.GOOGLE.COM.</Value>
+                  </ResourceRecord>
+                 <ResourceRecord>
+                     <Value>5 ALT1.ASPMX.L.GOOGLE.COM.</Value>
+                  </ResourceRecord>
+                     <ResourceRecord>
+                     <Value>5 ALT2.ASPMX.L.GOOGLE.COM.</Value>
+                  </ResourceRecord>
+                  <ResourceRecord>
+                     <Value>10 ASPMX2.GOOGLEMAIL.COM.</Value>
+                  </ResourceRecord>
+                     <ResourceRecord>
+                     <Value>10 ASPMX3.GOOGLEMAIL.COM.</Value>
+                  </ResourceRecord>
+               </ResourceRecords>
+            </ResourceRecordSet>
+		 </Change>
+	 </Changes>
+   </ChangeBatch>
+</ChangeResourceRecordSetsRequest>

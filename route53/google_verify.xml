@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ChangeResourceRecordSetsRequest xmlns="https://route53.amazonaws.com/doc/2011-05-05/">
+   <ChangeBatch>
+      <Comment>
+      Create verification key for GoogleApps
+      </Comment>
+      <Changes>
+         <Change>
+            <Action>CREATE</Action>
+            <ResourceRecordSet>
+               <Name>figgo.com.br.</Name>
+               <Type>TXT</Type>
+               <TTL>400</TTL>
+               <ResourceRecords>
+                  <ResourceRecord>
+                     <Value>"google-site-verification=kUHa5_ZhL3lmyvRnFuoKAI2LFjecLlTVGP1TIRXNGAM"</Value>
+                  </ResourceRecord>
+               </ResourceRecords>
+            </ResourceRecordSet>
+		 </Change>
+	  </Changes>
+   </ChangeBatch>
+</ChangeResourceRecordSetsRequest>

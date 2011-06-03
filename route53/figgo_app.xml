@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ChangeResourceRecordSetsRequest xmlns="https://route53.amazonaws.com/doc/2011-05-05/">
+   <ChangeBatch>
+      <Comment>
+      Configure Figgo application
+      </Comment>
+      <Changes>
+         <Change>
+            <Action>CREATE</Action>
+            <ResourceRecordSet>
+               <Name>www.figgo.com.br.</Name>
+               <Type>CNAME</Type>
+               <TTL>40000</TTL>
+               <ResourceRecords>
+                  <ResourceRecord>
+                     <Value>ghs.google.com</Value>
+                  </ResourceRecord>
+               </ResourceRecords>
+            </ResourceRecordSet>
+  		 </Change>
+         <Change>
+            <Action>CREATE</Action>
+            <ResourceRecordSet>
+               <Name>figgo.com.br.</Name>
+               <Type>A</Type>
+               <TTL>40000</TTL>
+               <ResourceRecords>
+                  <ResourceRecord>
+                     <Value>216.239.32.21</Value>
+				  </ResourceRecord>
+                  <ResourceRecord>
+                     <Value>216.239.34.21</Value>
+                  </ResourceRecord>
+                  <ResourceRecord>
+                     <Value>216.239.36.21</Value>
+                  </ResourceRecord>
+                  <ResourceRecord>
+                     <Value>216.239.38.21</Value>
+                  </ResourceRecord>
+               </ResourceRecords>
+            </ResourceRecordSet>
+		 </Change>
+	  </Changes>
+   </ChangeBatch>
+</ChangeResourceRecordSetsRequest>
