@@ -1,4 +1,4 @@
-def actions = ['index', 'transfer']
+def actions = ['index', 'transfer', 'statement']
 
 if (actions.contains(params.action)) {
 	actionCall = "action_" + request.method.toLowerCase() + "_" + params.action
@@ -12,6 +12,10 @@ def action_get_index() {
 
 def action_get_transfer() {
 	render 'bank/transfer.vm', request, response
+}
+
+def action_get_statement() {
+	render 'bank/statement-choice.vm', request, response
 }
 
 def action_post_transfer() {

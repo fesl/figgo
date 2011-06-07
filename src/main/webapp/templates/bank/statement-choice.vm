@@ -16,29 +16,20 @@
     		</nav>
 		</header>
 		<div id="bank">
-			<div id="column-transfer">
-                <section id="transfer">
-                    <h3>Transferência</h3>
-					<span>Saldo atual: M$ 108,00</span>
-					<form action="/bank/transfer" method="post">
+			<div id="column-statement">
+                <section id="statement">
+                    <h3>Extrato</h3>
+					<form action="/bank/statement" method="post">
 						<fieldset >
-    						<label for="userId">
-                        		Usuário: <input type="text" name="userId" />
-                        	</label>
-                        	<label for="amount">
-                                Valor: <input type="text" name="amount" />
-                        	</label>
                         	<label for="type">
-                                Tipo:
-    							<select type="text" name="type">
-                                    <option value="payment">Pagamento</option>
-    								<option value="transfer">Transferência</option>
+                                Mês:
+    							<select type="text" name="month">
+                                    <option value="Junho">Junho/2011</option>
+									<option value="Maio">Maio/2011</option>
+    								<option value="Abril">Abril/2011</option>
                                 </select>
                         	</label>
-                        	<label for="comment">
-                        		Comentário (opcional): <textarea name="comment"></textarea>
-                        	</label>
-                    		<input type="submit" value="Transferir" />
+                    		<input type="submit" value="Visualizar" />
                         </fieldset>
                     </form>
     			</section>

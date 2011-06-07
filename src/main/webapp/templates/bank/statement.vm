@@ -18,7 +18,7 @@
 		<div id="bank">
 			<div id="column-statement">
                 <section id="balance">
-                    <h3>Minha conta</h3>
+                    <h3>Extrato $month</h3>
     				<table>
                 		<thead>
                     		<tr>
