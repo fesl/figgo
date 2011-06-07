@@ -4,9 +4,9 @@
 
 /* TEAM */
   <your title>: <your name>
-  Site: 
-  Twitter: 
-  Location: 
+  Site: www.octahedron.com.br
+  Twitter: @OctahedronBR
+  Location: Campina Grande, Paraíba, Brazil
 
 /* THANKS */
   Names (& URL): 

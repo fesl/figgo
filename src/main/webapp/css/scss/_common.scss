@@ -1,0 +1,49 @@
+@import "mixins";
+
+body {
+  font-family: "Lucida Grande", "Arial", "Helvetica", "Verdana", "Gill Sans", sans-serif;
+}
+
+/* classes */
+.center {
+  margin: 0 auto;
+}
+
+ul.inline {
+  li {
+    display: inline;
+  }
+}
+
+table.simple {
+  width: 100%;
+  font-size: 14px;
+  text-align: left;
+  border-collapse: collapse;
+
+  tbody, tfoter {
+    td {
+      padding: 3px;
+    }
+  }
+  
+  thead {
+    background-color: #ddd;
+    
+    th {
+      padding: 2px;
+    }
+  }
+
+  tfoot {
+    tr {
+      font-weight: bold;
+      background-color: #ddd;
+    }
+  }
+} 
+
+/* elements */
+img {
+  max-width: 97%;
+}

@@ -19,7 +19,7 @@
 			<div id="column-statement">
                 <section id="balance">
                     <h3>Extrato $month</h3>
-    				<table>
+    				<table class="simple">
                 		<thead>
                     		<tr>
                     			<th>Data</th>
@@ -63,12 +63,14 @@
 			<div id="column-quickmenu">
     			<section id="menu">
 					<h3>Acesso rápido</h3>
-					<ul>
-						<li><a href="/bank">Minha conta</a></li>
-                        <li><a href="/bank/transfer">Trasferência</a></li>
-						<li><a href="/bank/statement">Extrato</a></li>
-						<li><a href="/bank/other">Outras consultas</a></li>
-                    </ul>
+					<aside>
+    					<ul>
+    						<li><a href="/bank">Minha conta</a></li>
+                            <li><a href="/bank/transfer">Trasferência</a></li>
+    						<li><a href="/bank/statement">Extrato</a></li>
+    						<li><a href="/bank/other">Outras consultas</a></li>
+                        </ul>
+					</aside>
 				</section>
             </div>
 		</div>

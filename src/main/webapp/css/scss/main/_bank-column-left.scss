@@ -15,6 +15,14 @@
   }
 }
 
+#balance table {
+  tbody {
+    tr:nth-child(2n) {
+      background-color: #eee;
+    }
+  }
+}
+
 #column-transfer {
   float: left;
   width: 500px;
