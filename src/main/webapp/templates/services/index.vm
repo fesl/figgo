@@ -9,21 +9,17 @@
     		<h1>$domain.Name</h1>
     		<nav id="tabs">
         		<ul class="inline">
-                    <li><a href="$url/#">Dashboard</a></li>
-                    <li><a href="$url/bank">Banco</a></li>
-                    <li class="selected"><a href="$url/services#">Serviços</a></li>
+                    <li><a href="/">Dashboard</a></li>
+                    <li><a href="/bank">Banco</a></li>
+                    <li class="selected"><a href="/services#">Serviços</a></li>
         		</ul>
     		</nav>
 		</header>
 		<div id="services">
 			<div id="column-my-services">
 				<section id="my-services">
-					<table>
-                		<thead>
-                    		<tr>
-                    			<th>Meus serviços</th>
-                    		</tr>
-                        </thead>
+					<h3>Meus serviços</h3>
+					<table class="simple">
                 		<tbody>
                         ##foreach( $service in $myServices )
                     		<tr>
@@ -43,10 +39,8 @@
 			<div id="column-services">
     			<section id="organization-services">
 					<h3>Serviços a serem contratados</h3>
-					<form>
-						<input type="text" name="service" placeholder="Busca por serviço" />
-                    </form>
-					<table>
+					<input type="text" name="service" placeholder="Busca por serviço" />
+					<table class="simple">
 						<thead>
                     		<tr>
                     			<th>Serviço</th>
