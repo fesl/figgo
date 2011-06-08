@@ -18,24 +18,81 @@
  */
 package br.octahedron.straight.modules.admin.util;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.google.appengine.api.urlfetch.HTTPHeader;
+import com.google.appengine.api.urlfetch.HTTPMethod;
+import com.google.appengine.api.urlfetch.HTTPRequest;
+import com.google.appengine.api.urlfetch.HTTPResponse;
+import com.google.appengine.api.urlfetch.URLFetchService;
+import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.appengine.repackaged.org.apache.commons.codec.binary.Base64;
 
 /**
  * @author Danilo Penna Queiroz
  */
 public class Route53Util {
-	
+
+	private static final Logger logger = Logger.getLogger(Route53Util.class.getName());
+	private static final URLFetchService urlFetchService = URLFetchServiceFactory.getURLFetchService();
+
+	private static final String ROUTE53_SERVER = "https://route53.amazonaws.com";
+	private static final String DATE_COMMAND = "/date";
+	private static final String VERSION_SPEC = "/2011-05-05";
+	private static final String HOSTED_ZONE_COMMAND = "/hostedzone/";
+
+	private static final String ACCESS_ID_TOKEN = "{accessid}";
+	private static final String SIGNATURE_TOKEN = "{sign}";
+	private static final String DOMAIN_TOKEN = "{domain}";
+	private static final String CREATE_DOMAIN_TEMPLATE = "create_domain.xml";
 	private static final String KEY_ALGORITHM = "PBKDF2WithHmacSHA1";
 	private static final String MAC_ALGORITHM = "HmacSHA1";
-	
+
+	private static final String AUTH_TOKEN = "AWS3-HTTPS AWSAccessKeyId={accessid},Algorithm=" + MAC_ALGORITHM + ",Signature=${sign}";
+	private static final String FETCH_DATE_HEADER = "date";
+	private static final String SUBMIT_DATE_HEADER = "x-amz-date";
+	private static final String AUTHORIZATION_HEADER = "X-Amzn-Authorization";
+
+	public static void createDomain(String domain, String accessId, String accessKey, String hostedZoneId) throws Route53Exception {
+		try {
+			HTTPRequest request = new HTTPRequest(new URL(ROUTE53_SERVER + VERSION_SPEC + HOSTED_ZONE_COMMAND + hostedZoneId), HTTPMethod.POST);
+			request.setPayload(generateRequestBody(domain).getBytes());
+			signRequest(request, accessId, accessKey);
+			HTTPResponse response = urlFetchService.fetch(request);
+			if (response.getResponseCode() != 200) {
+				String out = new String(response.getContent());
+				logger.fine("Unable to create domain: " + domain + " - " + out);
+				throw new Route53Exception(out);
+			}
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Unexpected error accessing Route53: " + e.getMessage(), e);
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected static void signRequest(HTTPRequest request, String accessID, String key) throws IOException, InvalidKeyException,
+			InvalidKeySpecException, NoSuchAlgorithmException {
+		String date = fetchDate();
+		String sign = sign(date, key);
+		String signature = AUTH_TOKEN.replace(ACCESS_ID_TOKEN, accessID);
+		signature = signature.replace(SIGNATURE_TOKEN, sign);
+
+		request.addHeader(new HTTPHeader(SUBMIT_DATE_HEADER, date));
+		request.addHeader(new HTTPHeader(AUTHORIZATION_HEADER, signature));
+	}
+
 	protected static String sign(String content, String key) throws InvalidKeySpecException, NoSuchAlgorithmException, InvalidKeyException {
 		SecretKey skey = new SecretKeySpec(key.getBytes(), KEY_ALGORITHM);
 		Mac mac = Mac.getInstance(MAC_ALGORITHM);
@@ -43,7 +100,31 @@ public class Route53Util {
 		mac.update(content.getBytes());
 		return new String(Base64.encodeBase64(mac.doFinal()));
 	}
-	
-	 
 
+	protected static String fetchDate() throws IOException {
+		HttpURLConnection connection = (HttpURLConnection) new URL(ROUTE53_SERVER + DATE_COMMAND).openConnection();
+		if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+			return connection.getHeaderField(FETCH_DATE_HEADER);
+		} else {
+			return null;
+		}
+	}
+
+	protected static String generateRequestBody(String domain) {
+		Scanner sc = new Scanner(Route53Util.class.getClassLoader().getResourceAsStream(CREATE_DOMAIN_TEMPLATE));
+		try {
+			StringBuilder buf = new StringBuilder();
+			while (sc.hasNext()) {
+				String token = sc.next();
+				if (token.contains(DOMAIN_TOKEN)) {
+					buf.append(token.replace(DOMAIN_TOKEN, domain));
+				} else {
+					buf.append(token);
+				}
+			}
+			return buf.toString();
+		} finally {
+			sc.close();
+		}
+	}
 }
