@@ -28,28 +28,46 @@ import javax.jdo.annotations.PrimaryKey;
 @PersistenceCapable
 public class ApplicationConfiguration {
 	 
+	@SuppressWarnings("unused")
 	@PrimaryKey
 	@Persistent
 	private String applicationName = "figgo";
 	
 	@Persistent
-	private String route53Key;
+	private String route53AccessKeyID;
+	
+	@Persistent
+	private String route53AccessKeySecret;
 	
 	@Persistent
 	private String route53ZoneId;
 
 	/**
-	 * @return the route53Key
+	 * @return the route53AccessKeyID
 	 */
-	public String getRoute53Key() {
-		return route53Key;
+	public String getRoute53AccessKeyID() {
+		return route53AccessKeyID;
 	}
 
 	/**
-	 * @param route53Key the route53Key to set
+	 * @param route53AccessKeyID the route53AccessKeyID to set
 	 */
-	public void setRoute53Key(String route53Key) {
-		this.route53Key = route53Key;
+	public void setRoute53AccessKeyID(String route53AccessKeyID) {
+		this.route53AccessKeyID = route53AccessKeyID;
+	}
+
+	/**
+	 * @return the route53AccessKeySecret
+	 */
+	public String getRoute53AccessKeySecret() {
+		return route53AccessKeySecret;
+	}
+
+	/**
+	 * @param route53AccessKeySecret the route53AccessKeySecret to set
+	 */
+	public void setRoute53AccessKeySecret(String route53AccessKeySecret) {
+		this.route53AccessKeySecret = route53AccessKeySecret;
 	}
 
 	/**
@@ -65,4 +83,6 @@ public class ApplicationConfiguration {
 	public void setRoute53ZoneId(String route53ZoneId) {
 		this.route53ZoneId = route53ZoneId;
 	}
+
+
 }

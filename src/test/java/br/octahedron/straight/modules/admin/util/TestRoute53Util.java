@@ -18,8 +18,11 @@
  */
 package br.octahedron.straight.modules.admin.util;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertTrue;
 
+import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -34,5 +37,20 @@ public class TestRoute53Util {
 	@Test
 	public void signTest() throws InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException {
 		assertEquals("4cP0hCJsdCxTJ1jPXo7+e/YSu0g=", Route53Util.sign("Thu, 14 Aug 2008 17:08:48 GMT", "/Ml61L9VxlzloZ091/lkqVV5X1/YvaJtI9hW4Wr9"));
+	}
+
+	@Test
+	public void fetchDateTest() throws IOException {
+		String date = Route53Util.fetchDate();
+		assertNotNull(date);
+//		System.out.println(">"+date+"<");
+	}
+	
+	@Test
+	public void generateRequestBodyTest() {
+		String body = Route53Util.generateRequestBody("test");
+		assertNotNull(body);
+		assertTrue(body.contains("test.figgo.com.br"));
+//		System.out.println(">"+body+"<");
 	}
 }
