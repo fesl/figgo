@@ -18,6 +18,12 @@
  */
 package br.octahedron.straight.modules;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import br.octahedron.straight.modules.services.ServiceDecorator;
+import br.octahedron.straight.modules.services.ServicesIF;
+import br.octahedron.straight.modules.services.manager.ServiceManager;
 import br.octahedron.straight.modules.users.UsersDecorator;
 import br.octahedron.straight.modules.users.UsersIF;
 import br.octahedron.straight.modules.users.manager.UsersManager;
@@ -30,8 +36,41 @@ import br.octahedron.straight.modules.users.manager.UsersManager;
  */
 public class ManagerBuilder {
 	
-	public UsersIF getUserManager(){
-		return new UsersDecorator(new UsersManager());
+	private static enum Types {USERS, BANK, SERVICES, AUTORIZATION, CONFIGURATION }
+	
+	private static Map<Types, Object> typesMap = new HashMap<Types, Object>();
+	
+	public static UsersIF getUserManager(){
+		if (!typesMap.containsKey(Types.USERS)){
+			createUserManager();
+		}
+		return (UsersIF)typesMap.get(Types.USERS);
+	}
+	
+	private static UsersIF createUserManager(){
+		UsersManager manager = new UsersManager();
+		UsersDecorator decorator = new UsersDecorator(manager);
+		typesMap.put(Types.USERS, decorator);
+		return decorator;
+	}
+	
+	public static ServicesIF getServicesManager(){
+		if (!typesMap.containsKey(Types.SERVICES)){
+			createServiceManager();
+		}
+		return (ServicesIF)typesMap.get(Types.SERVICES);
+	}
+
+	/**
+	 * 
+	 */
+	private static void createServiceManager() {
+		ServiceManager manager = new ServiceManager();
+		ServiceDecorator decorator = new ServiceDecorator(manager);
+		typesMap.put(Types.SERVICES, manager);
 	}
 	
 }
+
+
+
