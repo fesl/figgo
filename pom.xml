@@ -464,6 +464,7 @@
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+		<!-- other dependencies -->
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
