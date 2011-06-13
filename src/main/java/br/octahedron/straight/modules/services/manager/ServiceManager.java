@@ -19,9 +19,12 @@
 package br.octahedron.straight.modules.services.manager;
 
 import java.util.Collection;
+import java.util.LinkedList;
 
+import br.octahedron.straight.modules.services.ServicesIF;
 import br.octahedron.straight.modules.services.data.Service;
 import br.octahedron.straight.modules.services.data.ServiceDAO;
+import br.octahedron.straight.modules.services.data.ServiceView;
 import br.octahedron.straight.modules.users.data.User;
 
 /**
@@ -29,7 +32,7 @@ import br.octahedron.straight.modules.users.data.User;
  * 
  * @author Erick Moreno
  */
-public class ServiceManager {
+public class ServiceManager implements ServicesIF{
 
 	private ServiceDAO serviceDAO = new ServiceDAO();
 
@@ -117,8 +120,10 @@ public class ServiceManager {
 	 *            The key that identifies a {@link User}
 	 * @return A collection with all services that has the passed user as provider.
 	 */
-	public Collection<Service> getUserServices(String userId) {
-		return this.serviceDAO.getUserServices(userId);
+	public Collection<ServiceView> getUserServices(String userId) {
+		Collection<ServiceView> wrapperCollection = new LinkedList<ServiceView>();
+		wrapperCollection.addAll(this.serviceDAO.getUserServices(userId));
+		return wrapperCollection;
 	}
 
 }

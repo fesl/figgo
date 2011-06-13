@@ -21,7 +21,7 @@ package br.octahedron.straight.modules.services.data;
 import java.util.Set;
 
 /**
- * @author erick
+ * @author Erick Moreno
  *
  */
 public interface ServiceView {
