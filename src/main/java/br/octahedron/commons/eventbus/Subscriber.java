@@ -30,11 +30,6 @@ import java.io.Serializable;
  * @author Danilo Penna Queiroz
  */
 public interface Subscriber extends Serializable {
-	
-	/**
-	 * Inits the subscriber. Use this method to subscribe to interested events.
-	 */
-	public void init();
 
 	/**
 	 * Notify about a published {@link Event}

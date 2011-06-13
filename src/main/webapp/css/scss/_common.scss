@@ -1,10 +1,22 @@
-#column-statement {
-  float: left;
-  width: 500px;
+@import "mixins";
+
+body {
+  font-family: "Lucida Grande", "Arial", "Helvetica", "Verdana", "Gill Sans", sans-serif;
 }
 
-#balance table {
-  width: 500px;
+/* classes */
+.center {
+  margin: 0 auto;
+}
+
+ul.inline {
+  li {
+    display: inline;
+  }
+}
+
+table.simple {
+  width: 100%;
   font-size: 14px;
   text-align: left;
   border-collapse: collapse;
@@ -23,15 +35,6 @@
     }
   }
 
-  tbody {
-    td {
-    }
-    
-    tr:nth-child(2n) {
-      background-color: #eee;
-    }
-  }
-
   tfoot {
     tr {
       font-weight: bold;
@@ -39,3 +42,8 @@
     }
   }
 } 
+
+/* elements */
+img {
+  max-width: 97%;
+}

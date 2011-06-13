@@ -34,8 +34,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.octahedron.straight.modules.Module;
-import br.octahedron.straight.modules.bank.BankConfigurationBuilder;
+import br.octahedron.straight.modules.Modules;
 import br.octahedron.straight.modules.configuration.ConfigurationExternalFacade;
 import br.octahedron.straight.modules.configuration.ModulesInfoService;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
@@ -97,9 +96,9 @@ public class ConfigurationExternalFacadeTest {
 			assertFalse(modules.isModuleEnabled(module));
 		}
 		// enable bank module
-		this.domain.enableModule(Module.BANK.name());
+		this.domain.enableModule(Modules.BANK.name());
 		modules = this.facade.getModulesInfoService();
-		assertTrue(modules.isModuleEnabled(Module.BANK.name()));
+		assertTrue(modules.isModuleEnabled(Modules.BANK.name()));
 		// verify
 		verify(this.confManager);
 	}
@@ -107,14 +106,14 @@ public class ConfigurationExternalFacadeTest {
 	@Test
 	public void changeModuleStateTest() {
 		// setup mock
-		this.confManager.enableModule(Module.BANK);
+		this.confManager.enableModule(Modules.BANK);
 		expectLastCall().times(2);
-		this.confManager.disableModule(Module.BANK);
+		this.confManager.disableModule(Modules.BANK);
 		replay(this.confManager);
 		// test
-		this.facade.changeModuleState(Module.BANK, true);
-		this.facade.changeModuleState(Module.BANK, true);
-		this.facade.changeModuleState(Module.BANK, false);
+		this.facade.changeModuleState(Modules.BANK, true);
+		this.facade.changeModuleState(Modules.BANK, true);
+		this.facade.changeModuleState(Modules.BANK, false);
 		// verify
 		verify(this.confManager);
 	}
@@ -122,10 +121,10 @@ public class ConfigurationExternalFacadeTest {
 	@Test
 	public void getModuleTest() {
 		// setup mock
-		expect(this.confManager.getModuleConfiguration(Module.BANK)).andReturn(new BankConfigurationBuilder().createModuleConfiguration());
+		expect(this.confManager.getModuleConfiguration(Modules.BANK)).andReturn(Modules.getModuleSpec(Modules.BANK).getDomainSpecificModuleConfiguration());
 		replay(this.confManager);
 		// test
-		assertNotNull(this.facade.getModuleConfiguration(Module.BANK));
+		assertNotNull(this.facade.getModuleConfiguration(Modules.BANK));
 		// verify
 		verify(this.confManager);
 	}
@@ -133,10 +132,10 @@ public class ConfigurationExternalFacadeTest {
 	@Test
 	public void restoreDefaultsTest() {
 		// setup mock
-		this.confManager.restoreModuleProperties(Module.BANK);
+		this.confManager.restoreModuleProperties(Modules.BANK);
 		replay(this.confManager);
 		// test
-		this.facade.restoreModuleConfiguration(Module.BANK);
+		this.facade.restoreModuleConfiguration(Modules.BANK);
 		// verify
 		verify(this.confManager);
 	}
@@ -144,16 +143,16 @@ public class ConfigurationExternalFacadeTest {
 	@Test
 	public void updateModulePropertiesTest() {
 		// setup mock
-		this.confManager.setModuleProperty(Module.BANK, "name", "TestBank");
-		this.confManager.setModuleProperty(Module.BANK, "currency", "Money");
-		this.confManager.setModuleProperty(Module.BANK, "currencyAbreviation", "M$");
+		this.confManager.setModuleProperty(Modules.BANK, "name", "TestBank");
+		this.confManager.setModuleProperty(Modules.BANK, "currency", "Money");
+		this.confManager.setModuleProperty(Modules.BANK, "currencyAbreviation", "M$");
 		replay(this.confManager);
 		// test
 		Map<String, String> values = new HashMap<String, String>();
 		values.put("name", "TestBank");
 		values.put("currency", "Money");
 		values.put("currencyAbreviation", "M$");
-		this.facade.updateModuleConfiguration(Module.BANK, values);
+		this.facade.updateModuleConfiguration(Modules.BANK, values);
 		// verify
 		verify(this.confManager);
 	}

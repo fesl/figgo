@@ -1,0 +1,17 @@
+This folder contains stuff necessary to manipulate the figgo DNS entries, at AWS' Route53 service, from command line.
+
+Before use the dnscurl tools is necessary to edit the aws-secret-sample file, adding the correct key, and rename the file to .aws-secret .
+The .aws-secret file should not be commited to VSC repository.
+
+Sample command used to create the domain zone:
+
+	./dnscurl.pl --keyname figgo_aws_account -- -H "Content-Type: text/xml; charset=UTF-8" -X POST --upload-file ./create_figgo_zone.xml https://route53.amazonaws.com/2011-05-05/hostedzone
+
+Sample command to get all entries for a domain zone:
+
+	./dnscurl.pl --keyname figgo_aws_account -- -H "Content-Type: text/xml; charset=UTF-8" -X GET https://route53.amazonaws.com/2011-05-05/hostedzone/Z1BYOY5V4T3745/rrset
+
+For more info, check the Route53's documentation:
+
+	http://docs.amazonwebservices.com/Route53/latest/DeveloperGuide/
+	http://docs.amazonwebservices.com/Route53/latest/GettingStartedGuide/

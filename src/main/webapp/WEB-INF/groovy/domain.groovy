@@ -1,15 +1,17 @@
-def action = 'notfound'
+def actions = ['edit']
 
-if (params.action) {
-	action = "action_" + request.method.toLowerCase() + "_" + params.action
+if (actions.contains(params.action)) {
+	actionCall = request.method.toLowerCase() + "_" + params.action
+} else {
+	actionCall = "notfound"
 }
 
-def action_get_edit() {
+def get_edit() {
 	// request.domain = configurationFacade.getDomainConfiguration(request.serverName)
 	render 'domain/edit.vm', request, response
 }
 
-def action_post_edit() {
+def post_edit() {
 	// configurationFacade.saveDomainConfiguration(request.serverName, params.name)
 	redirect 'http://mundo.figgo.com.br:8080'
 }
@@ -18,4 +20,4 @@ def notfound() {
 	render 'notfound.vm', request, response
 }
 
-"$action"()
+"$actionCall"()

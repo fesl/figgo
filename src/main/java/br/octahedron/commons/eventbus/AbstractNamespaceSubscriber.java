@@ -29,19 +29,6 @@ import static br.octahedron.commons.database.NamespaceCommons.changeToNamespace;
 public abstract class AbstractNamespaceSubscriber implements Subscriber {
 	
 	private static final long serialVersionUID = -1528408209684378010L;
-	private Class<? extends NamespaceEvent>[] events;
-
-	public AbstractNamespaceSubscriber(Class<? extends NamespaceEvent> ... events) {
-		this.events = events;
-	}
-	
-	/* (non-Javadoc)
-	 * @see br.octahedron.commons.eventbus.Subscriber#init()
-	 */
-	@Override
-	public void init() {
-		EventBus.subscribe(this, this.events);
-	}
 
 	/* (non-Javadoc)
 	 * @see br.octahedron.commons.eventbus.Subscriber#eventPublished(br.octahedron.commons.eventbus.Event)

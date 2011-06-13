@@ -18,13 +18,17 @@
  */
 package br.octahedron.straight;
 
+import static br.octahedron.commons.eventbus.EventBus.subscribe;
+
+import java.util.Set;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import br.octahedron.commons.eventbus.Subscriber;
-import br.octahedron.straight.modules.Module;
+import br.octahedron.straight.modules.ModuleSpec;
+import br.octahedron.straight.modules.Modules;
 
 /**
  * A {@link ServletContextListener} that bootstraps the system.
@@ -32,25 +36,34 @@ import br.octahedron.straight.modules.Module;
  * @author Danilo Queiroz
  */
 public class BootstrapServletListener implements ServletContextListener {
-	
+
 	private static final Logger logger = Logger.getLogger(BootstrapServletListener.class.getName());
 
-	/* (non-Javadoc)
-	 * @see javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * javax.servlet.ServletContextListener#contextInitialized(javax.servlet.ServletContextEvent)
 	 */
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		logger.info("Booting...");
-		for(Module module : Module.values()) {
-			Subscriber subscriber = module.getSubscriber();
-			if ( subscriber != null ) {
-				subscriber.init();
+		for (Modules module : Modules.values()) {
+			ModuleSpec spec = module.getModuleSpec();
+			if ( spec.hasSubscribers() ) {
+				Set<Class<? extends Subscriber>> subscribers = spec.getSubscribers();
+				for (Class<? extends Subscriber> subscriber : subscribers) {
+					logger.info("Registering Subscriber to EventBus: " + subscriber.getName());
+					subscribe(subscriber);
+				}
 			}
 		}
 		logger.info("Up and running!");
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see javax.servlet.ServletContextListener#contextDestroyed(javax.servlet.ServletContextEvent)
 	 */
 	@Override

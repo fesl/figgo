@@ -5,12 +5,16 @@
 	<a href="$logout_url">logout</a>
 	
     <div id="main" class="center">
-		<h1>$domain.Name</h1>
-		<ul>
-            <li class="selected"><a href="$url/#">Dashboard</a></li>
-            <li><a href="$url/bank">Banco</a></li>
-            <li><a href="$url/services">Serviços</a></li>
-		</ul>
+		<header>
+    		<h1>$domain.Name</h1>
+			<nav id="tabs">
+        		<ul class="inline">
+                    <li class="selected"><a href="$url/#">Dashboard</a></li>
+                    <li><a href="$url/bank">Banco</a></li>
+                    <li><a href="$url/services">Serviços</a></li>
+        		</ul>
+			</nav>
+		</header>
 		<div id="dashboard">
 			<div id="column-about">
 				<img src="/img/blank.png" alt="Avatar do usuário" />

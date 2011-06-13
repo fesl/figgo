@@ -23,10 +23,10 @@ import br.octahedron.commons.database.GenericDAO;
 /**
  * @author Danilo Queiroz
  */
-public class ModuleConfigurationDAO extends GenericDAO<ModuleConfiguration> {
+public class ModuleConfigurationDAO extends GenericDAO<DomainSpecificModuleConfiguration> {
 
 	public ModuleConfigurationDAO() {
-		super(ModuleConfiguration.class);
+		super(DomainSpecificModuleConfiguration.class);
 	}
 
 }

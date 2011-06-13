@@ -30,6 +30,6 @@ public interface EventPublisher {
 	/**
 	 * Publishes the given event to the given subscribers.
 	 */
-	public void publish(Collection<Subscriber> subscribers, Event event);
+	public void publish(Collection<Class<? extends Subscriber>> subscribers, Event event);
 
 }

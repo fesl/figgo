@@ -1,0 +1,56 @@
+#column-statement {
+  float: left;
+  width: 500px;
+  
+  #statement form {
+    width: 200px;
+    margin: 0 auto;
+    text-align: center;
+    
+    label {
+      display: block;
+      padding: 0 0 10px;
+    }
+    
+  }
+}
+
+#balance table {
+  tbody {
+    tr:nth-child(2n) {
+      background-color: #eee;
+    }
+  }
+}
+
+#column-transfer {
+  float: left;
+  width: 500px;
+  
+  #transfer form {
+    width: 400px;
+    margin: 0 auto;
+     
+    label {
+      display: block;
+      width: 200px;
+      float: left;
+      padding: 0 0 10px;
+      
+      input {width: 170px;}
+      
+      select {display: block;}
+      
+      textarea {
+        width: 170px;
+        height: 70px;
+      }
+    } // label
+    input[type=submit] {
+      float: left;
+      width: 170px;
+      height: 35px;
+      margin-top: -45px;
+    }
+  }
+}

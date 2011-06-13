@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CreateHostedZoneRequest xmlns="https://route53.amazonaws.com/doc/2011-05-05/">
+   <Name>figgo.com.br.</Name>
+   <CallerReference>create_figgo_zone</CallerReference>
+   <HostedZoneConfig>
+      <Comment>Figgo.com.br zone creation.</Comment>
+   </HostedZoneConfig>
+</CreateHostedZoneRequest>

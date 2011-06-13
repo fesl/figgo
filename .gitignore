@@ -1,2 +1,3 @@
 target
 .sass-cache
+route53/.aws-secrets

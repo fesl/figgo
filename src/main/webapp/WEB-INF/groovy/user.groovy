@@ -1,17 +1,18 @@
 def actions = ['create', 'new']
-def action = "notfound"
 
-if (params.action) {
-	action = "action_" + params.action
+if (actions.contains(params.action)) {
+	actionCall = request.method.toLowerCase() + "_" + params.action
+} else {
+	actionCall = "notfound"
 }
 
-def action_create() {
+def post_create() {
 	usersFacade.createUser(request.user.email, params.name, params.phoneNumber, params.avatar, params.description)
 	redirect '/dashboard'
 }
 
-def action_new() {
+def get_new() {
 	render 'user/new.vm', request, response
 }
 
-"$action"()
+"$actionCall"()

@@ -1,0 +1,55 @@
+#set( $title = "Figgo - Nome do coletivo - Banco - Transações" )
+#parse( "templates/layout.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<header>
+    		<h1>Nome do coletivo</h1>
+    		<nav id="tabs">
+        		<ul class="inline">
+                    <li><a href="$url/#">Dashboard</a></li>
+                    <li class="selected"><a href="$url/bank#">Banco</a></li>
+                    <li><a href="$url/services">Serviços</a></li>
+        		</ul>
+    		</nav>
+		</header>
+		<div id="bank">
+			<div id="column-statement">
+                <section id="statement">
+                    <h3>Extrato</h3>
+					<form action="/bank/statement" method="post">
+						<fieldset >
+                        	<label for="type">
+                                Mês:
+    							<select type="text" name="month">
+                                    <option value="Junho">Junho/2011</option>
+									<option value="Maio">Maio/2011</option>
+    								<option value="Abril">Abril/2011</option>
+                                </select>
+                        	</label>
+                    		<input type="submit" value="Visualizar" />
+                        </fieldset>
+                    </form>
+    			</section>
+				<hr />
+			</div>
+			<div id="column-quickmenu">
+    			<section id="menu">
+					<h3>Acesso rápido</h3>
+					<aside>
+    					<ul>
+    						<li><a href="/bank">Minha conta</a></li>
+                            <li><a href="/bank/transfer">Trasferência</a></li>
+    						<li><a href="/bank/statement">Extrato</a></li>
+    						<li><a href="/bank/other">Outras consultas</a></li>
+                        </ul>
+					</aside>
+				</section>
+            </div>
+		</div>
+	</div>
+#end
+	
+#scripts()

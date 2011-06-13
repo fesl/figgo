@@ -59,7 +59,7 @@
         </control>
         <control controlID="1" controlTypeID="__group__" x="13" y="36" w="549" h="334" measuredW="549" measuredH="334" zOrder="1" locked="false" isInGroup="7">
           <groupChildrenDescriptors>
-            <control controlID="2" controlTypeID="com.balsamiq.mockups::DataGrid" x="15" y="27" w="519" h="292" measuredW="295" measuredH="148" zOrder="1" locked="false" isInGroup="1">
+            <control controlID="2" controlTypeID="com.balsamiq.mockups::DataGrid" x="15" y="27" w="519" h="292" measuredW="311" measuredH="148" zOrder="1" locked="false" isInGroup="1">
               <controlProperties>
                 <borderStyle>square</borderStyle>
                 <hasHeader>true</hasHeader>
@@ -96,6 +96,8 @@
             </control>
             <control controlID="2" controlTypeID="com.balsamiq.mockups::Link" x="13" y="50" w="-1" h="-1" measuredW="93" measuredH="25" zOrder="2" locked="false" isInGroup="3">
               <controlProperties>
+                <href>banco-transferencia%26bm%3Bbanco-transferencia.bmml%26bm%3Bbanco-transferencia.bmml%26bm%3Bbanco-transferencia.bmml</href>
+                <map>%3Carea%20shape%3D%22rect%22%20coords%3D%22716%2C235%2C809%2C260%22%20href%3D%22banco-transferencia.bmml%22%20alt%3D%22banco-transferencia%22%20id%3D%222%22/%3E</map>
                 <text>Transfer%EAncia</text>
               </controlProperties>
             </control>

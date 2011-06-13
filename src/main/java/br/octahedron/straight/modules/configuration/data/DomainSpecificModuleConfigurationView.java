@@ -21,11 +21,11 @@ package br.octahedron.straight.modules.configuration.data;
 import java.util.Set;
 
 /**
- * A read-only interface for the {@link ModuleConfiguration}
+ * A read-only interface for the {@link DomainSpecificModuleConfiguration}
  * 
  * @author Danilo Queiroz
  */
-public interface ModuleConfigurationView {
+public interface DomainSpecificModuleConfigurationView {
 
 	/**
 	 * @return the moduleName
@@ -37,11 +37,6 @@ public interface ModuleConfigurationView {
 	 *         <code>false</code> otherwise.
 	 */
 	public abstract boolean existsProperty(String propertyKey);
-
-	/**
-	 * @return the moduleFacade
-	 */
-	public abstract Class<?> getModuleFacade();
 
 	/**
 	 * @return a set with all configuration keys.

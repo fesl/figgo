@@ -35,7 +35,7 @@ import javax.jdo.annotations.PrimaryKey;
  * @author Danilo Penna Queiroz
  */
 @PersistenceCapable
-public class ModuleConfiguration implements Serializable, ModuleConfigurationView {
+public class DomainSpecificModuleConfiguration implements Serializable, DomainSpecificModuleConfigurationView {
 
 	private static final long serialVersionUID = -2814532770225964507L;
 
@@ -43,18 +43,14 @@ public class ModuleConfiguration implements Serializable, ModuleConfigurationVie
 	@Persistent
 	private String moduleName;
 
-	@Persistent
-	private Class<?> moduleFacade;
-
 	@Persistent(serialized = "true", defaultFetchGroup = "true")
 	private Map<String, ModuleProperty> properties = new HashMap<String, ModuleProperty>();
 
 	@Persistent(serialized = "true", defaultFetchGroup = "true")
 	private Map<String, String> values = new HashMap<String, String>();
 
-	public ModuleConfiguration(String moduleName, Class<?> moduleFacade) {
+	public DomainSpecificModuleConfiguration(String moduleName) {
 		this.moduleName = moduleName;
-		this.moduleFacade = moduleFacade;
 	}
 
 	/**
@@ -86,16 +82,6 @@ public class ModuleConfiguration implements Serializable, ModuleConfigurationVie
 	 */
 	public boolean existsProperty(String propertyKey) {
 		return this.properties.containsKey(propertyKey);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getModuleFacade()
-	 */
-	public Class<?> getModuleFacade() {
-		return this.moduleFacade;
 	}
 
 	/*
@@ -168,7 +154,7 @@ public class ModuleConfiguration implements Serializable, ModuleConfigurationVie
 	 */
 	@Override
 	public int hashCode() {
-		return this.moduleName.hashCode() ^ this.moduleFacade.hashCode();
+		return this.moduleName.hashCode();
 	}
 
 	/*
@@ -178,9 +164,9 @@ public class ModuleConfiguration implements Serializable, ModuleConfigurationVie
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof ModuleConfiguration) {
-			ModuleConfiguration other = (ModuleConfiguration) obj;
-			return this.moduleName.equals(other.getModuleName()) && this.moduleFacade.equals(other.getModuleFacade());
+		if (obj instanceof DomainSpecificModuleConfiguration) {
+			DomainSpecificModuleConfiguration other = (DomainSpecificModuleConfiguration) obj;
+			return this.moduleName.equals(other.getModuleName());
 		} else {
 			return false;
 		}
