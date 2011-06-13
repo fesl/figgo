@@ -24,7 +24,7 @@ import br.octahedron.straight.modules.users.data.UserView;
 import br.octahedron.straight.modules.users.manager.UsersManager;
 
 /**
- * A facade for some of {@link UsersManager} methods. This facade should be used by the application view.
+ * A decorator to {@link UsersIF} that . This decorator should be applied when namespaces matters. 
  * 
  * @author Erick Moreno
  *
