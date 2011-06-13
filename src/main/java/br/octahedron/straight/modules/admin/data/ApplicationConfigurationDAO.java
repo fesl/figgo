@@ -21,7 +21,7 @@ package br.octahedron.straight.modules.admin.data;
 import br.octahedron.commons.database.GenericDAO;
 
 /**
- * @author danilo
+ * @author Danilo Queiroz
  *
  */
 public class ApplicationConfigurationDAO extends GenericDAO<ApplicationConfiguration> {
