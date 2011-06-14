@@ -12,7 +12,7 @@ if (actions.contains(params.action)) {
 def post_create() {
 	(isValid, errors) = userValidation(params)
 	if (isValid) {
-		usersManager.createUser(request.user.email, name, phone, params.description)
+		usersManager.createUser(request.user.email, params.name.trim(), params.phone.trim(), params.description)
 		redirect '/dashboard'
 	} else {
 		request.errors = errors
@@ -43,7 +43,7 @@ def get_edit() {
 def post_update() {
 	(isValid, errors) = userValidation(params)
 	if (isValid) {
-		usersManager.updateUser(request.user.email, params.name, params.phoneNumber, params.description)
+		usersManager.updateUser(request.user.email, params.name.trim(), params.phoneNumber.trim(), params.description)
 		redirect '/dashboard'
 	} else {
 		request.errors = errors

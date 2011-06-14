@@ -36,35 +36,41 @@ import br.octahedron.straight.modules.users.manager.UsersManager;
  */
 public class ManagerBuilder {
 	
-	private static enum Types {USERS, BANK, SERVICES, AUTORIZATION, CONFIGURATION }
+	private static enum ManagerTypeEnum {
+		USERS, 
+		BANK, 
+		SERVICES, 
+		AUTORIZATION, 
+		CONFIGURATION
+	}
 	
-	private static Map<Types, Object> typesMap = new HashMap<Types, Object>();
+	private static Map<ManagerTypeEnum, Object> managersInstanceMap = new HashMap<ManagerTypeEnum, Object>();
 	
 	public static UsersIF getUserManager(){
-		if (!typesMap.containsKey(Types.USERS)){
+		if (!managersInstanceMap.containsKey(ManagerTypeEnum.USERS)){
 			createUserManager();
 		}
-		return (UsersIF)typesMap.get(Types.USERS);
+		return (UsersIF)managersInstanceMap.get(ManagerTypeEnum.USERS);
 	}
 	
 	private static UsersIF createUserManager(){
 		UsersManager manager = new UsersManager();
 		UsersDecorator decorator = new UsersDecorator(manager);
-		typesMap.put(Types.USERS, decorator);
+		managersInstanceMap.put(ManagerTypeEnum.USERS, decorator);
 		return decorator;
 	}
 	
 	public static ServicesIF getServicesManager(){
-		if (!typesMap.containsKey(Types.SERVICES)){
+		if (!managersInstanceMap.containsKey(ManagerTypeEnum.SERVICES)){
 			createServiceManager();
 		}
-		return (ServicesIF)typesMap.get(Types.SERVICES);
+		return (ServicesIF)managersInstanceMap.get(ManagerTypeEnum.SERVICES);
 	}
 
 	private static ServicesIF createServiceManager() {
 		ServiceManager manager = new ServiceManager();
 		ServiceDecorator decorator = new ServiceDecorator(manager);
-		typesMap.put(Types.SERVICES, manager);
+		managersInstanceMap.put(ManagerTypeEnum.SERVICES, manager);
 		return decorator;
 	}
 	
