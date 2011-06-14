@@ -45,9 +45,9 @@ public class UsersManager implements UsersIF{
 	 * @param avatar
 	 * @return
 	 */
-	public User createUser(String userId, String name, String phoneNumber, String avatar, String description) {
+	public User createUser(String userId, String name, String phoneNumber, String description) {
 
-		User user = new User(userId, name, phoneNumber, avatar, description);
+		User user = new User(userId, name, phoneNumber, description);
 
 		this.userDAO.save(user);
 		return user;

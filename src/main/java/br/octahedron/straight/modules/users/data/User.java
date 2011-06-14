@@ -45,11 +45,10 @@ public class User implements Serializable, UserView {
 	@Persistent
 	private String description;
 
-	public User(String userId, String name, String phoneNumber, String avatar, String description) {
+	public User(String userId, String name, String phoneNumber, String description) {
 		this.userId = userId;
 		this.name = name;
 		this.phoneNumber = phoneNumber;
-		this.avatar = avatar;
 		this.description = description;
 	}
 
