@@ -3,6 +3,7 @@
 
 #@body()
 	<div id="top-bar">
+		<a href="/user/edit">editar conta</a>
 		<a href="$logout_url">logout</a>
 	</div>
 	
@@ -11,9 +12,9 @@
 		<div id="dashboard">
 			<div id="column-about">
 				#if( $user.AvatarKey )
-				<img src="/serve?blob-key=$user.AvatarKey" alt="Avatar do usuário" />
+				<a href="/user/upload"><img src="/blob/$user.AvatarKey" alt="Avatar do usuário" /></a>
 				#else
-				<img src="http://lorempixum.com/100/100/" alt="Avatar do usuário" />
+				<a href="/user/upload"><img src="http://lorempixum.com/100/100/" alt="Avatar do usuário" /></a>
 				#end
                 <section id="about">
     				<h2>$user.Name</h2>

@@ -23,5 +23,23 @@ package br.octahedron.commons.blobstore;
  *
  */
 public enum UploadTypeEnum {
-	USER
+	USER("/dashboard", "/user/upload");
+
+	private String successUrl;
+	
+	private String failUrl;
+	
+	private UploadTypeEnum(String successUrl, String failUrl) {
+		this.successUrl = successUrl;
+		this.failUrl = failUrl;
+	}
+
+	public String getFailUrl() {
+		return failUrl;
+	}
+
+	public String getSuccessUrl() {
+		return successUrl;
+	}
+	
 }

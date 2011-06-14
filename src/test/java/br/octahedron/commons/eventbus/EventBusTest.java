@@ -100,3 +100,4 @@ public class EventBusTest {
 		verify(this.consumerOne, this.consumerTwo, this.queue);
 	}
 }
+

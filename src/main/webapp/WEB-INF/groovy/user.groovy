@@ -10,9 +10,9 @@ if (actions.contains(params.action)) {
 }
 
 def post_create() {
-	(isValid, errors) = userValidation(params)
+	(isValid, errors) = validateUser(params)
 	if (isValid) {
-		usersManager.createUser(request.user.email, params.name.trim(), params.phone.trim(), params.description)
+		usersManager.createUser(request.user.email, params.name?.trim(), params.phoneNumber?.trim(), params.description)
 		redirect '/dashboard'
 	} else {
 		request.errors = errors
@@ -41,9 +41,9 @@ def get_edit() {
 }
 
 def post_update() {
-	(isValid, errors) = userValidation(params)
+	(isValid, errors) = validateUser(params)
 	if (isValid) {
-		usersManager.updateUser(request.user.email, params.name.trim(), params.phoneNumber.trim(), params.description)
+		usersManager.updateUser(request.user.email, params.name?.trim(), params.phoneNumber?.trim(), params.description)
 		redirect '/dashboard'
 	} else {
 		request.errors = errors
@@ -55,7 +55,7 @@ def post_update() {
 }
 
 def get_upload() {
-	request.upload_url = blobstore.createUploadUrl("/upload")
+	request.upload_url = blobstore.createUploadUrl('/blob/user/upload')
 	render 'user/upload.vm', request, response
 }
 

@@ -11,7 +11,7 @@ def phonePattern = Pattern.compile('^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. 
 
 binding {
 	render = { template, request, response -> VelocityTemplateRender.render(template, request, response) }
-	userValidation = { params ->
+	validateUser = { params ->
 		phone = params.phoneNumber.trim()
 		name = params.name.trim()
 		isValid = true
