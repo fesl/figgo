@@ -6,6 +6,7 @@
 	
 	<div id="main" class="center">
         <h1>Novo usuário</h1>
+		<p>Olá, $user.Email!</p>
 		<p>Você ainda não possui cadastro no Figgo. Faça já o seu!</p>
 		<p>Preencha o formulário abaixo:</p>
         <form action="/user/create" method="post">
