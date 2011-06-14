@@ -47,6 +47,14 @@
         <servlet-name>GroovletServlet</servlet-name>
         <url-pattern>*.groovy</url-pattern>
     </servlet-mapping>
+    <!--<servlet-mapping>
+        <servlet-name>BlobUploadServlet</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>BlobServeServlet</servlet-name>
+        <url-pattern>/serve</url-pattern>
+    </servlet-mapping> -->
 
     <!-- Uncomment the following security constraint if you want to secure your incoming email endpoint -->
     <!-- Only allow the SDK and administrators to have access to the incoming email endpoint -->

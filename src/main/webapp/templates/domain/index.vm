@@ -1,4 +1,4 @@
-#set( $title = "!@#$%*() - Editar configurações do domínio" )
+#set( $title = "Figgo - Nome do coletivo" )
 #parse( "templates/layout.vm" )
 
 #@body()

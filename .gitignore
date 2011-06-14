@@ -1,3 +1,5 @@
 target
 .sass-cache
 route53/.aws-secrets
+.pydevproject
+.settings/org.eclipse.core.resources.prefs

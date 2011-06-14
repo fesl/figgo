@@ -1,4 +1,4 @@
-#set( $title = "!@#$%*() - Novo domínio" )
+#set( $title = "Figgo - Domínios" )
 #parse( "templates/layout.vm" )
 
 #@body()

@@ -5,7 +5,6 @@ get "/failure", forward: "/failure.gtpl"
 
 get "/", forward: "/index.groovy"
 
-get "/dashboard", forward: "/dashboard.groovy"
 
 all "/services", forward: "/services.groovy?action=index"
 all "/services/@action", forward: "/services.groovy?action=@action"
@@ -13,6 +12,7 @@ all "/services/@action", forward: "/services.groovy?action=@action"
 all "/bank", forward: "/bank.groovy?action=index"
 all "/bank/@action", forward: "/bank.groovy?action=@action"
 
+get "/dashboard", forward: "/user.groovy?action=dashboard"
 all "/user/@action", forward: "/user.groovy?action=@action"
 
 all "/domain/@action", forward: "/domain.groovy?action=@action"
