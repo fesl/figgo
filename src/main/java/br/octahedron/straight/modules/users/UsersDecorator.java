@@ -75,10 +75,10 @@ public class UsersDecorator implements UsersIF{
 	 * @param avatar
 	 * @param description
 	 */
-	public UserView createUser(String userId, String name, String phoneNumber, String avatar, String description){
+	public UserView createUser(String userId, String name, String phoneNumber, String description){
 		try{
 			NamespaceCommons.changeToGlobalNamespace();
-			return usersManager.createUser(userId, name, phoneNumber, avatar, description);
+			return usersManager.createUser(userId, name, phoneNumber, description);
 		} finally{ 
 			NamespaceCommons.backToPreviousNamespace();
 		}
