@@ -20,6 +20,7 @@ package br.octahedron.straight.modules.authorization.data;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -117,13 +118,21 @@ public class Role implements Serializable, RoleView {
 	public Set<String> getUsers() {
 		return users;
 	}
+	
+	public void addUsers(Collection<String> users) {
+		this.users.addAll(users);
+	}
 
 	public void addUsers(String... users) {
-		this.users.addAll(Arrays.asList(users));
+		this.addUsers(Arrays.asList(users));
+	}
+	
+	public void addActivities(Collection<String> activities) {
+		this.activities.addAll(activities);
 	}
 
 	public void addActivities(String... activities) {
-		this.activities.addAll(Arrays.asList(activities));
+		this.addActivities(Arrays.asList(activities));
 	}
 	
 	/* (non-Javadoc)

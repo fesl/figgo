@@ -72,8 +72,8 @@ public class AppEngineEventPublisher implements EventPublisher {
 	 */
 	protected static class PublishTask implements DeferredTask, Runnable, Serializable {
 
-		private static final long serialVersionUID = 7900664974046236811L;
 		private transient static InstanceHandler instanceHandler = new InstanceHandler();
+		private static final long serialVersionUID = 7900664974046236811L;
 		private Class<? extends Subscriber> subscriber;
 		private Event event;
 

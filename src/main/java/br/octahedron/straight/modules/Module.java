@@ -26,13 +26,13 @@ import br.octahedron.straight.modules.bank.BankSpec;
  * 
  * @author Danilo Queiroz
  */
-public enum Modules {
+public enum Module {
 
 	BANK(new BankSpec()), AUTHORIZATION(new AuthorizationSpec());
 
 	private ModuleSpec moduleSpec;
 
-	private Modules(ModuleSpec moduleSpecification) {
+	private Module(ModuleSpec moduleSpecification) {
 		this.moduleSpec = moduleSpecification;
 	}
 	
@@ -40,11 +40,11 @@ public enum Modules {
 		return this.moduleSpec;
 	}
 	
-	public static ModuleSpec getModuleSpec(Modules module) {
+	public static ModuleSpec getModuleSpec(Module module) {
 		return module.getModuleSpec();
 	}
 	
 	public static ModuleSpec getModuleSpec(String moduleName) {
-		return Modules.valueOf(moduleName).getModuleSpec();
+		return Module.valueOf(moduleName).getModuleSpec();
 	}
 }

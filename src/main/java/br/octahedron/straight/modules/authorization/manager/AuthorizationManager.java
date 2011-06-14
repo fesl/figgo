@@ -107,6 +107,13 @@ public class AuthorizationManager {
 	/**
 	 * Adds the given users to a specific role.
 	 */
+	public void addUsersToRole(String domainName, String roleName, Collection<String> users) {
+		((Role) this.getRole(domainName, roleName)).addUsers(users);
+	}
+	
+	/**
+	 * Adds the given users to a specific role.
+	 */
 	public void addUsersToRole(String domainName, String roleName, String... users) {
 		((Role) this.getRole(domainName, roleName)).addUsers(users);
 	}
@@ -115,6 +122,13 @@ public class AuthorizationManager {
 	 * Adds the given activities to a specific role.
 	 */
 	public void addActivitiesToRole(String domainName, String roleName, String... activities) {
+		((Role) this.getRole(domainName, roleName)).addActivities(activities);
+	}
+	
+	/**
+	 * Adds the given activities to a specific role.
+	 */
+	public void addActivitiesToRole(String domainName, String roleName, Collection<String> activities) {
 		((Role) this.getRole(domainName, roleName)).addActivities(activities);
 	}
 

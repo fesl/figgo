@@ -28,12 +28,12 @@ import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleCon
 /**
  * It contains all module's information that is need by different parts of the system.
  *  
- * Each module should implement this interface, and add the module to the {@link Modules} enum.
+ * Each module should implement this interface, and add the module to the {@link Module} enum.
  * 
  * @author Danilo Queiroz
  */
 public interface ModuleSpec {
-
+	
 	/**
 	 * @return <code>true</code> if this module has configurations parameter specific for each
 	 *         domain or <code>false</code> if not.
@@ -59,6 +59,11 @@ public interface ModuleSpec {
 	 *         {@link ModuleSpec#hasSubscribers()} returns <code>false</code> it returns null.
 	 */
 	public Set<Class<? extends Subscriber>> getSubscribers();
+
+	/**
+	 * @return <code>true</code> if module is a domain specific module, <code>false</code> if it is an global module
+	 */
+	public boolean isDomainSpecificModule();
 
 	/**
 	 * Suggestion: for implementation use {@link Arrays#asList(Object...)}

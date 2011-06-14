@@ -28,7 +28,7 @@ import javax.servlet.ServletContextListener;
 
 import br.octahedron.commons.eventbus.Subscriber;
 import br.octahedron.straight.modules.ModuleSpec;
-import br.octahedron.straight.modules.Modules;
+import br.octahedron.straight.modules.Module;
 
 /**
  * A {@link ServletContextListener} that bootstraps the system.
@@ -48,7 +48,7 @@ public class BootstrapServletListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
 		logger.info("Booting...");
-		for (Modules module : Modules.values()) {
+		for (Module module : Module.values()) {
 			ModuleSpec spec = module.getModuleSpec();
 			if ( spec.hasSubscribers() ) {
 				Set<Class<? extends Subscriber>> subscribers = spec.getSubscribers();

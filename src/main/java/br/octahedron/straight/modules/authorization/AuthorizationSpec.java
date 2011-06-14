@@ -18,6 +18,7 @@
  */
 package br.octahedron.straight.modules.authorization;
 
+import java.util.Collections;
 import java.util.Set;
 
 import br.octahedron.commons.eventbus.Subscriber;
@@ -30,6 +31,13 @@ import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleCon
  */
 public class AuthorizationSpec implements ModuleSpec {
 
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#isDomainSpecificModule()
+	 */
+	@Override
+	public boolean isDomainSpecificModule() {
+		return true;
+	}
 	/* (non-Javadoc)
 	 * @see br.octahedron.straight.modules.ModuleSpec#hasDomainSpecificConfiguration()
 	 */
@@ -71,8 +79,7 @@ public class AuthorizationSpec implements ModuleSpec {
 	 */
 	@Override
 	public Set<String> getModuleActions() {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptySet();
 	}
 
 	/* (non-Javadoc)
@@ -80,8 +87,7 @@ public class AuthorizationSpec implements ModuleSpec {
 	 */
 	@Override
 	public Set<String> getModuleAdministrativeActions() {
-		// TODO Auto-generated method stub
-		return null;
+		return Collections.emptySet(); 
 	}
 
 }

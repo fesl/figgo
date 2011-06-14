@@ -22,7 +22,7 @@ import java.util.Collection;
 
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
-import br.octahedron.straight.modules.Modules;
+import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationDAO;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
@@ -67,7 +67,7 @@ public class ConfigurationManager {
 	/**
 	 * @return The {@link DomainSpecificModuleConfigurationView} for the given module
 	 */
-	private DomainSpecificModuleConfiguration createModuleConfig(Modules module) {
+	private DomainSpecificModuleConfiguration createModuleConfig(Module module) {
 		return module.getModuleSpec().getDomainSpecificModuleConfiguration();
 	}
 
@@ -116,10 +116,10 @@ public class ConfigurationManager {
 	 * 
 	 * @throws DataDoesNotExistsException
 	 * 
-	 * @see ConfigurationManager#enableModule(Modules)
+	 * @see ConfigurationManager#enableModule(Module)
 	 */
-	public void enableModules(Modules... modules) {
-		for (Modules module : modules) {
+	public void enableModules(Module... modules) {
+		for (Module module : modules) {
 			this.enableModule(module);
 		}
 	}
@@ -128,7 +128,7 @@ public class ConfigurationManager {
 	 * Enables the given module for this domain and load the default module's configuration. If the
 	 * module is already enabled, nothing happens
 	 */
-	public void enableModule(Modules module) {
+	public void enableModule(Module module) {
 		DomainConfiguration config = this.getDomainConfiguration();
 		if (!config.isModuleEnabled(module.name())) {
 			config.enableModule(module.name());
@@ -144,10 +144,10 @@ public class ConfigurationManager {
 	 * 
 	 * @throws DataDoesNotExistsException
 	 * 
-	 * @see ConfigurationManager#disableModule(Modules)
+	 * @see ConfigurationManager#disableModule(Module)
 	 */
-	public void disableModules(Modules... modules) {
-		for (Modules module : modules) {
+	public void disableModules(Module... modules) {
+		for (Module module : modules) {
 			this.disableModule(module);
 		}
 	}
@@ -155,7 +155,7 @@ public class ConfigurationManager {
 	/**
 	 * Disables the given module. If the given module isn't enabled, nothing happens.
 	 */
-	public void disableModule(Modules module) {
+	public void disableModule(Module module) {
 		this.getDomainConfiguration().disableModule(module.name());
 	}
 
@@ -164,7 +164,7 @@ public class ConfigurationManager {
 	 *         enabled for the current domain. If module isn't enabled, it returns <code>null</code>
 	 *         .
 	 */
-	public DomainSpecificModuleConfiguration getModuleConfiguration(Modules module) {
+	public DomainSpecificModuleConfiguration getModuleConfiguration(Module module) {
 		DomainConfiguration domainConfig = this.getDomainConfiguration();
 		if (domainConfig.isModuleEnabled(module.name()) && module.getModuleSpec().hasDomainSpecificConfiguration()) {
 			return this.moduleDAO.get(module.name());
@@ -191,7 +191,7 @@ public class ConfigurationManager {
 	 * @param propertyValue
 	 *            The new property value
 	 */
-	public void setModuleProperty(Modules module, String propertyKey, String propertyValue) {
+	public void setModuleProperty(Module module, String propertyKey, String propertyValue) {
 		DomainConfiguration domainConf = this.getDomainConfiguration();
 		if (domainConf.isModuleEnabled(module.name())) {
 			DomainSpecificModuleConfiguration moduleConf = this.moduleDAO.get(module.name());
@@ -219,7 +219,7 @@ public class ConfigurationManager {
 	 * @throws DataDoesNotExistsException
 	 *             If this domain isn't configured.
 	 */
-	public void restoreModuleProperties(Modules module) {
+	public void restoreModuleProperties(Module module) {
 		DomainConfiguration domain = this.getDomainConfiguration();
 		if (domain.isModuleEnabled(module.name())) {
 			DomainSpecificModuleConfiguration moduleConf = this.moduleDAO.get(module.name());

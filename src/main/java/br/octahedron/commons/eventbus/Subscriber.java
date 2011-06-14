@@ -18,7 +18,6 @@
  */
 package br.octahedron.commons.eventbus;
 
-import java.io.Serializable;
 
 /**
  * Subscribers receive notifications each time an {@link Event} of this {@link Subscriber} interest
@@ -29,7 +28,7 @@ import java.io.Serializable;
  * 
  * @author Danilo Penna Queiroz
  */
-public interface Subscriber extends Serializable {
+public interface Subscriber {
 
 	/**
 	 * Notify about a published {@link Event}
