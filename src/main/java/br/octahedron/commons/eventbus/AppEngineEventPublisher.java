@@ -40,7 +40,6 @@ public class AppEngineEventPublisher implements EventPublisher {
 
 	private static final String QUEUE_NAME = "eventbus";
 	private static final Logger logger = Logger.getLogger(AppEngineEventPublisher.class.getName());
-	private InstanceHandler instanceHandler = new InstanceHandler();
 	private Queue taskQueue;
 
 	protected AppEngineEventPublisher() {
@@ -71,9 +70,10 @@ public class AppEngineEventPublisher implements EventPublisher {
 	/**
 	 * A simple {@link DeferredTask} that publishes an event to a {@link Subscriber}
 	 */
-	protected class PublishTask implements DeferredTask, Runnable, Serializable {
+	protected static class PublishTask implements DeferredTask, Runnable, Serializable {
 
 		private static final long serialVersionUID = 7900664974046236811L;
+		private transient static InstanceHandler instanceHandler = new InstanceHandler();
 		private Class<? extends Subscriber> subscriber;
 		private Event event;
 
