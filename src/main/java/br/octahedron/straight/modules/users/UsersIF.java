@@ -48,7 +48,6 @@ public interface UsersIF {
 	 * @param userId
 	 * @param name
 	 * @param phoneNumber
-	 * @param avatar
 	 * @param description
 	 */
 	public UserView createUser(String userId, String name, String phoneNumber, String description);
