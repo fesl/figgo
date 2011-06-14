@@ -30,11 +30,6 @@ import static org.easymock.EasyMock.verify;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.octahedron.commons.eventbus.AppEngineEventPublisher;
-import br.octahedron.commons.eventbus.Event;
-import br.octahedron.commons.eventbus.EventBus;
-import br.octahedron.commons.eventbus.Subscriber;
-
 import com.google.appengine.api.taskqueue.Queue;
 
 /**
@@ -58,7 +53,6 @@ public class EventBusTest {
 	@Test
 	public void consumeTest() {
 		Event event = new EventOne();
-		replay(this.consumerOne, this.consumerTwo, this.queue);
 		new AppEngineEventPublisher.PublishTask(SubscriberOne.class, event).run();
 		assertEquals(EventOne.class, SubscriberOne.receivedEvent.getClass());
 	}
