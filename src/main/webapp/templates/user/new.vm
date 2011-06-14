@@ -16,9 +16,6 @@
         	<label for="phoneNumber">
                 Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" />
         	</label><br />
-        	<label for="avatar">
-                URL avatar: <input type="text" name="avatar" />
-        	</label><br />
         	<label for="description">
         		Descrição: <textarea name="description"></textarea>
         	</label><br />

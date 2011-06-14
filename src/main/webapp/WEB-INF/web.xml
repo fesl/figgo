@@ -41,20 +41,38 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <servlet>
+        <servlet-name>BlobUploadServlet</servlet-name>
+        <servlet-class>br.octahedron.commons.blobstore.BlobUploadServlet</servlet-class>
+        <init-param>
+            <param-name>verbose</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>BlobServeServlet</servlet-name>
+        <servlet-class>br.octahedron.commons.blobstore.BlobServeServlet</servlet-class>
+        <init-param>
+            <param-name>verbose</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
 
 	<!-- Mapping -->
     <servlet-mapping>
         <servlet-name>GroovletServlet</servlet-name>
         <url-pattern>*.groovy</url-pattern>
     </servlet-mapping>
-    <!--<servlet-mapping>
+    <servlet-mapping>
         <servlet-name>BlobUploadServlet</servlet-name>
         <url-pattern>/upload</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>BlobServeServlet</servlet-name>
         <url-pattern>/serve</url-pattern>
-    </servlet-mapping> -->
+    </servlet-mapping>
 
     <!-- Uncomment the following security constraint if you want to secure your incoming email endpoint -->
     <!-- Only allow the SDK and administrators to have access to the incoming email endpoint -->

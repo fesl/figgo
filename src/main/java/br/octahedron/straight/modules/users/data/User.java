@@ -41,7 +41,7 @@ public class User implements Serializable, UserView {
 	@Persistent
 	private String phoneNumber;
 	@Persistent
-	private String avatar;
+	private String avatarKey;
 	@Persistent
 	private String description;
 
@@ -104,16 +104,16 @@ public class User implements Serializable, UserView {
 	 * @see br.octahedron.straight.modules.users.data.UserView#getAvatar()
 	 */
 	@Override
-	public String getAvatar() {
-		return this.avatar;
+	public String getAvatarKey() {
+		return this.avatarKey;
 	}
 
 	/**
-	 * @param avatar
+	 * @param avatarKey
 	 *            the avatar to set
 	 */
-	public void setAvatar(String avatar) {
-		this.avatar = avatar;
+	public void setAvatarKey(String avatarKey) {
+		this.avatarKey = avatarKey;
 	}
 
 	/**

@@ -42,9 +42,9 @@ public interface UserView {
 	public abstract String getPhoneNumber();
 
 	/**
-	 * @return the avatar
+	 * @return the avatar key from blobstore
 	 */
-	public abstract String getAvatar();
+	public abstract String getAvatarKey();
 
 	/**
 	 * @return the userId

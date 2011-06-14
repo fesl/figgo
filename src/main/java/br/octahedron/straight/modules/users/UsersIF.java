@@ -61,6 +61,6 @@ public interface UsersIF {
 	 * @param avatar
 	 * @param description
 	 */
-	public UserView updateUser(String userId, String name, String phoneNumber, String avatar, String description);
+	public UserView updateUser(String userId, String name, String phoneNumber, String description);
 
 }

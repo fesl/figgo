@@ -14,6 +14,7 @@ all "/bank/@action", forward: "/bank.groovy?action=@action"
 
 get "/dashboard", forward: "/user.groovy?action=dashboard"
 all "/user/@action", forward: "/user.groovy?action=@action"
+all "/user/upload/@key", forward: "/user.groovy?action=upload_confirm&key=@key"
 
 all "/domain/@action", forward: "/domain.groovy?action=@action"
 
