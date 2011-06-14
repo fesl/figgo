@@ -31,6 +31,14 @@ import br.octahedron.straight.modules.users.manager.UsersSubscriber;
  *
  */
 public class UsersSpec implements ModuleSpec {
+	
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#isDomainSpecificModule()
+	 */
+	@Override
+	public boolean isDomainSpecificModule() {
+		return false;
+	}
 
 	/* (non-Javadoc)
 	 * @see br.octahedron.straight.modules.ModuleSpec#getDomainSpecificModuleConfiguration()
