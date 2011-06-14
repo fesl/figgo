@@ -8,16 +8,24 @@
         <h1>Novo usuário</h1>
 		<p>Olá, $user.Email!</p>
 		<p>Você ainda não possui cadastro no Figgo. Faça já o seu!</p>
+		#if( $errors )
+		<h3>Erros</h3>
+		<ul>
+    		#foreach( $error in $errors )
+			<li>$error</li>
+			#end
+		</ul>
+		#end
 		<p>Preencha o formulário abaixo:</p>
         <form action="/user/create" method="post">
         	<label for="name">
-        		Nome: <input type="text" name="name" />
+        		Nome: <input type="text" name="name" value="$!{name}" />
         	</label><br />
         	<label for="phoneNumber">
-                Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" />
+                Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}" />
         	</label><br />
         	<label for="description">
-        		Descrição: <textarea name="description"></textarea>
+        		Descrição: <textarea name="description">$!{description}</textarea>
         	</label><br />
     		<input type="submit" value="Cadastrar" />
         </form>

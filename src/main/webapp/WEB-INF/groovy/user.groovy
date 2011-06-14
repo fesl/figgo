@@ -1,13 +1,7 @@
 import br.octahedron.straight.modules.ManagerBuilder
-import java.util.regex.Pattern
-import java.util.regex.Matcher
 
-def actions = ['create', 'new', 'dashboard', 'upload', 'upload_confirm']
+actions = ['create', 'new', 'dashboard', 'upload', 'edit', 'update']
 usersManager = ManagerBuilder.getUserManager()
-
-// validation patterns
-namePattern = Pattern.compile('([a-zA-ZáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûçÇ] *){2,}')
-phonePattern = Pattern.compile('^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$')
 
 if (actions.contains(params.action)) {
 	actionCall = request.method.toLowerCase() + "_" + params.action
@@ -16,21 +10,7 @@ if (actions.contains(params.action)) {
 }
 
 def post_create() {
-	// do validation
-	phone = params.phoneNumber.trim()
-	name = params.name.trim()
-	isValid = true
-	errors = []
-	count = 0
-	if (!namePattern.matcher(name).matches()) {
-	    errors[count++] = "Nome inválido"
-	    isValid = false
-	}
-	if (!phonePattern.matcher(phone).matches()) {
-	    errors[count++] = "Telefone inválido"
-	    isValid = false
-	}
-	
+	(isValid, errors) = userValidation(params)
 	if (isValid) {
 		usersManager.createUser(request.user.email, name, phone, params.description)
 		redirect '/dashboard'
@@ -52,9 +32,35 @@ def get_dashboard() {
 	render 'user/dashboard.vm', request, response
 }
 
+def get_edit() {
+	loggedUser = usersManager.getUser(request.user.email)
+	request.name = loggedUser.name
+	request.phoneNumber = loggedUser.phoneNumber
+	request.description = loggedUser.description
+	render 'user/edit.vm', request, response
+}
+
+def post_update() {
+	(isValid, errors) = userValidation(params)
+	if (isValid) {
+		usersManager.updateUser(request.user.email, params.name, params.phoneNumber, params.description)
+		redirect '/dashboard'
+	} else {
+		request.errors = errors
+		request.name = params.name
+		request.phoneNumber = params.phoneNumber
+		request.description = params.description
+		render 'user/edit.vm', request, response
+	}
+}
+
 def get_upload() {
 	request.upload_url = blobstore.createUploadUrl("/upload")
 	render 'user/upload.vm', request, response
+}
+
+def notfound() {
+	render 'notfound.vm', request, response	
 }
 
 "$actionCall"()
