@@ -33,7 +33,7 @@ import br.octahedron.straight.modules.services.manager.ServiceManager;
  * @author Erick Moreno
  *
  */
-public class ServiceDecorator {
+public class ServiceDecorator implements ServicesIF {
 	
 	
 	private ServiceManager serviceManager;
@@ -105,8 +105,8 @@ public class ServiceDecorator {
 	 * @param serviceName
 	 * @return
 	 */
-	public Collection<ServiceView> getServiceProviders(String serviceName){
-		return this.getServiceProviders(serviceName);
+	public Collection<String> getServiceProviders(String serviceName){
+		return this.serviceManager.getServiceProviders(serviceName);
 	}
 	
 	/**

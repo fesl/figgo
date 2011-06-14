@@ -61,13 +61,11 @@ public class ManagerBuilder {
 		return (ServicesIF)typesMap.get(Types.SERVICES);
 	}
 
-	/**
-	 * 
-	 */
-	private static void createServiceManager() {
+	private static ServicesIF createServiceManager() {
 		ServiceManager manager = new ServiceManager();
 		ServiceDecorator decorator = new ServiceDecorator(manager);
 		typesMap.put(Types.SERVICES, manager);
+		return decorator;
 	}
 	
 }
