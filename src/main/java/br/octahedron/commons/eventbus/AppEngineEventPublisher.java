@@ -61,11 +61,7 @@ public class AppEngineEventPublisher implements EventPublisher {
 	public void publish(Collection<Class<? extends Subscriber>> subscribers, Event event) {
 		Collection<TaskOptions> tasks = new LinkedList<TaskOptions>();
 		for (Class<? extends Subscriber> subscriber : subscribers) {
-			try {
-				tasks.add(TaskOptions.Builder.withPayload(new PublishTask(instanceHandler.getInstance(subscriber), event)));
-			} catch (InstantiationException e) {
-				logger.log(Level.WARNING, "Unable to deliver event to subscriber : " + subscriber.getName(), e);
-			}
+			tasks.add(TaskOptions.Builder.withPayload(new PublishTask(subscriber, event)));
 		}
 		logger.fine("Adding " + tasks.size() + " PublishTasks to " + QUEUE_NAME + " queue. EventClass: " + event.getClass());
 		this.taskQueue.add(tasks);
@@ -75,13 +71,13 @@ public class AppEngineEventPublisher implements EventPublisher {
 	/**
 	 * A simple {@link DeferredTask} that publishes an event to a {@link Subscriber}
 	 */
-	protected static class PublishTask implements DeferredTask, Runnable, Serializable {
+	protected class PublishTask implements DeferredTask, Runnable, Serializable {
 
 		private static final long serialVersionUID = 7900664974046236811L;
-		private Subscriber subscriber;
+		private Class<? extends Subscriber> subscriber;
 		private Event event;
 
-		protected PublishTask(Subscriber subscriber, Event event) {
+		protected PublishTask(Class<? extends Subscriber> subscriber, Event event) {
 			this.subscriber = subscriber;
 			this.event = event;
 		}
@@ -93,8 +89,13 @@ public class AppEngineEventPublisher implements EventPublisher {
 		 */
 		@Override
 		public void run() {
-			logger.fine("Publishing event " + this.event.getClass() + " to subscriber " + this.subscriber.getClass());
-			this.subscriber.eventPublished(this.event);
+			try {
+				Subscriber sub = instanceHandler.createInstance(this.subscriber);
+				logger.fine("Publishing event " + this.event.getClass() + " to subscriber " + this.subscriber.getClass());
+				sub.eventPublished(this.event);
+			} catch (Exception e) {
+				logger.log(Level.WARNING, "Unable to deliver event to subscriber : " + subscriber.getName(), e);
+			}
 		}
 
 		/*
