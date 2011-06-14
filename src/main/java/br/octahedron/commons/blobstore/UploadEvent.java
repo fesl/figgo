@@ -31,9 +31,12 @@ public class UploadEvent implements Event {
 	private UploadTypeEnum type;
 
 	private String blobKey;
+
+	private String target;
 	
-	public UploadEvent(UploadTypeEnum type, String blobKey) {
+	public UploadEvent(UploadTypeEnum type, String target, String blobKey) {
 		this.type = type;
+		this.target = target;
 		this.blobKey = blobKey;
 	}
 
@@ -43,5 +46,9 @@ public class UploadEvent implements Event {
 
 	public String getBlobKey() {
 		return blobKey;
+	}
+
+	public String getTarget() {
+		return target;
 	}
 }

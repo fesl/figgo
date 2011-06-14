@@ -20,6 +20,7 @@ package br.octahedron.straight.modules;
 
 import br.octahedron.straight.modules.authorization.AuthorizationSpec;
 import br.octahedron.straight.modules.bank.BankSpec;
+import br.octahedron.straight.modules.users.UsersSpec;
 
 /**
  * All the Modules existent at the project
@@ -28,7 +29,7 @@ import br.octahedron.straight.modules.bank.BankSpec;
  */
 public enum Modules {
 
-	BANK(new BankSpec()), AUTHORIZATION(new AuthorizationSpec());
+	BANK(new BankSpec()), AUTHORIZATION(new AuthorizationSpec()), USERS(new UsersSpec());
 
 	private ModuleSpec moduleSpec;
 

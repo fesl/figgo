@@ -90,4 +90,15 @@ public class UsersManager implements UsersIF {
 	public boolean existsUser(String userId) {
 		return this.userDAO.exists(userId);
 	}
+
+	/**
+	 * Updates a {@link User} avatar key with the generated blob key.
+	 * 
+	 * @param userId
+	 * @param avatarKey Blob key generated when uploaded avatar
+	 */
+	public void saveAvatarKey(String userId, String avatarKey) {
+		User user = this.userDAO.get(userId);
+		user.setAvatarKey(avatarKey);
+	}
 }
