@@ -58,10 +58,9 @@ public class EventBusTest {
 	@Test
 	public void consumeTest() {
 		Event event = new EventOne();
-		this.consumerOne.eventPublished(event);
 		replay(this.consumerOne, this.consumerTwo, this.queue);
-		new AppEngineEventPublisher.PublishTask(this.consumerOne, event).run();
-		verify(this.consumerOne, this.consumerTwo, this.queue);
+		new AppEngineEventPublisher.PublishTask(SubscriberOne.class, event).run();
+		assertEquals(EventOne.class, SubscriberOne.receivedEvent.getClass());
 	}
 
 	@Test

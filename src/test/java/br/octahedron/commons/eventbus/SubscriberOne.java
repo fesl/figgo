@@ -21,9 +21,12 @@ package br.octahedron.commons.eventbus;
 /**
  * @author Danilo Queiroz
  */
-@SuppressWarnings("serial")
 @InterestedEvent(events={EventOne.class, EventTwo.class})
 public class SubscriberOne implements Subscriber {
+	protected static Event receivedEvent;
+
 	@Override
-	public void eventPublished(Event event) {}
+	public void eventPublished(Event event) {
+		receivedEvent = event; 
+	}
 }
