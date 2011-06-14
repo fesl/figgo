@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.commons.blobstore;
+package br.octahedron.commons.blobstore.servlet;
 
 import java.io.IOException;
 import java.util.Map;
@@ -26,6 +26,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import br.octahedron.commons.blobstore.UploadEvent;
+import br.octahedron.commons.blobstore.UploadTypeEnum;
+import br.octahedron.commons.eventbus.EventBus;
 
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
@@ -52,7 +56,7 @@ public class BlobUploadServlet extends HttpServlet {
 		if (blobKey == null) {
 			res.sendRedirect("/user/upload");
 		} else {
-			res.sendRedirect("/user/upload/confirm/" + blobKey.getKeyString());
+			EventBus.publish(new UploadEvent(UploadTypeEnum.USER, blobKey.getKeyString()));
 		}
 	}
 
