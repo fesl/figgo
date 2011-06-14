@@ -19,9 +19,7 @@
 package br.octahedron.commons.blobstore;
 
 import java.io.IOException;
-import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,17 +38,9 @@ public class BlobServeServlet extends HttpServlet {
 
 	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
 
-    public void doPost(HttpServletRequest req, HttpServletResponse res)
-        throws ServletException, IOException {
-
-        Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(req);
-        BlobKey blobKey = blobs.get("myFile");
-
-        if (blobKey == null) {
-            res.sendRedirect("/");
-        } else {
-            res.sendRedirect("/serve?blob-key=" + blobKey.getKeyString());
-        }
-    }
+	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
+		BlobKey blobKey = new BlobKey(req.getParameter("blob-key"));
+		blobstoreService.serve(blobKey, res);
+	}
 }
 
