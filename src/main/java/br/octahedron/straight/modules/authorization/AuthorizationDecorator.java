@@ -25,7 +25,6 @@ import java.util.Collection;
 
 import br.octahedron.commons.inject.Inject;
 import br.octahedron.straight.modules.authorization.data.Role;
-import br.octahedron.straight.modules.authorization.manager.AuthorizationManager;
 
 /**
  * Responsible by provide a mechanism to check user authorizations.
@@ -34,16 +33,16 @@ import br.octahedron.straight.modules.authorization.manager.AuthorizationManager
  * 
  * @author Danilo Queiroz
  */
-public class AuthorizationInternalFacade {
+public class AuthorizationDecorator implements AuthorizationIF {
 
 	@Inject
-	private AuthorizationManager authorizationManager;
+	private AuthorizationIF authorizationManager;
 
 	/**
 	 * @param authorizationManager
 	 *            the authorizationManager to set
 	 */
-	public void setAuthorizationManager(AuthorizationManager authorizationManager) {
+	public void setAuthorizationManager(AuthorizationIF authorizationManager) {
 		this.authorizationManager = authorizationManager;
 	}
 
@@ -75,5 +74,59 @@ public class AuthorizationInternalFacade {
 		} finally {
 			backToPreviousNamespace();
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.authorization.AuthorizationIF#addActivitiesToRole(java.lang.String, java.lang.String, java.lang.String[])
+	 */
+	@Override
+	public void addActivitiesToRole(String domainName, String roleName, String... activities) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.authorization.AuthorizationIF#addUsersToRole(java.lang.String, java.lang.String, java.lang.String[])
+	 */
+	@Override
+	public void addUsersToRole(String domainName, String roleName, String... users) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.authorization.AuthorizationIF#createRole(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Role createRole(String domainName, String roleName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.authorization.AuthorizationIF#existsRole(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public boolean existsRole(String domainName, String roleName) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.authorization.AuthorizationIF#getRole(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public Role getRole(String domainName, String roleName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.authorization.AuthorizationIF#removeRole(java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void removeRole(String domainName, String roleName) {
+		// TODO Auto-generated method stub
+		
 	}
 }

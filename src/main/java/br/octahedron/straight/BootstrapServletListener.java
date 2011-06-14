@@ -58,6 +58,7 @@ public class BootstrapServletListener implements ServletContextListener {
 				}
 			}
 		}
+		
 		logger.info("Up and running!");
 	}
 

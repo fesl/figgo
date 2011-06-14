@@ -40,7 +40,7 @@ public class DependencyManager {
 	 * @param dependencyIF
 	 *            The interface for a dependency
 	 * @param dependencyImpl
-	 *            The implementation to be used to supply a dependency
+	 *            The implementation class to be used to supply a dependency
 	 */
 	public static <T> void registerDependency(Class<T> dependencyIF, Class<? extends T> dependencyImpl) {
 		logger.fine("Registring dependency: " + dependencyImpl + " as implementation for " + dependencyIF);
