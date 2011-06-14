@@ -25,7 +25,7 @@ import br.octahedron.straight.modules.users.data.UserDAO;
 /**
  * @author Erick Moreno
  */
-public class UsersManager implements UsersIF{
+public class UsersManager implements UsersIF {
 
 	private UserDAO userDAO = new UserDAO();
 	
@@ -45,9 +45,9 @@ public class UsersManager implements UsersIF{
 	 * @param avatar
 	 * @return
 	 */
-	public User createUser(String userId, String name, String phoneNumber, String avatar, String description) {
+	public User createUser(String userId, String name, String phoneNumber, String description) {
 
-		User user = new User(userId, name, phoneNumber, avatar, description);
+		User user = new User(userId, name, phoneNumber, description);
 
 		this.userDAO.save(user);
 		return user;
@@ -62,12 +62,11 @@ public class UsersManager implements UsersIF{
 	 * @param avatar
 	 * @param description
 	 */
-	public User updateUser(String userId, String name, String phoneNumber, String avatar, String description) {
+	public User updateUser(String userId, String name, String phoneNumber, String description) {
 		User user = this.userDAO.get(userId);
 
 		user.setName(name);
 		user.setPhoneNumber(phoneNumber);
-		user.setAvatar(avatar);
 		user.setDescription(description);
 		// This object will be updated to the DB by JDO persistence manager
 		return user;
