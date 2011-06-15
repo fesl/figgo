@@ -18,8 +18,10 @@
  */
 package br.octahedron.straight.modules;
 
-import br.octahedron.commons.inject.DependencyManager;
+import static br.octahedron.commons.inject.DependencyManager.registerDependency;
 import br.octahedron.commons.inject.InstanceHandler;
+import br.octahedron.straight.modules.admin.AdminDecorator;
+import br.octahedron.straight.modules.admin.AdminIF;
 import br.octahedron.straight.modules.authorization.AuthorizationDecorator;
 import br.octahedron.straight.modules.authorization.AuthorizationIF;
 import br.octahedron.straight.modules.users.UsersDecorator;
@@ -35,17 +37,22 @@ public class ManagerBuilder {
 	
 	static {
 		/* Register Dependencies */
-		DependencyManager.registerDependency(UsersIF.class, UsersDecorator.class);
-		DependencyManager.registerDependency(AuthorizationIF.class, AuthorizationDecorator.class);
+		registerDependency(UsersIF.class, UsersDecorator.class);
+		registerDependency(AuthorizationIF.class, AuthorizationDecorator.class);
+		registerDependency(AdminIF.class, AdminDecorator.class);
 	}
 
 	private static InstanceHandler instanceHandler = new InstanceHandler();
 
 	public static UsersIF getUserManager() throws InstantiationException {
-		return (UsersIF) instanceHandler.getInstance(UsersIF.class);
+		return instanceHandler.getInstance(UsersIF.class);
 	}
 	
 	public static AuthorizationIF getAuthorizationManager() throws InstantiationException {
 		return instanceHandler.getInstance(AuthorizationIF.class);
+	}
+	
+	public static AdminIF getAdminManager() throws InstantiationException {
+		return instanceHandler.getInstance(AdminIF.class);
 	}
 }
