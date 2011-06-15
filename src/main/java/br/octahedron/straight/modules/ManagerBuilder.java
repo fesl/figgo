@@ -18,63 +18,41 @@
  */
 package br.octahedron.straight.modules;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import br.octahedron.straight.modules.services.ServiceDecorator;
-import br.octahedron.straight.modules.services.ServicesIF;
-import br.octahedron.straight.modules.services.manager.ServiceManager;
+import static br.octahedron.commons.inject.DependencyManager.registerDependency;
+import br.octahedron.commons.inject.InstanceHandler;
+import br.octahedron.straight.modules.admin.AdminDecorator;
+import br.octahedron.straight.modules.admin.AdminIF;
+import br.octahedron.straight.modules.authorization.AuthorizationDecorator;
+import br.octahedron.straight.modules.authorization.AuthorizationIF;
 import br.octahedron.straight.modules.users.UsersDecorator;
 import br.octahedron.straight.modules.users.UsersIF;
-import br.octahedron.straight.modules.users.manager.UsersManager;
 
 /**
  * This Builder knows how to create managers for each module.
  * 
  * @author Erick Moreno
- *
+ * 
  */
 public class ManagerBuilder {
 	
-	private static enum ManagerTypeEnum {
-		USERS, 
-		BANK, 
-		SERVICES, 
-		AUTORIZATION, 
-		CONFIGURATION
-	}
-	
-	private static Map<ManagerTypeEnum, Object> managersInstanceMap = new HashMap<ManagerTypeEnum, Object>();
-	
-	public static UsersIF getUserManager(){
-		if (!managersInstanceMap.containsKey(ManagerTypeEnum.USERS)){
-			createUserManager();
-		}
-		return (UsersIF)managersInstanceMap.get(ManagerTypeEnum.USERS);
-	}
-	
-	private static UsersIF createUserManager(){
-		UsersManager manager = new UsersManager();
-		UsersDecorator decorator = new UsersDecorator(manager);
-		managersInstanceMap.put(ManagerTypeEnum.USERS, decorator);
-		return decorator;
-	}
-	
-	public static ServicesIF getServicesManager(){
-		if (!managersInstanceMap.containsKey(ManagerTypeEnum.SERVICES)){
-			createServiceManager();
-		}
-		return (ServicesIF)managersInstanceMap.get(ManagerTypeEnum.SERVICES);
+	static {
+		/* Register Dependencies */
+		registerDependency(UsersIF.class, UsersDecorator.class);
+		registerDependency(AuthorizationIF.class, AuthorizationDecorator.class);
+		registerDependency(AdminIF.class, AdminDecorator.class);
 	}
 
-	private static ServicesIF createServiceManager() {
-		ServiceManager manager = new ServiceManager();
-		ServiceDecorator decorator = new ServiceDecorator(manager);
-		managersInstanceMap.put(ManagerTypeEnum.SERVICES, manager);
-		return decorator;
+	private static InstanceHandler instanceHandler = new InstanceHandler();
+
+	public static UsersIF getUserManager() throws InstantiationException {
+		return instanceHandler.getInstance(UsersIF.class);
 	}
 	
+	public static AuthorizationIF getAuthorizationManager() throws InstantiationException {
+		return instanceHandler.getInstance(AuthorizationIF.class);
+	}
+	
+	public static AdminIF getAdminManager() throws InstantiationException {
+		return instanceHandler.getInstance(AdminIF.class);
+	}
 }
-
-
-

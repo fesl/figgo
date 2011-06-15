@@ -19,6 +19,7 @@
 package br.octahedron.straight.modules.admin;
 
 import br.octahedron.commons.database.NamespaceCommons;
+import br.octahedron.commons.inject.Inject;
 import br.octahedron.straight.modules.admin.data.ApplicationConfiguration;
 import br.octahedron.straight.modules.admin.manager.AdminManager;
 import br.octahedron.straight.modules.admin.util.Route53Exception;
@@ -29,14 +30,19 @@ import br.octahedron.straight.modules.admin.util.Route53Exception;
  * @see AdminManager
  * @author Danilo Queiroz
  */
-public class AdminDecorator {
+public class AdminDecorator implements AdminIF {
 	
+	@Inject
 	private AdminManager adminManager;
-
-	public AdminDecorator(AdminManager adminManager) {
+	
+	/**
+	 * @param adminManager the adminManager to set
+	 */
+	public void setAdminManager(AdminManager adminManager) {
 		this.adminManager = adminManager;
 	}
-	
+
+		
 	/**
 	 * @see AdminManager#hasApplicationConfiguration()
 	 */

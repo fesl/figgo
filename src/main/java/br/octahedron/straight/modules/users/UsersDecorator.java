@@ -19,6 +19,7 @@
 package br.octahedron.straight.modules.users;
 
 import br.octahedron.commons.database.NamespaceCommons;
+import br.octahedron.commons.inject.Inject;
 import br.octahedron.straight.modules.users.data.User;
 import br.octahedron.straight.modules.users.data.UserView;
 import br.octahedron.straight.modules.users.manager.UsersManager;
@@ -31,9 +32,19 @@ import br.octahedron.straight.modules.users.manager.UsersManager;
  */
 public class UsersDecorator implements UsersIF {
 	
+	@Inject
 	private UsersManager usersManager;
 	
 	public UsersDecorator(UsersManager usersManager){
+		this.usersManager = usersManager;
+	}
+	
+	public UsersDecorator(){ }
+	
+	/**
+	 * @param usersManager the usersManager to set
+	 */
+	public void setUsersManager(UsersManager usersManager) {
 		this.usersManager = usersManager;
 	}
 	
