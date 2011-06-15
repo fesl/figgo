@@ -25,6 +25,7 @@ import java.util.Collection;
 
 import br.octahedron.commons.inject.Inject;
 import br.octahedron.straight.modules.authorization.data.Role;
+import br.octahedron.straight.modules.authorization.manager.AuthorizationManager;
 
 /**
  * Responsible by provide a mechanism to check user authorizations.
@@ -36,13 +37,13 @@ import br.octahedron.straight.modules.authorization.data.Role;
 public class AuthorizationDecorator implements AuthorizationIF {
 
 	@Inject
-	private AuthorizationIF authorizationManager;
+	private AuthorizationManager authorizationManager;
 
 	/**
 	 * @param authorizationManager
 	 *            the authorizationManager to set
 	 */
-	public void setAuthorizationManager(AuthorizationIF authorizationManager) {
+	public void setAuthorizationManager(AuthorizationManager authorizationManager) {
 		this.authorizationManager = authorizationManager;
 	}
 
