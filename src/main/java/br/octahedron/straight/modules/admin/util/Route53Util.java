@@ -24,7 +24,11 @@ import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -62,14 +66,16 @@ public class Route53Util {
 	private static final String MAC_ALGORITHM = "HmacSHA1";
 
 	private static final String AUTH_TOKEN = "AWS3-HTTPS AWSAccessKeyId={accessid},Algorithm=" + MAC_ALGORITHM + ",Signature=${sign}";
-	private static final String FETCH_DATE_HEADER = "date";
+	private static final String FETCH_DATE_HEADER = "Date";
 	private static final String SUBMIT_DATE_HEADER = "x-amz-date";
 	private static final String AUTHORIZATION_HEADER = "X-Amzn-Authorization";
 
 	public static void createDomain(String domain, String accessId, String accessKey, String hostedZoneId) throws Route53Exception {
 		try {
 			HTTPRequest request = new HTTPRequest(new URL(ROUTE53_SERVER + VERSION_SPEC + HOSTED_ZONE_COMMAND + hostedZoneId), HTTPMethod.POST);
-			request.setPayload(generateRequestBody(domain).getBytes());
+			String requestBody = generateRequestBody(domain);
+			logger.fine(requestBody);
+			request.setPayload(requestBody.getBytes());
 			signRequest(request, accessId, accessKey);
 			HTTPResponse response = urlFetchService.fetch(request);
 			if (response.getResponseCode() != 200) {
@@ -86,12 +92,14 @@ public class Route53Util {
 	protected static void signRequest(HTTPRequest request, String accessID, String key) throws IOException, InvalidKeyException,
 			InvalidKeySpecException, NoSuchAlgorithmException {
 		String date = fetchDate();
+		logger.fine("##################**********" + date);
 		String sign = sign(date, key);
 		String signature = AUTH_TOKEN.replace(ACCESS_ID_TOKEN, accessID);
 		signature = signature.replace(SIGNATURE_TOKEN, sign);
 
 		request.addHeader(new HTTPHeader(SUBMIT_DATE_HEADER, date));
 		request.addHeader(new HTTPHeader(AUTHORIZATION_HEADER, signature));
+		request.addHeader(new HTTPHeader("Content-Type", "text/xml; charset=UTF-8"));
 	}
 
 	protected static String sign(String content, String key) throws InvalidKeySpecException, NoSuchAlgorithmException, InvalidKeyException {
@@ -105,7 +113,8 @@ public class Route53Util {
 	protected static String fetchDate() throws IOException {
 		HttpURLConnection connection = (HttpURLConnection) new URL(ROUTE53_SERVER + DATE_COMMAND).openConnection();
 		if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-			return connection.getHeaderField(FETCH_DATE_HEADER);
+			Map<String, List<String>> headers = connection.getHeaderFields();
+			return new Date(connection.getHeaderFieldDate(FETCH_DATE_HEADER,0)).toGMTString();
 		} else {
 			return null;
 		}
@@ -122,6 +131,7 @@ public class Route53Util {
 				} else {
 					buf.append(token);
 				}
+				buf.append(' ');
 			}
 			return buf.toString();
 		} finally {
@@ -129,3 +139,4 @@ public class Route53Util {
 		}
 	}
 }
+

@@ -18,6 +18,8 @@
  */
 package br.octahedron.straight.modules.admin.data;
 
+import java.io.Serializable;
+
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -26,8 +28,10 @@ import javax.jdo.annotations.PrimaryKey;
  * @author Danilo Queiroz
  */
 @PersistenceCapable
-public class ApplicationConfiguration {
+public class ApplicationConfiguration implements Serializable { 
 	
+	private static final long serialVersionUID = 6211848005905311102L;
+
 	public static final String APPLICATION_NAME = "Figgo";
 	 
 	@SuppressWarnings("unused")

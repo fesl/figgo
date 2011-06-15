@@ -43,7 +43,7 @@ public class TestRoute53Util {
 	public void fetchDateTest() throws IOException {
 		String date = Route53Util.fetchDate();
 		assertNotNull(date);
-//		System.out.println(">"+date+"<");
+		System.out.println(">"+date+"<");
 	}
 	
 	@Test
@@ -51,6 +51,6 @@ public class TestRoute53Util {
 		String body = Route53Util.generateRequestBody("test");
 		assertNotNull(body);
 		assertTrue(body.contains("test.figgo.com.br"));
-//		System.out.println(">"+body+"<");
+//		System.out.println("**"+body+"**");
 	}
 }
