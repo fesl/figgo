@@ -81,5 +81,6 @@ public class CreateDomainAuthorizationSubscriber implements Subscriber {
 		// add admin user to admin role
 		logger.fine("Configuring the admin for domain " + domainName + ". Admin: " + domainAdmin);
 		this.authorizationManager.addUsersToRole(domainName, ADMINS_ROLE_NAME, domainAdmin);
+		this.authorizationManager.addUsersToRole(domainName, USERS_ROLE_NAME, domainAdmin);
 	}
 }
