@@ -1,4 +1,6 @@
 import br.octahedron.straight.modules.ManagerBuilder
+import java.util.regex.Pattern
+import java.util.regex.Matcher
 
 actions = ['create', 'new', 'dashboard', 'upload', 'edit', 'update']
 usersManager = ManagerBuilder.getUserManager()
@@ -61,6 +63,27 @@ def get_upload() {
 
 def notfound() {
 	render 'notfound.vm', request, response	
+}
+
+// validation patterns
+namePattern = Pattern.compile('([a-zA-ZáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûçÇ] *){2,}')
+phonePattern = Pattern.compile('^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$')
+
+def validateUser(params) {
+	phone = params.phoneNumber.trim()
+	name = params.name.trim()
+	isValid = true
+	errors = []
+	count = 0
+	if (!namePattern.matcher(name).matches()) {
+	    errors[count++] = "Nome inválido"
+	    isValid = false
+	}
+	if (!phonePattern.matcher(phone).matches()) {
+	    errors[count++] = "Telefone inválido"
+	    isValid = false
+	}
+	return [isValid, errors]
 }
 
 "$actionCall"()

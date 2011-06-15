@@ -1,14 +1,10 @@
-import br.octahedron.straight.modules.configuration.data.DomainConfiguration
+import br.octahedron.straight.modules.ManagerBuilder
 
 action = 'notfound'
 adminManager = ManagerBuilder.getAdminManager()
 
 if (params.module && params.action) {
 	action = "action_" + params.module + "_" + request.method.toLowerCase() + "_" + params.action
-}
-
-def notfound() {
-	render 'notfound.vm', request, response
 }
 
 // APP CONFIGURATION
@@ -29,12 +25,21 @@ def action_app_post_config() {
 
 // DOMAIN CONFIGURATION
 def action_domain_post_create() {
-	adminFacade.createDomain(params.name + "." + request.serverName)
-	redirect 'http://' + params.name + '.figgo.com.br:8080'
+	adminManager.createDomain(params.name, params.userId)
+	redirect '/'
 }
 
 def action_domain_get_new() {
 	render 'domain/new.vm', request, response
 }
 
-"$action"()
+def notfound() {
+	render 'notfound.vm', request, response
+}
+
+def check_authorization() {
+	authorize request, response
+	"$action"()
+}
+
+check_authorization()
