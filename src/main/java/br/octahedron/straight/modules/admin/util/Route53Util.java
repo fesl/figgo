@@ -19,7 +19,6 @@
 package br.octahedron.straight.modules.admin.util;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.InvalidKeyException;
