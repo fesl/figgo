@@ -72,7 +72,7 @@ public class CreateDomainAuthorizationSubscriber implements Subscriber {
 		// add actions to roles
 		for (Module m : Module.values()) {
 			ModuleSpec moduleSpec = m.getModuleSpec();
-			if (moduleSpec.isDomainSpecificModule()) {
+			if (moduleSpec.getModuleType() == Module.Type.DOMAIN || moduleSpec.getModuleType() == Module.Type.APPLICATION_DOMAIN) {
 				logger.fine("Adding actions for module " + m.name() + " for domain " + domainName);
 				this.authorizationManager.addActivitiesToRole(domainName, ADMINS_ROLE_NAME, moduleSpec.getModuleAdministrativeActions());
 				this.authorizationManager.addActivitiesToRole(domainName, USERS_ROLE_NAME, moduleSpec.getModuleActions());

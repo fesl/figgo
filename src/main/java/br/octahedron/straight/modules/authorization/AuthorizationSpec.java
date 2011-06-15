@@ -22,7 +22,9 @@ import java.util.Collections;
 import java.util.Set;
 
 import br.octahedron.commons.eventbus.Subscriber;
+import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
+import br.octahedron.straight.modules.Module.Type;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 
 /**
@@ -32,12 +34,13 @@ import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleCon
 public class AuthorizationSpec implements ModuleSpec {
 
 	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#isDomainSpecificModule()
+	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleType()
 	 */
 	@Override
-	public boolean isDomainSpecificModule() {
-		return true;
+	public Type getModuleType() {
+		return Module.Type.APPLICATION_DOMAIN;
 	}
+	
 	/* (non-Javadoc)
 	 * @see br.octahedron.straight.modules.ModuleSpec#hasDomainSpecificConfiguration()
 	 */

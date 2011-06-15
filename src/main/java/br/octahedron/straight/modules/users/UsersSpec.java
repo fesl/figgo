@@ -22,25 +22,32 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import br.octahedron.commons.eventbus.Subscriber;
+import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
+import br.octahedron.straight.modules.Module.Type;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 import br.octahedron.straight.modules.users.manager.UsersSubscriber;
 
 /**
  * @author vitoravelino
- *
+ * 
  */
 public class UsersSpec implements ModuleSpec {
-	
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#isDomainSpecificModule()
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleType()
 	 */
 	@Override
-	public boolean isDomainSpecificModule() {
-		return false;
+	public Type getModuleType() {
+		// TODO Auto-generated method stub
+		return Module.Type.APPLICATION_GLOBAL;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getDomainSpecificModuleConfiguration()
 	 */
 	@Override
@@ -49,7 +56,9 @@ public class UsersSpec implements ModuleSpec {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleActions()
 	 */
 	@Override
@@ -58,7 +67,9 @@ public class UsersSpec implements ModuleSpec {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleAdministrativeActions()
 	 */
 	@Override
@@ -67,7 +78,9 @@ public class UsersSpec implements ModuleSpec {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getSubscribers()
 	 */
 	@Override
@@ -77,7 +90,9 @@ public class UsersSpec implements ModuleSpec {
 		return subscribers;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#hasDomainSpecificConfiguration()
 	 */
 	@Override
@@ -86,7 +101,9 @@ public class UsersSpec implements ModuleSpec {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#hasSubscribers()
 	 */
 	@Override

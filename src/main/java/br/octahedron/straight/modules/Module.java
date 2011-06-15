@@ -32,20 +32,45 @@ public enum Module {
 
 	BANK(new BankSpec()), AUTHORIZATION(new AuthorizationSpec()), USERS(new UsersSpec()), CONFIGURATION(new ConfigurationSpec());
 
+	/**
+	 * Indicates the module Type
+	 */
+	public enum Type {
+		/**
+		 * Indicates that the module is an Application Module and has a global scope.
+		 * 
+		 * An application module is a module that ins internal to the application and provides
+		 * features needed by the system. This kind of module can't be enabled/disabled.
+		 */
+		APPLICATION_GLOBAL,
+		/**
+		 * Indicates that the module is an Application Module and has domain scope.
+		 * 
+		 * An application module is a module that ins internal to the application and provides
+		 * features needed by the system. This kind of module can't be enabled/disabled.
+		 */
+		APPLICATION_DOMAIN,
+		/**
+		 * Indicates that the module is a domain module, and provides functionalities specific for a
+		 * domain needs. This kind of module can be enable/disabled per domain.
+		 */
+		DOMAIN;
+	}
+
 	private ModuleSpec moduleSpec;
 
 	private Module(ModuleSpec moduleSpecification) {
 		this.moduleSpec = moduleSpecification;
 	}
-	
+
 	public ModuleSpec getModuleSpec() {
 		return this.moduleSpec;
 	}
-	
+
 	public static ModuleSpec getModuleSpec(Module module) {
 		return module.getModuleSpec();
 	}
-	
+
 	public static ModuleSpec getModuleSpec(String moduleName) {
 		return Module.valueOf(moduleName).getModuleSpec();
 	}
