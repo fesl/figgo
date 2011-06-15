@@ -62,7 +62,7 @@ public class AdminManager {
 	 * Configures this application
 	 */
 	public void configureApplication(String route53AccessKeyID, String route53AccessKeySecret, String route53ZoneID) {
-		if (this.hasApplicationConfiguration()) {
+		if (!this.hasApplicationConfiguration()) {
 			this.createApplicationConfiguration();
 		}
 		

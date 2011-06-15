@@ -1,0 +1,25 @@
+#set( $title = "Figgo - Configuração inicial" )
+#parse( "templates/layout.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<h1>Configuração inicial (Route53)</h1>
+		<p>Preencha o formulário abaixo:</p>
+		<form action="/admin/app/config" method="post">
+        	<label for="name">
+        		Access Key ID: <input type="text" name="accessKey" value="$!{accessKey}" />
+        	</label><br />
+			<label for="name">
+        		Access Key Secret: <input type="text" name="keySecret" value="$!{keySecret}" />
+        	</label><br />
+    		<label for="name">
+        		Zone ID: <input type="text" name="zone" value="$!{zone}" />
+        	</label><br />
+    		<input type="submit" value="Salvar" />
+        </form>
+	</div>
+#end
+
+#scripts()
