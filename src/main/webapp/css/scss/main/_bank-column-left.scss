@@ -27,7 +27,11 @@
   float: left;
   width: 500px;
   
-  #transfer form {
+  .action {
+    margin: 10px 0 0 0;
+  }
+  
+  #transfer form, #ballast form {
     width: 400px;
     margin: 0 auto;
      
@@ -46,6 +50,7 @@
         height: 70px;
       }
     } // label
+    
     input[type=submit] {
       float: left;
       width: 170px;
