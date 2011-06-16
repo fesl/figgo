@@ -1,4 +1,4 @@
-#set( $title = "Figgo - Nome do coletivo - Editar configurações do domínio" )
+#set( $title = "Figgo - ${domain.DomainName} - Editar configurações do domínio" )
 #parse( "templates/layout.vm" )
 
 #@body()
@@ -11,8 +11,11 @@
     		<input type="hidden" name="_method" value="put" />
     		Domínio: ${domain.DomainName} <br />
     		<label for="name">
-    			Nome: <small>(e.g.: Coletivo Mundo)</small> <input type="text" name="name" value="$domain.Name"/>
+    			Nome: <small>(e.g.: Coletivo Mundo)</small> <input type="text" name="name" value="$!{name}"/>
             </label><br />
+			<label for="description">
+        		Descrição: <textarea name="description">$!{description}</textarea>
+        	</label><br />
     		<input type="submit" value="Editar" />
         </form>
 	</div>

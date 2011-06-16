@@ -10,22 +10,26 @@
 			<nav id="tabs">
         		<ul class="inline">
                     <li class="selected"><a href="$url/#">Dashboard</a></li>
-                    <li><a href="$url/bank">Banco</a></li>
+                    #foreach( $module in $domain.Modules )
+						<li><a href="/$module.Url">$module.Name</a></li>
+					#end
+					<li><a href="$url/bank">Banco</a></li>
                     <li><a href="$url/services">Serviços</a></li>
         		</ul>
 			</nav>
 		</header>
 		<div id="dashboard">
 			<div id="column-about">
-				<img src="/img/blank.png" alt="Avatar do usuário" />
+				#if( $domain.AvatarKey )
+				<a href="/domain/upload"><img src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+				#else
+				<a href="/domain/upload"><img src="http://lorempixum.com/100/100/" alt="Avatar do domínio" /></a>
+				#end
                 <section id="about">
-    				<h2>Nome</h2>
+    				<h2>$domain.Name</h2>
     				<small>99 membros</small><br />
     				<small>+55 83 8888 8888</small>
-					<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-					Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,
-					when an unknown printer took a galley of type and scrambled it to make a type 
-                    specimen book.</p>
+					<p>$domain.Description</p>
     			</section>
 				<hr />
 			</div>
