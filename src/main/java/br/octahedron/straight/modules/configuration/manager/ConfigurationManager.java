@@ -28,6 +28,7 @@ import br.octahedron.straight.modules.configuration.data.DomainConfigurationDAO;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfigurationView;
 import br.octahedron.straight.modules.configuration.data.ModuleConfigurationDAO;
+import br.octahedron.straight.modules.configuration.data.ModuleProperty;
 
 /**
  * This entity is responsible by manager all configurations for a domain, and the modules enabled
@@ -79,15 +80,19 @@ public class ConfigurationManager {
 		this.getDomainConfiguration().setAvatarKey(avatarKey);
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.configuration.manager.Configuration#existsDomainConfiguration()
+	/**
+	 * Checks if exists the {@link DomainConfiguration} for the current Domain.
+	 * 
+	 * @return <code>true</code> if exists, <code>false</code> otherwise.
 	 */
 	public boolean existsDomainConfiguration() {
 		return this.domainDAO.count() != 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.configuration.manager.Configuration#getDomainConfiguration()
+	/**
+	 * @return the current domain's {@link DomainConfiguration}
+	 * @throws DataDoesNotExistsException
+	 *             if there's no {@link DomainConfiguration} created.
 	 */
 	public DomainConfiguration getDomainConfiguration() {
 		if (this.existsDomainConfiguration()) {
@@ -98,8 +103,13 @@ public class ConfigurationManager {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.configuration.manager.Configuration#createDomainConfiguration(java.lang.String)
+	/**
+	 * Creates this domain configuration
+	 * 
+	 * @param domainName
+	 *            This domain name
+	 * @throws DataAlreadyExistsException
+	 *             if already exists configuration for the given domain.
 	 */
 	public void createDomainConfiguration(String domainName) {
 		if (!this.existsDomainConfiguration()) {
@@ -110,8 +120,12 @@ public class ConfigurationManager {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.configuration.manager.Configuration#enableModules(br.octahedron.straight.modules.Module)
+	/**
+	 * Enables the given modules for this domain and load the default modules' configuration.
+	 * 
+	 * @throws DataDoesNotExistsException
+	 * 
+	 * @see ConfigurationManager#enableModule(Module)
 	 */
 	public void enableModules(Module... modules) {
 		for (Module module : modules) {
@@ -119,8 +133,9 @@ public class ConfigurationManager {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.configuration.manager.Configuration#enableModule(br.octahedron.straight.modules.Module)
+	/**
+	 * Enables the given module for this domain and load the default module's configuration. If the
+	 * module is already enabled, nothing happens
 	 */
 	public void enableModule(Module module) {
 		DomainConfiguration config = this.getDomainConfiguration();
@@ -133,8 +148,12 @@ public class ConfigurationManager {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.configuration.manager.Configuration#disableModules(br.octahedron.straight.modules.Module)
+	/**
+	 * Disables the given modules.
+	 * 
+	 * @throws DataDoesNotExistsException
+	 * 
+	 * @see ConfigurationManager#disableModule(Module)
 	 */
 	public void disableModules(Module... modules) {
 		for (Module module : modules) {
@@ -142,15 +161,16 @@ public class ConfigurationManager {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.configuration.manager.Configuration#disableModule(br.octahedron.straight.modules.Module)
+	/**
+	 * Disables the given module. If the given module isn't enabled, nothing happens.
 	 */
 	public void disableModule(Module module) {
 		this.getDomainConfiguration().disableModule(module.name());
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.configuration.manager.Configuration#getModuleConfiguration(br.octahedron.straight.modules.Module)
+	/**
+	 * @return The {@link DomainSpecificModuleConfigurationView} for the given module, if module is
+	 *         enabled for the current domain. If module isn't enabled, it returns <code>null</code>.
 	 */
 	public DomainSpecificModuleConfiguration getModuleConfiguration(Module module) {
 		DomainConfiguration domainConfig = this.getDomainConfiguration();
@@ -161,8 +181,23 @@ public class ConfigurationManager {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.configuration.manager.Configuration#setModuleProperty(br.octahedron.straight.modules.Module, java.lang.String, java.lang.String)
+	/**
+	 * Updates an model property's value.
+	 * 
+	 * If the given module hasn't any property if the the given propertyKey an
+	 * {@link IllegalArgumentException} will be thrown.
+	 * 
+	 * This method performs an verification using the {@link ModuleProperty} regex. If the given
+	 * value doesn't satisfy the regex, an {@link IllegalArgumentException} will be thrown.
+	 * 
+	 * If the given module isn't enabled for the given domain, nothing happens.
+	 * 
+	 * @param module
+	 *            The module
+	 * @param propertyKey
+	 *            The property key to be updated
+	 * @param propertyValue
+	 *            The new property value
 	 */
 	public void setModuleProperty(Module module, String propertyKey, String propertyValue) {
 		DomainConfiguration domainConf = this.getDomainConfiguration();
@@ -184,9 +219,13 @@ public class ConfigurationManager {
 			throw new DataDoesNotExistsException("The module " + module.name() + " isn't enabled.");
 		}
 	}
-	
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.configuration.manager.Configuration#restoreModuleProperties(br.octahedron.straight.modules.Module)
+
+	/**
+	 * Restores the given module's configuration to defaults. If the given module isn't enabled,
+	 * nothing happens.
+	 * 
+	 * @throws DataDoesNotExistsException
+	 *             If this domain isn't configured.
 	 */
 	public void restoreModuleProperties(Module module) {
 		DomainConfiguration domain = this.getDomainConfiguration();

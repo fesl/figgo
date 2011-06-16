@@ -21,7 +21,6 @@ package br.octahedron.straight.modules.services.manager;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import br.octahedron.straight.modules.services.ServicesIF;
 import br.octahedron.straight.modules.services.data.Service;
 import br.octahedron.straight.modules.services.data.ServiceDAO;
 import br.octahedron.straight.modules.services.data.ServiceView;
@@ -32,7 +31,7 @@ import br.octahedron.straight.modules.users.data.User;
  * 
  * @author Erick Moreno
  */
-public class ServiceManager implements ServicesIF{
+public class ServiceManager {
 
 	private ServiceDAO serviceDAO = new ServiceDAO();
 

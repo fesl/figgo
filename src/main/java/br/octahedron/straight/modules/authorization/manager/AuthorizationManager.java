@@ -28,7 +28,6 @@ import java.util.TreeSet;
 
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
-import br.octahedron.straight.modules.authorization.AuthorizationIF;
 import br.octahedron.straight.modules.authorization.data.Role;
 import br.octahedron.straight.modules.authorization.data.RoleDAO;
 import br.octahedron.straight.modules.authorization.data.RoleView;
@@ -41,7 +40,7 @@ import br.octahedron.straight.modules.authorization.data.RoleView;
  * 
  * @author Danilo Queiroz
  */
-public class AuthorizationManager implements AuthorizationIF {
+public class AuthorizationManager {
 
 	private GoogleAuthorizer googleAuthorizer = new GoogleAuthorizer();
 	private RoleDAO roleDAO = new RoleDAO();
@@ -54,15 +53,19 @@ public class AuthorizationManager implements AuthorizationIF {
 		this.roleDAO = roleDAO;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.authorization.manager.AuthorizationIF#existsRole(java.lang.String, java.lang.String)
+	/**
+	 * @return <code>true</code> if exists the given role at the given domain, <code>false</code>
+	 *         otherwise.
 	 */
 	public boolean existsRole(String domainName, String roleName) {
 		return this.roleDAO.exists(createRoleKey(domainName, roleName));
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.authorization.manager.AuthorizationIF#createRole(java.lang.String, java.lang.String)
+	/**
+	 * Creates a new role, for a given domain.
+	 * 
+	 * @throws DataAlreadyExistsException
+	 *             if the role already exists
 	 */
 	public RoleView createRole(String domainName, String roleName) {
 		if (!this.existsRole(domainName, roleName)) {
@@ -74,8 +77,11 @@ public class AuthorizationManager implements AuthorizationIF {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.authorization.manager.AuthorizationIF#removeRole(java.lang.String, java.lang.String)
+	/**
+	 * Removes a role, for a given domain.
+	 * 
+	 * @throws DataDoesNotExistsException
+	 *             if theres no role with the given name at the given domain.
 	 */
 	public void removeRole(String domainName, String roleName) {
 		if (this.existsRole(domainName, roleName)) {
@@ -85,8 +91,11 @@ public class AuthorizationManager implements AuthorizationIF {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.authorization.manager.AuthorizationIF#getRole(java.lang.String, java.lang.String)
+	/**
+	 * @return gets the given role
+	 * 
+	 * @throws DataDoesNotExistsException
+	 *             if theres no such role
 	 */
 	public RoleView getRole(String domainName, String roleName) {
 		if (this.existsRole(domainName, roleName)) {
@@ -103,15 +112,15 @@ public class AuthorizationManager implements AuthorizationIF {
 		((Role) this.getRole(domainName, roleName)).addUsers(users);
 	}
 	
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.authorization.manager.AuthorizationIF#addUsersToRole(java.lang.String, java.lang.String, java.lang.String)
+	/**
+	 * Adds the given users to a specific role.
 	 */
 	public void addUsersToRole(String domainName, String roleName, String... users) {
 		((Role) this.getRole(domainName, roleName)).addUsers(users);
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.authorization.manager.AuthorizationIF#addActivitiesToRole(java.lang.String, java.lang.String, java.lang.String)
+	/**
+	 * Adds the given activities to a specific role.
 	 */
 	public void addActivitiesToRole(String domainName, String roleName, String... activities) {
 		((Role) this.getRole(domainName, roleName)).addActivities(activities);
@@ -124,8 +133,8 @@ public class AuthorizationManager implements AuthorizationIF {
 		((Role) this.getRole(domainName, roleName)).addActivities(activities);
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.authorization.manager.AuthorizationIF#getUserDomains(java.lang.String)
+	/**
+	 * @return All domains that the user has some role.
 	 */
 	public Collection<String> getUserDomains(String username) {
 		List<Role> roles = this.roleDAO.getUserRoles(username);
@@ -141,8 +150,9 @@ public class AuthorizationManager implements AuthorizationIF {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.authorization.manager.AuthorizationIF#isAuthorized(java.lang.String, java.lang.String, java.lang.String)
+	/**
+	 * @return <code>true</code> if the given user is authorized to perform the given activity at
+	 *         the given domain, <code>false</code> otherwise.
 	 */
 	public boolean isAuthorized(String domainName, String username, String activityName) {
 		return this.googleAuthorizer.isApplicationAdmin() || this.roleDAO.existsRoleFor(domainName, username, activityName);
