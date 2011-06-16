@@ -46,7 +46,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 * java.lang.Long)
 	 */
 	@Override
-	public List<BankTransaction> getLastTransactions(Long accountId, Long lastUsedTransactionId) {
+	public List<BankTransaction> getLastTransactions(String accountId, Long lastUsedTransactionId) {
 		if (lastUsedTransactionId == null) {
 			return this.getAllTransactions(accountId);
 		} else {
@@ -73,7 +73,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 * Get last transactions with id greater than the given lastUsedTransactionId
 	 */
 	@SuppressWarnings("unchecked")
-	private List<BankTransaction> getLastTransactionsFrom(Long accountId, Long lastUsedTransactionId) {
+	private List<BankTransaction> getLastTransactionsFrom(String accountId, Long lastUsedTransactionId) {
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("id > transactionId && accountOrig == accId");
 		query.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
@@ -93,7 +93,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 * Get all transactions for an account
 	 */
 	@SuppressWarnings("unchecked")
-	private List<BankTransaction> getAllTransactions(Long accountId) {
+	private List<BankTransaction> getAllTransactions(String accountId) {
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("accountOrig == accId");
 		query.declareParameters("java.lang.Long accId");

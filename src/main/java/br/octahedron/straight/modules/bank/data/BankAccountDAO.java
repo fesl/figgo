@@ -25,7 +25,7 @@ import br.octahedron.commons.database.GenericDAO;
  */
 public class BankAccountDAO extends GenericDAO<BankAccount> {
 
-	private static final Long SYSTEM_ACCOUNT_ID = new Long(0L);
+	private static final String SYSTEM_ACCOUNT_ID = "FiggoBank";
 	private static final BankAccount SYSTEM_ACCOUNT = new SystemAccount();
 
 	public BankAccountDAO() {
@@ -39,8 +39,8 @@ public class BankAccountDAO extends GenericDAO<BankAccount> {
 	 */
 	@Override
 	public BankAccount get(Object key) {
-		Long keyLong = (Long) key;
-		if (keyLong.equals(SYSTEM_ACCOUNT_ID)) {
+		String keyStr = (String) key;
+		if (keyStr.equals(SYSTEM_ACCOUNT_ID)) {
 			return SYSTEM_ACCOUNT;
 		} else {
 			return super.get(key);

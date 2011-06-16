@@ -64,7 +64,7 @@ public class AccountManager {
 		return account;
 	}
 
-	public BigDecimal getBalance(long accountId) {
+	public BigDecimal getBalance(String accountId) {
 		return this.getBalance(this.getValidAccount(accountId));
 	}
 
@@ -80,7 +80,7 @@ public class AccountManager {
 	 * @param comment
 	 * @param type
 	 */
-	public void transact(Long accountOrigId, Long accountDestId, BigDecimal value, String comment, TransactionType type) {
+	public void transact(String accountOrigId, String accountDestId, BigDecimal value, String comment, TransactionType type) {
 		BankTransaction transaction = this.createTransaction(accountOrigId, accountDestId, value, comment, type);
 		BankAccount accountOrig = this.getValidAccount(accountOrigId);
 		this.getValidAccount(accountDestId); // just to check validation of destination
@@ -93,7 +93,7 @@ public class AccountManager {
 		}
 	}
 
-	private BankTransaction createTransaction(Long accountOrig, Long accountDest, BigDecimal value, String comment, TransactionType type) {
+	private BankTransaction createTransaction(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
 		return new BankTransaction(accountOrig, accountDest, value, type, comment);
 	}
 
@@ -101,7 +101,7 @@ public class AccountManager {
 		return this.getBalance(account).compareTo(value) >= 0;
 	}
 
-	protected BankAccount getValidAccount(Long accountId) {
+	protected BankAccount getValidAccount(String accountId) {
 		BankAccount account = this.accountDAO.get(accountId);
 		if (account == null) {
 			logger.info("Does not exist an account associated to '" + accountId + "' id on bank");

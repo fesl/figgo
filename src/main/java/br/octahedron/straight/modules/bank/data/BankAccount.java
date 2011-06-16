@@ -39,8 +39,6 @@ public class BankAccount implements Serializable {
 	private static final long serialVersionUID = 7892638707825018254L;
 
 	@PrimaryKey
-	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Long id;
 	@Persistent
 	private String ownerId;
 	@Persistent
@@ -53,11 +51,6 @@ public class BankAccount implements Serializable {
 	private Long lastTransactionId;
 	@NotPersistent
 	private transient TransactionInfoService transactionInfoService;
-
-	public BankAccount(String ownerId, Long id) {
-		this(ownerId);
-		this.id = id;
-	}
 
 	public BankAccount(String ownerId) {
 		this.ownerId = ownerId;
@@ -101,13 +94,6 @@ public class BankAccount implements Serializable {
 	}
 
 	/**
-	 * @return the id
-	 */
-	public Long getId() {
-		return this.id;
-	}
-
-	/**
 	 * @return the ownerId
 	 */
 	public String getOwnerId() {
@@ -122,13 +108,13 @@ public class BankAccount implements Serializable {
 			throw new IllegalStateException("TransactionInfoService cannot be null. Must be set before balance operations");
 		}
 
-		List<BankTransaction> transactions = this.transactionInfoService.getLastTransactions(this.id, this.lastTransactionId);
+		List<BankTransaction> transactions = this.transactionInfoService.getLastTransactions(this.ownerId, this.lastTransactionId);
 
 		if (!transactions.isEmpty()) {
 			BigDecimal transactionsBalance = new BigDecimal(0);
 
 			for (BankTransaction bankTransaction : transactions) {
-				if (bankTransaction.getAccountOrig().equals(this.id)) {
+				if (bankTransaction.getAccountOrig().equals(this.ownerId)) {
 					transactionsBalance = transactionsBalance.subtract(bankTransaction.getValue());
 				} else {
 					transactionsBalance = transactionsBalance.add(bankTransaction.getValue());

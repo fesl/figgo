@@ -71,7 +71,7 @@ public class AccountManagerTest {
 	public void getValidAccount() {
 		BankAccount account = createMock(BankAccount.class);
 
-		Long origin = new Long(1);
+		String origin = "Conta1";
 		expect(this.accountDAO.get(origin)).andReturn(account);
 		expect(account.isEnabled()).andReturn(true);
 		replay(this.accountDAO, account);
@@ -83,7 +83,7 @@ public class AccountManagerTest {
 
 	@Test(expected = DisabledBankAccountException.class)
 	public void getValidAccountDisabled() {
-		Long origin = new Long(1);
+		String origin = "Conta1";
 		BankAccount account = createMock(BankAccount.class);
 		try {
 			expect(this.accountDAO.get(origin)).andReturn(account);
@@ -98,7 +98,7 @@ public class AccountManagerTest {
 
 	@Test(expected = InexistentBankAccountException.class)
 	public void getValidAccountNull() {
-		Long origin = new Long(1);
+		String origin = "Conta1";
 		BankAccount account = createMock(BankAccount.class);
 
 		try {
@@ -113,8 +113,8 @@ public class AccountManagerTest {
 
 	@Test
 	public void doSimpleTransaction() {
-		Long originId = new Long(1);
-		Long destId = new Long(2);
+		String originId = "Conta1";
+		String destId = "Conta2";
 
 		BankAccount origin = createMock(BankAccount.class);
 		BankAccount destination = createMock(BankAccount.class);
@@ -135,8 +135,8 @@ public class AccountManagerTest {
 
 	@Test(expected = InsufficientBalanceException.class)
 	public void doSimpleInsufficientTransaction() {
-		Long originId = new Long(1);
-		Long destId = new Long(2);
+		String originId = "Conta1";
+		String destId = "Conta2";
 		BankAccount origin = createMock(BankAccount.class);
 		BankAccount destination = createMock(BankAccount.class);
 		try {
@@ -157,8 +157,8 @@ public class AccountManagerTest {
 	@SuppressWarnings("unchecked")
 	@Test
 	public void getBalanceInicialValue() {
-		Long accID = new Long(12345);
-		BankAccount account = new BankAccount("teste", accID);
+		String accID = "teste";
+		BankAccount account = new BankAccount(accID);
 		account.setEnabled(true);
 		expect(this.accountDAO.get(accID)).andReturn(account);
 		expect(this.transactionDAO.getLastTransactions(accID, null)).andReturn(Collections.EMPTY_LIST);
@@ -170,8 +170,8 @@ public class AccountManagerTest {
 
 	@Test
 	public void getBalanceSomeTransactions() {
-		Long accID = new Long(12345);
-		Long accID2 = new Long(54321);
+		String accID = "teste";
+		String accID2 = "teste2";
 		Long transID1 = new Long(3);
 		Long transID2 = new Long(6);
 		Long transID3 = new Long(234);
@@ -179,7 +179,7 @@ public class AccountManagerTest {
 		BigDecimal value2 = new BigDecimal(123456.91);
 		BigDecimal value3 = new BigDecimal(23.31);
 
-		BankAccount account = new BankAccount("teste", accID);
+		BankAccount account = new BankAccount(accID);
 		account.setEnabled(true);
 		expect(this.accountDAO.get(accID)).andReturn(account);
 		List<BankTransaction> transactions = new LinkedList<BankTransaction>();

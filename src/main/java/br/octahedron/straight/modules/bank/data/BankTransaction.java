@@ -44,9 +44,9 @@ public class BankTransaction implements Serializable {
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Long id;
 	@Persistent
-	private Long accountOrig;
+	private String accountOrig;
 	@Persistent
-	private Long accountDest;
+	private String accountDest;
 	@Persistent
 	private Date date;
 	@Persistent
@@ -64,7 +64,7 @@ public class BankTransaction implements Serializable {
 	 * @param type
 	 * @param comment
 	 */
-	public BankTransaction(Long accountOrig, Long accountDest, BigDecimal value, TransactionType type, String comment) {
+	public BankTransaction(String accountOrig, String accountDest, BigDecimal value, TransactionType type, String comment) {
 		this.accountOrig = accountOrig;
 		this.accountDest = accountDest;
 		this.value = value;
@@ -82,7 +82,7 @@ public class BankTransaction implements Serializable {
 	 * @param type
 	 * @param comment
 	 */
-	public BankTransaction(Long accountOrig, Long accountDest, BigDecimal value, TransactionType type, String comment, Long transactionId) {
+	public BankTransaction(String accountOrig, String accountDest, BigDecimal value, TransactionType type, String comment, Long transactionId) {
 		this(accountOrig, accountDest, value, type, comment);
 		this.id = transactionId;
 	}
@@ -97,14 +97,14 @@ public class BankTransaction implements Serializable {
 	/**
 	 * @return the accountOrig
 	 */
-	public Long getAccountOrig() {
+	public String getAccountOrig() {
 		return this.accountOrig;
 	}
 
 	/**
 	 * @return the accountDest
 	 */
-	public Long getAccountDest() {
+	public String getAccountDest() {
 		return this.accountDest;
 	}
 
