@@ -18,9 +18,12 @@
  */
 package br.octahedron.straight.modules.bank.data;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
 
 import javax.jdo.Query;
 
@@ -38,6 +41,9 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		super(BankTransaction.class);
 	}
 
+	public Collection<BankTransaction> getLastNTransactions(String accountId, int n) {
+		return this.getAllTransactions(accountId, n);
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -46,9 +52,9 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 * java.lang.Long)
 	 */
 	@Override
-	public List<BankTransaction> getLastTransactions(String accountId, Long lastUsedTransactionId) {
+	public Collection<BankTransaction> getLastTransactions(String accountId, Long lastUsedTransactionId) {
 		if (lastUsedTransactionId == null) {
-			return this.getAllTransactions(accountId);
+			return this.getAllTransactions(accountId, Long.MIN_VALUE);
 		} else {
 			return this.getLastTransactionsFrom(accountId, lastUsedTransactionId);
 		}
@@ -73,7 +79,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 * Get last transactions with id greater than the given lastUsedTransactionId
 	 */
 	@SuppressWarnings("unchecked")
-	private List<BankTransaction> getLastTransactionsFrom(String accountId, Long lastUsedTransactionId) {
+	private Collection<BankTransaction> getLastTransactionsFrom(String accountId, Long lastUsedTransactionId) {
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("id > transactionId && accountOrig == accId");
 		query.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
@@ -86,53 +92,64 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		query.setOrdering("id asc");
 		List<BankTransaction> transactions2 = (List<BankTransaction>) query.execute(lastUsedTransactionId, accountId);
 
-		return this.mergeTransactions(transactions1, transactions2);
+		return this.mergeTransactions(transactions1, transactions2, Long.MIN_VALUE);
 	}
 
 	/**
 	 * Get all transactions for an account
 	 */
 	@SuppressWarnings("unchecked")
-	private List<BankTransaction> getAllTransactions(String accountId) {
+	private Collection<BankTransaction> getAllTransactions(String accountId, long count) {
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("accountOrig == accId");
 		query.declareParameters("java.lang.Long accId");
 		query.setOrdering("id asc");
+		if (count > 0) {
+			query.setRange(0, count);
+		}
 		List<BankTransaction> transactions1 = (List<BankTransaction>) query.execute(accountId);
 
 		query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("accountDest == accId");
 		query.declareParameters("java.lang.Long accId");
 		query.setOrdering("id asc");
+		if (count > 0) {
+			query.setRange(0, count);
+		}
 		List<BankTransaction> transactions2 = (List<BankTransaction>) query.execute(accountId);
 
-		return this.mergeTransactions(transactions1, transactions2);
+		return this.mergeTransactions(transactions1, transactions2, count);
 	}
 
 	/**
 	 * Merges two transactions list ordering transactions by id (lower to higher)
 	 * 
+	 * @param count
+	 * 
 	 * @return a list with transactions from the two lists, ordered by id.
 	 */
-	private List<BankTransaction> mergeTransactions(List<BankTransaction> transactions1, List<BankTransaction> transactions2) {
-		List<BankTransaction> result = new LinkedList<BankTransaction>();
+	private Collection<BankTransaction> mergeTransactions(Collection<BankTransaction> transactions1, Collection<BankTransaction> transactions2,
+			long count) {
+		TreeSet<BankTransaction> result = new TreeSet<BankTransaction>(new BankTransactionComparator());
+		result.addAll(transactions1);
+		result.addAll(transactions2);
 
-		BankTransaction last1 = (!transactions1.isEmpty()) ? transactions1.get(transactions1.size() - 1) : null;
-		BankTransaction last2 = (!transactions2.isEmpty()) ? transactions2.get(transactions2.size() - 1) : null;
-		if (last1 != null && last2 != null) {
-			Long id1 = last1.getId();
-			Long id2 = last2.getId();
-			if (id1.compareTo(id2) >= 0) {
-				result.addAll(transactions2);
-				result.addAll(transactions1);
-			} else {
-				result.addAll(transactions1);
-				result.addAll(transactions2);
-			}
+		if (count == Long.MIN_VALUE) {
+			return result;
 		} else {
-			result.addAll(transactions1);
-			result.addAll(transactions2);
+			TreeSet<BankTransaction> other = new TreeSet<BankTransaction>(new BankTransactionComparator());
+			Iterator<BankTransaction> itr = result.descendingIterator();
+			while (itr.hasNext() && count != 0) {
+				other.add(itr.next());
+				count--;
+			}
+			return other;
 		}
-		return result;
+	}
+
+	private class BankTransactionComparator implements Comparator<BankTransaction> {
+		public int compare(BankTransaction o1, BankTransaction o2) {
+			return (int) (o1.getId() - o2.getId());
+		}
 	}
 }

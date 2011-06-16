@@ -23,8 +23,10 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.*;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -84,10 +86,10 @@ public class BankTransactionDAOMockTest {
 
 		replay(this.datastore, query1, query2);
 
-		List<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
+		Collection<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
 		assertEquals(10, result.size());
-		assertEquals(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(1)), result.get(0));
-		assertEquals(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(10)), result.get(9));
+		assertTrue(result.contains(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(1))));
+		assertTrue(result.contains(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(10))));
 		verify(this.datastore, query1, query2);
 	}
 
@@ -121,10 +123,10 @@ public class BankTransactionDAOMockTest {
 
 		replay(this.datastore, query1, query2);
 
-		List<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
+		Collection<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
 		assertEquals(10, result.size());
-		assertEquals(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(1)), result.get(0));
-		assertEquals(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(10)), result.get(9));
+		assertTrue(result.contains(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(1))));
+		assertTrue(result.contains(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(10))));
 		verify(this.datastore, query1, query2);
 	}
 }

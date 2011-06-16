@@ -18,8 +18,8 @@
  */
 package br.octahedron.straight.modules.bank;
 
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import br.octahedron.straight.modules.bank.data.BankTransaction;
 
@@ -47,7 +47,7 @@ public interface TransactionInfoService {
 	 * @return A list that contains all transactions for the given user, starting from the given
 	 *         {@link BankTransaction} id.
 	 */
-	public List<BankTransaction> getLastTransactions(String accountId, Long lastUsedTransactioId);
+	public Collection<BankTransaction> getLastTransactions(String accountId, Long lastUsedTransactioId);
 
 	/**
 	 * Get the transactions for a accountId, by date range. TODO improve
@@ -57,5 +57,5 @@ public interface TransactionInfoService {
 	 * @param endDate
 	 * @return
 	 */
-	public List<BankTransaction> getTransactionsByDateRange(Long accountId, Date startDate, Date endDate);
+	public Collection<BankTransaction> getTransactionsByDateRange(Long accountId, Date startDate, Date endDate);
 }

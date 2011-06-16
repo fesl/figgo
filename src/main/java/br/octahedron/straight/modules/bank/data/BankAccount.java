@@ -20,9 +20,8 @@ package br.octahedron.straight.modules.bank.data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.List;
+import java.util.Collection;
 
-import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -108,7 +107,7 @@ public class BankAccount implements Serializable {
 			throw new IllegalStateException("TransactionInfoService cannot be null. Must be set before balance operations");
 		}
 
-		List<BankTransaction> transactions = this.transactionInfoService.getLastTransactions(this.ownerId, this.lastTransactionId);
+		Collection<BankTransaction> transactions = this.transactionInfoService.getLastTransactions(this.ownerId, this.lastTransactionId);
 
 		if (!transactions.isEmpty()) {
 			BigDecimal transactionsBalance = new BigDecimal(0);
@@ -125,7 +124,8 @@ public class BankAccount implements Serializable {
 			// We need to know what happens if this sum result if lower than zero
 			// TODO LOG this event as a warning
 			this.value = this.value.add(transactionsBalance);
-			this.lastTransactionId = transactions.get(transactions.size() - 1).getId();
+			Object[] tArray = transactions.toArray();
+			this.lastTransactionId = ((BankTransaction)tArray[tArray.length - 1]).getId();
 		}
 
 		return this.value;
