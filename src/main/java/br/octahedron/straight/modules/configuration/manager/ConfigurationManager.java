@@ -79,6 +79,16 @@ public class ConfigurationManager {
 	public void updateAvatarKey(String avatarKey) {
 		this.getDomainConfiguration().setAvatarKey(avatarKey);
 	}
+	
+	/**
+	 * Updates a {@link DomainConfiguration} public attributes.
+	 * 
+	 * @param name
+	 */
+	public void updateDomainConfiguration(String name) {
+		DomainConfiguration domainConfiguration = this.getDomainConfiguration();
+		domainConfiguration.setName(name);
+	}
 
 	/**
 	 * Checks if exists the {@link DomainConfiguration} for the current Domain.

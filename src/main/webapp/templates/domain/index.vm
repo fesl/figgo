@@ -6,7 +6,6 @@
 	
     <div id="main" class="center">
 		<header>
-    		<h1>$domain.Name</h1>
 			<nav id="tabs">
         		<ul class="inline">
                     <li class="selected"><a href="/">Dashboard</a></li>

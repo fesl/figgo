@@ -1,4 +1,7 @@
+import br.octahedron.straight.modules.ManagerBuilder
+
 actions = ['edit', 'upload']
+configurationManager = ManagerBuilder.getConfigurationManager()
 
 if (actions.contains(params.action)) {
 	actionCall = request.method.toLowerCase() + "_" + params.action
@@ -7,7 +10,7 @@ if (actions.contains(params.action)) {
 }
 
 def get_edit() {
-	request.domain = configurationFacade.getDomainConfiguration()
+	request.domain = configurationManager.getDomainConfiguration()
 	render 'domain/edit.vm', request, response
 }
 
@@ -17,7 +20,7 @@ def get_upload() {
 }
 
 def post_edit() {
-	configurationFacade.saveDomainConfiguration(params.name)
+	configurationManager.updateDomainConfiguration(params.name)
 	redirect '/'
 }
 

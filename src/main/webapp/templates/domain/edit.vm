@@ -9,7 +9,7 @@
     	<p>Preencha o formulário abaixo:</p>
         <form action="/domain/edit" method="post">
     		<input type="hidden" name="_method" value="put" />
-    		Domínio: ${domain.DomainName} <br />
+    		Domínio: ${domain.DomainName}.figgo.com.br <br />
     		<label for="name">
     			Nome: <small>(e.g.: Coletivo Mundo)</small> <input type="text" name="name" value="$!{name}"/>
             </label><br />
