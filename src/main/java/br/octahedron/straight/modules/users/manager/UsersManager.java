@@ -18,14 +18,13 @@
  */
 package br.octahedron.straight.modules.users.manager;
 
-import br.octahedron.straight.modules.users.UsersIF;
 import br.octahedron.straight.modules.users.data.User;
 import br.octahedron.straight.modules.users.data.UserDAO;
 
 /**
  * @author Erick Moreno
  */
-public class UsersManager implements UsersIF {
+public class UsersManager {
 
 	private UserDAO userDAO = new UserDAO();
 	
@@ -37,13 +36,7 @@ public class UsersManager implements UsersIF {
 	}
 
 	/**
-	 * Creates a system {@link User}
-	 * 
-	 * @param userId
-	 * @param name
-	 * @param phoneNumber
-	 * @param avatar
-	 * @return
+	 * Creates a {@link User} with passed parameters
 	 */
 	public User createUser(String userId, String name, String phoneNumber, String description) {
 
@@ -54,13 +47,7 @@ public class UsersManager implements UsersIF {
 	}
 
 	/**
-	 * Updates a system {@link User} parameters
-	 * 
-	 * @param userId
-	 * @param name
-	 * @param phoneNumber
-	 * @param avatar
-	 * @param description
+	 * Updates {@link User} properties with passed parameters
 	 */
 	public User updateUser(String userId, String name, String phoneNumber, String description) {
 		User user = this.userDAO.get(userId);

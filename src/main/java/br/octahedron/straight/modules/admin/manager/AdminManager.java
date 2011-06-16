@@ -18,10 +18,9 @@
  */
 package br.octahedron.straight.modules.admin.manager;
 
+import static br.octahedron.commons.eventbus.EventBus.publish;
 import static br.octahedron.straight.modules.admin.data.ApplicationConfiguration.APPLICATION_NAME;
-import static br.octahedron.commons.eventbus.EventBus.*;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
-import br.octahedron.straight.modules.admin.AdminIF;
 import br.octahedron.straight.modules.admin.data.ApplicationConfiguration;
 import br.octahedron.straight.modules.admin.data.ApplicationConfigurationDAO;
 import br.octahedron.straight.modules.admin.data.ApplicationConfigurationView;
@@ -33,7 +32,7 @@ import br.octahedron.straight.modules.admin.util.Route53Util;
  * 
  * @author Danilo Penna Queiroz
  */
-public class AdminManager implements AdminIF {
+public class AdminManager {
 	
 	private ApplicationConfigurationDAO applicationConfigurationDAO = new ApplicationConfigurationDAO();
 	
@@ -42,15 +41,15 @@ public class AdminManager implements AdminIF {
 		this.applicationConfigurationDAO.save(appConf);
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.admin.manager.AdminIF#hasApplicationConfiguration()
+	/**
+	 * @return <code>true</code> if this applications is configured, <code>false</code> otherwise.
 	 */
 	public boolean hasApplicationConfiguration() {
 		return this.applicationConfigurationDAO.exists(APPLICATION_NAME);
 	}
 	
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.admin.manager.AdminIF#getApplicationConfiguration()
+	/**
+	 * @return the application configuration
 	 */
 	public ApplicationConfigurationView getApplicationConfiguration() {
 		if ( this.hasApplicationConfiguration() ) {
@@ -60,8 +59,8 @@ public class AdminManager implements AdminIF {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.admin.manager.AdminIF#configureApplication(java.lang.String, java.lang.String, java.lang.String)
+	/**
+	 * Configures this application
 	 */
 	public void configureApplication(String route53AccessKeyID, String route53AccessKeySecret, String route53ZoneID) {
 		if (!this.hasApplicationConfiguration()) {
@@ -74,8 +73,10 @@ public class AdminManager implements AdminIF {
 		appConf.setRoute53ZoneID(route53ZoneID);
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.admin.manager.AdminIF#createDomain(java.lang.String, java.lang.String)
+	/**
+	 * Creates the domain at Rout53
+	 * 
+	 * @throws Route53Exception if some error occurs when accessing route53 API
 	 */
 	public void createDomain(String domainName, String adminID) throws Route53Exception {
 		if ( this.hasApplicationConfiguration() ) {
