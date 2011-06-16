@@ -54,7 +54,6 @@ public class AccountManager {
 	}
 
 	/**
-	 * 
 	 * @param ownerId
 	 * @return
 	 */
@@ -65,7 +64,11 @@ public class AccountManager {
 	}
 
 	public BigDecimal getBalance(String accountId) {
-		return this.getBalance(this.getValidAccount(accountId));
+		try {
+			return this.getBalance(this.getValidAccount(accountId));
+		} catch (InexistentBankAccountException e) {
+			return this.getBalance(this.createAccount(accountId));
+		}
 	}
 
 	protected BigDecimal getBalance(BankAccount account) {
