@@ -96,4 +96,28 @@ public class ConfigurationSpec implements ModuleSpec {
 		return true;
 	}
 
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthentication(java.lang.String)
+	 */
+	@Override
+	public boolean needsAuthentication(String action) {
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthorization(java.lang.String)
+	 */
+	@Override
+	public boolean needsAuthorization(String action) {
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#usesDomainNamespace()
+	 */
+	@Override
+	public boolean usesDomainNamespace() {
+		return true;
+	}
+
 }

@@ -25,6 +25,7 @@ import java.util.Collection;
 
 import br.octahedron.commons.inject.Inject;
 import br.octahedron.straight.modules.authorization.data.Role;
+import br.octahedron.straight.modules.authorization.data.RoleView;
 import br.octahedron.straight.modules.authorization.manager.AuthorizationManager;
 
 /**
@@ -99,7 +100,7 @@ public class AuthorizationDecorator implements AuthorizationIF {
 	 * @see br.octahedron.straight.modules.authorization.AuthorizationIF#createRole(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Role createRole(String domainName, String roleName) {
+	public RoleView createRole(String domainName, String roleName) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -117,7 +118,7 @@ public class AuthorizationDecorator implements AuthorizationIF {
 	 * @see br.octahedron.straight.modules.authorization.AuthorizationIF#getRole(java.lang.String, java.lang.String)
 	 */
 	@Override
-	public Role getRole(String domainName, String roleName) {
+	public RoleView getRole(String domainName, String roleName) {
 		// TODO Auto-generated method stub
 		return null;
 	}

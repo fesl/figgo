@@ -30,7 +30,7 @@ import br.octahedron.straight.modules.users.UsersSpec;
  */
 public enum Module {
 
-	BANK(new BankSpec()), AUTHORIZATION(new AuthorizationSpec()), USERS(new UsersSpec()), CONFIGURATION(new ConfigurationSpec());
+	BANK(new BankSpec()), AUTHORIZATION(new AuthorizationSpec()), USER(new UsersSpec()), CONFIGURATION(new ConfigurationSpec());
 
 	/**
 	 * Indicates the module Type

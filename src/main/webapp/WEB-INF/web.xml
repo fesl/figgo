@@ -3,80 +3,104 @@
 	<!-- Listeners -->
 	<!-- Boostraps the system -->
 	<listener>
-        <listener-class> br.octahedron.straight.BootstrapServletListener</listener-class>
-    </listener>
+		<listener-class> br.octahedron.straight.BootstrapServletListener
+		</listener-class>
+	</listener>
 	<!-- Gaelyk required -->
 	<listener>
-        <listener-class>groovyx.gaelyk.GaelykServletContextListener</listener-class>
-    </listener>
+		<listener-class>groovyx.gaelyk.GaelykServletContextListener
+		</listener-class>
+	</listener>
 
 	<!-- Filters -->
+	<!-- Controller Checker Filter -->
+	<filter>
+		<filter-name>ControllerFilter</filter-name>
+		<filter-class>br.octahedron.straight.controller.ControllerFilter
+		</filter-class>
+		<init-param>
+			<param-name>APPLICATION_URL</param-name>
+			<param-value>http://localhost:8080</param-value>
+		</init-param>
+		<init-param>
+			<param-name>USER_CREATE_PAGE</param-name>
+			<param-value>/user/new</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>ControllerFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	<!-- Persistence Manager Filter -->
-    <filter>
-        <filter-name>PersistenceManagerFilter</filter-name>
-        <filter-class>br.octahedron.commons.database.PersistenceManagerFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>PersistenceManagerFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+	<filter>
+		<filter-name>PersistenceManagerFilter</filter-name>
+		<filter-class>br.octahedron.commons.database.PersistenceManagerFilter
+		</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>PersistenceManagerFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	<!-- Gaelyk Route Filter -->
 	<filter>
-        <filter-name>RoutesFilter</filter-name>
-        <filter-class>groovyx.gaelyk.routes.RoutesFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>RoutesFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
+		<filter-name>RoutesFilter</filter-name>
+		<filter-class>groovyx.gaelyk.routes.RoutesFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>RoutesFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 
-    <!-- Servlets -->
-    <servlet>
-        <servlet-name>GroovletServlet</servlet-name>
-        <servlet-class>groovyx.gaelyk.GaelykServlet</servlet-class>
-        <init-param>
-            <param-name>verbose</param-name>
-            <!-- Set it to true for more details -->
-            <param-value>false</param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet>
-        <servlet-name>BlobServlet</servlet-name>
-        <servlet-class>br.octahedron.commons.blobstore.BlobServlet</servlet-class>
-        <init-param>
-            <param-name>verbose</param-name>
-            <param-value>false</param-value>
-        </init-param>
-        <load-on-startup>0</load-on-startup>
-    </servlet>
+	<!-- Servlets -->
+	<servlet>
+		<servlet-name>GroovletServlet</servlet-name>
+		<servlet-class>groovyx.gaelyk.GaelykServlet</servlet-class>
+		<init-param>
+			<param-name>verbose</param-name>
+			<!-- Set it to true for more details -->
+			<param-value>false</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>BlobServlet</servlet-name>
+		<servlet-class>br.octahedron.commons.blobstore.BlobServlet
+		</servlet-class>
+		<init-param>
+			<param-name>verbose</param-name>
+			<param-value>false</param-value>
+		</init-param>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
 
 	<!-- Mapping -->
-    <servlet-mapping>
-        <servlet-name>GroovletServlet</servlet-name>
-        <url-pattern>*.groovy</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>BlobServlet</servlet-name>
-        <url-pattern>/blob/*</url-pattern>
-    </servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>GroovletServlet</servlet-name>
+		<url-pattern>*.groovy</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>BlobServlet</servlet-name>
+		<url-pattern>/blob/*</url-pattern>
+	</servlet-mapping>
 
-    <!-- Uncomment the following security constraint if you want to secure your incoming email endpoint -->
-    <!-- Only allow the SDK and administrators to have access to the incoming email endpoint -->
-    <!--
-    <security-constraint>
-        <web-resource-collection>
-            <url-pattern>/_ah/mail/*</url-pattern>
-            <url-pattern>/_ah/xmpp/message/chat/</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>admin</role-name>
-        </auth-constraint>
-    </security-constraint>
-    -->
+	<!--
+		Uncomment the following security constraint if you want to secure your
+		incoming email endpoint
+	-->
+	<!--
+		Only allow the SDK and administrators to have access to the incoming
+		email endpoint
+	-->
+	<!--
+		<security-constraint> <web-resource-collection>
+		<url-pattern>/_ah/mail/*</url-pattern>
+		<url-pattern>/_ah/xmpp/message/chat/</url-pattern>
+		</web-resource-collection> <auth-constraint>
+		<role-name>admin</role-name> </auth-constraint> </security-constraint>
+	-->
 
-    <welcome-file-list>
-        <welcome-file>index.vm</welcome-file>
-    </welcome-file-list>
+	<welcome-file-list>
+		<welcome-file>index.vm</welcome-file>
+	</welcome-file-list>
 
 </web-app>

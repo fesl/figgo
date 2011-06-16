@@ -28,7 +28,7 @@ import javax.jdo.annotations.PrimaryKey;
  * @author Danilo Queiroz
  */
 @PersistenceCapable
-public class ApplicationConfiguration implements Serializable { 
+public class ApplicationConfiguration implements Serializable, ApplicationConfigurationView { 
 	
 	private static final long serialVersionUID = 6211848005905311102L;
 
@@ -48,8 +48,8 @@ public class ApplicationConfiguration implements Serializable {
 	@Persistent
 	private String route53ZoneID;
 
-	/**
-	 * @return the route53AccessKeyID
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.admin.data.ApplicationConfigurationView#getRoute53AccessKeyID()
 	 */
 	public String getRoute53AccessKeyID() {
 		return route53AccessKeyID;
@@ -62,8 +62,8 @@ public class ApplicationConfiguration implements Serializable {
 		this.route53AccessKeyID = route53AccessKeyID;
 	}
 
-	/**
-	 * @return the route53AccessKeySecret
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.admin.data.ApplicationConfigurationView#getRoute53AccessKeySecret()
 	 */
 	public String getRoute53AccessKeySecret() {
 		return route53AccessKeySecret;
@@ -76,8 +76,8 @@ public class ApplicationConfiguration implements Serializable {
 		this.route53AccessKeySecret = route53AccessKeySecret;
 	}
 
-	/**
-	 * @return the route53ZoneId
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.admin.data.ApplicationConfigurationView#getRoute53ZoneID()
 	 */
 	public String getRoute53ZoneID() {
 		return route53ZoneID;

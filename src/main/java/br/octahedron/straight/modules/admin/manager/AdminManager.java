@@ -24,6 +24,7 @@ import br.octahedron.straight.modules.DataDoesNotExistsException;
 import br.octahedron.straight.modules.admin.AdminIF;
 import br.octahedron.straight.modules.admin.data.ApplicationConfiguration;
 import br.octahedron.straight.modules.admin.data.ApplicationConfigurationDAO;
+import br.octahedron.straight.modules.admin.data.ApplicationConfigurationView;
 import br.octahedron.straight.modules.admin.util.Route53Exception;
 import br.octahedron.straight.modules.admin.util.Route53Util;
 
@@ -51,7 +52,7 @@ public class AdminManager implements AdminIF {
 	/* (non-Javadoc)
 	 * @see br.octahedron.straight.modules.admin.manager.AdminIF#getApplicationConfiguration()
 	 */
-	public ApplicationConfiguration getApplicationConfiguration() {
+	public ApplicationConfigurationView getApplicationConfiguration() {
 		if ( this.hasApplicationConfiguration() ) {
 			return this.applicationConfigurationDAO.get(APPLICATION_NAME);
 		} else {

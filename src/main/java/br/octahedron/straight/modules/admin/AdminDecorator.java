@@ -20,7 +20,7 @@ package br.octahedron.straight.modules.admin;
 
 import br.octahedron.commons.database.NamespaceCommons;
 import br.octahedron.commons.inject.Inject;
-import br.octahedron.straight.modules.admin.data.ApplicationConfiguration;
+import br.octahedron.straight.modules.admin.data.ApplicationConfigurationView;
 import br.octahedron.straight.modules.admin.manager.AdminManager;
 import br.octahedron.straight.modules.admin.util.Route53Exception;
 
@@ -58,7 +58,7 @@ public class AdminDecorator implements AdminIF {
 	/**
 	 * @see AdminManager#getApplicationConfiguration()
 	 */
-	public ApplicationConfiguration getApplicationConfiguration() {
+	public ApplicationConfigurationView getApplicationConfiguration() {
 		try {
 			NamespaceCommons.changeToGlobalNamespace();
 			return this.adminManager.getApplicationConfiguration();

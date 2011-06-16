@@ -79,7 +79,23 @@ public interface ModuleSpec {
 	 *         should require administrative privileges.
 	 */
 	public Set<String> getModuleAdministrativeActions();
+
+	/**
+	 * @param action
+	 * @return
+	 */
+	public boolean needsAuthentication(String action);
+
+	/**
+	 * @param action
+	 * @return
+	 */
+	public boolean needsAuthorization(String action);
+
+	/**
+	 * @return
+	 */
+	public boolean usesDomainNamespace();
 	
-	// TODO what about binds and facades. Let's do that here?! =]
 
 }
