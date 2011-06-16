@@ -70,6 +70,15 @@ public class ConfigurationManager {
 	private DomainSpecificModuleConfiguration createModuleConfig(Module module) {
 		return module.getModuleSpec().getDomainSpecificModuleConfiguration();
 	}
+	
+	/**
+	 * Updates a {@link DomainConfiguration} avatar key with the generated blob key.
+	 * 
+	 * @param avatarKey Blob key generated when uploaded avatar
+	 */
+	public void updateAvatarKey(String avatarKey) {
+		this.getDomainConfiguration().setAvatarKey(avatarKey);
+	}
 
 	/**
 	 * Checks if exists the {@link DomainConfiguration} for the current Domain.

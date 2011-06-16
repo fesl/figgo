@@ -16,35 +16,32 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.modules.bank.data;
+package br.octahedron.commons.blobstore;
 
-import br.octahedron.commons.database.GenericDAO;
+import br.octahedron.commons.eventbus.Event;
 
 /**
- * @author Danilo Queiroz
+ * @author Vítor Avelino
+ *
  */
-public class BankAccountDAO extends GenericDAO<BankAccount> {
+public class UserUploadEvent implements Event {
+	
+	private static final long serialVersionUID = 6035526466916526937L;
 
-	private static final String SYSTEM_ACCOUNT_ID = "FiggoBank";
-	private static final BankAccount SYSTEM_ACCOUNT = new SystemAccount();
+	private String blobKey;
 
-	public BankAccountDAO() {
-		super(BankAccount.class);
+	private String target;
+	
+	public UserUploadEvent(String target, String blobKey) {
+		this.target = target;
+		this.blobKey = blobKey;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.database.GenericDAO#get(java.lang.Object)
-	 */
-	@Override
-	public BankAccount get(Object key) {
-		String keyStr = (String) key;
-		if (keyStr.equals(SYSTEM_ACCOUNT_ID)) {
-			return SYSTEM_ACCOUNT;
-		} else {
-			return super.get(key);
-		}
+	public String getBlobKey() {
+		return blobKey;
 	}
 
+	public String getTarget() {
+		return target;
+	}
 }

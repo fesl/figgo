@@ -18,8 +18,8 @@
  */
 package br.octahedron.straight.modules.configuration;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import br.octahedron.commons.eventbus.Subscriber;
 import br.octahedron.straight.modules.Module;
@@ -27,6 +27,7 @@ import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module.Type;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 import br.octahedron.straight.modules.configuration.manager.CreateDomainConfigurationSubscriber;
+import br.octahedron.straight.modules.configuration.manager.DomainUploadSubscriber;
 
 /**
  * @author vitoravelino
@@ -74,8 +75,9 @@ public class ConfigurationSpec implements ModuleSpec {
 	 */
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
-		Set<Class<? extends Subscriber>> subscribers = new TreeSet<Class<? extends Subscriber>>();
+		Set<Class<? extends Subscriber>> subscribers = new HashSet<Class<? extends Subscriber>>();
 		subscribers.add(CreateDomainConfigurationSubscriber.class);
+		subscribers.add(DomainUploadSubscriber.class);
 		return subscribers;
 	}
 

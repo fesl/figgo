@@ -18,7 +18,7 @@
  */
 package br.octahedron.straight.modules.users.manager;
 
-import br.octahedron.commons.blobstore.UploadEvent;
+import br.octahedron.commons.blobstore.UserUploadEvent;
 import br.octahedron.commons.eventbus.Event;
 import br.octahedron.commons.eventbus.InterestedEvent;
 import br.octahedron.commons.eventbus.Subscriber;
@@ -28,8 +28,8 @@ import br.octahedron.commons.inject.Inject;
  * @author vitoravelino
  *
  */
-@InterestedEvent(events = { UploadEvent.class })
-public class UsersSubscriber implements Subscriber {
+@InterestedEvent(events = { UserUploadEvent.class })
+public class UsersUploadSubscriber implements Subscriber {
 
 	private static final long serialVersionUID = -5493253101510358283L;
 
@@ -48,8 +48,8 @@ public class UsersSubscriber implements Subscriber {
 	 */
 	@Override
 	public void eventPublished(Event event) {
-		UploadEvent uploadEvent = (UploadEvent) event; 
-		usersManager.saveAvatarKey(uploadEvent.getTarget(), uploadEvent.getBlobKey());
+		UserUploadEvent uploadEvent = (UserUploadEvent) event; 
+		usersManager.updateAvatarKey(uploadEvent.getTarget(), uploadEvent.getBlobKey());
 	}
 
 }

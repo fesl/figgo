@@ -26,7 +26,7 @@ import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module.Type;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
-import br.octahedron.straight.modules.users.manager.UsersSubscriber;
+import br.octahedron.straight.modules.users.manager.UsersUploadSubscriber;
 
 /**
  * @author vitoravelino
@@ -86,7 +86,7 @@ public class UsersSpec implements ModuleSpec {
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
 		Set<Class<? extends Subscriber>> subscribers = new TreeSet<Class<? extends Subscriber>>();
-		subscribers.add(UsersSubscriber.class);
+		subscribers.add(UsersUploadSubscriber.class);
 		return subscribers;
 	}
 

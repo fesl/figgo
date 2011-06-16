@@ -18,37 +18,25 @@
  */
 package br.octahedron.commons.blobstore;
 
-import br.octahedron.commons.eventbus.Event;
+import br.octahedron.commons.eventbus.NamespaceEvent;
 
 /**
  * @author vitoravelino
  *
  */
-public class UploadEvent implements Event {
+public class DomainUploadEvent extends NamespaceEvent {
 
-	private static final long serialVersionUID = -2074040777793446238L;
-	
-	private UploadTypeEnum type;
+	private static final long serialVersionUID = 7549574720736587162L;
 
 	private String blobKey;
-
-	private String target;
 	
-	public UploadEvent(UploadTypeEnum type, String target, String blobKey) {
-		this.type = type;
-		this.target = target;
+	public DomainUploadEvent(String domainName, String blobKey) {
+		super(domainName);
 		this.blobKey = blobKey;
-	}
-
-	public UploadTypeEnum getType() {
-		return type;
 	}
 
 	public String getBlobKey() {
 		return blobKey;
 	}
 
-	public String getTarget() {
-		return target;
-	}
 }

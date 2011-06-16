@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import br.octahedron.commons.eventbus.EventBus;
+import static br.octahedron.commons.eventbus.EventBus.*;
 
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
@@ -36,7 +36,7 @@ import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 /**
- * @author vitoravelino
+ * @author Vítor Avelino
  *
  */
 public class BlobServlet extends HttpServlet {
@@ -44,29 +44,34 @@ public class BlobServlet extends HttpServlet {
 	private static final long serialVersionUID = -315053284649272497L;
 
 	private BlobstoreService blobstoreService = BlobstoreServiceFactory.getBlobstoreService();
-	
+
 	private UserService userService = UserServiceFactory.getUserService();
 
 	private static final Logger logger = Logger.getLogger(BlobServlet.class.getName());
-	
+
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
 		String key = parseKey(req.getRequestURI());
 		BlobKey blobKey = new BlobKey(key);
 		blobstoreService.serve(blobKey, res);
 	}
-	
+
 
 	public void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
 		logger.info("Uploading avatar to blobstore");
-		
+
 		Map<String, BlobKey> blobs = blobstoreService.getUploadedBlobs(req);
 		BlobKey blobKey = blobs.get("file");
-		UploadTypeEnum uploadType = UploadTypeEnum.valueOf(parseType(req.getRequestURI()));
-		
-		if (blobKey == null) {
-			redirectToFailUrl(res, uploadType);
-		} else {
-			redirectToSuccessUrl(res, uploadType, blobKey.getKeyString());
+		try {
+			UploadTypeEnum uploadType = UploadTypeEnum.valueOf(parseType(req.getRequestURI()));
+
+			if (blobKey == null) {
+				res.sendRedirect(uploadType.getFailUrl());
+			} else {
+				publishEvent(uploadType, parseDomainName(req.getServerName()), blobKey.getKeyString());
+				res.sendRedirect(uploadType.getSuccessUrl());
+			}
+		} catch (IllegalArgumentException e) {
+			res.sendRedirect("/404");
 		}
 	}
 
@@ -83,43 +88,37 @@ public class BlobServlet extends HttpServlet {
 	 * @return
 	 */
 	private String parseType(String requestURI) {
-		String partialPath = requestURI.substring(0, requestURI.lastIndexOf('/')); // /blob/user
+		String partialPath = requestURI.substring(0, requestURI.lastIndexOf('/'));
 		return partialPath.substring(partialPath.lastIndexOf('/')+1).toUpperCase();
 	}
 
 	/**
-	 * @param res
-	 * @param uploadType
-	 * @throws IOException 
+	 * 
+	 * @param serverName
+	 * @return
 	 */
-	private void redirectToFailUrl(HttpServletResponse res, UploadTypeEnum uploadType) throws IOException {
-		switch (uploadType) {
-		case USER:
-			res.sendRedirect(uploadType.getFailUrl());
-			break;
-
-		default:
-			res.sendRedirect("/404");
-			break;
-		}
+	private String parseDomainName(String serverName) {
+		return (serverName.indexOf('.') >= 0) ? serverName.substring(0, serverName.indexOf('.')) : serverName;
 	}
-	
+
 	/**
-	 * @param res
 	 * @param uploadType
-	 * @throws IOException 
+	 * @param blobKey
 	 */
-	private void redirectToSuccessUrl(HttpServletResponse res, UploadTypeEnum uploadType, String blobKey) throws IOException {
+	private void publishEvent(UploadTypeEnum uploadType, String serverName, String blobKey) {
 		switch (uploadType) {
 		case USER:
-			EventBus.publish(new UploadEvent(uploadType, userService.getCurrentUser().getEmail(), blobKey));
-			res.sendRedirect(uploadType.getSuccessUrl());
+			publish(new UserUploadEvent(userService.getCurrentUser().getEmail(), blobKey));
+			break;
+			
+		case DOMAIN:
+			publish(new DomainUploadEvent(serverName, blobKey));
 			break;
 
 		default:
-			res.sendRedirect("/404");
 			break;
 		}
+		
 	}
 }
 

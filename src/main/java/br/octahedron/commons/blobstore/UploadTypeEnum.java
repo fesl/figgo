@@ -18,12 +18,13 @@
  */
 package br.octahedron.commons.blobstore;
 
+
 /**
  * @author vitoravelino
  *
  */
 public enum UploadTypeEnum {
-	USER("/", "/user/upload");
+	USER("/", "/user/upload"), DOMAIN("/", "/domain/upload");
 
 	private String successUrl;
 	

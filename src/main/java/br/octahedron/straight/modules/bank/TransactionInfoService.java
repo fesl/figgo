@@ -47,7 +47,7 @@ public interface TransactionInfoService {
 	 * @return A list that contains all transactions for the given user, starting from the given
 	 *         {@link BankTransaction} id.
 	 */
-	public List<BankTransaction> getLastTransactions(Long accountId, Long lastUsedTransactioId);
+	public List<BankTransaction> getLastTransactions(String accountId, Long lastUsedTransactioId);
 
 	/**
 	 * Get the transactions for a accountId, by date range. TODO improve

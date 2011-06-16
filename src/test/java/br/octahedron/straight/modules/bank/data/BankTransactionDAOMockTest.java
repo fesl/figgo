@@ -56,8 +56,8 @@ public class BankTransactionDAOMockTest {
 
 	@Test
 	public void testGetLastTransactions() {
-		Long myId = new Long(10);
-		Long otherId = new Long(9);
+		String myId = "Conta10";
+		String otherId = "Conta9";
 		Long lastTransactionId = new Long(0);
 
 		Query query1 = createMock(Query.class);
@@ -93,8 +93,8 @@ public class BankTransactionDAOMockTest {
 
 	@Test
 	public void testGetLastTransactions2() {
-		Long myId = new Long(10);
-		Long otherId = new Long(9);
+		String myId = "Conta10";
+		String otherId = "Conta9";
 		Long lastTransactionId = new Long(0);
 
 		Query query1 = createMock(Query.class);

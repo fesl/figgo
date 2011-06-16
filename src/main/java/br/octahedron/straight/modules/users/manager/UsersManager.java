@@ -84,7 +84,7 @@ public class UsersManager {
 	 * @param userId
 	 * @param avatarKey Blob key generated when uploaded avatar
 	 */
-	public void saveAvatarKey(String userId, String avatarKey) {
+	public void updateAvatarKey(String userId, String avatarKey) {
 		User user = this.userDAO.get(userId);
 		user.setAvatarKey(avatarKey);
 	}
