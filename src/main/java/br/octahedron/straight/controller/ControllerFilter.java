@@ -42,7 +42,8 @@ import com.google.appengine.api.users.UserServiceFactory;
 public class ControllerFilter implements Filter {
 
 	private static final Logger logger = Logger.getLogger(ControllerFilter.class.getName());
-	private static final String APPENGINE_COMMAND = "_";
+	private static final String APPENGINE_COMMAND = "_AH";
+	private static final String BLOB_MODULE = "BLOB";
 	private static final String TEST_APPLICATION_DOMAIN = "localhost";
 	protected static final String BARRA = "barra";
 	protected static final String APPLICATION_DOMAIN = "www";
@@ -95,14 +96,15 @@ public class ControllerFilter implements Filter {
 		String action = requestURI.substring(1).replace('/', '_').toUpperCase();
 		User user = userService.getCurrentUser();
 		String email = (user != null) ? user.getEmail() : null;
-
+		
 		try {
-			logger.info(requestURI);
-			if (!action.startsWith(APPENGINE_COMMAND)) {
+			if (!action.startsWith(APPENGINE_COMMAND) && !module.equals(BLOB_MODULE)) {
 				this.checker.check(domain, email, module, action);
 			}
 			// everything is ok now, go ahead!
-			logger.info(">>>>> chain");
+			request.setAttribute("user", user);
+			request.setAttribute("login_url", userService.createLoginURL(this.appDomain));
+			request.setAttribute("logout_url", userService.createLogoutURL(this.appDomain));
 			chain.doFilter(req, resp);
 		} catch (NotLoggedException e) {
 			e.printStackTrace();

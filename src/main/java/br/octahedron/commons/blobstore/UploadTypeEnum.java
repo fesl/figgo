@@ -23,7 +23,7 @@ package br.octahedron.commons.blobstore;
  *
  */
 public enum UploadTypeEnum {
-	USER("/dashboard", "/user/upload");
+	USER("/", "/user/upload");
 
 	private String successUrl;
 	

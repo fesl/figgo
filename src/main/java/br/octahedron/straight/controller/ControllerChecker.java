@@ -39,17 +39,17 @@ public class ControllerChecker {
 	private static final Logger logger = Logger.getLogger(ControllerChecker.class.getName());
 	private final UsersManager usersManager = (UsersManager) ManagerBuilder.getUserManager();
 	private final AuthorizationManager authorizationManager = (AuthorizationManager) ManagerBuilder.getAuthorizationManager();
-	
+
 	/**
-	 * @throws NotAuthorizedException 
+	 * @throws NotAuthorizedException
 	 * 
 	 */
 	public void check(String domain, String email, String moduleName, String action) throws NotFoundException, NotLoggedException,
 			InexistentAccountException, NotAuthorizedException {
-		
+
 		logger.info(">>>" + domain + " : " + email + " : " + moduleName + " : " + action);
 		try {
-			if (APPLICATION_DOMAIN.equals(domain) && BARRA.equals(moduleName)) {
+			if (APPLICATION_DOMAIN.equals(domain) && BARRA.equals(moduleName)) { 
 				moduleName = Module.USER.name();
 			} else if (BARRA.equals(moduleName)) {
 				moduleName = Module.CONFIGURATION.name();
@@ -58,16 +58,19 @@ public class ControllerChecker {
 			ModuleSpec spec = module.getModuleSpec();
 
 			// checks authentication needs
-			if (spec.needsAuthentication(action) && email == null) {
-				throw new NotLoggedException();
-			} else if (spec.needsAuthentication(action) && email != null && !this.usersManager.existsUser(email)) {
-				logger.info(">>>>>" + email + " - " + action + " - " + module.name() );
-				throw new InexistentAccountException();
+			if (spec.needsAuthentication(action)) {
+				if (email == null && !action.isEmpty()) {
+					throw new NotLoggedException();
+				} else if (email != null && !this.usersManager.existsUser(email) && !"USER_NEW".equals(action)) {
+					throw new InexistentAccountException();
+				}
 			}
-			
 			// checks authorization
-			if (spec.needsAuthorization(action) && !this.authorizationManager.isAuthorized(domain, email, action)) {
-				throw new NotAuthorizedException();
+			// TODO: "USER_NEW".equals(action) deve lançar exceção
+			if (spec.needsAuthorization(action)) {
+				if (!this.authorizationManager.isAuthorized(domain, email, action)) {
+					throw new NotAuthorizedException();
+				}
 			}
 
 			if (spec.usesDomainNamespace()) {
@@ -78,5 +81,4 @@ public class ControllerChecker {
 		}
 
 	}
-
 }

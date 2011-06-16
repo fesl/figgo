@@ -12,7 +12,6 @@ all "/services/@action", forward: "/services.groovy?action=@action"
 all "/bank", forward: "/bank.groovy?action=index"
 all "/bank/@action", forward: "/bank.groovy?action=@action"
 
-get "/dashboard", forward: "/user.groovy?action=dashboard"
 all "/user/@action", forward: "/user.groovy?action=@action"
 
 all "/domain/@action", forward: "/domain.groovy?action=@action"

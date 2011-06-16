@@ -37,9 +37,4 @@ def notfound() {
 	render 'notfound.vm', request, response
 }
 
-def check_authorization() {
-	authorize request, response
-	"$action"()
-}
-
-check_authorization()
+"$action"()

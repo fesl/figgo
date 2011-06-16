@@ -19,11 +19,9 @@
 package br.octahedron.straight.modules;
 
 import br.octahedron.commons.inject.InstanceHandler;
-import br.octahedron.straight.modules.admin.AdminIF;
 import br.octahedron.straight.modules.admin.manager.AdminManager;
-import br.octahedron.straight.modules.authorization.AuthorizationIF;
 import br.octahedron.straight.modules.authorization.manager.AuthorizationManager;
-import br.octahedron.straight.modules.users.UsersIF;
+import br.octahedron.straight.modules.bank.manager.AccountManager;
 import br.octahedron.straight.modules.users.manager.UsersManager;
 
 /**
@@ -44,15 +42,19 @@ public class ManagerBuilder {
 		}
 	}
 
-	public static UsersIF getUserManager() {
+	public static UsersManager getUserManager() {
 		return getInstance(UsersManager.class);
 	}
 
-	public static AuthorizationIF getAuthorizationManager() {
+	public static AuthorizationManager getAuthorizationManager() {
 		return getInstance(AuthorizationManager.class);
 	}
 
-	public static AdminIF getAdminManager() {
+	public static AdminManager getAdminManager() {
 		return getInstance(AdminManager.class);
+	}
+	
+	public static AccountManager getAccountManager() {
+		return getInstance(AccountManager.class);
 	}
 }

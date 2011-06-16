@@ -2,7 +2,7 @@ import br.octahedron.straight.modules.ManagerBuilder
 import java.util.regex.Pattern
 import java.util.regex.Matcher
 
-actions = ['create', 'new', 'dashboard', 'upload', 'edit', 'update']
+actions = ['create', 'new', 'upload', 'edit', 'update']
 usersManager = ManagerBuilder.getUserManager()
 
 if (actions.contains(params.action)) {
@@ -15,7 +15,7 @@ def post_create() {
 	(isValid, errors) = validateUser(params)
 	if (isValid) {
 		usersManager.createUser(request.user.email, params.name?.trim(), params.phoneNumber?.trim(), params.description)
-		redirect '/dashboard'
+		redirect '/'
 	} else {
 		request.errors = errors
 		request.name = params.name
@@ -27,11 +27,6 @@ def post_create() {
 
 def get_new() {
 	render 'user/new.vm', request, response
-}
-
-def get_dashboard() {
-	request.user = usersManager.getUser(request.user.email)
-	render 'user/dashboard.vm', request, response
 }
 
 def get_edit() {
@@ -46,7 +41,7 @@ def post_update() {
 	(isValid, errors) = validateUser(params)
 	if (isValid) {
 		usersManager.updateUser(request.user.email, params.name?.trim(), params.phoneNumber?.trim(), params.description)
-		redirect '/dashboard'
+		redirect '/'
 	} else {
 		request.errors = errors
 		request.name = params.name

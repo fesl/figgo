@@ -1,3 +1,1 @@
 install injectionPlugin
-install authenticationPlugin
-install authorizationPlugin
