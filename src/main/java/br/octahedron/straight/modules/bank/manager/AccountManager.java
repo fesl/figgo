@@ -19,6 +19,7 @@
 package br.octahedron.straight.modules.bank.manager;
 
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 import br.octahedron.straight.modules.bank.data.BankAccount;
@@ -63,6 +64,15 @@ public class AccountManager {
 		return account;
 	}
 
+	/**
+	 * Get the N last transactions for an account.
+	 * @return A {@link Collection} with the last n transactions. If there's no transactions for the given account, returns an empty {@link Collection}
+	 */
+	public Collection<BankTransaction> getLastNTransactions(String accountId, int qnt) {
+		return null;
+		
+	}
+	
 	public BigDecimal getBalance(String accountId) {
 		try {
 			return this.getBalance(this.getValidAccount(accountId));
