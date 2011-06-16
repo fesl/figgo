@@ -64,7 +64,7 @@ public class CreateDomainConfigurationSubscriber extends AbstractNamespaceSubscr
 		this.configurationManager.createDomainConfiguration(namespace);
 		for (Module m : Module.values()) {
 			ModuleSpec moduleSpec = m.getModuleSpec();
-			if (moduleSpec.isDomainSpecificModule()) {
+			if (moduleSpec.getModuleType() == Module.Type.DOMAIN) {
 				logger.fine("Configuring module " + m.name() + " for domain " + namespace);
 				this.configurationManager.enableModule(m);
 			}

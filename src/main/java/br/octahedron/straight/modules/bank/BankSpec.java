@@ -24,6 +24,7 @@ import java.util.Set;
 import br.octahedron.commons.eventbus.Subscriber;
 import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module;
+import br.octahedron.straight.modules.Module.Type;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 import br.octahedron.straight.modules.configuration.data.ModuleProperty;
 
@@ -31,16 +32,20 @@ import br.octahedron.straight.modules.configuration.data.ModuleProperty;
  * @author Danilo Queiroz
  */
 public class BankSpec implements ModuleSpec {
-	
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#isDomainSpecificModule()
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleType()
 	 */
 	@Override
-	public boolean isDomainSpecificModule() {
-		return true;
+	public Type getModuleType() {
+		return Module.Type.DOMAIN;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#hasDomainSpecificConfiguration()
 	 */
 	@Override
@@ -48,7 +53,9 @@ public class BankSpec implements ModuleSpec {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getDomainSpecificModuleConfiguration()
 	 */
 	@Override
@@ -60,7 +67,9 @@ public class BankSpec implements ModuleSpec {
 		return bankConfig;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#hasSubscribers()
 	 */
 	@Override
@@ -68,7 +77,9 @@ public class BankSpec implements ModuleSpec {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getSubscribers()
 	 */
 	@Override
@@ -76,7 +87,9 @@ public class BankSpec implements ModuleSpec {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleActions()
 	 */
 	@Override
@@ -84,12 +97,38 @@ public class BankSpec implements ModuleSpec {
 		return Collections.emptySet(); // TODO to be defined
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleAdministrativeActions()
 	 */
 	@Override
 	public Set<String> getModuleAdministrativeActions() {
 		return Collections.emptySet(); // TODO to be defined
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthentication(java.lang.String)
+	 */
+	@Override
+	public boolean needsAuthentication(String action) {
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthorization(java.lang.String)
+	 */
+	@Override
+	public boolean needsAuthorization(String action) {
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#usesDomainNamespace()
+	 */
+	@Override
+	public boolean usesDomainNamespace() {
+		return true;
 	}
 
 }

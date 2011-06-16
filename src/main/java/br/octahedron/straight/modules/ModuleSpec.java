@@ -35,6 +35,11 @@ import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleCon
 public interface ModuleSpec {
 	
 	/**
+	 * @return The {@link Module.Type}
+	 */
+	public Module.Type getModuleType();
+
+	/**
 	 * @return <code>true</code> if this module has configurations parameter specific for each
 	 *         domain or <code>false</code> if not.
 	 */
@@ -61,11 +66,6 @@ public interface ModuleSpec {
 	public Set<Class<? extends Subscriber>> getSubscribers();
 
 	/**
-	 * @return <code>true</code> if module is a domain specific module, <code>false</code> if it is an global module
-	 */
-	public boolean isDomainSpecificModule();
-
-	/**
 	 * Suggestion: for implementation use {@link Arrays#asList(Object...)}
 	 * 
 	 * @return A {@link Collection} with all module's activities.
@@ -79,7 +79,23 @@ public interface ModuleSpec {
 	 *         should require administrative privileges.
 	 */
 	public Set<String> getModuleAdministrativeActions();
+
+	/**
+	 * @param action
+	 * @return
+	 */
+	public boolean needsAuthentication(String action);
+
+	/**
+	 * @param action
+	 * @return
+	 */
+	public boolean needsAuthorization(String action);
+
+	/**
+	 * @return
+	 */
+	public boolean usesDomainNamespace();
 	
-	// TODO what about binds and facades. Let's do that here?! =]
 
 }

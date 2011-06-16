@@ -22,7 +22,7 @@ import java.util.Collection;
 
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
-import br.octahedron.straight.modules.authorization.data.Role;
+import br.octahedron.straight.modules.authorization.data.RoleView;
 
 /**
  * @author danilo
@@ -42,7 +42,7 @@ public interface AuthorizationIF {
 	 * @throws DataAlreadyExistsException
 	 *             if the role already exists
 	 */
-	public abstract Role createRole(String domainName, String roleName);
+	public abstract RoleView createRole(String domainName, String roleName);
 
 	/**
 	 * Removes a role, for a given domain.
@@ -58,7 +58,7 @@ public interface AuthorizationIF {
 	 * @throws DataDoesNotExistsException
 	 *             if theres no such role
 	 */
-	public abstract Role getRole(String domainName, String roleName);
+	public abstract RoleView getRole(String domainName, String roleName);
 
 	/**
 	 * Adds the given users to a specific role.

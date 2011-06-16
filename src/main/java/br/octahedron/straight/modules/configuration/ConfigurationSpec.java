@@ -22,7 +22,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import br.octahedron.commons.eventbus.Subscriber;
+import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
+import br.octahedron.straight.modules.Module.Type;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 import br.octahedron.straight.modules.configuration.manager.CreateDomainConfigurationSubscriber;
 
@@ -31,6 +33,14 @@ import br.octahedron.straight.modules.configuration.manager.CreateDomainConfigur
  *
  */
 public class ConfigurationSpec implements ModuleSpec {
+	
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleType()
+	 */
+	@Override
+	public Type getModuleType() {
+		return Module.Type.APPLICATION_DOMAIN;
+	}
 
 	/* (non-Javadoc)
 	 * @see br.octahedron.straight.modules.ModuleSpec#getDomainSpecificModuleConfiguration()
@@ -87,12 +97,27 @@ public class ConfigurationSpec implements ModuleSpec {
 	}
 
 	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#isDomainSpecificModule()
+	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthentication(java.lang.String)
 	 */
 	@Override
-	public boolean isDomainSpecificModule() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean needsAuthentication(String action) {
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthorization(java.lang.String)
+	 */
+	@Override
+	public boolean needsAuthorization(String action) {
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#usesDomainNamespace()
+	 */
+	@Override
+	public boolean usesDomainNamespace() {
+		return true;
 	}
 
 }

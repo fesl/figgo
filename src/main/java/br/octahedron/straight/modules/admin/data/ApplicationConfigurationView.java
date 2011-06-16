@@ -16,37 +16,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.modules.admin;
-
-import br.octahedron.straight.modules.admin.data.ApplicationConfigurationView;
-import br.octahedron.straight.modules.admin.util.Route53Exception;
+package br.octahedron.straight.modules.admin.data;
 
 /**
  * @author danilo
  *
  */
-public interface AdminIF {
+public interface ApplicationConfigurationView {
 
 	/**
-	 * @return <code>true</code> if this applications is configured, <code>false</code> otherwise.
+	 * @return the route53AccessKeyID
 	 */
-	public abstract boolean hasApplicationConfiguration();
+	public abstract String getRoute53AccessKeyID();
 
 	/**
-	 * @return
+	 * @return the route53AccessKeySecret
 	 */
-	public abstract ApplicationConfigurationView getApplicationConfiguration();
+	public abstract String getRoute53AccessKeySecret();
 
 	/**
-	 * Configures this application
+	 * @return the route53ZoneId
 	 */
-	public abstract void configureApplication(String route53AccessKeyID, String route53AccessKeySecret, String route53ZoneID);
-
-	/**
-	 * Creates the domain at Rout53
-	 * 
-	 * @throws Route53Exception if some error occurs when accessing route53 API
-	 */
-	public abstract void createDomain(String domainName, String adminID) throws Route53Exception;
+	public abstract String getRoute53ZoneID();
 
 }

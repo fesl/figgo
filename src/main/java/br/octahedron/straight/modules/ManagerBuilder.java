@@ -18,14 +18,13 @@
  */
 package br.octahedron.straight.modules;
 
-import static br.octahedron.commons.inject.DependencyManager.registerDependency;
 import br.octahedron.commons.inject.InstanceHandler;
-import br.octahedron.straight.modules.admin.AdminDecorator;
 import br.octahedron.straight.modules.admin.AdminIF;
-import br.octahedron.straight.modules.authorization.AuthorizationDecorator;
+import br.octahedron.straight.modules.admin.manager.AdminManager;
 import br.octahedron.straight.modules.authorization.AuthorizationIF;
-import br.octahedron.straight.modules.users.UsersDecorator;
+import br.octahedron.straight.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.straight.modules.users.UsersIF;
+import br.octahedron.straight.modules.users.manager.UsersManager;
 
 /**
  * This Builder knows how to create managers for each module.
@@ -34,25 +33,26 @@ import br.octahedron.straight.modules.users.UsersIF;
  * 
  */
 public class ManagerBuilder {
-	
-	static {
-		/* Register Dependencies */
-		registerDependency(UsersIF.class, UsersDecorator.class);
-		registerDependency(AuthorizationIF.class, AuthorizationDecorator.class);
-		registerDependency(AdminIF.class, AdminDecorator.class);
-	}
 
 	private static InstanceHandler instanceHandler = new InstanceHandler();
 
-	public static UsersIF getUserManager() throws InstantiationException {
-		return instanceHandler.getInstance(UsersIF.class);
+	private static <T> T getInstance(Class<T> klass) {
+		try {
+			return instanceHandler.getInstance(klass);
+		} catch (InstantiationException e) {
+			throw new RuntimeException(e);
+		}
 	}
-	
-	public static AuthorizationIF getAuthorizationManager() throws InstantiationException {
-		return instanceHandler.getInstance(AuthorizationIF.class);
+
+	public static UsersIF getUserManager() {
+		return getInstance(UsersManager.class);
 	}
-	
-	public static AdminIF getAdminManager() throws InstantiationException {
-		return instanceHandler.getInstance(AdminIF.class);
+
+	public static AuthorizationIF getAuthorizationManager() {
+		return getInstance(AuthorizationManager.class);
+	}
+
+	public static AdminIF getAdminManager() {
+		return getInstance(AdminManager.class);
 	}
 }

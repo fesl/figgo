@@ -31,6 +31,7 @@ import br.octahedron.straight.modules.DataDoesNotExistsException;
 import br.octahedron.straight.modules.authorization.AuthorizationIF;
 import br.octahedron.straight.modules.authorization.data.Role;
 import br.octahedron.straight.modules.authorization.data.RoleDAO;
+import br.octahedron.straight.modules.authorization.data.RoleView;
 
 /**
  * This entity is responsible to manage authorization issues, such as roles operations
@@ -63,7 +64,7 @@ public class AuthorizationManager implements AuthorizationIF {
 	/* (non-Javadoc)
 	 * @see br.octahedron.straight.modules.authorization.manager.AuthorizationIF#createRole(java.lang.String, java.lang.String)
 	 */
-	public Role createRole(String domainName, String roleName) {
+	public RoleView createRole(String domainName, String roleName) {
 		if (!this.existsRole(domainName, roleName)) {
 			Role role = new Role(domainName, roleName);
 			this.roleDAO.save(role);
@@ -87,7 +88,7 @@ public class AuthorizationManager implements AuthorizationIF {
 	/* (non-Javadoc)
 	 * @see br.octahedron.straight.modules.authorization.manager.AuthorizationIF#getRole(java.lang.String, java.lang.String)
 	 */
-	public Role getRole(String domainName, String roleName) {
+	public RoleView getRole(String domainName, String roleName) {
 		if (this.existsRole(domainName, roleName)) {
 			return this.roleDAO.get(createRoleKey(domainName, roleName));
 		} else {
