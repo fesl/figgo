@@ -48,7 +48,7 @@ public class ControllerChecker {
 			if (APPLICATION_DOMAIN.equals(domain) && BARRA.equals(moduleName)) { 
 				moduleName = Module.USER.name();
 			} else if (BARRA.equals(moduleName)) {
-				moduleName = Module.CONFIGURATION.name();
+				moduleName = Module.DOMAIN.name();
 			}
 			Module module = Module.valueOf(moduleName);
 			ModuleSpec spec = module.getModuleSpec();
@@ -57,7 +57,8 @@ public class ControllerChecker {
 			if (spec.needsAuthentication(action)) {
 				if (email == null && !action.isEmpty()) {
 					throw new NotLoggedException();
-				} else if (email != null && !this.usersManager.existsUser(email) && !"USER_NEW".equals(action)) {
+				} else if (email != null && !this.usersManager.existsUser(email) && 
+						   !"USER_NEW".equals(action) && !"USER_CREATE".equals(action)) {
 					throw new InexistentAccountException();
 				}
 			}

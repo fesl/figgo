@@ -1,0 +1,82 @@
+#set( $title = "Figgo - ${domain.Name} - Banco - Admin" )
+#parse( "templates/layout.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<header>
+    		<h1>$domain.Name</h1>
+    		<nav id="tabs">
+        		<ul class="inline">
+                    <li><a href="/">Dashboard</a></li>
+                    #foreach( $module in $domain.ModulesEnabled )
+						<li #if( $module == $currentModule )class="selected"#end><a href="/$module">$module</a></li>
+					#end
+        		</ul>
+    		</nav>
+		</header>
+		<div id="bank">
+			<div id="column-transfer">
+                <section id="admin">
+                    <h3>Admin</h3>
+					<span>Saldo do banco: M$ $balance</span>
+					<section id="transfer" class="action">
+    					<h4>Transferir do banco:</h4>
+    					<form action="/bank/share" method="post">
+    						<fieldset >
+        						<label for="userId">
+                            		Usuário: <input type="text" name="userId" />
+                            	</label>
+                            	<label for="amount">
+                                    Valor: <input type="text" name="amount" />
+                            	</label>
+                            	<label for="type">
+                                    Tipo:
+        							<select type="text" name="type">
+                                        <option value="payment">Pagamento</option>
+        								<option value="transfer">Transferência</option>
+                                    </select>
+                            	</label>
+                            	<label for="comment">
+                            		Comentário (opcional): <textarea name="comment"></textarea>
+                            	</label>
+                        		<input type="submit" value="Transferir" />
+                            </fieldset>
+                        </form>
+					</section>
+					<section id="ballast" class="action">
+    					<h4>Inserir lastro:</h4>
+    					<form action="/bank/ballast" method="post">
+    						<fieldset >
+                            	<label for="amount">
+                                    Valor: <input type="text" name="amount" />
+                            	</label>
+                            	<label for="comment">
+                            		Comentário (opcional): <textarea name="comment"></textarea>
+                            	</label>
+                        		<input type="submit" value="Inserir" />
+                            </fieldset>
+                        </form>
+					</section>
+    			</section>
+				<hr />
+			</div>
+			<div id="column-quickmenu">
+    			<section id="menu">
+					<h3>Acesso rápido</h3>
+					<aside>
+    					<ul>
+    						<li><a href="/bank">Minha conta</a></li>
+                            <li><a href="/bank/transfer">Trasferência</a></li>
+    						<li><a href="/bank/statement">Extrato</a></li>
+    						<li><a href="/bank/other">Outras consultas</a></li>
+                        </ul>
+					</aside>
+				</section>
+            </div>
+		</div>
+	</div>
+#end
+	
+#scripts()

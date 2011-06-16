@@ -18,6 +18,7 @@
  */
 package br.octahedron.straight.modules;
 
+import br.octahedron.straight.modules.admin.AdminSpec;
 import br.octahedron.straight.modules.authorization.AuthorizationSpec;
 import br.octahedron.straight.modules.bank.BankSpec;
 import br.octahedron.straight.modules.configuration.ConfigurationSpec;
@@ -30,7 +31,11 @@ import br.octahedron.straight.modules.users.UsersSpec;
  */
 public enum Module {
 
-	BANK(new BankSpec()), AUTHORIZATION(new AuthorizationSpec()), USER(new UsersSpec()), CONFIGURATION(new ConfigurationSpec());
+	BANK(new BankSpec()), 
+	AUTHORIZATION(new AuthorizationSpec()), 
+	USER(new UsersSpec()), 
+	ADMIN(new AdminSpec()), 
+	DOMAIN(new ConfigurationSpec());
 
 	/**
 	 * Indicates the module Type

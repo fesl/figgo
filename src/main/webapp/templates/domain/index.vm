@@ -9,12 +9,10 @@
     		<h1>$domain.Name</h1>
 			<nav id="tabs">
         		<ul class="inline">
-                    <li class="selected"><a href="$url/#">Dashboard</a></li>
-                    #foreach( $module in $domain.Modules )
-						<li><a href="/$module.Url">$module.Name</a></li>
+                    <li class="selected"><a href="/">Dashboard</a></li>
+                    #foreach( $module in $domain.ModulesEnabled )
+						<li><a href="/$module">$module</a></li>
 					#end
-					<li><a href="$url/bank">Banco</a></li>
-                    <li><a href="$url/services">Serviços</a></li>
         		</ul>
 			</nav>
 		</header>
