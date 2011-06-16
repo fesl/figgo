@@ -6,12 +6,13 @@
 	
     <div id="main" class="center">
 		<header>
-    		<h1>Nome do coletivo</h1>
+    		<h1>$domain.Name</h1>
     		<nav id="tabs">
         		<ul class="inline">
-                    <li><a href="$url/#">Dashboard</a></li>
-                    <li class="selected"><a href="$url/bank#">Banco</a></li>
-                    <li><a href="$url/services">Serviços</a></li>
+                    <li><a href="/">Dashboard</a></li>
+                    #foreach( $module in $domain.ModulesEnabled )
+						<li #if( $module == $currentModule )class="selected"#end><a href="/$module">$module</a></li>
+					#end
         		</ul>
     		</nav>
 		</header>
@@ -19,7 +20,7 @@
 			<div id="column-transfer">
                 <section id="transfer">
                     <h3>Transferência</h3>
-					<span>Saldo atual: M$ 108,00</span>
+					<span>Saldo atual: M$ $balance</span>
 					<form action="/bank/transfer" method="post">
 						<fieldset >
     						<label for="userId">

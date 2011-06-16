@@ -1,4 +1,5 @@
 #set( $title = "Figgo - Nome do coletivo - Banco" )
+#set( $currentModule = "BANK" )
 #parse( "templates/layout.vm" )
 
 #@body()
@@ -6,12 +7,13 @@
 	
     <div id="main" class="center">
 		<header>
-    		<h1>Nome do coletivo</h1>
+    		<h1>$domain.Name</h1>
     		<nav id="tabs">
         		<ul class="inline">
-                    <li><a href="$url/#">Dashboard</a></li>
-                    <li class="selected"><a href="$url/bank#">Banco</a></li>
-                    <li><a href="$url/services">Serviços</a></li>
+                    <li><a href="/">Dashboard</a></li>
+                    #foreach( $module in $domain.ModulesEnabled )
+						<li #if( $module == $currentModule )class="selected"#end><a href="/$module">$module</a></li>
+					#end
         		</ul>
     		</nav>
 		</header>
@@ -31,22 +33,10 @@
                 		<tbody>
                         ##foreach( $transation in $account.LatestTransations )
                     		<tr>
-                    			<td>transaction.Date</td>
-								<td>transaction.To</td>
-								<td>transaction.Description</td>
-								<td>transaction.Value</td>
-                    		</tr>
-							<tr>
-                    			<td>transaction.Date</td>
-								<td>transaction.To</td>
-								<td>transaction.Description</td>
-								<td>transaction.Value</td>
-                    		</tr>
-							<tr>
-                    			<td>transaction.Date</td>
-								<td>transaction.To</td>
-								<td>transaction.Description</td>
-								<td>transaction.Value</td>
+                    			<td>$transaction.Date</td>
+								<td>$transaction.To</td>
+								<td>$transaction.Description</td>
+								<td>$transaction.Value</td>
                     		</tr>
                         ##end
                         </tbody>
@@ -54,7 +44,7 @@
 							<td />
 							<td />
                             <td>SALDO</td>
-                            <td>$account.Balance</td>
+                            <td>$balance</td>
                         </tfoot>
                     </table>
     			</section>

@@ -1,6 +1,7 @@
 import br.octahedron.straight.modules.ManagerBuilder
 
 usersManager = ManagerBuilder.getUserManager()
+configurationManager = ManagerBuilder.getConfigurationManager()
 
 def index() {
 	if (request.serverName == "figgo.com.br" || request.serverName == "localhost") {
@@ -11,12 +12,8 @@ def index() {
 			render 'index.vm', request, response
 		}
 	} else {
-		request.domain = configurationFacade.getDomainConfiguration()
-		if (!request.domain.isEmpty()) {
-			render 'domain/index.vm', request, response
-		} else {
-			redirect '/domain/edit'
-		}
+		request.domain = configurationManager.getDomainConfiguration()
+		render 'domain/index.vm', request, response
 	}
 }
 
