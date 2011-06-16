@@ -69,6 +69,15 @@ public class ConfigurationManager {
 	private DomainSpecificModuleConfiguration createModuleConfig(Module module) {
 		return module.getModuleSpec().getDomainSpecificModuleConfiguration();
 	}
+	
+	/**
+	 * Updates a {@link DomainConfiguration} avatar key with the generated blob key.
+	 * 
+	 * @param avatarKey Blob key generated when uploaded avatar
+	 */
+	public void updateAvatarKey(String avatarKey) {
+		this.getDomainConfiguration().setAvatarKey(avatarKey);
+	}
 
 	/* (non-Javadoc)
 	 * @see br.octahedron.straight.modules.configuration.manager.Configuration#existsDomainConfiguration()
@@ -175,7 +184,7 @@ public class ConfigurationManager {
 			throw new DataDoesNotExistsException("The module " + module.name() + " isn't enabled.");
 		}
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see br.octahedron.straight.modules.configuration.manager.Configuration#restoreModuleProperties(br.octahedron.straight.modules.Module)
 	 */

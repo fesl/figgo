@@ -44,7 +44,13 @@ public class DomainConfiguration implements Serializable, DomainConfigurationVie
 	@PrimaryKey
 	@Persistent
 	private String domainName;
-
+	
+	@Persistent
+	private String name;
+	
+	@Persistent
+	private String avatarKey;
+	
 	@Persistent
 	private HashSet<String> modulesEnabled = new HashSet<String>();
 
@@ -57,6 +63,35 @@ public class DomainConfiguration implements Serializable, DomainConfigurationVie
 	 */
 	public String getDomainName() {
 		return this.domainName;
+	}
+
+	/**
+	 * Sets the public domain name
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the public domain name
+	 */
+	public String getName() {
+		return name;
+	}
+	
+	/**
+	 * Sets the domain avatar key used on blobstore
+	 * @param avatarKey
+	 */
+	public void setAvatarKey(String avatarKey) {
+		this.avatarKey = avatarKey;
+	}
+
+	/**
+	 * @return the domain avatar key used on blobstore
+	 */
+	public String getAvatarKey() {
+		return avatarKey;
 	}
 
 	/**
