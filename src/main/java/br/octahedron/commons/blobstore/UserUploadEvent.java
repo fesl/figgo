@@ -18,29 +18,30 @@
  */
 package br.octahedron.commons.blobstore;
 
+import br.octahedron.commons.eventbus.Event;
 
 /**
- * @author vitoravelino
+ * @author Vítor Avelino
  *
  */
-public enum UploadTypeEnum {
-	USER("/", "/user/upload"), DOMAIN("/", "/domain/upload");
+public class UserUploadEvent implements Event {
+	
+	private static final long serialVersionUID = 6035526466916526937L;
 
-	private String successUrl;
+	private String blobKey;
+
+	private String target;
 	
-	private String failUrl;
-	
-	private UploadTypeEnum(String successUrl, String failUrl) {
-		this.successUrl = successUrl;
-		this.failUrl = failUrl;
+	public UserUploadEvent(String target, String blobKey) {
+		this.target = target;
+		this.blobKey = blobKey;
 	}
 
-	public String getFailUrl() {
-		return failUrl;
+	public String getBlobKey() {
+		return blobKey;
 	}
 
-	public String getSuccessUrl() {
-		return successUrl;
+	public String getTarget() {
+		return target;
 	}
-	
 }

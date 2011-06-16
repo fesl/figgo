@@ -16,40 +16,44 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.modules.users.manager;
+package br.octahedron.straight.modules.configuration.manager;
 
-import br.octahedron.commons.blobstore.UserUploadEvent;
+import br.octahedron.commons.blobstore.DomainUploadEvent;
+import br.octahedron.commons.eventbus.AbstractNamespaceSubscriber;
 import br.octahedron.commons.eventbus.Event;
 import br.octahedron.commons.eventbus.InterestedEvent;
-import br.octahedron.commons.eventbus.Subscriber;
 import br.octahedron.commons.inject.Inject;
 
 /**
- * @author vitoravelino
+ * @author Vítor Avelino
  *
  */
-@InterestedEvent(events = { UserUploadEvent.class })
-public class UsersUploadSubscriber implements Subscriber {
+@InterestedEvent(events = { DomainUploadEvent.class })
+public class DomainUploadSubscriber extends AbstractNamespaceSubscriber {
 
 	private static final long serialVersionUID = -5493253101510358283L;
 
 	@Inject
-	private UsersManager usersManager;
+	private ConfigurationManager configurationManager;
 	
 	/**
-	 * @param usersManager the usersManager to set
+	 * @param configurationManager the configurationManager to set
 	 */
-	public void setUsersManager(UsersManager usersManager) {
-		this.usersManager = usersManager;
+	public void setUsersManager(ConfigurationManager configurationManager) {
+		this.configurationManager = configurationManager;
 	}
 	
-	/* (non-Javadoc)
-	 * @see br.octahedron.commons.eventbus.Subscriber#eventPublished(br.octahedron.commons.eventbus.Event)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.commons.eventbus.AbstractNamespaceSubscriber#processEvent(br.octahedron.commons
+	 * .eventbus.Event)
 	 */
 	@Override
-	public void eventPublished(Event event) {
-		UserUploadEvent uploadEvent = (UserUploadEvent) event; 
-		usersManager.updateAvatarKey(uploadEvent.getTarget(), uploadEvent.getBlobKey());
+	public void processEvent(Event event) {
+		DomainUploadEvent uploadEvent = (DomainUploadEvent) event;
+		configurationManager.updateAvatarKey(uploadEvent.getBlobKey());
 	}
 
 }
