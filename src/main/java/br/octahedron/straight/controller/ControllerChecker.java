@@ -40,10 +40,6 @@ public class ControllerChecker {
 	private final UsersManager usersManager = (UsersManager) ManagerBuilder.getUserManager();
 	private final AuthorizationManager authorizationManager = (AuthorizationManager) ManagerBuilder.getAuthorizationManager();
 
-	/**
-	 * @throws NotAuthorizedException
-	 * 
-	 */
 	public void check(String domain, String email, String moduleName, String action) throws NotFoundException, NotLoggedException,
 			InexistentAccountException, NotAuthorizedException {
 
