@@ -11,17 +11,24 @@
     		<input type="hidden" name="_method" value="put" />
     		Domínio: ${domain.DomainName}.figgo.com.br <br />
     		<label for="name">
-    			Nome: <small>(e.g.: Coletivo Mundo)</small> <input type="text" name="name" value="$!{name}"/>
+    			Nome: <small>(e.g.: Coletivo Mundo)</small> <input type="text" id="name" name="name" value="$!{name}"/>
             </label><br />
 			<label for="url">
-    			Site: </small> <input type="text" name="url" value="$!{url}"/>
+    			Site: </small> <input type="text" id="url" name="url" value="$!{url}"/>
             </label><br />
 			<label for="maillist">
-    			Lista de discussão: </small> <input type="text" name="maillist" value="$!{maillist}"/>
+    			Lista de discussão: </small> <input type="text" id="maillist" name="maillist" value="$!{maillist}"/>
             </label><br />
-			
+			<fieldset>
+				<legend>Módulos</legend>
+			#foreach( $module in $modules.getExistentModules() )
+				<label for="$module">
+					<input type="checkbox" id="$module" name="$module" #if( $modules.isModuleEnabled($module) )checked#end/> $module
+                </label>
+			#end
+            </fieldset>
 			<label for="description">
-        		Descrição: <textarea name="description">$!{description}</textarea>
+        		Descrição: <textarea id="description" name="description">$!{description}</textarea>
         	</label><br />
     		<input type="submit" value="Salvar" />
         </form>

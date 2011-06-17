@@ -1,7 +1,7 @@
 import br.octahedron.straight.modules.Module
 import br.octahedron.straight.modules.ManagerBuilder
 
-actions = ['config', 'update', 'upload', 'config2', 'update2']
+actions = ['config', 'update', 'upload', 'module']
 configurationManager = ManagerBuilder.getConfigurationManager()
 
 if (actions.contains(params.action)) {
@@ -12,6 +12,7 @@ if (actions.contains(params.action)) {
 
 def get_config() {
 	request.domain = configurationManager.getDomainConfiguration()
+	request.modules = configurationManager.getModulesInfoService()
 	render 'domain/edit.vm', request, response
 }
 
@@ -26,13 +27,13 @@ def post_update() {
 }
 
 // DOMAIN SPECIFIC CONFIGURATION
-def get_config2() {
+def get_module() {
 	request.name = params.module
 	request.module = configurationManager.getModuleConfiguration(Module.valueOf(params.module.toUpperCase()))
 	render 'module/config.vm', request, response
 }
 
-def post_update2() {
+def post_module() {
 	def errors = []
 	params.each() { key, value -> 
 		try {

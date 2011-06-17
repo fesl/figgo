@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
 import br.octahedron.straight.modules.Module;
+import br.octahedron.straight.modules.configuration.ModulesInfoService;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationDAO;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
@@ -64,7 +65,7 @@ public class ConfigurationManager {
 	protected void setModuleConfigurationDAO(ModuleConfigurationDAO moduleDAO) {
 		this.moduleDAO = moduleDAO;
 	}
-
+	
 	/**
 	 * @return The {@link DomainSpecificModuleConfigurationView} for the given module
 	 */
@@ -115,6 +116,13 @@ public class ConfigurationManager {
 		} else {
 			throw new DataDoesNotExistsException("This domain was not configured yet");
 		}
+	}
+	
+	/**
+	 * @return the {@link ModulesInfoService} using the current domain's {@link DomainConfiguration}
+	 */
+	public ModulesInfoService getModulesInfoService() {
+		return new ModulesInfoService(this.getDomainConfiguration());
 	}
 
 	/**
