@@ -1,8 +1,11 @@
 import java.math.BigDecimal
+import java.util.ArrayList
+import br.octahedron.commons.database.NamespaceCommons
 import br.octahedron.straight.modules.ManagerBuilder
 import br.octahedron.straight.modules.bank.data.BankTransaction.TransactionType
 import br.octahedron.commons.util.Formatter
 
+zero = new BigDecimal("0.00")
 actions = ['index', 'transfer', 'statement', 'admin', 'ballast', 'share']
 configurationManager = ManagerBuilder.getConfigurationManager()
 accountManager = ManagerBuilder.getAccountManager()
@@ -42,9 +45,9 @@ def get_statement() {
 }
 
 def post_transfer() {
-	(isValid, errors) = validateTransaction(params)
-	if (isValid) {
-		accountManager.transact(request.user.email, params.userId, new BigDecimal(params.amount), params.comment, TransactionType.valueOf(params.type))
+	def errors = validateTransaction(params)
+	if (errors.isEmpty()) {
+		accountManager.transact(request.user.email, params.userId.trim(), new BigDecimal(params.amount.trim()), params.comment, TransactionType.valueOf(params.type))
 		redirect '/bank'
 	} else {
 		request.errors = errors
@@ -52,13 +55,14 @@ def post_transfer() {
 		request.amount = params.amount
 		request.comment = params.comment
 		request.type = params.type
+		render 'bank/transfer.vm', request, response
 	}
 }
 
 def post_share() {
-	(isValid, errors) = validateTransaction(params)
-	if (isValid) {
-		accountManager.transact(extractDomainName(request.serverName), params.userId, new BigDecimal(params.amount), params.comment, TransactionType.valueOf(params.type))
+	def errors = validateDest(params)
+	if (errors.isEmpty()) {
+		accountManager.transact(extractDomainName(request.serverName), params.userId.trim(), new BigDecimal(params.amount.trim()), params.comment, TransactionType.valueOf(params.type))
 		redirect '/bank/admin'
 	} else {
 		request.errors = errors
@@ -66,19 +70,21 @@ def post_share() {
 		request.amount = params.amount
 		request.comment = params.comment
 		request.type = params.type
+		render 'bank/admin.vm', request, response
 	}
 }
 
 def post_ballast() {
-	(isValid, errors) = validateTransaction(params)
-	if (isValid) {
-		accountManager.insertBallast(extractDomainName(request.serverName), new BigDecimal(params.amount), params.comment)
+	def errors = validateValue(params)
+	if (errors.isEmpty()) {
+		accountManager.insertBallast(extractDomainName(request.serverName), new BigDecimal(params.amount.trim()), params.comment)
 		redirect '/bank/admin'
 	} else {
 		request.errors = errors
 		request.amount = params.amount
 		request.comment = params.comment
 		request.type = params.type
+		render 'bank/admin.vm', request, response
 	}
 }
 
@@ -86,27 +92,43 @@ def notfound() {
 	render 'notfound.vm', request, response
 }
 
-def validateTransaction(params) {
-	isValid = true
-	errors = []
-	count = 0
-	if (! usersManager.existsUser(params.userId) {
-		errors[count++] = "Conta de destino não existe" 
-		isValid = false
-	}
-	
+def validateValue(params) {
+	def errors = []
 	try { 
-		amount = new BigDecimal(params.amount)
-		if (new BigDecimal(0).compareTo(amount) <= 0) {
-			errors[count++] = "Valor inválido" 
-			isValid = false
+		amount = new BigDecimal(params.amount.trim())
+		if (amount.compareTo(zero) <= 0) {
+			errors.add("Valor inválido")
 		}
-	catch (NumberFormatException e)	{
-		errors[count++] = "Valor inválido" 
-		isValid = false
+	} catch (NumberFormatException e)	{
+		e.printStackTrace();
+		errors.add("Valor inválido") 
+	}
+	return errors
+}
+
+def validateDest(params) {
+	def errors = []
+	try {
+		NamespaceCommons.changeToGlobalNamespace()
+		if (! usersManager.existsUser(params.userId.trim())) {
+			errors.add("Conta de destino não existe") 
+		}
+	} finally {
+		NamespaceCommons.changeToPreviousNamespace()
 	}
 	
-	return [isValid, errors]
+	errors.addAll(validateValue(params))
+	return errors
+}
+
+def validateTransaction(params) {
+	def errors = []
+	if (request.user.email.equals(params.userId.trim())) {
+		errors.add("Conta de destino é a conta de origem") 
+	}
+
+	errors.addAll(validateDest(params))
+	return errors
 }
 
 "$actionCall"()

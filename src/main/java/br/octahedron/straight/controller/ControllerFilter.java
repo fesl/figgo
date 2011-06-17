@@ -118,7 +118,7 @@ public class ControllerFilter implements Filter {
 		} catch (Throwable t) {
 			genericErrorHandler(request, response, t);
 		} finally {
-			NamespaceCommons.backToPreviousNamespace();
+			NamespaceCommons.changeToPreviousNamespace();
 		}
 	}
 

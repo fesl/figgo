@@ -12,8 +12,8 @@ if (actions.contains(params.action)) {
 }
 
 def post_create() {
-	(isValid, errors) = validateUser(params)
-	if (isValid) {
+	errors = validateUser(params)
+	if (errors.isEmpty()) {
 		usersManager.createUser(request.user.email, params.name?.trim(), params.phoneNumber?.trim(), params.description)
 		redirect '/'
 	} else {
@@ -38,8 +38,8 @@ def get_edit() {
 }
 
 def post_update() {
-	(isValid, errors) = validateUser(params)
-	if (isValid) {
+	errors = validateUser(params)
+	if (errors.isEmpty()) {
 		usersManager.updateUser(request.user.email, params.name?.trim(), params.phoneNumber?.trim(), params.description)
 		redirect '/'
 	} else {
@@ -67,18 +67,14 @@ phonePattern = Pattern.compile('^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0
 def validateUser(params) {
 	phone = params.phoneNumber.trim()
 	name = params.name.trim()
-	isValid = true
-	errors = []
-	count = 0
+	def errors = []
 	if (!namePattern.matcher(name).matches()) {
-	    errors[count++] = "Nome inválido"
-	    isValid = false
+	    errors.add("Nome inválido")
 	}
 	if (!phonePattern.matcher(phone).matches()) {
-	    errors[count++] = "Telefone inválido"
-	    isValid = false
+	    errors.add("Telefone inválido")
 	}
-	return [isValid, errors]
+	return errors
 }
 
 "$actionCall"()

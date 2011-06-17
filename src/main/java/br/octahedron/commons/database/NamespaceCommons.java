@@ -61,7 +61,7 @@ public class NamespaceCommons {
 	/**
 	 * Changes the current namespace to the previous one namespace
 	 */
-	public static void backToPreviousNamespace() {
+	public static void changeToPreviousNamespace() {
 		String previous = previousNamespaces.get();
 		if (previous!= null) {
 			logger.fine("Changing namespace from global to original namespace: " + previous);

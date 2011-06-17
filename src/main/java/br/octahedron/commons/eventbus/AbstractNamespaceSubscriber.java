@@ -18,7 +18,7 @@
  */
 package br.octahedron.commons.eventbus;
 
-import static br.octahedron.commons.database.NamespaceCommons.backToPreviousNamespace;
+import static br.octahedron.commons.database.NamespaceCommons.changeToPreviousNamespace;
 import static br.octahedron.commons.database.NamespaceCommons.changeToNamespace;
 
 /**
@@ -39,7 +39,7 @@ public abstract class AbstractNamespaceSubscriber implements Subscriber {
 			}
 			this.processEvent(event);
 		} finally {
-			backToPreviousNamespace();
+			changeToPreviousNamespace();
 		}
 	}
 

@@ -17,6 +17,14 @@
     		</nav>
 		</header>
 		<div id="bank">
+			#if( $errors )
+			<h3>Erros</h3>
+			<ul>
+	    		#foreach( $error in $errors )
+				<li>$error</li>
+				#end
+			</ul>
+			#end
 			<div id="column-transfer">
                 <section id="transfer">
                     <h3>Transferência</h3>
