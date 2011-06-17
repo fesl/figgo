@@ -19,6 +19,7 @@
 package br.octahedron.straight.modules.configuration.manager;
 
 import java.util.Collection;
+import java.util.logging.Logger;
 
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
@@ -212,6 +213,7 @@ public class ConfigurationManager {
 	 * @param propertyValue
 	 *            The new property value
 	 */
+	static final Logger logger = Logger.getLogger(ConfigurationManager.class.getName());
 	public void setModuleProperty(Module module, String propertyKey, String propertyValue) {
 		DomainConfiguration domainConf = this.getDomainConfiguration();
 		if (domainConf.isModuleEnabled(module.name())) {
@@ -225,6 +227,7 @@ public class ConfigurationManager {
 					}
 				}
 				moduleConf.setConfigurationValue(propertyKey, propertyValue);
+				moduleDAO.save(moduleConf);
 			} else {
 				throw new IllegalArgumentException("The module " + module.name() + "hasn't any property with key " + propertyKey);
 			}

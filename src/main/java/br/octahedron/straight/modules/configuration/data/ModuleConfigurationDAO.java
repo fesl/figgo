@@ -29,4 +29,17 @@ public class ModuleConfigurationDAO extends GenericDAO<DomainSpecificModuleConfi
 		super(DomainSpecificModuleConfiguration.class);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see br.octahedron.commons.database.GenericDAO#get(java.lang.Object)
+	 */
+	@Override
+	public DomainSpecificModuleConfiguration get(Object key) {
+		try {
+			return (DomainSpecificModuleConfiguration) super.get(key).clone();
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
+	}
 }
