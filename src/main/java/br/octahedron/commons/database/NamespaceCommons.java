@@ -67,7 +67,7 @@ public class NamespaceCommons {
 			logger.fine("Changing namespace from global to original namespace: " + previous);
 			NamespaceManager.set(previous);
 		} else {
-			logger.fine("No previous namespace store, keeping the actual one.");
+			logger.fine("No previous namespace stored, keeping the actual one.");
 		}
 	}
 }
