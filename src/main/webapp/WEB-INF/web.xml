@@ -13,6 +13,21 @@
 	</listener>
 
 	<!-- Filters -->
+	<!-- Appstats -->
+	<filter>
+		<filter-name>appstats</filter-name>
+		<filter-class>com.google.appengine.tools.appstats.AppstatsFilter
+		</filter-class>
+		<init-param>
+			<param-name>logMessage</param-name>
+			<param-value>Appstats available: /_ah/stats/details?time={ID}
+			</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>appstats</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
 	<!-- Controller Checker Filter -->
 	<filter>
 		<filter-name>ControllerFilter</filter-name>
@@ -20,7 +35,7 @@
 		</filter-class>
 		<init-param>
 			<param-name>APPLICATION_URL</param-name>
-			<param-value>http://localhost:8080</param-value>
+			<param-value>http://www.figgo.com.br</param-value>
 		</init-param>
 		<init-param>
 			<param-name>USER_CREATE_PAGE</param-name>
@@ -52,16 +67,13 @@
 	</filter-mapping>
 
 	<!-- Servlets -->
+	<!-- Appstats -->
 	<servlet>
-		<servlet-name>GroovletServlet</servlet-name>
-		<servlet-class>groovyx.gaelyk.GaelykServlet</servlet-class>
-		<init-param>
-			<param-name>verbose</param-name>
-			<!-- Set it to true for more details -->
-			<param-value>false</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
+		<servlet-name>appstats</servlet-name>
+		<servlet-class>com.google.appengine.tools.appstats.AppstatsServlet
+		</servlet-class>
 	</servlet>
+	<!-- Blobstore -->
 	<servlet>
 		<servlet-name>BlobServlet</servlet-name>
 		<servlet-class>br.octahedron.commons.blobstore.BlobServlet
@@ -72,33 +84,46 @@
 		</init-param>
 		<load-on-startup>0</load-on-startup>
 	</servlet>
+	<!-- Groovy Servlet -->
+	<servlet>
+		<servlet-name>GroovletServlet</servlet-name>
+		<servlet-class>groovyx.gaelyk.GaelykServlet</servlet-class>
+		<init-param>
+			<param-name>verbose</param-name>
+			<!-- Set it to true for more details -->
+			<param-value>false</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
 
 	<!-- Mapping -->
+	<!-- Appstats -->
 	<servlet-mapping>
-		<servlet-name>GroovletServlet</servlet-name>
-		<url-pattern>*.groovy</url-pattern>
+		<servlet-name>appstats</servlet-name>
+		<url-pattern>/_ah/stats/*</url-pattern>
 	</servlet-mapping>
+	<!-- Blob -->
 	<servlet-mapping>
 		<servlet-name>BlobServlet</servlet-name>
 		<url-pattern>/blob/*</url-pattern>
 	</servlet-mapping>
+	<!-- Groovy -->
+	<servlet-mapping>
+		<servlet-name>GroovletServlet</servlet-name>
+		<url-pattern>*.groovy</url-pattern>
+	</servlet-mapping>
 
-	<!--
-		Uncomment the following security constraint if you want to secure your
-		incoming email endpoint
-	-->
-	<!--
-		Only allow the SDK and administrators to have access to the incoming
-		email endpoint
-	-->
-	<!--
-		<security-constraint> <web-resource-collection>
-		<url-pattern>/_ah/mail/*</url-pattern>
-		<url-pattern>/_ah/xmpp/message/chat/</url-pattern>
-		</web-resource-collection> <auth-constraint>
-		<role-name>admin</role-name> </auth-constraint> </security-constraint>
-	-->
-
+	<!-- Security -->
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/_ah/stats/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+	</security-constraint>
+	
+	
 	<welcome-file-list>
 		<welcome-file>index.vm</welcome-file>
 	</welcome-file-list>
