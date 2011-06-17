@@ -1,4 +1,5 @@
 import br.octahedron.straight.modules.ManagerBuilder
+import  br.octahedron.straight.modules.admin.util.DomainAlreadyExistsException
 
 action = 'notfound'
 adminManager = ManagerBuilder.getAdminManager()
@@ -25,8 +26,13 @@ def action_app_post_config() {
 
 // DOMAIN CONFIGURATION
 def action_domain_post_create() {
-	adminManager.createDomain(params.name, params.userId)
-	redirect '/'
+	try {
+		adminManager.createDomain(params.name, params.userId)
+		redirect '/'
+ 	} catch (DomainAlreadyExistsException e) {
+ 		request.error = e.getMessage()
+ 		render 'domain/new.vm', request, response	
+ 	}
 }
 
 def action_domain_get_new() {

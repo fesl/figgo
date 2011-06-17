@@ -20,6 +20,7 @@ package br.octahedron.straight.modules.admin.util;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -55,6 +56,7 @@ public class Route53Util {
 	private static final SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z", Locale.US);
 
 	private static final String ROUTE53_SERVER = "https://route53.amazonaws.com";
+	private static final String EXISTS_DOMAIN_MESSAGE = "type CNAME but it already exists";
 	private static final String DATE_COMMAND = "/date";
 	private static final String VERSION_SPEC = "/2011-05-05";
 	private static final String HOSTED_ZONE_COMMAND = "/hostedzone/";
@@ -77,26 +79,39 @@ public class Route53Util {
 	}
 
 	public static void createDomain(String domain, String accessId, String accessKey, String hostedZoneId) throws Route53Exception {
-		try {
-			HTTPRequest request = new HTTPRequest(new URL(ROUTE53_SERVER + VERSION_SPEC + HOSTED_ZONE_COMMAND + hostedZoneId + RRSET), HTTPMethod.POST);
+		try{ 
+			HTTPRequest request = new HTTPRequest(new URL(ROUTE53_SERVER + VERSION_SPEC + HOSTED_ZONE_COMMAND + hostedZoneId + RRSET),
+					HTTPMethod.POST);
 			String requestBody = generateRequestBody(domain);
 			logger.fine(requestBody);
 			request.setPayload(requestBody.getBytes());
 			signRequest(request, accessId, accessKey);
 			HTTPResponse response = urlFetchService.fetch(request);
 			if (response.getResponseCode() != 200) {
+				logger.fine("Unable to create domain: " + domain);
 				String out = new String(response.getContent());
-				logger.fine("Unable to create domain: " + domain + " - " + out);
-				throw new Route53Exception(out);
+				if (out.contains(EXISTS_DOMAIN_MESSAGE)) {
+					throw new DomainAlreadyExistsException(domain);
+				} else {
+					throw new Route53Exception(out);
+				}
 			}
-		} catch (Exception e) {
-			logger.log(Level.SEVERE, "Unexpected error accessing Route53: " + e.getMessage(), e);
-			throw new RuntimeException(e);
+			// TODO change it when we migrate to Java 7
+		} catch (MalformedURLException e) {
+			logger.log(Level.WARNING, "Unexpected error: " + e.getMessage(), e);
+		} catch (InvalidKeyException e) {
+			logger.log(Level.WARNING, "Unexpected error: " + e.getMessage(), e);
+		} catch (InvalidKeySpecException e) {
+			logger.log(Level.WARNING, "Unexpected error: " + e.getMessage(), e);
+		} catch (NoSuchAlgorithmException e) {
+			logger.log(Level.WARNING, "Unexpected error: " + e.getMessage(), e);
+		} catch (IOException e) {
+			logger.log(Level.WARNING, "Unexpected error: " + e.getMessage(), e);
 		}
 	}
 
 	protected static void signRequest(HTTPRequest request, String accessID, String key) throws IOException, InvalidKeyException,
-	InvalidKeySpecException, NoSuchAlgorithmException {
+			InvalidKeySpecException, NoSuchAlgorithmException {
 		String date = fetchDate();
 		String sign = sign(date, key);
 		String signature = AUTH_TOKEN.replace(ACCESS_ID_TOKEN, accessID);
@@ -107,7 +122,8 @@ public class Route53Util {
 		request.addHeader(new HTTPHeader("Content-Type", "text/xml; charset=UTF-8"));
 	}
 
-	protected static String sign(String content, String key) throws InvalidKeySpecException, NoSuchAlgorithmException, InvalidKeyException, IllegalStateException {
+	protected static String sign(String content, String key) throws InvalidKeySpecException, NoSuchAlgorithmException, InvalidKeyException,
+			IllegalStateException {
 		Mac mac = Mac.getInstance(MAC_ALGORITHM);
 		SecretKey skey = new SecretKeySpec(key.getBytes(), KEY_ALGORITHM);
 		mac.init(skey);
@@ -118,7 +134,7 @@ public class Route53Util {
 	protected static String fetchDate() throws IOException {
 		HttpURLConnection connection = (HttpURLConnection) new URL(ROUTE53_SERVER + DATE_COMMAND).openConnection();
 		if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-			return formatter.format(new Date(connection.getHeaderFieldDate(FETCH_DATE_HEADER,0)));
+			return formatter.format(new Date(connection.getHeaderFieldDate(FETCH_DATE_HEADER, 0)));
 		} else {
 			return null;
 		}
@@ -143,4 +159,3 @@ public class Route53Util {
 		}
 	}
 }
-
