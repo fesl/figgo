@@ -43,7 +43,7 @@ public class TestRoute53Util {
 	public void fetchDateTest() throws IOException {
 		String date = Route53Util.fetchDate();
 		assertNotNull(date);
-		System.out.println(">"+date+"<");
+//		System.out.println(">"+date+"<");
 	}
 	
 	@Test
