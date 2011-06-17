@@ -26,25 +26,29 @@
                     		<tr>
                     			<th>Data</th>
     							<th>Destino</th>
-    							<th>Descrição</th>
+    							<th>Comentário</th>
     							<th>Valor</th>
                     		</tr>
                         </thead>
                 		<tbody>
-                        ##foreach( $transation in $account.LatestTransations )
+						#if( $transactions.size() > 0 )
+    						#foreach( $transaction in $transactions )
                     		<tr>
                     			<td>$transaction.Date</td>
-								<td>$transaction.To</td>
-								<td>$transaction.Description</td>
-								<td>$transaction.Value</td>
+    							<td>$transaction.AccountDest</td>
+    							<td>$transaction.Comment</td>
+    							<td class=#if( $transaction.AccountDest == $user.Email )"blue">#else"red">-#end$transaction.Amount</td>
                     		</tr>
-                        ##end
+    						#end
+						#else
+							<tr><td>Nenhuma transação até o momento.</td></tr>
+						#end
                         </tbody>
 						<tfoot>
 							<td />
 							<td />
                             <td>SALDO</td>
-                            <td>$balance</td>
+                            <td class=#if( $balance >= 0 )"blue"#else"red"#end>M$ $balance</td>
                         </tfoot>
                     </table>
     			</section>

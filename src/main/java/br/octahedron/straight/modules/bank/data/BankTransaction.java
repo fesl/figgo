@@ -35,7 +35,7 @@ import javax.jdo.annotations.PrimaryKey;
 public class BankTransaction implements Serializable {
 
 	private static final long serialVersionUID = -7989889136597879006L;
-
+	
 	public enum TransactionType {
 		TRANSFER, PAYMENT, FINE, DEPOSIT
 	};
@@ -50,7 +50,7 @@ public class BankTransaction implements Serializable {
 	@Persistent
 	private Date date;
 	@Persistent
-	private BigDecimal value;
+	private BigDecimal amount;
 	@Persistent
 	private String comment;
 	@Persistent
@@ -67,10 +67,10 @@ public class BankTransaction implements Serializable {
 	public BankTransaction(String accountOrig, String accountDest, BigDecimal value, TransactionType type, String comment) {
 		this.accountOrig = accountOrig;
 		this.accountDest = accountDest;
-		this.value = value;
+		this.amount = value;
 		this.type = type;
 		this.comment = comment;
-
+		this.date = new Date();
 	}
 
 	/**
@@ -114,14 +114,14 @@ public class BankTransaction implements Serializable {
 	public Date getDate() {
 		return this.date;
 	}
-
+	
 	/**
-	 * @return the value
+	 * @return the amount
 	 */
-	public BigDecimal getValue() {
-		return this.value;
+	public BigDecimal getAmount() {
+		return this.amount;
 	}
-
+	
 	/**
 	 * @return the comment
 	 */
@@ -168,7 +168,7 @@ public class BankTransaction implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "id: " + this.id + " orig: " + this.accountOrig + " dest: " + this.accountDest + " value: " + this.getValue() + " comment: "
+		return "id: " + this.id + " orig: " + this.accountOrig + " dest: " + this.accountDest + " value: " + this.getAmount() + " comment: "
 				+ this.comment;
 	}
 }

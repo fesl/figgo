@@ -114,9 +114,9 @@ public class BankAccount implements Serializable {
 
 			for (BankTransaction bankTransaction : transactions) {
 				if (bankTransaction.getAccountOrig().equals(this.ownerId)) {
-					transactionsBalance = transactionsBalance.subtract(bankTransaction.getValue());
+					transactionsBalance = transactionsBalance.subtract(bankTransaction.getAmount());
 				} else {
-					transactionsBalance = transactionsBalance.add(bankTransaction.getValue());
+					transactionsBalance = transactionsBalance.add(bankTransaction.getAmount());
 				}
 
 			}

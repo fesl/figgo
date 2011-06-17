@@ -32,8 +32,8 @@
                         	<label for="type">
                                 Tipo:
     							<select type="text" name="type">
-                                    <option value="payment">Pagamento</option>
-    								<option value="transfer">Transferência</option>
+                                    <option value="PAYMENT">Pagamento</option>
+    								<option value="TRANSFER">Transferência</option>
                                 </select>
                         	</label>
                         	<label for="comment">

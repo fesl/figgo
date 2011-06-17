@@ -26,6 +26,7 @@ import br.octahedron.straight.modules.bank.data.BankAccount;
 import br.octahedron.straight.modules.bank.data.BankAccountDAO;
 import br.octahedron.straight.modules.bank.data.BankTransaction;
 import br.octahedron.straight.modules.bank.data.BankTransactionDAO;
+import br.octahedron.straight.modules.bank.data.SystemAccount;
 import br.octahedron.straight.modules.bank.data.BankTransaction.TransactionType;
 
 /**
@@ -35,10 +36,10 @@ import br.octahedron.straight.modules.bank.data.BankTransaction.TransactionType;
  */
 public class AccountManager {
 
+	private static final Logger logger = Logger.getLogger(AccountManager.class.getName());
+
 	private BankAccountDAO accountDAO = new BankAccountDAO();
 	private BankTransactionDAO transactionDAO = new BankTransactionDAO();
-
-	private static final Logger logger = Logger.getLogger(AccountManager.class.getName());
 
 	/*
 	 * Just for tests.
@@ -66,11 +67,22 @@ public class AccountManager {
 
 	/**
 	 * Get the N last transactions for an account.
+	 * 
 	 * @return A {@link Collection} with the last n transactions. If there's no transactions for the given account, returns an empty {@link Collection}
 	 */
 	public Collection<BankTransaction> getLastNTransactions(String accountId, int qnt) {
-		return null;
-		
+		return this.transactionDAO.getLastNTransactions(accountId, qnt);
+	}
+	
+	/**
+	 * TODO!
+	 * 
+	 * @param domainAccount
+	 * @param amount
+	 * @param comment
+	 */
+	public void insertBallast(String domainAccount, BigDecimal amount, String comment) {
+		this.transact(SystemAccount.ID, domainAccount, amount, comment, TransactionType.TRANSFER);
 	}
 	
 	public BigDecimal getBalance(String accountId) {

@@ -1,4 +1,6 @@
+import java.math.BigDecimal
 import br.octahedron.straight.modules.ManagerBuilder
+import br.octahedron.straight.modules.bank.data.BankTransaction.TransactionType
 
 actions = ['index', 'transfer', 'statement', 'admin', 'ballast', 'share']
 configurationManager = ManagerBuilder.getConfigurationManager()
@@ -13,6 +15,7 @@ if (actions.contains(params.action)) {
 def get_index() {
 	request.domain = configurationManager.getDomainConfiguration()
 	request.balance = accountManager.getBalance(request.user.email)
+	request.transactions = accountManager.getLastNTransactions(request.user.email, 5)
 	render 'bank/index.vm', request, response
 }
 
@@ -23,13 +26,13 @@ def get_admin() {
 }
 
 def post_share() {
-	accountManager.transact(extractDomainName(request.serverName), params.userId, params.amount, params.comment, params.type)
-	redirect '/bank/admin', request, response
+	accountManager.transact(extractDomainName(request.serverName), params.userId, new BigDecimal(params.amount), params.comment, TransactionType.valueOf(params.type))
+	redirect '/bank/admin'
 }
 
 def post_ballast() {
-	accountManager.insertBallast(extractDomainName(request.serverName), params.amount, params.comment)
-	redirect '/bank/admin', request, response
+	accountManager.insertBallast(extractDomainName(request.serverName), new BigDecimal(params.amount), params.comment)
+	redirect '/bank/admin'
 }
 
 def get_transfer() {
@@ -45,7 +48,8 @@ def get_statement() {
 }
 
 def post_transfer() {
-	redirect '/'
+	accountManager.transact(request.user.email, params.userId, new BigDecimal(params.amount), params.comment, TransactionType.valueOf(params.type))
+	redirect '/bank'
 }
 
 def notfound() {

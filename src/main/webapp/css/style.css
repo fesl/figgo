@@ -360,6 +360,21 @@ body {
 ul.inline li {
   display: inline; }
 
+table.simple {
+  width: 100%;
+  font-size: 14px;
+  text-align: left;
+  border-collapse: collapse; }
+  table.simple tbody td, table.simple tfoter td {
+    padding: 3px; }
+  table.simple thead {
+    background-color: #ddd; }
+    table.simple thead th {
+      padding: 2px; }
+  table.simple tfoot tr {
+    font-weight: bold;
+    background-color: #ddd; }
+
 /* elements */
 img {
   max-width: 97%; }
@@ -392,6 +407,46 @@ img {
 #column-statement {
   float: left;
   width: 500px; }
+  #column-statement #statement form {
+    width: 200px;
+    margin: 0 auto;
+    text-align: center; }
+    #column-statement #statement form label {
+      display: block;
+      padding: 0 0 10px; }
+
+#balance table tbody tr:nth-child(2n) {
+  background-color: #eee; }
+#balance table td.blue {
+  color: #0000ff; }
+#balance table td.red {
+  color: #ff0000; }
+
+#column-transfer {
+  float: left;
+  width: 500px; }
+  #column-transfer .action {
+    margin: 10px 0 0 0; }
+  #column-transfer #transfer form, #column-transfer #ballast form {
+    width: 400px;
+    margin: 0 auto; }
+    #column-transfer #transfer form label, #column-transfer #ballast form label {
+      display: block;
+      width: 200px;
+      float: left;
+      padding: 0 0 10px; }
+      #column-transfer #transfer form label input, #column-transfer #ballast form label input {
+        width: 170px; }
+      #column-transfer #transfer form label select, #column-transfer #ballast form label select {
+        display: block; }
+      #column-transfer #transfer form label textarea, #column-transfer #ballast form label textarea {
+        width: 170px;
+        height: 70px; }
+    #column-transfer #transfer form input[type=submit], #column-transfer #ballast form input[type=submit] {
+      float: left;
+      width: 170px;
+      height: 35px;
+      margin-top: -45px; }
 
 #column-quickmenu {
   float: left;
@@ -400,6 +455,12 @@ img {
 #column-my-services {
   float: left;
   width: 209px; }
+
+#my-services table tbody tr:nth-child(2n+1) {
+  background-color: #eee; }
+
+#organization-services table tbody tr:nth-child(2n) {
+  background-color: #eee; }
 
 #column-services {
   float: left;
@@ -439,23 +500,6 @@ img {
       background-color: #ddd; }
       #tabs ul li a:hover {
         background-color: #eee; }
-
-#balance table, #services table {
-  width: 100%;
-  font-size: 14px;
-  text-align: left;
-  border-collapse: collapse; }
-  #balance table tbody td, #balance table tfoter td, #services table tbody td, #services table tfoter td {
-    padding: 3px; }
-  #balance table thead, #services table thead {
-    background-color: #ddd; }
-    #balance table thead th, #services table thead th {
-      padding: 2px; }
-  #balance table tbody tr:nth-child(2n), #services table tbody tr:nth-child(2n) {
-    background-color: #eee; }
-  #balance table tfoot tr, #services table tfoot tr {
-    font-weight: bold;
-    background-color: #ddd; }
 
 /**
  * Placeholder media queries for responsive design. Modify as design requires.
