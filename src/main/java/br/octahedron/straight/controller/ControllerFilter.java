@@ -19,7 +19,6 @@
 package br.octahedron.straight.controller;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -29,6 +28,10 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.velocity.exception.MethodInvocationException;
+import org.apache.velocity.exception.ParseErrorException;
+import org.apache.velocity.exception.ResourceNotFoundException;
 
 import br.octahedron.commons.database.NamespaceCommons;
 import br.octahedron.straight.view.VelocityTemplateRender;
@@ -42,11 +45,11 @@ import com.google.appengine.api.users.UserServiceFactory;
  */
 public class ControllerFilter implements Filter {
 
-	private static final Logger logger = Logger.getLogger(ControllerFilter.class.getName());
 	private static final String APPENGINE_COMMAND = "_AH";
 	private static final String BLOB_MODULE = "BLOB";
 	private static final String TEST_APPLICATION_DOMAIN = "localhost";
 	protected static final String BARRA = "barra";
+	protected static final String INDEX = "INDEX";
 	protected static final String APPLICATION_DOMAIN = "www";
 
 	private static final UserService userService = UserServiceFactory.getUserService();
@@ -94,10 +97,11 @@ public class ControllerFilter implements Filter {
 		}
 
 		String module = (requestURI.length() > 1) ? requestURI.split("/")[1].toUpperCase() : BARRA;
-		String action = requestURI.substring(1).replace('/', '_').toUpperCase();
+		String action = (!module.equals(BARRA)) ? requestURI.substring(1).replace('/', '_').toUpperCase() : INDEX; 
+		
 		User user = userService.getCurrentUser();
 		String email = (user != null) ? user.getEmail() : null;
-		
+
 		try {
 			if (!action.startsWith(APPENGINE_COMMAND) && !module.equals(BLOB_MODULE)) {
 				this.checker.check(domain, email, module, action);
@@ -123,45 +127,31 @@ public class ControllerFilter implements Filter {
 	}
 
 	/**
-	 * @param request
-	 * @param response
-	 * @param t
+	 * 
 	 */
-	private void genericErrorHandler(HttpServletRequest request, HttpServletResponse response, Throwable t) {
-		try {
-			response.setStatus(500);
-			request.setAttribute("errorMessage", t.getMessage());
-			VelocityTemplateRender.render("error.vm", request, response);
-		} catch (Exception e) {
-			// we expect this never happen!
-		}
+	private void genericErrorHandler(HttpServletRequest request, HttpServletResponse response, Throwable t) throws ResourceNotFoundException,
+			ParseErrorException, MethodInvocationException, IOException {
+		response.setStatus(500);
+		request.setAttribute("errorMessage", t.getMessage());
+		VelocityTemplateRender.render("error.vm", request, response);
 	}
 
 	/**
-	 * @param request
-	 * @param response
+	 * 
 	 */
-	private void notAuthorizedHandler(HttpServletRequest request, HttpServletResponse response) {
-		try {
-			response.setStatus(403);
-			VelocityTemplateRender.render("notauthorized.vm", request, response);
-		} catch (Exception e) {
-			// we expect this never happen!
-		}
+	private void notAuthorizedHandler(HttpServletRequest request, HttpServletResponse response) throws ResourceNotFoundException,
+			ParseErrorException, MethodInvocationException, IOException {
+		response.setStatus(403);
+		VelocityTemplateRender.render("notauthorized.vm", request, response);
 	}
 
 	/**
-	 * @param request
-	 * @param response
+	 * 
 	 */
-	private void notFoundHandler(HttpServletRequest request, HttpServletResponse response) {
-		try {
-			response.setStatus(404);
-			VelocityTemplateRender.render("notfound.vm", request, response);
-		} catch (Exception e) {
-			// we expect this never happen!
-		}
-		
-	}
+	private void notFoundHandler(HttpServletRequest request, HttpServletResponse response) throws ResourceNotFoundException, ParseErrorException,
+			MethodInvocationException, IOException {
+		response.setStatus(404);
+		VelocityTemplateRender.render("notfound.vm", request, response);
 
+	}
 }

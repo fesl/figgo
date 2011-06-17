@@ -44,8 +44,10 @@ public class ControllerChecker {
 	public void check(String domain, String email, String moduleName, String action) throws NotFoundException, NotLoggedException,
 			InexistentAccountException, NotAuthorizedException {
 
+		logger.fine("Checking request needs: " + "\tDomain: " + domain + "\tUser: " + email + "\tModule: " + moduleName + "\tAction: " + action);
+
 		try {
-			if (APPLICATION_DOMAIN.equals(domain) && BARRA.equals(moduleName)) { 
+			if (APPLICATION_DOMAIN.equals(domain) && BARRA.equals(moduleName)) {
 				moduleName = Module.USER.name();
 			} else if (BARRA.equals(moduleName)) {
 				moduleName = Module.DOMAIN.name();
@@ -57,8 +59,7 @@ public class ControllerChecker {
 			if (spec.needsAuthentication(action)) {
 				if (email == null && !action.isEmpty()) {
 					throw new NotLoggedException();
-				} else if (email != null && !this.usersManager.existsUser(email) && 
-						   !"USER_NEW".equals(action) && !"USER_CREATE".equals(action)) {
+				} else if (email != null && !this.usersManager.existsUser(email) && !"USER_NEW".equals(action) && !"USER_CREATE".equals(action)) {
 					throw new InexistentAccountException();
 				}
 			}
