@@ -1,6 +1,7 @@
 import java.math.BigDecimal
 import br.octahedron.straight.modules.ManagerBuilder
 import br.octahedron.straight.modules.bank.data.BankTransaction.TransactionType
+import br.octahedron.commons.util.Formatter
 
 actions = ['index', 'transfer', 'statement', 'admin', 'ballast', 'share']
 configurationManager = ManagerBuilder.getConfigurationManager()
@@ -12,6 +13,8 @@ if (actions.contains(params.action)) {
 } else {
 	actionCall = "notfound"
 }
+
+request.formatter = Formatter
 
 def get_index() {
 	request.domain = configurationManager.getDomainConfiguration()
