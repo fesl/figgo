@@ -1,4 +1,4 @@
-#set( $title = "Figgo - ${domain.DomainName} - Editar configurações do domínio" )
+#set( $title = "Figgo - ${domain.DomainName} - Configurações do domínio" )
 #parse( "templates/layout.vm" )
 
 #@body()
@@ -7,16 +7,22 @@
     <div id="main" class="center">
 		<h1>Configurações do domínio</h1>
     	<p>Preencha o formulário abaixo:</p>
-        <form action="/domain/edit" method="post">
+        <form action="/domain/update" method="post">
     		<input type="hidden" name="_method" value="put" />
     		Domínio: ${domain.DomainName}.figgo.com.br <br />
     		<label for="name">
     			Nome: <small>(e.g.: Coletivo Mundo)</small> <input type="text" name="name" value="$!{name}"/>
             </label><br />
+			<label for="url">
+    			Site: </small> <input type="text" name="url" value="$!{url}"/>
+            </label><br />
+			<label for="maillist">
+    			Lista de discussão: </small> <input type="text" name="maillist" value="$!{maillist}"/>
+            </label><br />
 			<label for="description">
         		Descrição: <textarea name="description">$!{description}</textarea>
         	</label><br />
-    		<input type="submit" value="Editar" />
+    		<input type="submit" value="Salvar" />
         </form>
 	</div>
 #end

@@ -85,9 +85,12 @@ public class ConfigurationManager {
 	 * 
 	 * @param name
 	 */
-	public void updateDomainConfiguration(String name) {
+	public void updateDomainConfiguration(String name, String url, String mailList, String description) {
 		DomainConfiguration domainConfiguration = this.getDomainConfiguration();
 		domainConfiguration.setName(name);
+		domainConfiguration.setUrl(url);
+		domainConfiguration.setMailList(mailList);
+		domainConfiguration.setDescription(description);
 	}
 
 	/**
