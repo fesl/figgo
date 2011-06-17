@@ -1,4 +1,4 @@
-#set( $title = "!@#$%*() - Início" )
+#set( $title = "Figgo - Página não encontrada" )
 #parse( "templates/layout.vm" )
 
 #@body()

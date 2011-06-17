@@ -31,7 +31,8 @@ import br.octahedron.straight.modules.authorization.manager.AuthorizationManager
 import br.octahedron.straight.modules.users.manager.UsersManager;
 
 /**
- * @author danilo
+ * @author Danilo Queiroz
+ * @author Vítor Avelino
  * 
  */
 public class ControllerChecker {
@@ -43,7 +44,6 @@ public class ControllerChecker {
 	public void check(String domain, String email, String moduleName, String action) throws NotFoundException, NotLoggedException,
 			InexistentAccountException, NotAuthorizedException {
 
-		logger.info(">>>" + domain + " : " + email + " : " + moduleName + " : " + action);
 		try {
 			if (APPLICATION_DOMAIN.equals(domain) && BARRA.equals(moduleName)) { 
 				moduleName = Module.USER.name();

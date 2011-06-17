@@ -1,0 +1,8 @@
+#set( $title = "Figgo - Erro" )
+#parse( "templates/layout.vm" )
+
+#@body()
+	$errorMessage
+#end
+
+#scripts()

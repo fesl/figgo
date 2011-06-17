@@ -1,0 +1,8 @@
+#set( $title = "Figgo - Not authorized" )
+#parse( "templates/layout.vm" )
+
+#@body()
+	403 not authorized
+#end
+
+#scripts()

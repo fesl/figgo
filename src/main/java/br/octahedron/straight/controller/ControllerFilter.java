@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.octahedron.commons.database.NamespaceCommons;
+import br.octahedron.straight.view.VelocityTemplateRender;
 
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
@@ -107,21 +108,60 @@ public class ControllerFilter implements Filter {
 			request.setAttribute("logout_url", userService.createLogoutURL(this.appDomain));
 			chain.doFilter(req, resp);
 		} catch (NotLoggedException e) {
-			e.printStackTrace();
 			response.sendRedirect(userService.createLoginURL(request.getRequestURL().toString()));
 		} catch (InexistentAccountException e) {
-			e.printStackTrace();
-			logger.info(this.appDomain + this.userCreate);
 			response.sendRedirect(this.appDomain + this.userCreate);
 		} catch (NotFoundException e) {
-			e.printStackTrace();
-			response.sendRedirect(this.appDomain + "/404");
+			notFoundHandler(request, response);
 		} catch (NotAuthorizedException e) {
-			e.printStackTrace();
-			response.sendRedirect(this.appDomain + "/403");
+			notAuthorizedHandler(request, response);
+		} catch (Throwable t) {
+			genericErrorHandler(request, response, t);
 		} finally {
 			NamespaceCommons.backToPreviousNamespace();
 		}
+	}
+
+	/**
+	 * @param request
+	 * @param response
+	 * @param t
+	 */
+	private void genericErrorHandler(HttpServletRequest request, HttpServletResponse response, Throwable t) {
+		try {
+			response.setStatus(500);
+			request.setAttribute("errorMessage", t.getMessage());
+			VelocityTemplateRender.render("error.vm", request, response);
+		} catch (Exception e) {
+			// we expect this never happen!
+		}
+	}
+
+	/**
+	 * @param request
+	 * @param response
+	 */
+	private void notAuthorizedHandler(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			response.setStatus(403);
+			VelocityTemplateRender.render("notauthorized.vm", request, response);
+		} catch (Exception e) {
+			// we expect this never happen!
+		}
+	}
+
+	/**
+	 * @param request
+	 * @param response
+	 */
+	private void notFoundHandler(HttpServletRequest request, HttpServletResponse response) {
+		try {
+			response.setStatus(404);
+			VelocityTemplateRender.render("notfound.vm", request, response);
+		} catch (Exception e) {
+			// we expect this never happen!
+		}
+		
 	}
 
 }
