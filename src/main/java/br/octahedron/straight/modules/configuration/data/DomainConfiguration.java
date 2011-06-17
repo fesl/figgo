@@ -49,6 +49,15 @@ public class DomainConfiguration implements Serializable, DomainConfigurationVie
 	private String name;
 	
 	@Persistent
+	private String url;
+	
+	@Persistent
+	private String mailList;
+	
+	@Persistent
+	private String description;
+	
+	@Persistent
 	private String avatarKey;
 	
 	@Persistent
@@ -92,6 +101,48 @@ public class DomainConfiguration implements Serializable, DomainConfigurationVie
 	 */
 	public String getAvatarKey() {
 		return avatarKey;
+	}
+	
+	/**
+	 * @param description
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @return description of domain
+	 */
+	public String getDescription() {
+		return description;
+	}
+	
+	/**
+	 * @param url the url to set
+	 */
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	/**
+	 * @return the url
+	 */
+	public String getUrl() {
+		return url;
+	}
+	
+	/**
+	 * @param mailList the mailList to set
+	 */
+	public void setMailList(String mailList) {
+		this.mailList = mailList;
+	}
+
+	/**
+	 * @return the mailList
+	 */
+	public String getMailList() {
+		return mailList;
 	}
 
 	/**

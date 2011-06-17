@@ -22,6 +22,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import br.octahedron.straight.modules.Module;
+import br.octahedron.straight.modules.Module.Type;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationView;
 
@@ -37,13 +38,15 @@ public class ModulesInfoService {
 
 	static {
 		for (Module module : Module.values()) {
-			modules.add(module.name());
+			if (module.getModuleSpec().getModuleType() == Type.DOMAIN) {
+				modules.add(module.name());
+			}
 		}
 	}
 
 	private DomainConfigurationView domainConfiguration;
 
-	protected ModulesInfoService(DomainConfigurationView domainConfiguration) {
+	public ModulesInfoService(DomainConfigurationView domainConfiguration) {
 		this.domainConfiguration = domainConfiguration;
 	}
 

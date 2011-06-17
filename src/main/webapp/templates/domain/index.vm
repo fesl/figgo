@@ -24,8 +24,8 @@
 				#end
                 <section id="about">
     				<h2>$domain.Name</h2>
-    				<small>99 membros</small><br />
-    				<small>+55 83 8888 8888</small>
+    				<small>$domain.Url</small><br />
+    				<small>$domain.MailList</small>
 					<p>$domain.Description</p>
     			</section>
 				<hr />

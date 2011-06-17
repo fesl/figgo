@@ -19,10 +19,12 @@
 package br.octahedron.straight.modules.configuration.manager;
 
 import java.util.Collection;
+import java.util.logging.Logger;
 
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
 import br.octahedron.straight.modules.Module;
+import br.octahedron.straight.modules.configuration.ModulesInfoService;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationDAO;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
@@ -63,7 +65,7 @@ public class ConfigurationManager {
 	protected void setModuleConfigurationDAO(ModuleConfigurationDAO moduleDAO) {
 		this.moduleDAO = moduleDAO;
 	}
-
+	
 	/**
 	 * @return The {@link DomainSpecificModuleConfigurationView} for the given module
 	 */
@@ -85,9 +87,12 @@ public class ConfigurationManager {
 	 * 
 	 * @param name
 	 */
-	public void updateDomainConfiguration(String name) {
+	public void updateDomainConfiguration(String name, String url, String mailList, String description) {
 		DomainConfiguration domainConfiguration = this.getDomainConfiguration();
 		domainConfiguration.setName(name);
+		domainConfiguration.setUrl(url);
+		domainConfiguration.setMailList(mailList);
+		domainConfiguration.setDescription(description);
 	}
 
 	/**
@@ -111,6 +116,13 @@ public class ConfigurationManager {
 		} else {
 			throw new DataDoesNotExistsException("This domain was not configured yet");
 		}
+	}
+	
+	/**
+	 * @return the {@link ModulesInfoService} using the current domain's {@link DomainConfiguration}
+	 */
+	public ModulesInfoService getModulesInfoService() {
+		return new ModulesInfoService(this.getDomainConfiguration());
 	}
 
 	/**
@@ -209,6 +221,7 @@ public class ConfigurationManager {
 	 * @param propertyValue
 	 *            The new property value
 	 */
+	static final Logger logger = Logger.getLogger(ConfigurationManager.class.getName());
 	public void setModuleProperty(Module module, String propertyKey, String propertyValue) {
 		DomainConfiguration domainConf = this.getDomainConfiguration();
 		if (domainConf.isModuleEnabled(module.name())) {
@@ -222,6 +235,7 @@ public class ConfigurationManager {
 					}
 				}
 				moduleConf.setConfigurationValue(propertyKey, propertyValue);
+				moduleDAO.save(moduleConf);
 			} else {
 				throw new IllegalArgumentException("The module " + module.name() + "hasn't any property with key " + propertyKey);
 			}

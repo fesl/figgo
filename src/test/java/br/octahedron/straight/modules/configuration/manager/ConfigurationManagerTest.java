@@ -240,6 +240,7 @@ public class ConfigurationManagerTest {
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
 		DomainSpecificModuleConfiguration moduleConf = Module.getModuleSpec(Module.BANK).getDomainSpecificModuleConfiguration();
+		this.moduleDAO.save(moduleConf);
 		expect(this.moduleDAO.get("BANK")).andReturn(moduleConf).anyTimes();
 
 		// enable mock
@@ -305,6 +306,7 @@ public class ConfigurationManagerTest {
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
 		DomainSpecificModuleConfiguration moduleConf = Module.getModuleSpec(Module.BANK).getDomainSpecificModuleConfiguration();
+		this.moduleDAO.save(moduleConf);
 		expect(this.moduleDAO.get("BANK")).andReturn(moduleConf).anyTimes();
 
 		// enable mock

@@ -171,4 +171,15 @@ public class DomainSpecificModuleConfiguration implements Serializable, DomainSp
 			return false;
 		}
 	}
+	
+	/* (non-Javadoc)
+	 * @see java.lang.Object#clone()
+	 */
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		DomainSpecificModuleConfiguration clone = new DomainSpecificModuleConfiguration(this.moduleName);
+		clone.properties = this.properties;
+		clone.values = this.values;
+		return clone;
+	}
 }
