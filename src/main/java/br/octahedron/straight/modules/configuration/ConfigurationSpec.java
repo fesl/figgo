@@ -18,7 +18,9 @@
  */
 package br.octahedron.straight.modules.configuration;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import br.octahedron.commons.eventbus.Subscriber;
@@ -35,6 +37,9 @@ import br.octahedron.straight.modules.configuration.manager.DomainUploadSubscrib
  */
 public class ConfigurationSpec implements ModuleSpec {
 	
+	private static final String[] ACTIONS =  {"INDEX","DOMAIN_EDIT","DOMAIN_UPLOAD"};
+	private static final String[] ADMIN_ACTIONS =  {"DOMAIN_EDIT","DOMAIN_UPLOAD"};
+	
 	/* (non-Javadoc)
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleType()
 	 */
@@ -43,36 +48,21 @@ public class ConfigurationSpec implements ModuleSpec {
 		return Module.Type.APPLICATION_DOMAIN;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#getDomainSpecificModuleConfiguration()
-	 */
+	@Override
+	public boolean hasDomainSpecificConfiguration() {
+		return false;
+	}
+
 	@Override
 	public DomainSpecificModuleConfiguration getDomainSpecificModuleConfiguration() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleActions()
-	 */
 	@Override
-	public Set<String> getModuleActions() {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean hasSubscribers() {
+		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleAdministrativeActions()
-	 */
-	@Override
-	public Set<String> getModuleAdministrativeActions() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#getSubscribers()
-	 */
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
 		Set<Class<? extends Subscriber>> subscribers = new HashSet<Class<? extends Subscriber>>();
@@ -81,45 +71,37 @@ public class ConfigurationSpec implements ModuleSpec {
 		return subscribers;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#hasDomainSpecificConfiguration()
-	 */
-	@Override
-	public boolean hasDomainSpecificConfiguration() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#hasSubscribers()
-	 */
-	@Override
-	public boolean hasSubscribers() {
-		return true;
-	}
-
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthentication(java.lang.String)
-	 */
-	@Override
-	public boolean needsAuthentication(String action) {
-		return true;
-	}
-
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthorization(java.lang.String)
-	 */
-	@Override
-	public boolean needsAuthorization(String action) {
-		return true;
-	}
-
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#usesDomainNamespace()
-	 */
 	@Override
 	public boolean usesDomainNamespace() {
 		return true;
 	}
 
+	@Override
+	public boolean needsAuthentication(String action) {
+		if (action.equals("INDEX")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	@Override
+	public boolean needsAuthorization(String action) {
+		if (action.equals("INDEX")) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	@Override
+	public Set<String> getModuleActions() {
+		return new LinkedHashSet<String>(Arrays.asList(ACTIONS));
+	}
+
+	@Override
+	public Set<String> getModuleAdministrativeActions() {
+		return new LinkedHashSet<String>(Arrays.asList(ADMIN_ACTIONS));
+
+	}
 }

@@ -19,12 +19,14 @@
 package br.octahedron.straight.modules.authorization;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import br.octahedron.commons.eventbus.Subscriber;
 import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module.Type;
+import br.octahedron.straight.modules.authorization.manager.CreateDomainAuthorizationSubscriber;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 
 /**
@@ -64,8 +66,7 @@ public class AuthorizationSpec implements ModuleSpec {
 	 */
 	@Override
 	public boolean hasSubscribers() {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	/* (non-Javadoc)
@@ -73,8 +74,9 @@ public class AuthorizationSpec implements ModuleSpec {
 	 */
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Class<? extends Subscriber>> subscribers = new HashSet<Class<? extends Subscriber>>();
+		subscribers.add(CreateDomainAuthorizationSubscriber.class);
+		return subscribers;
 	}
 
 	/* (non-Javadoc)

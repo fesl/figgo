@@ -18,6 +18,7 @@
  */
 package br.octahedron.straight.modules.authorization.manager;
 
+import java.util.Set;
 import java.util.logging.Logger;
 
 import br.octahedron.commons.eventbus.Event;
@@ -74,8 +75,11 @@ public class CreateDomainAuthorizationSubscriber implements Subscriber {
 			ModuleSpec moduleSpec = m.getModuleSpec();
 			if (moduleSpec.getModuleType() == Module.Type.DOMAIN || moduleSpec.getModuleType() == Module.Type.APPLICATION_DOMAIN) {
 				logger.fine("Adding actions for module " + m.name() + " for domain " + domainName);
-				this.authorizationManager.addActivitiesToRole(domainName, ADMINS_ROLE_NAME, moduleSpec.getModuleAdministrativeActions());
-				this.authorizationManager.addActivitiesToRole(domainName, USERS_ROLE_NAME, moduleSpec.getModuleActions());
+				Set<String> adminActions = moduleSpec.getModuleAdministrativeActions();
+				Set<String> userActions = moduleSpec.getModuleActions();
+				userActions.removeAll(adminActions);
+				this.authorizationManager.addActivitiesToRole(domainName, ADMINS_ROLE_NAME, adminActions);
+				this.authorizationManager.addActivitiesToRole(domainName, USERS_ROLE_NAME, userActions);
 			}
 		}
 		// add admin user to admin role

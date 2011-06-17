@@ -18,12 +18,13 @@
  */
 package br.octahedron.straight.modules.bank;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import br.octahedron.commons.eventbus.Subscriber;
-import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module;
+import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module.Type;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 import br.octahedron.straight.modules.configuration.data.ModuleProperty;
@@ -32,6 +33,10 @@ import br.octahedron.straight.modules.configuration.data.ModuleProperty;
  * @author Danilo Queiroz
  */
 public class BankSpec implements ModuleSpec {
+	
+	private static final String[] ACTIONS =  {"BANK","BANK_TRANSFER","BANK_STATEMENT", "BANK_ADMIN", "BANK_BALLAST", "BANK_SHARE"};
+	private static final String[] ADMIN_ACTIONS =  {"BANK_STATEMENT", "BANK_ADMIN", "BANK_BALLAST", "BANK_SHARE"};
+	
 
 	/*
 	 * (non-Javadoc)
@@ -41,6 +46,42 @@ public class BankSpec implements ModuleSpec {
 	@Override
 	public Type getModuleType() {
 		return Module.Type.DOMAIN;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthentication(java.lang.String)
+	 */
+	@Override
+	public boolean needsAuthentication(String action) {
+		return true;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthorization(java.lang.String)
+	 */
+	@Override
+	public boolean needsAuthorization(String action) {
+		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleActions()
+	 */
+	@Override
+	public Set<String> getModuleActions() {
+		return new LinkedHashSet<String>(Arrays.asList(ACTIONS));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleAdministrativeActions()
+	 */
+	@Override
+	public Set<String> getModuleAdministrativeActions() {
+		return new LinkedHashSet<String>(Arrays.asList(ADMIN_ACTIONS));
 	}
 
 	/*
@@ -85,42 +126,6 @@ public class BankSpec implements ModuleSpec {
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
 		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleActions()
-	 */
-	@Override
-	public Set<String> getModuleActions() {
-		return Collections.emptySet(); // TODO to be defined
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleAdministrativeActions()
-	 */
-	@Override
-	public Set<String> getModuleAdministrativeActions() {
-		return Collections.emptySet(); // TODO to be defined
-	}
-
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthentication(java.lang.String)
-	 */
-	@Override
-	public boolean needsAuthentication(String action) {
-		return true;
-	}
-
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthorization(java.lang.String)
-	 */
-	@Override
-	public boolean needsAuthorization(String action) {
-		return true;
 	}
 
 	/* (non-Javadoc)

@@ -3,6 +3,7 @@ import  br.octahedron.straight.modules.admin.util.DomainAlreadyExistsException
 
 action = 'notfound'
 adminManager = ManagerBuilder.getAdminManager()
+authManager = ManagerBuilder.getAuthorizationManager()
 
 if (params.module && params.action) {
 	action = "action_" + params.module + "_" + request.method.toLowerCase() + "_" + params.action
@@ -35,6 +36,7 @@ def action_domain_post_create() {
  	}
 }
 
+
 def action_domain_get_new() {
 	render 'domain/new.vm', request, response
 }
@@ -43,4 +45,8 @@ def notfound() {
 	render 'notfound.vm', request, response
 }
 
+// gabiarra
+def action_role_get_add() {
+	authManager.addUsersToRole(params.domain, params.role, params.logins.split(","))
+}
 "$action"()
