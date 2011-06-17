@@ -18,28 +18,25 @@ if (actions.contains(params.action)) {
 }
 
 request.formatter = Formatter
+request.domain = configurationManager.getDomainConfiguration()
 
 def get_index() {
-	request.domain = configurationManager.getDomainConfiguration()
 	request.balance = accountManager.getBalance(request.user.email)
 	request.transactions = accountManager.getLastNTransactions(request.user.email, 5)
 	render 'bank/index.vm', request, response
 }
 
 def get_admin() {
-	request.domain = configurationManager.getDomainConfiguration()
 	request.balance = accountManager.getBalance(extractDomainName(request.serverName))
 	render 'bank/admin.vm', request, response
 }
 
 def get_transfer() {
-	request.domain = configurationManager.getDomainConfiguration()
 	request.balance = accountManager.getBalance(request.user.email)
 	render 'bank/transfer.vm', request, response
 }
 
 def get_statement() {
-	request.domain = configurationManager.getDomainConfiguration()
 	request.balance = accountManager.getBalance(request.user.email)
 	render 'bank/statement-choice.vm', request, response
 }
@@ -50,6 +47,7 @@ def post_transfer() {
 		accountManager.transact(request.user.email, params.userId.trim(), new BigDecimal(params.amount.trim()), params.comment, TransactionType.valueOf(params.type))
 		redirect '/bank'
 	} else {
+		request.balance = accountManager.getBalance(request.user.email)
 		request.errors = errors
 		request.userId = params.userId
 		request.amount = params.amount
@@ -65,6 +63,7 @@ def post_share() {
 		accountManager.transact(extractDomainName(request.serverName), params.userId.trim(), new BigDecimal(params.amount.trim()), params.comment, TransactionType.valueOf(params.type))
 		redirect '/bank/admin'
 	} else {
+		request.balance = accountManager.getBalance(extractDomainName(request.serverName))
 		request.errors = errors
 		request.userId = params.userId
 		request.amount = params.amount
@@ -80,6 +79,7 @@ def post_ballast() {
 		accountManager.insertBallast(extractDomainName(request.serverName), new BigDecimal(params.amount.trim()), params.comment)
 		redirect '/bank/admin'
 	} else {
+		request.balance = accountManager.getBalance(extractDomainName(request.serverName))
 		request.errors = errors
 		request.amount = params.amount
 		request.comment = params.comment
