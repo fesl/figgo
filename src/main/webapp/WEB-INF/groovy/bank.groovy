@@ -5,6 +5,7 @@ import br.octahedron.straight.modules.bank.data.BankTransaction.TransactionType
 actions = ['index', 'transfer', 'statement', 'admin', 'ballast', 'share']
 configurationManager = ManagerBuilder.getConfigurationManager()
 accountManager = ManagerBuilder.getAccountManager()
+usersManager = ManagerBuilder.getUserManager()
 
 if (actions.contains(params.action)) {
 	actionCall = request.method.toLowerCase() + "_" + params.action
@@ -25,16 +26,6 @@ def get_admin() {
 	render 'bank/admin.vm', request, response
 }
 
-def post_share() {
-	accountManager.transact(extractDomainName(request.serverName), params.userId, new BigDecimal(params.amount), params.comment, TransactionType.valueOf(params.type))
-	redirect '/bank/admin'
-}
-
-def post_ballast() {
-	accountManager.insertBallast(extractDomainName(request.serverName), new BigDecimal(params.amount), params.comment)
-	redirect '/bank/admin'
-}
-
 def get_transfer() {
 	request.domain = configurationManager.getDomainConfiguration()
 	request.balance = accountManager.getBalance(request.user.email)
@@ -48,12 +39,71 @@ def get_statement() {
 }
 
 def post_transfer() {
-	accountManager.transact(request.user.email, params.userId, new BigDecimal(params.amount), params.comment, TransactionType.valueOf(params.type))
-	redirect '/bank'
+	(isValid, errors) = validateTransaction(params)
+	if (isValid) {
+		accountManager.transact(request.user.email, params.userId, new BigDecimal(params.amount), params.comment, TransactionType.valueOf(params.type))
+		redirect '/bank'
+	} else {
+		request.errors = errors
+		request.userId = params.userId
+		request.amount = params.amount
+		request.comment = params.comment
+		request.type = params.type
+	}
+}
+
+def post_share() {
+	(isValid, errors) = validateTransaction(params)
+	if (isValid) {
+		accountManager.transact(extractDomainName(request.serverName), params.userId, new BigDecimal(params.amount), params.comment, TransactionType.valueOf(params.type))
+		redirect '/bank/admin'
+	} else {
+		request.errors = errors
+		request.userId = params.userId
+		request.amount = params.amount
+		request.comment = params.comment
+		request.type = params.type
+	}
+}
+
+def post_ballast() {
+	(isValid, errors) = validateTransaction(params)
+	if (isValid) {
+		accountManager.insertBallast(extractDomainName(request.serverName), new BigDecimal(params.amount), params.comment)
+		redirect '/bank/admin'
+	} else {
+		request.errors = errors
+		request.amount = params.amount
+		request.comment = params.comment
+		request.type = params.type
+	}
 }
 
 def notfound() {
 	render 'notfound.vm', request, response
+}
+
+def validateTransaction(params) {
+	isValid = true
+	errors = []
+	count = 0
+	if (! usersManager.existsUser(params.userId) {
+		errors[count++] = "Conta de destino não existe" 
+		isValid = false
+	}
+	
+	try { 
+		amount = new BigDecimal(params.amount)
+		if (new BigDecimal(0).compareTo(amount) <= 0) {
+			errors[count++] = "Valor inválido" 
+			isValid = false
+		}
+	catch (NumberFormatException e)	{
+		errors[count++] = "Valor inválido" 
+		isValid = false
+	}
+	
+	return [isValid, errors]
 }
 
 "$actionCall"()
