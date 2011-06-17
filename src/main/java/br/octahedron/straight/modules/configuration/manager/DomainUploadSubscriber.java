@@ -39,7 +39,7 @@ public class DomainUploadSubscriber extends AbstractNamespaceSubscriber {
 	/**
 	 * @param configurationManager the configurationManager to set
 	 */
-	public void setUsersManager(ConfigurationManager configurationManager) {
+	public void setConfigurationManager(ConfigurationManager configurationManager) {
 		this.configurationManager = configurationManager;
 	}
 	
@@ -53,7 +53,7 @@ public class DomainUploadSubscriber extends AbstractNamespaceSubscriber {
 	@Override
 	public void processEvent(Event event) {
 		DomainUploadEvent uploadEvent = (DomainUploadEvent) event;
-		configurationManager.updateAvatarKey(uploadEvent.getBlobKey());
+		this.configurationManager.updateAvatarKey(uploadEvent.getBlobKey());
 	}
 
 }
