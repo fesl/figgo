@@ -1,6 +1,7 @@
+import br.octahedron.straight.modules.Module
 import br.octahedron.straight.modules.ManagerBuilder
 
-actions = ['config', 'update', 'upload']
+actions = ['config', 'update', 'upload', 'config2', 'update2']
 configurationManager = ManagerBuilder.getConfigurationManager()
 
 if (actions.contains(params.action)) {
@@ -22,6 +23,34 @@ def get_upload() {
 def post_update() {
 	configurationManager.updateDomainConfiguration(params.name, params.url, params.maillist, params.description)
 	redirect '/'
+}
+
+// DOMAIN SPECIFIC CONFIGURATION
+def get_config2() {
+	request.name = params.module
+	request.module = configurationManager.getModuleConfiguration(Module.valueOf(params.module.toUpperCase()))
+	render 'module/config.vm', request, response
+}
+
+def post_update2() {
+	def errors = []
+	params.each() { key, value -> 
+		try {
+			if (key.startsWith("__")) {
+				configurationManager.setModuleProperty(Module.valueOf(params.module.toUpperCase()), key.substring(2), value)
+			}
+		} catch (IllegalArgumentException e) {
+			errors.add(e.getMessage())
+		}
+	}
+	if (errors.isEmpty()) {
+		redirect '/'
+	} else {
+		request.errors = errors
+		request.name = params.module
+		request.module = configurationManager.getModuleConfiguration(Module.valueOf(params.module.toUpperCase()))
+		render 'module/config.vm', request, response
+	}
 }
 
 def notfound() {

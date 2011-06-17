@@ -19,6 +19,7 @@
 			<label for="maillist">
     			Lista de discussão: </small> <input type="text" name="maillist" value="$!{maillist}"/>
             </label><br />
+			
 			<label for="description">
         		Descrição: <textarea name="description">$!{description}</textarea>
         	</label><br />

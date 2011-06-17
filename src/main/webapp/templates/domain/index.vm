@@ -25,7 +25,7 @@
                 <section id="about">
     				<h2>$domain.Name</h2>
     				<small>$domain.Url</small><br />
-    				<small>$domain.Maillist</small>
+    				<small>$domain.MailList</small>
 					<p>$domain.Description</p>
     			</section>
 				<hr />
