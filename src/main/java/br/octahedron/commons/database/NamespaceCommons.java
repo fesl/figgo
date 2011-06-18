@@ -28,16 +28,11 @@ import com.google.appengine.api.NamespaceManager;
  * @author Erick Moreno
  */
 public class NamespaceCommons {
-
-	private static Logger logger = Logger.getLogger(NamespaceCommons.class.getName());
+	
+	private static final String GLOBAL_NAMESPACE = ""; 
 	private static final ThreadLocal<String> previousNamespaces = new ThreadLocal<String>();
+	private static Logger logger = Logger.getLogger(NamespaceCommons.class.getName());
 
-	/**
-	 * 
-	 */
-	public static String getGlobalNamespace() {
-		return NamespaceManager.getGoogleAppsNamespace();
-	}
 
 	/**
 	 * Changes current namespace to the given one, storing the actual namespace to be restored
@@ -54,7 +49,7 @@ public class NamespaceCommons {
 	 * later.
 	 */
 	public static void changeToGlobalNamespace() {
-		changeToNamespace(getGlobalNamespace());
+		changeToNamespace(GLOBAL_NAMESPACE);
 
 	}
 
