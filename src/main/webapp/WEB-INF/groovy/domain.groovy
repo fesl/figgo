@@ -13,12 +13,16 @@ if (actions.contains(params.action)) {
 
 def get_config() {
 	request.domain = configurationManager.getDomainConfiguration()
+	request.name = request.domain.name
+	request.url = request.domain.url
+	request.maillist = request.domain.mailList
+	request.description = request.domain.description
 	request.modules = configurationManager.getModulesInfoService()
 	render 'domain/edit.vm', request, response
 }
 
 def get_upload() {
-		request.domain = configurationManager.getDomainConfiguration()
+	request.domain = configurationManager.getDomainConfiguration()
 	request.upload_url = blobstore.createUploadUrl('/blob/domain/upload')
 	render 'domain/upload.vm', request, response
 }

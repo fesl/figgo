@@ -36,7 +36,7 @@
         				<legend>Módulos</legend>
         			#foreach( $module in $modules.getExistentModules() )
         				<label for="$module">
-        					<input type="checkbox" id="$module" name="$module" #if( $modules.isModuleEnabled($module) )checked#end/> $module
+        					<input type="checkbox" id="$module" name="$module" #if( $modules.isModuleEnabled($module) )checked#end/> $module #if( $modules.isModuleEnabled($module) )<a href="/domain/module/$module.toLowerCase()">Configurar</a>#end
                         </label>
         			#end
                     </fieldset>
