@@ -10,6 +10,7 @@ if (actions.contains(params.action)) {
 	actionCall = "notfound"
 }
 
+
 def get_config() {
 	request.domain = configurationManager.getDomainConfiguration()
 	request.modules = configurationManager.getModulesInfoService()
@@ -17,6 +18,7 @@ def get_config() {
 }
 
 def get_upload() {
+		request.domain = configurationManager.getDomainConfiguration()
 	request.upload_url = blobstore.createUploadUrl('/blob/domain/upload')
 	render 'domain/upload.vm', request, response
 }
@@ -28,6 +30,7 @@ def post_update() {
 
 // DOMAIN SPECIFIC CONFIGURATION
 def get_module() {
+	request.domain = configurationManager.getDomainConfiguration()
 	request.name = params.module
 	request.module = configurationManager.getModuleConfiguration(Module.valueOf(params.module.toUpperCase()))
 	render 'module/config.vm', request, response

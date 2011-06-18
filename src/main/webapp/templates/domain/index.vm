@@ -1,4 +1,4 @@
-#set( $title = "Figgo - Nome do coletivo" )
+#set( $title = "Figgo - ${domain.Name}" )
 #parse( "templates/layout.vm" )
 
 #@body()
@@ -10,7 +10,7 @@
         		<ul class="inline">
                     <li class="selected"><a href="/">Dashboard</a></li>
                     #foreach( $module in $domain.ModulesEnabled )
-						<li><a href="/$module">$module</a></li>
+						<li><a href="/$module.toLowerCase()">$module</a></li>
 					#end
         		</ul>
 			</nav>
@@ -18,9 +18,9 @@
 		<div id="dashboard">
 			<div id="column-about">
 				#if( $domain.AvatarKey )
-				<a href="/domain/upload"><img src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+				<a href="/domain/upload"><img id="avatar" src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
 				#else
-				<a href="/domain/upload"><img src="http://lorempixum.com/100/100/" alt="Avatar do domínio" /></a>
+				<a href="/domain/upload"><img id="avatar" src="http://lorempixum.com/100/100/" alt="Avatar do domínio" /></a>
 				#end
                 <section id="about">
     				<h2>$domain.Name</h2>

@@ -12,7 +12,7 @@
         		<ul class="inline">
                     <li><a href="/">Dashboard</a></li>
                     #foreach( $module in $domain.ModulesEnabled )
-						<li #if( $module == $currentModule )class="selected"#end><a href="/$module">$module</a></li>
+						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
 					#end
         		</ul>
     		</nav>

@@ -2,11 +2,11 @@
   float: left;
   width: 335px;
   
-  img {
+  #avatar {
     float: left;
-    margin: 3px 7px 7px;
     width: 100px;
     height: 100px;
+    margin: 3px 7px 7px;
     @include shadow(0, 0, 3px);
   }
   

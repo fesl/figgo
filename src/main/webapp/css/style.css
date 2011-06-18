@@ -388,11 +388,11 @@ img {
 #column-about {
   float: left;
   width: 335px; }
-  #column-about img {
+  #column-about #avatar {
     float: left;
-    margin: 3px 7px 7px;
     width: 100px;
     height: 100px;
+    margin: 3px 7px 7px;
     box-shadow: 0 0 3px #333333;
     -moz-box-shadow: 0 0 3px #333333;
     -webkit-box-shadow: 0 0 3px #333333; }
@@ -475,12 +475,13 @@ img {
 
 #dashboard, #bank, #services {
   display: table;
-  width: 735px;
+  width: 715px;
   padding: 10px;
   border: 3px solid #eee; }
 
 #main header {
-  position: relative; }
+  position: relative;
+  width: 100%; }
   #main header #tabs {
     text-align: right; }
 

@@ -1,18 +1,33 @@
-#set( $title = "Figgo - Upload avatar" )
+#set( $title = "Figgo - ${domain.Name} - Upload avatar" )
 #parse( "templates/layout.vm" )
 
 #@body()
 	<a href="$logout_url">logout</a>
 	
 	<div id="main" class="center">
-        <h1>Upload avatar</h1>
-		<p>Faça upload do avatar abaixo:</p>
-        <form action="$upload_url" method="post" enctype="multipart/form-data">
-        	<label for="avatar">
-                Arquivo (max 1mb): <input type="file" name="file" />
-        	</label><br />
-    		<input type="submit" value="Upload" />
-        </form>
+		<header>
+			<h1>$domain.Name</h1>
+			<nav id="tabs">
+        		<ul class="inline">
+                    <li><a href="/">Dashboard</a></li>
+                    #foreach( $module in $domain.ModulesEnabled )
+						<li><a href="/$module.toLowerCase()">$module</a></li>
+					#end
+        		</ul>
+			</nav>
+		</header>
+		<div id="dashboard">
+			<div id="single-column">
+				<h3>Upload avatar</h3>
+        		<p>Faça upload do avatar abaixo:</p>
+                <form action="$upload_url" method="post" enctype="multipart/form-data">
+                	<label for="avatar">
+                        Arquivo (max 1mb): <input type="file" name="file" />
+                	</label><br />
+            		<input type="submit" value="Upload" />
+                </form>
+			</div>
+		</div>
 	</div>
 #end
 

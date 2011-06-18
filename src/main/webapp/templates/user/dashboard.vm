@@ -12,10 +12,11 @@
 		<div id="dashboard">
 			<div id="column-about">
 				#if( $user.AvatarKey )
-				<a href="/user/upload"><img src="/blob/$user.AvatarKey" alt="Avatar do usuário" /></a>
+				<a href="/user/upload"><img id="avatar" src="/blob/$user.AvatarKey" alt="Avatar do usuário" /></a>
 				#else
-				<a href="/user/upload"><img src="http://lorempixum.com/100/100/" alt="Avatar do usuário" /></a>
+				<a href="/user/upload"><img id="avatar" src="http://lorempixum.com/100/100/" alt="Avatar do usuário" /></a>
 				#end
+                <small>(clique para editar)</small>
                 <section id="about">
     				<h2>$user.Name</h2>
     				<small>$user.UserId</small><br />
