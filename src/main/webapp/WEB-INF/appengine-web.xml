@@ -3,7 +3,7 @@
 
 	<!-- CHANGE IT FOR YOUR APPLICATION -->
 	<application>figgo-octa</application>
-	<version>dev</version>
+	<version>demo</version>
 
 	<!-- Enables Sessions -->
 	<sessions-enabled>true</sessions-enabled>
@@ -16,15 +16,15 @@
 	
 	<!-- Static files -->
 	<static-files>
-		<exclude path="/WEB-INF/**.groovy" />
-        <exclude path="/templates/**.vm" />
-		<exclude path="/i18n/**.i18n" />
-		<exclude path="/css/**.scss" />
 		<include path="/img/**" />
 		<include path="/css/**.css" />
 		<include path="/js/**.js" />
 		<include path="/robots.txt" />
 		<include path="/favicon.ico" />
+		<exclude path="/WEB-INF/**.groovy" />
+        <exclude path="/templates/**.vm" />
+		<exclude path="/i18n/**.i18n" />
+		<exclude path="/css/**.scss" />
 	</static-files>
 
 	<!-- Resource Files -->
