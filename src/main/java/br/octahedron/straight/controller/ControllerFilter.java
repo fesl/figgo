@@ -108,8 +108,8 @@ public class ControllerFilter implements Filter {
 			}
 			// everything is ok now, go ahead!
 			request.setAttribute("user", user);
-			request.setAttribute("login_url", userService.createLoginURL(this.appDomain));
-			request.setAttribute("logout_url", userService.createLogoutURL(this.appDomain));
+			request.setAttribute("login_url", userService.createLoginURL(this.appDomain, "figgo.com.br"));
+			request.setAttribute("logout_url", userService.createLogoutURL(this.appDomain, "figgo.com.br"));
 			chain.doFilter(req, resp);
 		} catch (NotLoggedException e) {
 			response.sendRedirect(userService.createLoginURL(request.getRequestURL().toString()));
