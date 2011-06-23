@@ -108,14 +108,5 @@ public abstract class GenericDAO<T> {
 	public int count() {
 		return this.datastoreFacade.countObjects(this.klass);
 	}
-	
-	/**
-	 * @param term
-	 * @param attribute
-	 * @return
-	 */
-	public Collection<T> basicQuerySearch(String term, String attribute) {
-		return this.datastoreFacade.basicQuerySearch(this.klass, term, attribute);
-	}
 
 }

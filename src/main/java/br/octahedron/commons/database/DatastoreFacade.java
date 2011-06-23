@@ -66,11 +66,6 @@ public class DatastoreFacade {
 		}
 	}
 
-	public <T> Query createQueryForClass(Class<T> klass) {
-		PersistenceManager pm = this.pool.getPersistenceManagerForThread();
-		return pm.newQuery(klass);
-	}
-
 	public <T> boolean existsObject(Class<T> klass, Object key) {
 		if (key != null) {
 			PersistenceManager pm = this.pool.getPersistenceManagerForThread();
@@ -147,17 +142,25 @@ public class DatastoreFacade {
 		}
 	}
 
+	public <T> Query createQueryForClass(Class<T> klass) {
+		PersistenceManager pm = this.pool.getPersistenceManagerForThread();
+		return pm.newQuery(klass);
+	}
+	
 	/**
-	 * @param term
-	 * @param attribute
-	 * @return
+	 * Query for all entities of the given class with the given attribute starts with the given prefix;
+	 * 
+	 * @param prefix the attribute's prefix to be queried
+	 * @param attribute the entity attribute being queried
+	 * 
+	 * @return a list of all entities which attribute starts with the given prefix. If no entity be found, it returns an empty list.
 	 */
 	@SuppressWarnings("unchecked")
-	public <T> List<T> basicQuerySearch(Class<T> klass, String term, String attribute) {
+	public <T> List<T> startsWithQuery(Class<T> klass, String prefix, String attribute) {
 		Query query = this.createQueryForClass(klass);
-		query.setFilter(attribute + " >= :1 && " + attribute + " < :2");
-		term = (term != null ? term : "").trim();
-		return (List<T>) query.execute(term, (term + "\ufffd"));
+		query.setFilter(attribute + ".startsWith(:1)");
+		prefix = (prefix != null ? prefix : "").trim();
+		return (List<T>) query.execute(prefix);
 	}
 
 	/**

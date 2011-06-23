@@ -18,12 +18,7 @@
  */
 package br.octahedron.straight.modules.users.manager;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
 
 import br.octahedron.straight.modules.users.data.User;
 import br.octahedron.straight.modules.users.data.UserDAO;
@@ -33,9 +28,6 @@ import br.octahedron.straight.modules.users.data.UserDAO;
  */
 public class UsersManager {
 
-	private static final String NAME_ATTRIBUTE = "name";
-	private static final String EMAIL_ATTRIBUTE = "userId";
-	
 	private UserDAO userDAO = new UserDAO();
 	
 	/**
@@ -105,21 +97,7 @@ public class UsersManager {
 	 * @param term
 	 * @return
 	 */
-	public Collection<User> searchUserEmail(String term) {
-		Collection<User> searchResultName = this.userDAO.basicQuerySearch(term, NAME_ATTRIBUTE);
-		Collection<User> searchResultEmail = this.userDAO.basicQuerySearch(term, EMAIL_ATTRIBUTE);
-		Set<User> result = new TreeSet<User>();
-		result.addAll(searchResultEmail);
-		result.addAll(searchResultName);
-		
-		Collections.sort(new ArrayList<User>(result), new Comparator<User>() {
-			@Override
-			public int compare(User o1, User o2) {
-				// TODO Auto-generated method stub
-				return 0;
-			}
-		});	
-
-		return result;
+	public Collection<User> getUsersStartingWith(String term) {
+		return this.userDAO.getUsersStartingWith(term);
 	}
 }

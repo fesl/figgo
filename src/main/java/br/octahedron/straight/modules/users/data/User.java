@@ -38,6 +38,9 @@ public class User implements Serializable, UserView {
 	private String userId;
 	@Persistent
 	private String name;
+	@SuppressWarnings("unused")
+	@Persistent
+	private String nameLowerCase;
 	@Persistent
 	private String phoneNumber;
 	@Persistent
@@ -46,8 +49,9 @@ public class User implements Serializable, UserView {
 	private String description;
 
 	public User(String userId, String name, String phoneNumber, String description) {
-		this.userId = userId;
+		this.userId = userId.toLowerCase();
 		this.name = name;
+		this.nameLowerCase = this.name.toLowerCase();
 		this.phoneNumber = phoneNumber;
 		this.description = description;
 	}
@@ -82,6 +86,7 @@ public class User implements Serializable, UserView {
 	 */
 	public void setName(String name) {
 		this.name = name;
+		this.nameLowerCase = this.name.toLowerCase();
 	}
 
 	/* (non-Javadoc)
@@ -114,14 +119,6 @@ public class User implements Serializable, UserView {
 	 */
 	public void setAvatarKey(String avatarKey) {
 		this.avatarKey = avatarKey;
-	}
-
-	/**
-	 * @param userId
-	 *            the userId to set
-	 */
-	public void setUserId(String userId) {
-		this.userId = userId;
 	}
 
 	/* (non-Javadoc)

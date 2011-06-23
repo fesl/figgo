@@ -45,27 +45,31 @@ public class UsersDAOTest {
 	public void createUsers() {
 		// storing users
 		this.userDAO.save(new User("test3@example.com", "Name3", "8888 8888", ""));
-		this.userDAO.save(new User("test@example.com", "Name1", "8888 8888", ""));
+		this.userDAO.save(new User("test@example.com", "name1", "8888 8888", ""));
 		this.userDAO.save(new User("test2@example.com", "Name2", "8888 8888", ""));
+		this.userDAO.save(new User("lalala@example.com", "User", "8888 8888", ""));
+		this.userDAO.save(new User("user2@example.com", "Lalala", "8888 8888", ""));
 	}
 	
 	@Test
 	public void searchName() {
 		this.createUsers();
-		Collection<User> result1 = this.userDAO.basicQuerySearch("Name3", "name");
+		Collection<User> result1 = this.userDAO.getUsersStartingWith("Name3");
 		assertEquals(1, result1.size());
 		
-		Collection<User> result2 = this.userDAO.basicQuerySearch("Name", "name");
-		assertEquals(3, result2.size());
-	}
+		result1  = this.userDAO.getUsersStartingWith("name");
+		assertEquals(3, result1.size());
 	
-	@Test
-	public void searchEmail() {
-		this.createUsers();
-		Collection<User> result1 = this.userDAO.basicQuerySearch("test3", "userId");
+		result1 = this.userDAO.getUsersStartingWith("test3");
 		assertEquals(1, result1.size());
 		
-		Collection<User> result2 = this.userDAO.basicQuerySearch("test", "userId");
-		assertEquals(3, result2.size());
+		result1  = this.userDAO.getUsersStartingWith("test");
+		assertEquals(3, result1.size());
+		
+		result1  = this.userDAO.getUsersStartingWith("user");
+		assertEquals(2, result1.size());
+		
+		result1  = this.userDAO.getUsersStartingWith("lal");
+		assertEquals(2, result1.size());
 	}
 }

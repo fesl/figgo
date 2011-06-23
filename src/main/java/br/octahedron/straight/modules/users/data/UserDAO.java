@@ -18,6 +18,11 @@
  */
 package br.octahedron.straight.modules.users.data;
 
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import br.octahedron.commons.database.GenericDAO;
 
 /**
@@ -25,9 +30,34 @@ import br.octahedron.commons.database.GenericDAO;
  * 
  */
 public class UserDAO extends GenericDAO<User> {
+	
+	private static final String NAME_ATTRIBUTE = "nameLowerCase";
+	private static final String EMAIL_ATTRIBUTE = "userId";
 
 	public UserDAO() {
 		super(User.class);
+	}
+	
+	/**
+	 * Retrieves a collection of {@link User} that its name or email starts with a term.
+	 * 
+	 * @param term
+	 * @return
+	 */
+	public Collection<User> getUsersStartingWith(String term) {
+		Collection<User> searchResultName = this.datastoreFacade.startsWithQuery(User.class, term.toLowerCase(), NAME_ATTRIBUTE);
+		Collection<User> searchResultEmail = this.datastoreFacade.startsWithQuery(User.class, term.toLowerCase(), EMAIL_ATTRIBUTE);
+		SortedSet<User> result = new TreeSet<User>(new Comparator<User>() {
+			public int compare(User o1, User o2) {
+				// TODO change it
+				return o1.getName().compareTo(o2.getName());
+			}
+		});
+//		SortedSet<User> result = new TreeSet<User>();
+		result.addAll(searchResultEmail);
+		result.addAll(searchResultName);
+		
+		return result;
 	}
 
 }
