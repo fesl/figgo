@@ -148,6 +148,19 @@ public class DatastoreFacade {
 	}
 
 	/**
+	 * @param term
+	 * @param attribute
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public <T> List<T> basicQuerySearch(Class<T> klass, String term, String attribute) {
+		Query query = this.createQueryForClass(klass);
+		query.setFilter(attribute + " >= :1 && " + attribute + " < :2");
+		term = (term != null ? term : "").trim();
+		return (List<T>) query.execute(term, (term + "\ufffd"));
+	}
+
+	/**
 	 * This class is a wrapper to the {@link PersistenceManagerFactory}.
 	 */
 	protected static class PMFWrapper {
@@ -165,5 +178,4 @@ public class DatastoreFacade {
 			return pmFactory.getPersistenceManager();
 		}
 	}
-
 }
