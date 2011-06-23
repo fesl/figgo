@@ -1,27 +1,36 @@
 #set( $title = "Figgo - Domínios" )
-#parse( "templates/layout.vm" )
+#parse( "templates/layout_intern.vm" )
 
 #@body()
-	<a href="$logout_url">logout</a>
-	
-	<table>
-		<thead>
-		<tr>
-			<th>Nome</th>
-			<th>Domínio</th>
-			<th>Administrador</th>
-		</tr>
-        </thead>
-		<tbody>
-        #foreach( $domain in $domains )
-    		<tr>
-    			<td>$domain.Name</td>
-    			<td>$domain.DomainName</td>
-    			<td>$domain.Admin</td>
-    		</tr>
-        #end
-        </tbody>
-    </table>
+	<div id="main" class="center">
+		<header>
+    		<h1>$domain.Name</h1>
+		</header>
+		<div id="content">
+			<div id="single-column" class="admin">
+                <section id="balance">
+					<table>
+                		<thead>
+                		<tr>
+                			<th>Nome</th>
+                			<th>Domínio</th>
+                			<th>Administrador</th>
+                		</tr>
+                        </thead>
+                		<tbody>
+                        #foreach( $domain in $domains )
+                    		<tr>
+                    			<td>$domain.Name</td>
+                    			<td>$domain.DomainName</td>
+                    			<td>$domain.Admin</td>
+                    		</tr>
+                        #end
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+		</div>
+	</div>
 #end
 
 #scripts()

@@ -1,22 +1,16 @@
 #set( $title = "Figgo - Dashboard" )
-#parse( "templates/layout.vm" )
+#parse( "templates/layout_intern.vm" )
 
 #@body()
-	<div id="top-bar">
-		<a href="/user/edit">editar conta</a>
-		<a href="$logout_url">logout</a>
-	</div>
-	
 	<div id="main" class="center">
 		<h1>Dashboard</h1>
-		<div id="dashboard">
-			<div id="column-about">
+		<div id="content" class="user">
+			<div id="column-left">
 				#if( $user.AvatarKey )
 				<a href="/user/upload"><img id="avatar" src="/blob/$user.AvatarKey" alt="Avatar do usuário" /></a>
 				#else
 				<a href="/user/upload"><img id="avatar" src="http://lorempixum.com/100/100/" alt="Avatar do usuário" /></a>
 				#end
-                <small>(clique para editar)</small>
                 <section id="about">
     				<h2>$user.Name</h2>
     				<small>$user.UserId</small><br />
@@ -38,7 +32,7 @@
 					#end
                 </section>
 			</div>
-			<div id="column-notifications">
+			<div id="column-right">
     			<section id="notifications">
 					<h3>Notificações</h3>
 					<ul>

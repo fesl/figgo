@@ -1,10 +1,8 @@
-#set( $title = "Figgo - Nome do coletivo - Banco" )
+#set( $title = "Figgo - $!{domain.Name} - Banco" )
 #set( $currentModule = "BANK" )
-#parse( "templates/layout.vm" )
+#parse( "templates/layout_intern.vm" )
 
 #@body()
-	<a href="$logout_url">logout</a>
-	
     <div id="main" class="center">
 		<header>
     		<h1>$domain.Name</h1>
@@ -17,8 +15,8 @@
         		</ul>
     		</nav>
 		</header>
-		<div id="bank">
-			<div id="column-statement">
+		<div id="content">
+			<div id="column-left" class="bank">
                 <section id="balance">
                     <h3>Minha conta</h3>
     				<table class="simple">
@@ -54,7 +52,7 @@
     			</section>
 				<hr />
 			</div>
-			<div id="column-quickmenu">
+			<div id="column-right">
     			<section id="menu">
 					<h3>Acesso rápido</h3>
 					<aside>

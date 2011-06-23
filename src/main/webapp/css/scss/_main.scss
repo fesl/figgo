@@ -1,5 +1,7 @@
 @import "main/user-column-left";
 @import "main/user-column-right";
+@import "main/domain-column-left";
+@import "main/domain-column-right";
 @import "main/bank-column-left";
 @import "main/bank-column-right";
 @import "main/services-column-left";
@@ -10,9 +12,9 @@
   width: 735px;
 }
 
-#dashboard, #bank, #services {
+#content {
   display: table;
-  width: 715px;
+  width: 740px;
   padding: 10px;
   border: 3px solid #eee;
 }

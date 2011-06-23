@@ -1,34 +1,38 @@
 #set( $title = "Figgo - Início" )
-#parse( "templates/layout.vm" )
+#parse( "templates/layout_intern.vm" )
 
 #@body()
-	<a href="$logout_url">logout</a>
-	
 	<div id="main" class="center">
-        <h1>Novo usuário</h1>
-		<p>Olá, $user.Email!</p>
-		<p>Você ainda não possui cadastro no Figgo. Faça já o seu!</p>
-		#if( $errors )
-		<h3>Erros</h3>
-		<ul>
-    		#foreach( $error in $errors )
-			<li>$error</li>
-			#end
-		</ul>
-		#end
-		<p>Preencha o formulário abaixo:</p>
-        <form action="/user/create" method="post">
-        	<label for="name">
-        		Nome: <input type="text" name="name" value="$!{name}" />
-        	</label><br />
-        	<label for="phoneNumber">
-                Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}" />
-        	</label><br />
-        	<label for="description">
-        		Descrição: <textarea name="description">$!{description}</textarea>
-        	</label><br />
-    		<input type="submit" value="Cadastrar" />
-        </form>
+		<header>
+			<h1>Novo usuário</h1>
+		</header>
+		<div id="content">
+			<div id="single-column">
+				<p>Olá, $user.Email!</p>
+				<p>Você ainda não possui cadastro no Figgo. Faça já o seu!</p>
+				#if( $errors )
+        		<h3>Erros</h3>
+        		<ul>
+            		#foreach( $error in $errors )
+        			<li>$error</li>
+        			#end
+        		</ul>
+        		#end
+        		<p>Preencha o formulário abaixo:</p>
+                <form action="/user/create" method="post">
+                	<label for="name">
+                		Nome: <input type="text" name="name" value="$!{name}" />
+                	</label><br />
+                	<label for="phoneNumber">
+                        Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}" />
+                	</label><br />
+                	<label for="description">
+                		Descrição: <textarea name="description">$!{description}</textarea>
+                	</label><br />
+            		<input type="submit" value="Cadastrar" />
+                </form>
+			</div>
+		</div>
 	</div>
 #end
 

@@ -1,8 +1,15 @@
-#column-services {
+.services > #column-right {
   float: left;
   width: 500px;
+  
+  #organization-services {
+    button {
+      float: right;
+    }
+    
+    table tbody tr:nth-child(2n) {
+      background-color: #eee;
+    }
+  }
 }
 
-#organization-services button {
-  float: right;
-}

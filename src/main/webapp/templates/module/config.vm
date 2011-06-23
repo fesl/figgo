@@ -1,9 +1,7 @@
 #set( $title = "Figgo - ${domain.DomainName} - Configurações do domínio" )
-#parse( "templates/layout.vm" )
+#parse( "templates/layout_intern.vm" )
 
 #@body()
-	<a href="$logout_url">logout</a>
-	
     <div id="main" class="center">
 		<h1>Configurações do domínio</h1>
     	<p>Preencha o formulário abaixo:</p>
@@ -15,7 +13,7 @@
 			#end
 		</ul>
 		#end
-		<form action="/domain/$name/update2" method="post">
+		<form action="/domain/module/$name" method="post">
     		<input type="hidden" name="_method" value="put" />
 			#foreach( $property in $module.PropertiesKeys )
 			<label for="$property">

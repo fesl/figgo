@@ -1,5 +1,5 @@
-#set( $title = "Figgo - Nome do coletivo - Banco" )
-#parse( "templates/layout.vm" )
+#set( $title = "Figgo - $!{domain.Name} - Banco - Extrato" )
+#parse( "templates/layout_intern.vm" )
 
 #@body()
 	<a href="$logout_url">logout</a>
@@ -9,14 +9,15 @@
     		<h1>Nome do coletivo</h1>
     		<nav id="tabs">
         		<ul class="inline">
-                    <li><a href="$url/#">Dashboard</a></li>
-                    <li class="selected"><a href="$url/bank#">Banco</a></li>
-                    <li><a href="$url/services">Serviços</a></li>
+                    <li><a href="/">Dashboard</a></li>
+                    #foreach( $module in $domain.ModulesEnabled )
+						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+					#end
         		</ul>
     		</nav>
 		</header>
-		<div id="bank">
-			<div id="column-statement">
+		<div id="content" class="bank">
+			<div id="column-left">
                 <section id="balance">
                     <h3>Extrato $month</h3>
     				<table class="simple">
@@ -60,7 +61,7 @@
     			</section>
 				<hr />
 			</div>
-			<div id="column-quickmenu">
+			<div id="column-right">
     			<section id="menu">
 					<h3>Acesso rápido</h3>
 					<aside>

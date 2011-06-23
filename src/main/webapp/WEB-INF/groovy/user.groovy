@@ -11,6 +11,8 @@ if (actions.contains(params.action)) {
 	actionCall = "notfound"
 }
 
+request.user = usersManager.getUser(request.user.email)
+
 def post_create() {
 	errors = validateUser(params)
 	if (errors.isEmpty()) {
@@ -30,10 +32,9 @@ def get_new() {
 }
 
 def get_edit() {
-	loggedUser = usersManager.getUser(request.user.email)
-	request.name = loggedUser.name
-	request.phoneNumber = loggedUser.phoneNumber
-	request.description = loggedUser.description
+	request.name = request.user.name
+	request.phoneNumber = request.user.phoneNumber
+	request.description = request.user.description
 	render 'user/edit.vm', request, response
 }
 

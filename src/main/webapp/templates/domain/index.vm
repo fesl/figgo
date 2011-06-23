@@ -1,9 +1,7 @@
-#set( $title = "Figgo - ${domain.Name}" )
+#set( $title = "Figgo - $!{domain.Name}" )
 #parse( "templates/layout.vm" )
 
 #@body()
-	<a href="$logout_url">logout</a>
-	
     <div id="main" class="center">
 		<header>
 			<nav id="tabs">
@@ -15,8 +13,8 @@
         		</ul>
 			</nav>
 		</header>
-		<div id="dashboard">
-			<div id="column-about">
+		<div id="content" class="domain">
+			<div id="column-left">
 				#if( $domain.AvatarKey )
 				<a href="/domain/upload"><img id="avatar" src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
 				#else
@@ -30,7 +28,7 @@
     			</section>
 				<hr />
 			</div>
-			<div id="column-notifications">
+			<div id="column-right">
     			<section id="notifications">
 					<h3>Notificações</h3>
 					<ul>

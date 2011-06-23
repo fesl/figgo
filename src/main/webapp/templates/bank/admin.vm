@@ -1,5 +1,5 @@
 #set( $title = "Figgo - ${domain.Name} - Banco - Admin" )
-#parse( "templates/layout.vm" )
+#parse( "templates/layout_intern.vm" )
 
 #@body()
 	<a href="$logout_url">logout</a>
@@ -16,8 +16,8 @@
         		</ul>
     		</nav>
 		</header>
-		<div id="bank">
-			<div id="column-transfer">
+		<div id="content" class="bank">
+			<div id="column-left">
                 <section id="admin">
                     <h3>Admin</h3>
 					<span>Saldo do banco: M$ $formatter.format($balance)</span>
@@ -70,7 +70,7 @@
     			</section>
 				<hr />
 			</div>
-			<div id="column-quickmenu">
+			<div id="column-right">
     			<section id="menu">
 					<h3>Acesso rápido</h3>
 					<aside>

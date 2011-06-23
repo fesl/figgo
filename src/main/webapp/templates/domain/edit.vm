@@ -1,9 +1,7 @@
 #set( $title = "Figgo - ${domain.DomainName} - Configurações do domínio" )
-#parse( "templates/layout.vm" )
+#parse( "templates/layout_intern.vm" )
 
 #@body()
-	<a href="$logout_url">logout</a>
-	
     <div id="main" class="center">
 		<header>
 			<h1>$domain.Name</h1>
@@ -16,7 +14,7 @@
         		</ul>
 			</nav>
 		</header>
-		<div id="dashboard">
+		<div id="content">
 			<div id="single-column">
 				<h3>Configurações do domínio</h3>
             	<p>Preencha o formulário abaixo:</p>

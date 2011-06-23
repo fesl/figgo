@@ -3,6 +3,7 @@ import br.octahedron.straight.modules.ManagerBuilder
 
 actions = ['config', 'update', 'upload', 'module']
 configurationManager = ManagerBuilder.getConfigurationManager()
+usersManager = ManagerBuilder.getUserManager()
 
 if (actions.contains(params.action)) {
 	actionCall = request.method.toLowerCase() + "_" + params.action
@@ -10,6 +11,7 @@ if (actions.contains(params.action)) {
 	actionCall = "notfound"
 }
 
+request.user = usersManager.getUser(request.user.email)
 
 def get_config() {
 	request.domain = configurationManager.getDomainConfiguration()

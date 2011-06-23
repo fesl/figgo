@@ -1,18 +1,22 @@
 #set( $title = "Figgo - Upload avatar" )
-#parse( "templates/layout.vm" )
+#parse( "templates/layout_intern.vm" )
 
 #@body()
-	<a href="$logout_url">logout</a>
-	
 	<div id="main" class="center">
-        <h1>Upload avatar</h1>
-		<p>Faça upload do seu avatar abaixo:</p>
-        <form action="$upload_url" method="post" enctype="multipart/form-data">
-        	<label for="avatar">
-                Arquivo (max 1mb): <input type="file" name="file" />
-        	</label><br />
-    		<input type="submit" value="Upload" />
-        </form>
+		<header>
+			<h1>Upload avatar</h1>
+		</header>
+		<div id="content">
+			<div id="single-column">
+				<p>Faça upload do seu avatar abaixo:</p>
+                <form action="$upload_url" method="post" enctype="multipart/form-data">
+                	<label for="avatar">
+                        Arquivo (max 1mb): <input type="file" name="file" />
+                	</label><br />
+            		<input type="submit" value="Upload" />
+                </form>
+			</div>
+		</div>
 	</div>
 #end
 

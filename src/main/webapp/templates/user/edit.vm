@@ -1,33 +1,37 @@
-#set( $title = "Figgo - Editar usuário" )
-#parse( "templates/layout.vm" )
+#set( $title = "Figgo - Minha conta" )
+#parse( "templates/layout_intern.vm" )
 
 #@body()
-	<a href="$logout_url">logout</a>
-	
-    <div id="main" class="center">
-        <h1>Editar usuário</h1>
-		#if( $errors )
-		<h3>Erros</h3>
-		<ul>
-    		#foreach( $error in $errors )
-			<li>$error</li>
-			#end
-		</ul>
-		#end
-		<p>Preencha o formulário abaixo:</p>
-        <form action="/user/update" method="post">
-    		<input type="hidden" name="_method" value="put" />
-        	<label for="name">
-        		Nome: <input type="text" name="name" value="$!{name}" />
-        	</label><br />
-        	<label for="phoneNumber">
-                Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}"/>
-        	</label><br />
-        	<label for="description">
-        		Descrição: <textarea name="description">$!{description}</textarea>
-        	</label><br />
-    		<input type="submit" value="Editar" />
-        </form>
+	<div id="main" class="center">
+		<header>
+			<h1>Minha conta</h1>
+		</header>
+		<div id="content">
+			<div id="single-column">
+				#if( $errors )
+        		<h3>Erros</h3>
+        		<ul>
+            		#foreach( $error in $errors )
+        			<li>$error</li>
+        			#end
+        		</ul>
+        		#end
+				<p>Preencha o formulário abaixo:</p>
+                <form action="/user/update" method="post">
+            		<input type="hidden" name="_method" value="put" />
+                	<label for="name">
+                		Nome: <input type="text" name="name" value="$!{name}" />
+                	</label><br />
+                	<label for="phoneNumber">
+                        Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}"/>
+                	</label><br />
+                	<label for="description">
+                		Descrição <small>(opcional)</small>: <textarea name="description">$!{description}</textarea>
+                	</label><br />
+            		<input type="submit" value="Editar" />
+                </form>
+			</div>
+		</div>
 	</div>
 #end
 

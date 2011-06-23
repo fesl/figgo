@@ -1,4 +1,4 @@
-#set( $title = "!@#$%*() - Início" )
+#set( $title = "Figgo - Início" )
 #parse( "templates/layout.vm" )
 
 #@body()

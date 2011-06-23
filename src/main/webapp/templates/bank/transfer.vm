@@ -1,9 +1,7 @@
-#set( $title = "Figgo - Nome do coletivo - Banco - Transações" )
-#parse( "templates/layout.vm" )
+#set( $title = "Figgo - $!{domain.Name} - Banco - Transações" )
+#parse( "templates/layout_intern.vm" )
 
 #@body()
-	<a href="$logout_url">logout</a>
-	
     <div id="main" class="center">
 		<header>
     		<h1>$domain.Name</h1>
@@ -16,19 +14,19 @@
         		</ul>
     		</nav>
 		</header>
-		<div id="bank">
-			#if( $errors )
-			<h3>Erros</h3>
-			<ul>
-	    		#foreach( $error in $errors )
-				<li>$error</li>
-				#end
-			</ul>
-			#end
-			<div id="column-transfer">
+		<div id="content" class="bank">
+			<div id="column-left">
                 <section id="transfer">
                     <h3>Transferência</h3>
 					<span>Saldo atual: M$ $balance</span>
+					#if( $errors )
+        			<h3>Erros</h3>
+        			<ul>
+        	    		#foreach( $error in $errors )
+        				<li>$error</li>
+        				#end
+        			</ul>
+        			#end
 					<form action="/bank/transfer" method="post">
 						<fieldset >
     						<label for="userId">
@@ -53,7 +51,7 @@
     			</section>
 				<hr />
 			</div>
-			<div id="column-quickmenu">
+			<div id="column-right">
     			<section id="menu">
 					<h3>Acesso rápido</h3>
 					<aside>

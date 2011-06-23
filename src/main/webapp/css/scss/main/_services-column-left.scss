@@ -1,20 +1,12 @@
-#column-my-services {
+.services > #column-right {
   float: left;
   width: 209px;
-}
-
-#my-services table {
-  tbody {
-    tr:nth-child(2n+1) {
-      background-color: #eee;
-    }
-  }
-}
-
-#organization-services table {
-  tbody {
-    tr:nth-child(2n) {
-      background-color: #eee;
+  
+  #my-services table {
+    tbody {
+      tr:nth-child(2n+1) {
+        background-color: #eee;
+      }
     }
   }
 }
