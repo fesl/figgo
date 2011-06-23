@@ -8,7 +8,6 @@
     
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="description" content="$description">
     <meta name="author" content="Vítor Avelino">
 	<meta name="robots" content="noindex" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,6 +24,18 @@
 
 #macro( body )
 <body>
+	<header>
+        <h1><a href="/">Figgo</a></h1>
+		#if( $user.Name )
+		<div id="account" class="dropdown">
+			<a href="/user/edit">$user.UserId <img src="/img/arrow.png" alt="" /></a>
+			<ul>
+                <li>$user.Name</li>
+				<li><a href="/user/edit">Editar conta</a></li>
+			</ul>
+		</div>
+		#end
+	</header>
 	$!bodyContent
 #end
 

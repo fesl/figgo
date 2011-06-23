@@ -379,16 +379,20 @@ table.simple {
 img {
   max-width: 97%; }
 
-#top-bar {
-  position: fixed;
-  top: 0;
-  width: 100%;
+body > header {
+  margin: 3px auto;
+  width: 740px;
   height: 25px; }
+  body > header h1 {
+    float: left;
+    font-size: 18px; }
+  body > header #account {
+    float: right; }
 
-#column-about {
+.user > #column-left {
   float: left;
   width: 335px; }
-  #column-about #avatar {
+  .user > #column-left #avatar {
     float: left;
     width: 100px;
     height: 100px;
@@ -396,86 +400,97 @@ img {
     box-shadow: 0 0 3px #333333;
     -moz-box-shadow: 0 0 3px #333333;
     -webkit-box-shadow: 0 0 3px #333333; }
-  #column-about #about p {
+  .user > #column-left #about p {
     margin: 50px auto auto 5px;
     font-size: 14px; }
 
-#column-notifications {
+.user > #column-right {
   float: left;
   width: 374px; }
 
-#column-statement {
+.domain > #column-left {
+  float: left;
+  width: 335px; }
+  .domain > #column-left #avatar {
+    float: left;
+    width: 100px;
+    height: 100px;
+    margin: 3px 7px 7px;
+    box-shadow: 0 0 3px #333333;
+    -moz-box-shadow: 0 0 3px #333333;
+    -webkit-box-shadow: 0 0 3px #333333; }
+  .domain > #column-left #about p {
+    margin: 50px auto auto 5px;
+    font-size: 14px; }
+
+.domain > #column-right {
+  float: left;
+  width: 374px; }
+
+.bank > #column-left {
   float: left;
   width: 500px; }
-  #column-statement #statement form {
+  .bank > #column-left .action {
+    margin: 10px 0 0 0; }
+  .bank > #column-left #statement form {
     width: 200px;
     margin: 0 auto;
     text-align: center; }
-    #column-statement #statement form label {
+    .bank > #column-left #statement form label {
       display: block;
       padding: 0 0 10px; }
-
-#balance table tbody tr:nth-child(2n) {
-  background-color: #eee; }
-#balance table td.blue {
-  color: #0000ff; }
-#balance table td.red {
-  color: #ff0000; }
-
-#column-transfer {
-  float: left;
-  width: 500px; }
-  #column-transfer .action {
-    margin: 10px 0 0 0; }
-  #column-transfer #transfer form, #column-transfer #ballast form {
+  .bank > #column-left #transfer form, .bank > #column-left #ballast form {
     width: 400px;
     margin: 0 auto; }
-    #column-transfer #transfer form label, #column-transfer #ballast form label {
+    .bank > #column-left #transfer form label, .bank > #column-left #ballast form label {
       display: block;
       width: 200px;
       float: left;
       padding: 0 0 10px; }
-      #column-transfer #transfer form label input, #column-transfer #ballast form label input {
+      .bank > #column-left #transfer form label input, .bank > #column-left #ballast form label input {
         width: 170px; }
-      #column-transfer #transfer form label select, #column-transfer #ballast form label select {
+      .bank > #column-left #transfer form label select, .bank > #column-left #ballast form label select {
         display: block; }
-      #column-transfer #transfer form label textarea, #column-transfer #ballast form label textarea {
+      .bank > #column-left #transfer form label textarea, .bank > #column-left #ballast form label textarea {
         width: 170px;
         height: 70px; }
-    #column-transfer #transfer form input[type=submit], #column-transfer #ballast form input[type=submit] {
+    .bank > #column-left #transfer form input[type=submit], .bank > #column-left #ballast form input[type=submit] {
       float: left;
       width: 170px;
       height: 35px;
       margin-top: -45px; }
+  .bank > #column-left #balance table tbody tr:nth-child(2n) {
+    background-color: #eee; }
+  .bank > #column-left #balance table td.blue {
+    color: #0000ff; }
+  .bank > #column-left #balance table td.red {
+    color: #ff0000; }
 
-#column-quickmenu {
+.bank > #column-right {
   float: left;
   width: 209px; }
 
-#column-my-services {
+.services > #column-right {
   float: left;
   width: 209px; }
+  .services > #column-right #my-services table tbody tr:nth-child(2n+1) {
+    background-color: #eee; }
 
-#my-services table tbody tr:nth-child(2n+1) {
-  background-color: #eee; }
-
-#organization-services table tbody tr:nth-child(2n) {
-  background-color: #eee; }
-
-#column-services {
+.services > #column-right {
   float: left;
   width: 500px; }
-
-#organization-services button {
-  float: right; }
+  .services > #column-right #organization-services button {
+    float: right; }
+  .services > #column-right #organization-services table tbody tr:nth-child(2n) {
+    background-color: #eee; }
 
 #main {
   margin: 30px auto 0;
   width: 735px; }
 
-#dashboard, #bank, #services {
+#content {
   display: table;
-  width: 715px;
+  width: 740px;
   padding: 10px;
   border: 3px solid #eee; }
 

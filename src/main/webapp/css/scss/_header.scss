@@ -1,6 +1,22 @@
-#top-bar {
-  position: fixed;
-  top: 0;
-  width: 100%;
+body > header {
+  margin: 3px auto; 
+  width: 740px;
   height: 25px;
+  
+  h1 {
+    float: left;
+    font-size: 18px;  
+  }
+  #account {
+    float: right;
+    
+    > ul {
+      display: none;
+      margin: 0;
+      
+      li {
+        list-style: none;
+      }
+    }
+  }
 }
