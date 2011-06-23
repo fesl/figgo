@@ -81,14 +81,12 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	@SuppressWarnings("unchecked")
 	private Collection<BankTransaction> getLastTransactionsFrom(String accountId, Long lastUsedTransactionId) {
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
-		query.setFilter("id > transactionId && accountOrig == accId");
-		query.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
+		query.setFilter("id > :transactionId && accountOrig == :accId");
 		query.setOrdering("id asc");
 		List<BankTransaction> transactions1 = (List<BankTransaction>) query.execute(lastUsedTransactionId, accountId);
 
 		query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
-		query.setFilter("id > transactionId && accountDest == accId");
-		query.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
+		query.setFilter("id > :transactionId && accountDest == :accId");
 		query.setOrdering("id asc");
 		List<BankTransaction> transactions2 = (List<BankTransaction>) query.execute(lastUsedTransactionId, accountId);
 
@@ -101,8 +99,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	@SuppressWarnings("unchecked")
 	private Collection<BankTransaction> getAllTransactions(String accountId, long count) {
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
-		query.setFilter("accountOrig == accId");
-		query.declareParameters("java.lang.Long accId");
+		query.setFilter("accountOrig == :accId");
 		query.setOrdering("id asc");
 		if (count > 0) {
 			query.setRange(0, count);
@@ -110,8 +107,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		List<BankTransaction> transactions1 = (List<BankTransaction>) query.execute(accountId);
 
 		query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
-		query.setFilter("accountDest == accId");
-		query.declareParameters("java.lang.Long accId");
+		query.setFilter("accountDest == :accId");
 		query.setOrdering("id asc");
 		if (count > 0) {
 			query.setRange(0, count);

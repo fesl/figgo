@@ -68,8 +68,7 @@ public class BankTransactionDAOMockTest {
 			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query1);
-		query1.setFilter("id > transactionId && accountOrig == accId");
-		query1.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
+		query1.setFilter("id > :transactionId && accountOrig == :accId");
 		query1.setOrdering("id asc");
 		expect(query1.execute(lastTransactionId, myId)).andReturn(transactions1);
 
@@ -79,8 +78,7 @@ public class BankTransactionDAOMockTest {
 			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query2);
-		query2.setFilter("id > transactionId && accountDest == accId");
-		query2.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
+		query2.setFilter("id > :transactionId && accountDest == :accId");
 		query2.setOrdering("id asc");
 		expect(query2.execute(lastTransactionId, myId)).andReturn(transactions2);
 
@@ -105,8 +103,7 @@ public class BankTransactionDAOMockTest {
 			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query1);
-		query1.setFilter("id > transactionId && accountOrig == accId");
-		query1.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
+		query1.setFilter("id > :transactionId && accountOrig == :accId");
 		query1.setOrdering("id asc");
 		expect(query1.execute(lastTransactionId, myId)).andReturn(transactions1);
 
@@ -116,8 +113,7 @@ public class BankTransactionDAOMockTest {
 			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query2);
-		query2.setFilter("id > transactionId && accountDest == accId");
-		query2.declareParameters("java.lang.Long transactionId, java.lang.Long accId");
+		query2.setFilter("id > :transactionId && accountDest == :accId");
 		query2.setOrdering("id asc");
 		expect(query2.execute(lastTransactionId, myId)).andReturn(transactions2);
 
