@@ -6,6 +6,7 @@ all "/services", forward: "/services.groovy?action=index"
 all "/bank/@action", forward: "/bank.groovy?action=@action"
 all "/bank", forward: "/bank.groovy?action=index"
 
+get "/user/search/@term", forward: "/user.groovy?action=search&term=@term"
 all "/user/@action", forward: "/user.groovy?action=@action"
 
 all "/domain/module/@module", forward: "/domain.groovy?module=@module&action=module"

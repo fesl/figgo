@@ -388,6 +388,11 @@ body > header {
     font-size: 18px; }
   body > header #account {
     float: right; }
+    body > header #account > ul {
+      display: none;
+      margin: 0; }
+      body > header #account > ul li {
+        list-style: none; }
 
 .user > #column-left {
   float: left;

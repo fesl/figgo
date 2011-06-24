@@ -19,54 +19,35 @@
 package br.octahedron.straight.view;
 
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import org.apache.velocity.Template;
-import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
+import flexjson.JSONSerializer;
+
 /**
- * VelocityTemplateRender is responsible for rendering velocity templates.
+ * JSONRender is responsible for rendering java objects into JSON format.
  * 
  * Generally used on controllers to render the attributes of request.
  * 
  * @author Vítor Avelino
  */
-public class VelocityTemplateRender {
+public class JSONRender {
 
 	private static final long serialVersionUID = -6755680559427788645L;
-	private static final Logger logger = Logger.getLogger(VelocityTemplateRender.class.getName());
-	private static final VelocityEngine engine = new VelocityEngine();
+	private static final Logger logger = Logger.getLogger(JSONRender.class.getName());
+	
+	private static final String CONTENT_TYPE = "application/json";
 
-	private static final String TEMPLATE_FOLDER = "templates/";
-	private static final String CONTENT_TYPE = "text/html";
-	
-	static {
-		engine.init();
-	}
-	
-	public static void render(String templatePath, ServletRequest req, ServletResponse res) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
-		logger.fine("Getting template from " + TEMPLATE_FOLDER + templatePath);
-		Template template = engine.getTemplate(TEMPLATE_FOLDER + templatePath, "utf-8");
-		Enumeration<?> attributesName = req.getAttributeNames();
-		VelocityContext context = new VelocityContext();
-		while (attributesName.hasMoreElements()) {
-			String key = attributesName.nextElement().toString();
-			Object object = req.getAttribute(key);
-			if (object != null) {
-				context.put(key, object);
-			}
-		}
+	public static void render(Object object, ServletRequest req, ServletResponse res) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
 		res.setContentType(CONTENT_TYPE);
-		template.merge(context, res.getWriter());
-		logger.fine("Written template in response writer");
+		res.getWriter().write(new JSONSerializer().prettyPrint(true).serialize(object));
+		logger.fine("Written json in response writer");
 		res.flushBuffer();
 	}
 }
