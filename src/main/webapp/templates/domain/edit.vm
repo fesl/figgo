@@ -1,6 +1,8 @@
 #set( $title = "Figgo - ${domain.DomainName} - Configurações do domínio" )
 #parse( "templates/layout_intern.vm" )
 
+#header()
+
 #@body()
     <div id="main" class="center">
 		<header>

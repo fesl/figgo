@@ -1,16 +1,16 @@
 import br.octahedron.straight.modules.ManagerBuilder
-import  br.octahedron.straight.modules.admin.util.DomainAlreadyExistsException
+import br.octahedron.straight.modules.admin.util.DomainAlreadyExistsException
 
 action = 'notfound'
 adminManager = ManagerBuilder.getAdminManager()
 authManager = ManagerBuilder.getAuthorizationManager()
 
 if (params.module && params.action) {
-	action = "action_" + params.module + "_" + request.method.toLowerCase() + "_" + params.action
+	action = request.method.toLowerCase() + "_" + params.module + "_" + params.action
 }
 
 // APP CONFIGURATION
-def action_app_get_config() {
+def get_app_config() {
 	if (adminManager.hasApplicationConfiguration()) {
 		appConfiguration = adminManager.getApplicationConfiguration()
 		request.accessKey = appConfiguration.route53AccessKeyID
@@ -20,13 +20,17 @@ def action_app_get_config() {
 	render 'admin/config.vm', request, response
 }
 
-def action_app_post_config() {
+def post_app_config() {
 	adminManager.configureApplication(params.accessKey, params.keySecret, params.zone)
 	redirect '/admin/domain/new'
 }
 
 // DOMAIN CONFIGURATION
-def action_domain_post_create() {
+def get_domain_new() {
+	render 'domain/new.vm', request, response
+}
+
+def post_domain_create() {
 	try {
 		adminManager.createDomain(params.name, params.userId)
 		redirect '/'
@@ -36,17 +40,12 @@ def action_domain_post_create() {
  	}
 }
 
-
-def action_domain_get_new() {
-	render 'domain/new.vm', request, response
-}
-
 def notfound() {
 	render 'notfound.vm', request, response
 }
 
 // gabiarra
-def action_role_get_add() {
+def get_role_add() {
 	authManager.addUsersToRole(params.domain, params.role, params.logins.split(","))
 }
 "$action"()

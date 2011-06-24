@@ -1,6 +1,10 @@
 #set( $title = "Figgo - $!{domain.Name} - Banco - Transações" )
 #parse( "templates/layout_intern.vm" )
 
+#@header()
+	<link type="text/css" href="/css/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+#end
+
 #@body()
     <div id="main" class="center">
 		<header>
@@ -30,7 +34,7 @@
 					<form action="/bank/transfer" method="post">
 						<fieldset >
     						<label for="userId">
-                        		Usuário: <input type="text" name="userId" />
+                        		Usuário: <input type="text" name="userId" class="autocomplete" />
                         	</label>
                         	<label for="amount">
                                 Valor: <input type="text" name="amount" />
@@ -68,4 +72,6 @@
 	</div>
 #end
 	
-#scripts()
+#@scripts()
+	<script type="text/javascript" src="/js/libs/jquery-ui-1.8.13.custom.min.js"></script>
+#end

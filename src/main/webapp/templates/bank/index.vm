@@ -2,6 +2,8 @@
 #set( $currentModule = "BANK" )
 #parse( "templates/layout_intern.vm" )
 
+#header()
+
 #@body()
     <div id="main" class="center">
 		<header>
@@ -15,8 +17,8 @@
         		</ul>
     		</nav>
 		</header>
-		<div id="content">
-			<div id="column-left" class="bank">
+		<div id="content" class="bank">
+			<div id="column-left">
                 <section id="balance">
                     <h3>Minha conta</h3>
     				<table class="simple">

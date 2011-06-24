@@ -11,6 +11,29 @@ if (actions.contains(params.action)) {
 	actionCall = "notfound"
 }
 
+def get_new() {
+	render 'user/new.vm', request, response
+}
+
+def get_edit() {
+	request.user = usersManager.getUser(request.user.email)
+	request.name = request.user.name
+	request.phoneNumber = request.user.phoneNumber
+	request.description = request.user.description
+	render 'user/edit.vm', request, response
+}
+
+def get_search() {
+	def result = usersManager.getUsersStartingWith(params.term)
+	renderJSON result, request, response
+}
+
+def get_upload() {
+	request.user = usersManager.getUser(request.user.email)
+	request.upload_url = blobstore.createUploadUrl('/blob/user/upload')
+	render 'user/upload.vm', request, response
+}
+
 def post_create() {
 	def errors = validateUser(params)
 	if (errors.isEmpty()) {
@@ -25,18 +48,6 @@ def post_create() {
 	}
 }
 
-def get_new() {
-	render 'user/new.vm', request, response
-}
-
-def get_edit() {
-	request.user = usersManager.getUser(request.user.email)
-	request.name = request.user.name
-	request.phoneNumber = request.user.phoneNumber
-	request.description = request.user.description
-	render 'user/edit.vm', request, response
-}
-
 def post_update() {
 	def errors = validateUser(params)
 	if (errors.isEmpty()) {
@@ -49,16 +60,6 @@ def post_update() {
 		request.description = params.description
 		render 'user/edit.vm', request, response
 	}
-}
-
-def get_search() {
-	def result = usersManager.getUsersStartingWith(params.term)
-	renderJSON result, request, response
-}
-
-def get_upload() {
-	request.upload_url = blobstore.createUploadUrl('/blob/user/upload')
-	render 'user/upload.vm', request, response
 }
 
 def notfound() {

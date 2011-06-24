@@ -1,6 +1,8 @@
 #set( $title = "Figgo - Novo domínio" )
 #parse( "templates/layout_intern.vm" )
 
+#header()
+
 #@body()
     <div id="main" class="center">
 		<header>
@@ -10,7 +12,7 @@
 			<div id="single-column">
 				<p>Preencha o formulário abaixo:</p>
         		#if ( $error )
-    			<p class="warning"> Error: domínio $error já existe!</p>				
+    			<p class="warning"> Erro: domínio $error já existe!</p>				
         		#end
         		<form action="/admin/domain/create" method="post">
                 	<label for="name">

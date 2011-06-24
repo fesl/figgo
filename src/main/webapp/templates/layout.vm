@@ -18,7 +18,7 @@
     <script src="/js/libs/modernizr-1.7.min.js"></script>
     <script src="/js/libs/respond.min.js"></script>
     <!--[if (gte IE 6) & (lte IE 8)]>
-    	<script type="text/javascript" src="/js/selectivizr.js"></script>
+    	<script type="text/javascript" src="/js/libs/selectivizr.js"></script>
     <![endif]-->
 </head>
 
