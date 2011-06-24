@@ -128,4 +128,13 @@ public class User implements Serializable, UserView {
 	public String getUserId() {
 		return this.userId;
 	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "[" + this.name + " " + this.userId + "]";
+	}
+	
 }

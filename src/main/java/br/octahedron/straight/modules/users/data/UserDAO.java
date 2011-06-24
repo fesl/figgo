@@ -23,10 +23,14 @@ import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import com.google.common.collect.ComparisonChain;
+
 import br.octahedron.commons.database.GenericDAO;
 
 /**
  * @author Erick Moreno
+ * @author Danilo Queiroz
+ * @author Vítor Avelino
  * 
  */
 public class UserDAO extends GenericDAO<User> {
@@ -47,17 +51,20 @@ public class UserDAO extends GenericDAO<User> {
 	public Collection<User> getUsersStartingWith(String term) {
 		Collection<User> searchResultName = this.datastoreFacade.startsWithQuery(User.class, term.toLowerCase(), NAME_ATTRIBUTE);
 		Collection<User> searchResultEmail = this.datastoreFacade.startsWithQuery(User.class, term.toLowerCase(), EMAIL_ATTRIBUTE);
-		SortedSet<User> result = new TreeSet<User>(new Comparator<User>() {
-			public int compare(User o1, User o2) {
-				// TODO change it
-				return o1.getName().compareTo(o2.getName());
-			}
-		});
-//		SortedSet<User> result = new TreeSet<User>();
+		SortedSet<User> result = new TreeSet<User>(new UserComparator());
 		result.addAll(searchResultEmail);
 		result.addAll(searchResultName);
-		
 		return result;
+	}
+	
+	private class UserComparator implements Comparator<User> {
+		@Override
+		public int compare(User o1, User o2) {
+			return ComparisonChain.start()
+				   .compare(o1.getName().toLowerCase(), o2.getName().toLowerCase())
+				   .compare(o1.getUserId().toLowerCase(), o2.getUserId().toLowerCase())
+				   .result();
+		}
 	}
 
 }

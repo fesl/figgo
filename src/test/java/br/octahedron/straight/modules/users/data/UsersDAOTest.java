@@ -52,24 +52,28 @@ public class UsersDAOTest {
 	}
 	
 	@Test
-	public void searchName() {
+	public void searchUser() {
 		this.createUsers();
-		Collection<User> result1 = this.userDAO.getUsersStartingWith("Name3");
-		assertEquals(1, result1.size());
+		Collection<User> result = this.userDAO.getUsersStartingWith("Name3");
+		assertEquals(1, result.size());
+		result  = this.userDAO.getUsersStartingWith("name");
+		assertEquals(3, result.size());
+		assertEquals("[[name1 test@example.com], [Name2 test2@example.com], [Name3 test3@example.com]]", result.toString());
 		
-		result1  = this.userDAO.getUsersStartingWith("name");
-		assertEquals(3, result1.size());
-	
-		result1 = this.userDAO.getUsersStartingWith("test3");
-		assertEquals(1, result1.size());
+		result = this.userDAO.getUsersStartingWith("test3");
+		assertEquals(1, result.size());
+		assertEquals("[[Name3 test3@example.com]]", result.toString());
 		
-		result1  = this.userDAO.getUsersStartingWith("test");
-		assertEquals(3, result1.size());
+		result  = this.userDAO.getUsersStartingWith("test");
+		assertEquals(3, result.size());
+		assertEquals("[[name1 test@example.com], [Name2 test2@example.com], [Name3 test3@example.com]]", result.toString());
 		
-		result1  = this.userDAO.getUsersStartingWith("user");
-		assertEquals(2, result1.size());
+		result  = this.userDAO.getUsersStartingWith("user");
+		assertEquals(2, result.size());
+		assertEquals("[[Lalala user2@example.com], [User lalala@example.com]]", result.toString());
 		
-		result1  = this.userDAO.getUsersStartingWith("lal");
-		assertEquals(2, result1.size());
+		result  = this.userDAO.getUsersStartingWith("lal");
+		assertEquals(2, result.size());
+		assertEquals("[[Lalala user2@example.com], [User lalala@example.com]]", result.toString());
 	}
 }
