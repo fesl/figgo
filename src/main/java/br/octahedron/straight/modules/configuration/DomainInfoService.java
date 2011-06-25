@@ -16,39 +16,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.modules.configuration.data;
+package br.octahedron.straight.modules.configuration;
 
-import java.util.Set;
-
+import br.octahedron.straight.modules.configuration.data.DomainConfigurationView;
 
 /**
- * A read-only interface for the {@link DomainConfiguration}
+ * Retrieves the information about a domain configuration
  * 
- * @see DomainConfiguration
- * 
- * @author Danilo Queiroz
- * @author Erick Moreno
+ * @author Vítor Avelino
  */
-public interface DomainConfigurationView {
-	
-	/**
-	 * @see DomainConfiguration#getDomainName()
-	 */
-	public abstract String getDomainName();
-	
+public class DomainInfoService {
+
+	private DomainConfigurationView domainConfiguration;
+
+	public DomainInfoService(DomainConfigurationView domainConfiguration) {
+		this.domainConfiguration = domainConfiguration;
+	}
+
 	/**
 	 * @see DomainConfiguration#getName()
 	 */
-	public abstract String getName();
-
-	/**
-	 * @see DomainConfiguration#getModulesEnabled()
-	 */
-	public abstract Set<String> getModulesEnabled();
-
-	/**
-	 * @see DomainConfiguration#isModuleEnabled(String)
-	 */
-	public abstract boolean isModuleEnabled(String moduleName);
-
+	public String getName() {
+		return this.domainConfiguration.getName();
+	}
 }

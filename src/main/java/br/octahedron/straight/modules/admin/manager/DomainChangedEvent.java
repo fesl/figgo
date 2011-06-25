@@ -16,39 +16,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.straight.modules.configuration.data;
+package br.octahedron.straight.modules.admin.manager;
 
-import java.util.Set;
-
+import br.octahedron.commons.eventbus.Event;
 
 /**
- * A read-only interface for the {@link DomainConfiguration}
+ * Event to inform that a domain configuration has created
  * 
- * @see DomainConfiguration
- * 
- * @author Danilo Queiroz
- * @author Erick Moreno
+ * @author Vítor Avelino
  */
-public interface DomainConfigurationView {
-	
-	/**
-	 * @see DomainConfiguration#getDomainName()
-	 */
-	public abstract String getDomainName();
-	
-	/**
-	 * @see DomainConfiguration#getName()
-	 */
-	public abstract String getName();
+public class DomainChangedEvent implements Event {
 
-	/**
-	 * @see DomainConfiguration#getModulesEnabled()
-	 */
-	public abstract Set<String> getModulesEnabled();
+	private static final long serialVersionUID = -6348483502587001585L;
 
-	/**
-	 * @see DomainConfiguration#isModuleEnabled(String)
-	 */
-	public abstract boolean isModuleEnabled(String moduleName);
+	public DomainChangedEvent() { }
 
 }

@@ -18,15 +18,54 @@
  */
 package br.octahedron.straight.modules.configuration.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.octahedron.commons.database.GenericDAO;
+import br.octahedron.commons.database.NamespaceCommons;
+
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
 /**
  * @author Danilo Queiroz
  */
 public class DomainConfigurationDAO extends GenericDAO<DomainConfiguration> {
 
+	private MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
+	
+	private static final String NAMESPACE_KEY = "namespace_memcache_key";
+	
 	public DomainConfigurationDAO() {
 		super(DomainConfiguration.class);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<DomainConfiguration> getDomainsConfiguration() {
+		List<DomainConfiguration> domainsConfiguration = (List<DomainConfiguration>) memcacheService.get(NAMESPACE_KEY);
+		if (domainsConfiguration == null) {
+			domainsConfiguration = this.createDomainsConfiguration();
+			memcacheService.put(NAMESPACE_KEY, domainsConfiguration);
+		}
+		return domainsConfiguration;
+	}
+
+	/**
+	 * Returns a domains configuration list for all existing namespaces
+	 */
+	private List<DomainConfiguration> createDomainsConfiguration() {
+		List<DomainConfiguration> domainsConfiguration = new ArrayList<DomainConfiguration>();
+		for (String namespace : this.datastoreFacade.getNamespaces()) {
+			try {
+				NamespaceCommons.changeToNamespace(namespace);
+				if (this.count() != 0) {
+					domainsConfiguration.add(this.getAll().iterator().next());
+				}
+			} finally {
+				NamespaceCommons.changeToPreviousNamespace();
+			}
+		}
+		return domainsConfiguration;
 	}
 
 }

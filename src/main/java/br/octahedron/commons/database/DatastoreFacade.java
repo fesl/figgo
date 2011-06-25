@@ -18,6 +18,7 @@
  */
 package br.octahedron.commons.database;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -27,6 +28,9 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
+
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 
 /**
  * Facade to GAE DataStore Service. Provides methods to save, load and query objects in low level.
@@ -161,6 +165,22 @@ public class DatastoreFacade {
 		query.setFilter(attribute + ".startsWith(:1)");
 		prefix = (prefix != null ? prefix : "").trim();
 		return (List<T>) query.execute(prefix);
+	}
+
+	/**
+	 * Retrieves all namespaces created to domains on application
+	 */
+	public List<String> getNamespaces() {
+		com.google.appengine.api.datastore.Query q = new com.google.appengine.api.datastore.Query(com.google.appengine.api.datastore.Query.NAMESPACE_METADATA_KIND);
+		DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
+		List<String> results = new ArrayList<String>();
+	    for (com.google.appengine.api.datastore.Entity e : ds.prepare(q).asIterable()) {
+	        // A zero numeric id is used for the non-default namespaces
+	        if (e.getKey().getId() == 0) { 
+	        	results.add(e.getKey().getName());
+	        }
+	    }
+		return results;
 	}
 
 	/**
