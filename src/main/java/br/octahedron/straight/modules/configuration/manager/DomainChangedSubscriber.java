@@ -36,9 +36,9 @@ import com.google.appengine.api.memcache.MemcacheServiceFactory;
  * @author Vítor Avelino
  */
 @InterestedEvent(events = { DomainChangedEvent.class })
-public class DomainsListSubscriber implements Subscriber {
+public class DomainChangedSubscriber implements Subscriber {
 
-	private static final Logger logger = Logger.getLogger(DomainsListSubscriber.class.getName());
+	private static final Logger logger = Logger.getLogger(DomainChangedSubscriber.class.getName());
 
 	private MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
 

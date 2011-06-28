@@ -27,8 +27,10 @@ import br.octahedron.commons.eventbus.Subscriber;
 import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module.Type;
+import br.octahedron.straight.modules.admin.manager.DomainChangedEvent;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 import br.octahedron.straight.modules.configuration.manager.CreateDomainConfigurationSubscriber;
+import br.octahedron.straight.modules.configuration.manager.DomainChangedSubscriber;
 import br.octahedron.straight.modules.configuration.manager.DomainUploadSubscriber;
 
 /**
@@ -68,6 +70,7 @@ public class ConfigurationSpec implements ModuleSpec {
 		Set<Class<? extends Subscriber>> subscribers = new HashSet<Class<? extends Subscriber>>();
 		subscribers.add(CreateDomainConfigurationSubscriber.class);
 		subscribers.add(DomainUploadSubscriber.class);
+		subscribers.add(DomainChangedSubscriber.class);
 		return subscribers;
 	}
 
