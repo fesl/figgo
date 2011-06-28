@@ -20,7 +20,8 @@ package br.octahedron.straight.modules.configuration.manager;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -50,6 +51,8 @@ public class DomainConfigurationDAOTest {
 		// storing domains configuration
 		NamespaceCommons.changeToNamespace("octa");
 		this.domainDAO.save(new DomainConfiguration("octa"));
+		NamespaceCommons.changeToNamespace("alua");
+		this.domainDAO.save(new DomainConfiguration("alua"));
 		NamespaceCommons.changeToNamespace("mundo");
 		this.domainDAO.save(new DomainConfiguration("mundo"));
 	}
@@ -57,11 +60,19 @@ public class DomainConfigurationDAOTest {
 	@Test
 	public void getDomains() {
 		this.createDomains();
-		List<DomainConfiguration> domainsConfiguration = this.domainDAO.getDomainsConfiguration();
-		assertEquals(2, domainsConfiguration.size());
+		Set<DomainConfiguration> domainsConfiguration = this.domainDAO.getDomainsConfiguration();
+		Iterator<DomainConfiguration> iterator = domainsConfiguration.iterator();
+		assertEquals(3, domainsConfiguration.size());
+		assertEquals("alua", iterator.next().getDomainName());
+		assertEquals("mundo", iterator.next().getDomainName());
+		assertEquals("octa", iterator.next().getDomainName());
 		
 		// this time it will get from memcache
 		domainsConfiguration = this.domainDAO.getDomainsConfiguration();
-		assertEquals(2, domainsConfiguration.size());
+		iterator = domainsConfiguration.iterator();
+		assertEquals(3, domainsConfiguration.size());
+		assertEquals("alua", iterator.next().getDomainName());
+		assertEquals("mundo", iterator.next().getDomainName());
+		assertEquals("octa", iterator.next().getDomainName());
 	}
 }

@@ -33,7 +33,7 @@ import javax.jdo.annotations.PrimaryKey;
  * @author Danilo Queiroz
  */
 @PersistenceCapable
-public class DomainConfiguration implements Serializable, DomainConfigurationView {
+public class DomainConfiguration implements Serializable, Comparable<DomainConfiguration>, DomainConfigurationView {
 
 	/*
 	 * TODO missing data as description, avatar, mail-list address, site url
@@ -197,6 +197,14 @@ public class DomainConfiguration implements Serializable, DomainConfigurationVie
 		} else {
 			return false;
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(DomainConfiguration o) {
+		return this.domainName.compareToIgnoreCase(o.domainName);
 	}
 
 }

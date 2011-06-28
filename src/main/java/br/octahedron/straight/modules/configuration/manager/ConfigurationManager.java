@@ -18,11 +18,11 @@
  */
 package br.octahedron.straight.modules.configuration.manager;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.logging.Logger;
+import static br.octahedron.commons.eventbus.EventBus.publish;
 
-import static br.octahedron.commons.eventbus.EventBus.*;
+import java.util.Collection;
+import java.util.Set;
+import java.util.logging.Logger;
 
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
@@ -269,7 +269,7 @@ public class ConfigurationManager {
 	/**
 	 * @return all {@link DomainConfiguration} based on namespaces created along the application. 
 	 */
-	protected List<DomainConfiguration> getDomainsConfiguration() {
+	protected Set<DomainConfiguration> getDomainsConfiguration() {
 		return this.domainDAO.getDomainsConfiguration();
 	}
 	
