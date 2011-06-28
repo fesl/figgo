@@ -1,7 +1,7 @@
 import br.octahedron.straight.modules.Module
 import br.octahedron.straight.modules.ManagerBuilder
 
-actions = ['config', 'update', 'upload', 'module']
+actions = ['config', 'update', 'upload', 'module', 'list']
 configurationManager = ManagerBuilder.getConfigurationManager()
 usersManager = ManagerBuilder.getUserManager()
 
@@ -21,6 +21,11 @@ def get_config() {
 	request.description = request.domain.description
 	request.modules = configurationManager.getModulesInfoService()
 	render 'domain/edit.vm', request, response
+}
+
+def get_list() {
+	request.domains = configurationManager.getDomainsConfiguration()
+	render 'domain/list.vm', request, response
 }
 
 def get_upload() {

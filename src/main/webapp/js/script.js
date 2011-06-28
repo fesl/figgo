@@ -26,6 +26,11 @@ $(function() {
 		}
 	});
 	
+	var theTable = $('#domains > table');
+	$('#domain-search').keyup(function() {
+		$.uiTableFilter( theTable, this.value, "Nome" );
+	});
+	
 	var cache = {},
 	lastXhr;
 	$(".autocomplete").autocomplete({
