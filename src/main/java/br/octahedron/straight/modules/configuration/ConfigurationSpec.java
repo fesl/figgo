@@ -27,7 +27,6 @@ import br.octahedron.commons.eventbus.Subscriber;
 import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module.Type;
-import br.octahedron.straight.modules.admin.manager.DomainChangedEvent;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 import br.octahedron.straight.modules.configuration.manager.CreateDomainConfigurationSubscriber;
 import br.octahedron.straight.modules.configuration.manager.DomainChangedSubscriber;
