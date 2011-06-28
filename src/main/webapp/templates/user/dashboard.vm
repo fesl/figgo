@@ -22,9 +22,9 @@
 				<hr />
 				<section id="organizations">
                     <h3>Coletivos associados</h3>
-					#foreach( $organization in $organizations )
+					#foreach( $domain in $domains )
 					<section class="organization">
-						<h4>$organization.Name</h4>
+						<h4>$domain</h4>
 						<ul class="inline">
 							#foreach( $module in $organization.Modules )
 							<li><a href="$serverName/$module.Url">$module.Name</a></li>
