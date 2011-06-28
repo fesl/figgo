@@ -19,6 +19,7 @@
 package br.octahedron.straight.modules.admin.manager;
 
 import br.octahedron.commons.eventbus.Event;
+import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 
 /**
  * Event to inform that a domain configuration has created
@@ -28,7 +29,15 @@ import br.octahedron.commons.eventbus.Event;
 public class DomainChangedEvent implements Event {
 
 	private static final long serialVersionUID = -6348483502587001585L;
+	
+	private DomainConfiguration domainConfiguration;
 
-	public DomainChangedEvent() { }
+	public DomainChangedEvent(DomainConfiguration domainConfiguration) { 
+		this.domainConfiguration = domainConfiguration;
+	}
+	
+	public DomainConfiguration getDomainConfiguration() {
+		return this.domainConfiguration;
+	}
 
 }

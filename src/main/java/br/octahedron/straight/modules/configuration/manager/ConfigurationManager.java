@@ -97,7 +97,7 @@ public class ConfigurationManager {
 		domainConfiguration.setUrl(url);
 		domainConfiguration.setMailList(mailList);
 		domainConfiguration.setDescription(description);
-		publish(new DomainChangedEvent());
+		publish(new DomainChangedEvent(domainConfiguration));
 	}
 
 	/**
