@@ -34,7 +34,7 @@ public class DomainConfigurationDAO extends GenericDAO<DomainConfiguration> {
 
 	private MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
 	
-	private static final String NAMESPACE_KEY = "namespace_memcache_key";
+	public static final String NAMESPACE_KEY = "namespace_memcache_key";
 	
 	public DomainConfigurationDAO() {
 		super(DomainConfiguration.class);

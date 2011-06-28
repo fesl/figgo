@@ -19,11 +19,15 @@
 package br.octahedron.straight.modules.configuration.manager;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Logger;
+
+import static br.octahedron.commons.eventbus.EventBus.*;
 
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
 import br.octahedron.straight.modules.Module;
+import br.octahedron.straight.modules.admin.manager.DomainChangedEvent;
 import br.octahedron.straight.modules.configuration.ModulesInfoService;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationDAO;
@@ -93,6 +97,7 @@ public class ConfigurationManager {
 		domainConfiguration.setUrl(url);
 		domainConfiguration.setMailList(mailList);
 		domainConfiguration.setDescription(description);
+		publish(new DomainChangedEvent());
 	}
 
 	/**
@@ -260,4 +265,12 @@ public class ConfigurationManager {
 			throw new DataDoesNotExistsException("The module " + module.name() + " isn't enabled.");
 		}
 	}
+	
+	/**
+	 * @return all {@link DomainConfiguration} based on namespaces created along the application. 
+	 */
+	protected List<DomainConfiguration> getDomainsConfiguration() {
+		return this.domainDAO.getDomainsConfiguration();
+	}
+	
 }

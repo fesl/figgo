@@ -23,11 +23,15 @@ import java.util.logging.Logger;
 import br.octahedron.commons.eventbus.Event;
 import br.octahedron.commons.eventbus.InterestedEvent;
 import br.octahedron.commons.eventbus.Subscriber;
-import br.octahedron.commons.inject.Inject;
 import br.octahedron.straight.modules.admin.manager.DomainChangedEvent;
+import br.octahedron.straight.modules.configuration.data.DomainConfigurationDAO;
+
+import com.google.appengine.api.memcache.MemcacheService;
+import com.google.appengine.api.memcache.MemcacheServiceFactory;
 
 /**
- * (Re)Generates the domains configuration list for all existing namespaces
+ * Deletes the domains configuration list on {@link MemcacheService} for all existing namespaces
+ * when a domain configuration has changed to force regeneration on the next request of it.
  * 
  * @author Vítor Avelino
  */
@@ -35,24 +39,20 @@ import br.octahedron.straight.modules.admin.manager.DomainChangedEvent;
 public class DomainsListSubscriber implements Subscriber {
 
 	private static final Logger logger = Logger.getLogger(DomainsListSubscriber.class.getName());
-	
-	@Inject
-	private ConfigurationManager configurationManager;
-	
-	/**
-	 * @param configurationManager the configurationManager to set
-	 */
-	public void setConfigurationManager(ConfigurationManager configurationManager) {
-		this.configurationManager = configurationManager;
-	}
-	
-	/* (non-Javadoc)
-	 * @see br.octahedron.commons.eventbus.Subscriber#eventPublished(br.octahedron.commons.eventbus.Event)
+
+	private MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.commons.eventbus.Subscriber#eventPublished(br.octahedron.commons.eventbus.Event
+	 * )
 	 */
 	@Override
 	public void eventPublished(Event event) {
 		logger.info("Regenerating domains configuration list based on existing namespaces");
-		// configurationManager.generateDomainsConfigurationList();
+		memcacheService.delete(DomainConfigurationDAO.NAMESPACE_KEY);
 	}
 
 }
