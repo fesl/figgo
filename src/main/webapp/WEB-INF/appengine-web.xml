@@ -37,7 +37,6 @@
 	<system-properties>
 		<property name="DEFAULT_ENCODING" value="UTF-8" />
 		<property name="file.encoding" value="UTF-8" />
-		<property name="groovy.source.encoding" value="UTF-8"/>
 		<property name="java.util.logging.config.file" value="WEB-INF/logging.properties"/>
 	</system-properties>
 

@@ -1,18 +1,5 @@
 <web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
 
-	<!-- Listeners -->
-	<!-- Boostraps the system -->
-	<listener>
-		<listener-class> br.octahedron.straight.BootstrapServletListener
-		</listener-class>
-	</listener>
-	<!-- Gaelyk required -->
-	<listener>
-		<listener-class>groovyx.gaelyk.GaelykServletContextListener
-		</listener-class>
-	</listener>
-
-	<!-- Filters -->
 	<!-- Appstats -->
 	<!-- <filter>
 		<filter-name>appstats</filter-name>
@@ -27,93 +14,16 @@
 	<filter-mapping>
 		<filter-name>appstats</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping> -->
-	<!-- Controller Checker Filter -->
-	<filter>
-		<filter-name>ControllerFilter</filter-name>
-		<filter-class>br.octahedron.straight.controller.ControllerFilter
-		</filter-class>
-		<init-param>
-			<param-name>APPLICATION_URL</param-name>
-			<param-value>http://www.figgo.com.br</param-value>
-		</init-param>
-		<init-param>
-			<param-name>USER_CREATE_PAGE</param-name>
-			<param-value>/user/new</param-value>
-		</init-param>
-	</filter>
-	<filter-mapping>
-		<filter-name>ControllerFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	<!-- Persistence Manager Filter -->
-	<filter>
-		<filter-name>PersistenceManagerFilter</filter-name>
-		<filter-class>br.octahedron.commons.database.PersistenceManagerFilter
-		</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>PersistenceManagerFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-	<!-- Gaelyk Route Filter -->
-	<filter>
-		<filter-name>RoutesFilter</filter-name>
-		<filter-class>groovyx.gaelyk.routes.RoutesFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>RoutesFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>
-
-	<!-- Servlets -->
-	<!-- Appstats -->
+	</filter-mapping> 
 	<servlet>
 		<servlet-name>appstats</servlet-name>
 		<servlet-class>com.google.appengine.tools.appstats.AppstatsServlet
 		</servlet-class>
 	</servlet>
-	<!-- Blobstore -->
-	<servlet>
-		<servlet-name>BlobServlet</servlet-name>
-		<servlet-class>br.octahedron.commons.blobstore.BlobServlet
-		</servlet-class>
-		<init-param>
-			<param-name>verbose</param-name>
-			<param-value>false</param-value>
-		</init-param>
-		<load-on-startup>0</load-on-startup>
-	</servlet>
-	<!-- Groovy Servlet -->
-	<servlet>
-		<servlet-name>GroovletServlet</servlet-name>
-		<servlet-class>groovyx.gaelyk.GaelykServlet</servlet-class>
-		<init-param>
-			<param-name>verbose</param-name>
-			<!-- Set it to true for more details -->
-			<param-value>false</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-
-	<!-- Mapping -->
-	<!-- Appstats -->
 	<servlet-mapping>
 		<servlet-name>appstats</servlet-name>
 		<url-pattern>/_ah/stats/*</url-pattern>
 	</servlet-mapping>
-	<!-- Blob -->
-	<servlet-mapping>
-		<servlet-name>BlobServlet</servlet-name>
-		<url-pattern>/blob/*</url-pattern>
-	</servlet-mapping>
-	<!-- Groovy -->
-	<servlet-mapping>
-		<servlet-name>GroovletServlet</servlet-name>
-		<url-pattern>*.groovy</url-pattern>
-	</servlet-mapping>
-
-	<!-- Security -->
 	<security-constraint>
 		<web-resource-collection>
 			<url-pattern>/_ah/stats/*</url-pattern>
@@ -122,10 +32,16 @@
 			<role-name>admin</role-name>
 		</auth-constraint>
 	</security-constraint>
+	-->
+	<!-- Cotopaxi controller -->
+	<servlet>
+		<servlet-name>Controller</servlet-name>
+		<servlet-class>br.octahedron.cotopaxi.CotopaxiServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
 	
-	
-	<welcome-file-list>
-		<welcome-file>index.vm</welcome-file>
-	</welcome-file-list>
-
 </web-app>
