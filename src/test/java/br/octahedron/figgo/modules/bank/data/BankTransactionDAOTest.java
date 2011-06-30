@@ -27,9 +27,6 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.octahedron.figgo.modules.bank.data.BankAccount;
-import br.octahedron.figgo.modules.bank.data.BankTransaction;
-import br.octahedron.figgo.modules.bank.data.BankTransactionDAO;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
@@ -38,37 +35,38 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 /**
  * @author Danilo Queiroz
  */
-public class BankTransactionDAOTest {
+public class BankTransactionDAOTest  {
 
+	
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
-	private final BankTransactionDAO transactionDAO = new BankTransactionDAO();
+	private BankTransactionDAO bankTransactionDAO = new BankTransactionDAO();
 
 	@Before
-	public void setUp() {
+	public void setUp() throws InstantiationException {
 		this.helper.setUp();
 	}
 
 	public void createTransactions() {
 		// storing transactions
-		this.transactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "1"));
-		this.transactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
-		this.transactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "3"));
+		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "1"));
+		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "3"));
 	}
 
 	@Test
 	public void getLastNTransactionsTest() {
 		this.createTransactions();
 		String conta1 = "Conta1";
-		Collection<BankTransaction> transactions = this.transactionDAO.getLastNTransactions(conta1, 1);
+		Collection<BankTransaction> transactions = this.bankTransactionDAO.getLastNTransactions(conta1, 1);
 		assertEquals(1, transactions.size());
 
-		transactions = this.transactionDAO.getLastNTransactions(conta1, 10);
+		transactions = this.bankTransactionDAO.getLastNTransactions(conta1, 10);
 		assertEquals(3, transactions.size());
 
-		transactions = this.transactionDAO.getLastNTransactions(conta1, 2);
+		transactions = this.bankTransactionDAO.getLastNTransactions(conta1, 2);
 		assertEquals(2, transactions.size());
 
-		transactions = this.transactionDAO.getLastNTransactions("helloworld", 10);
+		transactions = this.bankTransactionDAO.getLastNTransactions("helloworld", 10);
 		assertTrue(transactions.isEmpty());
 	}
 
@@ -77,13 +75,13 @@ public class BankTransactionDAOTest {
 		this.createTransactions();
 		String conta1 = "Conta1";
 		// recovering all last transactions for account 1l
-		Collection<BankTransaction> transactions = this.transactionDAO.getLastTransactions(conta1, null);
+		Collection<BankTransaction> transactions = this.bankTransactionDAO.getLastTransactions(conta1, null);
 		assertEquals(3, transactions.size());
 		// recovering last transactions for account 1l
-		transactions = this.transactionDAO.getLastTransactions(conta1, 1l);
+		transactions = this.bankTransactionDAO.getLastTransactions(conta1, 1l);
 		assertEquals(2, transactions.size());
 		// recovering last transactions for account 1l
-		transactions = this.transactionDAO.getLastTransactions(conta1, 3l);
+		transactions = this.bankTransactionDAO.getLastTransactions(conta1, 3l);
 		assertTrue(transactions.isEmpty());
 	}
 
@@ -98,12 +96,12 @@ public class BankTransactionDAOTest {
 	public void getBalanceTest() {
 		this.createTransactions();
 		BankAccount account = new BankAccount("Conta1");
-		account.setTransactionInfoService(this.transactionDAO);
+		account.setTransactionInfoService(this.bankTransactionDAO);
 		assertEquals(new BigDecimal(150), account.getBalance());
-		this.transactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "4"));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "4"));
 		assertEquals(new BigDecimal(100), account.getBalance());
-		this.transactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "5"));
-		this.transactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "6"));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "5"));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "6"));
 		assertEquals(new BigDecimal(0), account.getBalance());
 	}
 }

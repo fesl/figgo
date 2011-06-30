@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules.configuration.manager;
 
-import static br.octahedron.cotopaxi.datastore.NamespaceManagerFacade.*;
+import static br.octahedron.cotopaxi.datastore.NamespaceManagerFacade.changeToNamespace;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
@@ -30,7 +30,6 @@ import org.junit.Test;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
 import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
 
-import com.google.appengine.api.NamespaceManager;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
@@ -41,8 +40,8 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 public class DomainConfigurationDAOTest {
 
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
-	private final DomainConfigurationDAO domainDAO = new DomainConfigurationDAO();
-
+	private final DomainConfigurationDAO domainConfigurationDAO = new DomainConfigurationDAO();
+	
 	@Before
 	public void setUp() {
 		this.helper.setUp();
@@ -51,17 +50,17 @@ public class DomainConfigurationDAOTest {
 	public void createDomains() {
 		// storing domains configuration
 		changeToNamespace("octa");
-		this.domainDAO.save(new DomainConfiguration("octa"));
+		this.domainConfigurationDAO.save(new DomainConfiguration("octa"));
 		changeToNamespace("alua");
-		this.domainDAO.save(new DomainConfiguration("alua"));
+		this.domainConfigurationDAO.save(new DomainConfiguration("alua"));
 		changeToNamespace("mundo");
-		this.domainDAO.save(new DomainConfiguration("mundo"));
+		this.domainConfigurationDAO.save(new DomainConfiguration("mundo"));
 	}
 
 	@Test
 	public void getDomains() {
 		this.createDomains();
-		Set<DomainConfiguration> domainsConfiguration = this.domainDAO.getDomainsConfiguration();
+		Set<DomainConfiguration> domainsConfiguration = this.domainConfigurationDAO.getDomainsConfiguration();
 		Iterator<DomainConfiguration> iterator = domainsConfiguration.iterator();
 		assertEquals(3, domainsConfiguration.size());
 		assertEquals("alua", iterator.next().getDomainName());
@@ -69,7 +68,7 @@ public class DomainConfigurationDAOTest {
 		assertEquals("octa", iterator.next().getDomainName());
 
 		// this time it will get from memcache
-		domainsConfiguration = this.domainDAO.getDomainsConfiguration();
+		domainsConfiguration = this.domainConfigurationDAO.getDomainsConfiguration();
 		iterator = domainsConfiguration.iterator();
 		assertEquals(3, domainsConfiguration.size());
 		assertEquals("alua", iterator.next().getDomainName());
