@@ -47,12 +47,13 @@ public class VelocityTemplateRender {
 
 	private static final String TEMPLATE_FOLDER = "templates/";
 	private static final String CONTENT_TYPE = "text/html";
-	
+
 	static {
 		engine.init();
 	}
-	
-	public static void render(String templatePath, ServletRequest req, ServletResponse res) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
+
+	public static void render(String templatePath, ServletRequest req, ServletResponse res) throws ResourceNotFoundException, ParseErrorException,
+			MethodInvocationException, IOException {
 		logger.fine("Getting template from " + TEMPLATE_FOLDER + templatePath);
 		Template template = engine.getTemplate(TEMPLATE_FOLDER + templatePath, "utf-8");
 		Enumeration<?> attributesName = req.getAttributeNames();

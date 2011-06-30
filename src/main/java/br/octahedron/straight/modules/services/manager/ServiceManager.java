@@ -55,7 +55,7 @@ public class ServiceManager {
 		serv.setValue(value);
 		serv.setDescription(description);
 		// This object will be updated to the DB by JDO persistence manager
-		
+
 		return serv;
 	}
 

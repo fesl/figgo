@@ -23,9 +23,9 @@ import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import com.google.common.collect.ComparisonChain;
+import br.octahedron.cotopaxi.datastore.GenericDAO;
 
-import br.octahedron.commons.database.GenericDAO;
+import com.google.common.collect.ComparisonChain;
 
 /**
  * @author Erick Moreno
@@ -34,14 +34,14 @@ import br.octahedron.commons.database.GenericDAO;
  * 
  */
 public class UserDAO extends GenericDAO<User> {
-	
+
 	private static final String NAME_ATTRIBUTE = "nameLowerCase";
 	private static final String EMAIL_ATTRIBUTE = "userId";
 
 	public UserDAO() {
 		super(User.class);
 	}
-	
+
 	/**
 	 * Retrieves a collection of {@link User} that its name or email starts with a term.
 	 * 
@@ -56,14 +56,12 @@ public class UserDAO extends GenericDAO<User> {
 		result.addAll(searchResultName);
 		return result;
 	}
-	
+
 	private class UserComparator implements Comparator<User> {
 		@Override
 		public int compare(User o1, User o2) {
-			return ComparisonChain.start()
-				   .compare(o1.getName().toLowerCase(), o2.getName().toLowerCase())
-				   .compare(o1.getUserId().toLowerCase(), o2.getUserId().toLowerCase())
-				   .result();
+			return ComparisonChain.start().compare(o1.getName().toLowerCase(), o2.getName().toLowerCase()).compare(o1.getUserId().toLowerCase(),
+					o2.getUserId().toLowerCase()).result();
 		}
 	}
 

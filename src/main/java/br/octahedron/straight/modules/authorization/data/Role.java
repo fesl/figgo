@@ -89,7 +89,7 @@ public class Role implements Serializable, RoleView {
 	 * @see br.octahedron.straight.modules.authorization.data.RoleView#getDomain()
 	 */
 	public String getDomain() {
-		return domain;
+		return this.domain;
 	}
 
 	/*
@@ -98,7 +98,7 @@ public class Role implements Serializable, RoleView {
 	 * @see br.octahedron.straight.modules.authorization.data.RoleView#getName()
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	/*
@@ -107,7 +107,7 @@ public class Role implements Serializable, RoleView {
 	 * @see br.octahedron.straight.modules.authorization.data.RoleView#getActivities()
 	 */
 	public Set<String> getActivities() {
-		return activities;
+		return this.activities;
 	}
 
 	/*
@@ -116,9 +116,9 @@ public class Role implements Serializable, RoleView {
 	 * @see br.octahedron.straight.modules.authorization.data.RoleView#getUsers()
 	 */
 	public Set<String> getUsers() {
-		return users;
+		return this.users;
 	}
-	
+
 	public void addUsers(Collection<String> users) {
 		this.users.addAll(users);
 	}
@@ -126,7 +126,7 @@ public class Role implements Serializable, RoleView {
 	public void addUsers(String... users) {
 		this.addUsers(Arrays.asList(users));
 	}
-	
+
 	public void addActivities(Collection<String> activities) {
 		this.activities.addAll(activities);
 	}
@@ -134,16 +134,20 @@ public class Role implements Serializable, RoleView {
 	public void addActivities(String... activities) {
 		this.addActivities(Arrays.asList(activities));
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
 	public int hashCode() {
 		return this.domain.hashCode() & this.name.hashCode();
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override

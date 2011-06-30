@@ -19,7 +19,7 @@
 package br.octahedron.straight.controller;
 
 /**
- *	Indicates an User with a new Account
+ * Indicates an User with a new Account
  */
 public class InexistentAccountException extends Exception {
 

@@ -18,7 +18,7 @@
  */
 package br.octahedron.straight.modules.admin.manager;
 
-import br.octahedron.commons.eventbus.Event;
+import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 
 /**
@@ -29,13 +29,13 @@ import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 public class DomainChangedEvent implements Event {
 
 	private static final long serialVersionUID = -6348483502587001585L;
-	
+
 	private DomainConfiguration domainConfiguration;
 
-	public DomainChangedEvent(DomainConfiguration domainConfiguration) { 
+	public DomainChangedEvent(DomainConfiguration domainConfiguration) {
 		this.domainConfiguration = domainConfiguration;
 	}
-	
+
 	public DomainConfiguration getDomainConfiguration() {
 		return this.domainConfiguration;
 	}

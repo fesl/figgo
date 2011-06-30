@@ -27,7 +27,8 @@ public class DataDoesNotExistsException extends RuntimeException {
 
 	private static final long serialVersionUID = -3152533253588504515L;
 
-	public DataDoesNotExistsException() { }
+	public DataDoesNotExistsException() {
+	}
 
 	public DataDoesNotExistsException(String message) {
 		super(message);

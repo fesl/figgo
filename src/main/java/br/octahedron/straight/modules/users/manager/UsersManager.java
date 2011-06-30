@@ -29,9 +29,10 @@ import br.octahedron.straight.modules.users.data.UserDAO;
 public class UsersManager {
 
 	private UserDAO userDAO = new UserDAO();
-	
+
 	/**
-	 * @param userDAO the userDAO to set
+	 * @param userDAO
+	 *            the userDAO to set
 	 */
 	protected void setUserDAO(UserDAO userDAO) {
 		this.userDAO = userDAO;
@@ -84,13 +85,14 @@ public class UsersManager {
 	 * Updates a {@link User} avatar key with the generated blob key.
 	 * 
 	 * @param userId
-	 * @param avatarKey Blob key generated when uploaded avatar
+	 * @param avatarKey
+	 *            Blob key generated when uploaded avatar
 	 */
 	public void updateAvatarKey(String userId, String avatarKey) {
 		User user = this.userDAO.get(userId);
 		user.setAvatarKey(avatarKey);
 	}
-	
+
 	/**
 	 * Retrieves a collection of {@link User} that its name or email starts with a term.
 	 * 

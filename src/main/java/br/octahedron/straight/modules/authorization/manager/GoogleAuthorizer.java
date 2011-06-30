@@ -27,9 +27,9 @@ import com.google.appengine.api.users.UserServiceFactory;
  * @author Danilo Queiroz
  */
 class GoogleAuthorizer {
-	
+
 	private UserService users = UserServiceFactory.getUserService();
-	
+
 	/**
 	 * @return <code>true</code> if the current user is the app admin.
 	 */

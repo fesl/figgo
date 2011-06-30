@@ -18,7 +18,7 @@
  */
 package br.octahedron.straight.modules.bank.data;
 
-import br.octahedron.commons.database.GenericDAO;
+import br.octahedron.cotopaxi.datastore.GenericDAO;
 
 /**
  * @author Danilo Queiroz

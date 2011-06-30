@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import br.octahedron.commons.eventbus.Subscriber;
+import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module.Type;
@@ -31,19 +31,23 @@ import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleCon
 
 /**
  * @author danilo
- *
+ * 
  */
 public class AuthorizationSpec implements ModuleSpec {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleType()
 	 */
 	@Override
 	public Type getModuleType() {
 		return Module.Type.APPLICATION_DOMAIN;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#hasDomainSpecificConfiguration()
 	 */
 	@Override
@@ -52,7 +56,9 @@ public class AuthorizationSpec implements ModuleSpec {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getDomainSpecificModuleConfiguration()
 	 */
 	@Override
@@ -61,7 +67,9 @@ public class AuthorizationSpec implements ModuleSpec {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#hasSubscribers()
 	 */
 	@Override
@@ -69,7 +77,9 @@ public class AuthorizationSpec implements ModuleSpec {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getSubscribers()
 	 */
 	@Override
@@ -79,7 +89,9 @@ public class AuthorizationSpec implements ModuleSpec {
 		return subscribers;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleActions()
 	 */
 	@Override
@@ -87,15 +99,19 @@ public class AuthorizationSpec implements ModuleSpec {
 		return Collections.emptySet();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleAdministrativeActions()
 	 */
 	@Override
 	public Set<String> getModuleAdministrativeActions() {
-		return Collections.emptySet(); 
+		return Collections.emptySet();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthentication(java.lang.String)
 	 */
 	@Override
@@ -103,7 +119,9 @@ public class AuthorizationSpec implements ModuleSpec {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthorization(java.lang.String)
 	 */
 	@Override
@@ -111,7 +129,9 @@ public class AuthorizationSpec implements ModuleSpec {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#usesDomainNamespace()
 	 */
 	@Override

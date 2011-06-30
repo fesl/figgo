@@ -18,31 +18,31 @@
  */
 package br.octahedron.straight.modules.configuration.manager;
 
-import br.octahedron.commons.blobstore.DomainUploadEvent;
-import br.octahedron.commons.eventbus.AbstractNamespaceSubscriber;
-import br.octahedron.commons.eventbus.Event;
-import br.octahedron.commons.eventbus.InterestedEvent;
-import br.octahedron.commons.inject.Inject;
+import br.octahedron.cotopaxi.eventbus.AbstractNamespaceSubscriber;
+import br.octahedron.cotopaxi.eventbus.Event;
+import br.octahedron.cotopaxi.eventbus.InterestedEvent;
+import br.octahedron.cotopaxi.inject.Inject;
 
 /**
  * @author Vítor Avelino
- *
+ * 
  */
-@InterestedEvent(events = { DomainUploadEvent.class })
+@InterestedEvent(events = { }) // FIXME update this
 public class DomainUploadSubscriber extends AbstractNamespaceSubscriber {
 
 	private static final long serialVersionUID = -5493253101510358283L;
 
 	@Inject
 	private ConfigurationManager configurationManager;
-	
+
 	/**
-	 * @param configurationManager the configurationManager to set
+	 * @param configurationManager
+	 *            the configurationManager to set
 	 */
 	public void setConfigurationManager(ConfigurationManager configurationManager) {
 		this.configurationManager = configurationManager;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -52,8 +52,9 @@ public class DomainUploadSubscriber extends AbstractNamespaceSubscriber {
 	 */
 	@Override
 	public void processEvent(Event event) {
-		DomainUploadEvent uploadEvent = (DomainUploadEvent) event;
-		this.configurationManager.updateAvatarKey(uploadEvent.getBlobKey());
+		// FIXME update this
+//		DomainUploadEvent uploadEvent = (DomainUploadEvent) event;
+//		this.configurationManager.updateAvatarKey(uploadEvent.getBlobKey());
 	}
 
 }

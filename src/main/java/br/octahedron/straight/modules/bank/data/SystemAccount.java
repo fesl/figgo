@@ -28,7 +28,7 @@ public class SystemAccount extends BankAccount {
 
 	private static final long serialVersionUID = 7342767364513878827L;
 	public static final String ID = "FiggoBank";
-	
+
 	public SystemAccount() {
 		super(ID);
 	}

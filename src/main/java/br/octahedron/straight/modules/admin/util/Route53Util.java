@@ -79,7 +79,7 @@ public class Route53Util {
 	}
 
 	public static void createDomain(String domain, String accessId, String accessKey, String hostedZoneId) throws Route53Exception {
-		try{ 
+		try {
 			HTTPRequest request = new HTTPRequest(new URL(ROUTE53_SERVER + VERSION_SPEC + HOSTED_ZONE_COMMAND + hostedZoneId + RRSET),
 					HTTPMethod.POST);
 			String requestBody = generateRequestBody(domain);

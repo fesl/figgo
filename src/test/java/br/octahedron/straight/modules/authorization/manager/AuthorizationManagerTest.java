@@ -36,14 +36,15 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
-import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
-
 import br.octahedron.straight.modules.DataAlreadyExistsException;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
 import br.octahedron.straight.modules.authorization.data.Role;
 import br.octahedron.straight.modules.authorization.data.RoleDAO;
 import br.octahedron.straight.modules.authorization.data.RoleView;
+import br.octahedron.straight.modules.authorization.manager.AuthorizationManager;
+
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
 
 /**
  * @author Danilo Queiroz
@@ -56,7 +57,7 @@ public class AuthorizationManagerTest {
 
 	@Before
 	public void setUp() {
-		helper.setUp();
+		this.helper.setUp();
 		this.roleDAO = createMock(RoleDAO.class);
 		this.authManager = new AuthorizationManager();
 		this.authManager.setRoleDAO(this.roleDAO);

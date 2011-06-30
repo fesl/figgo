@@ -27,7 +27,6 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-
 /**
  * Represents the configurations for a given module. It contains the module facade class, and all
  * properties need by a module.
@@ -171,8 +170,10 @@ public class DomainSpecificModuleConfiguration implements Serializable, DomainSp
 			return false;
 		}
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#clone()
 	 */
 	@Override

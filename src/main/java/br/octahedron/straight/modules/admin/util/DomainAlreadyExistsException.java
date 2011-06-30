@@ -24,7 +24,7 @@ package br.octahedron.straight.modules.admin.util;
  * @author Danilo Queiroz
  */
 public class DomainAlreadyExistsException extends Route53Exception {
-	
+
 	private static final long serialVersionUID = 7854486350058249543L;
 
 	public DomainAlreadyExistsException(String message) {

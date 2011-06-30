@@ -25,17 +25,17 @@ import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 /**
  * @author vitoravelino
- *
+ * 
  */
 public class WebDriverTestClass {
 
 	protected static WebDriver driver;
-	
+
 	@BeforeClass
 	public static void createDriver() {
 		driver = new HtmlUnitDriver();
 	}
-	
+
 	@AfterClass
 	public static void destroyDriver() {
 		driver.quit();

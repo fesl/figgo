@@ -25,12 +25,15 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.octahedron.straight.modules.users.data.User;
+import br.octahedron.straight.modules.users.data.UserDAO;
+
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 /**
  * @author Vítor Avelino
- *
+ * 
  */
 public class UsersDAOTest {
 
@@ -41,7 +44,7 @@ public class UsersDAOTest {
 	public void setUp() {
 		this.helper.setUp();
 	}
-	
+
 	public void createUsers() {
 		// storing users
 		this.userDAO.save(new User("test3@example.com", "Name3", "8888 8888", ""));
@@ -50,29 +53,29 @@ public class UsersDAOTest {
 		this.userDAO.save(new User("lalala@example.com", "User", "8888 8888", ""));
 		this.userDAO.save(new User("user2@example.com", "Lalala", "8888 8888", ""));
 	}
-	
+
 	@Test
 	public void searchUser() {
 		this.createUsers();
 		Collection<User> result = this.userDAO.getUsersStartingWith("Name3");
 		assertEquals(1, result.size());
-		result  = this.userDAO.getUsersStartingWith("name");
+		result = this.userDAO.getUsersStartingWith("name");
 		assertEquals(3, result.size());
 		assertEquals("[[name1 test@example.com], [Name2 test2@example.com], [Name3 test3@example.com]]", result.toString());
-		
+
 		result = this.userDAO.getUsersStartingWith("test3");
 		assertEquals(1, result.size());
 		assertEquals("[[Name3 test3@example.com]]", result.toString());
-		
-		result  = this.userDAO.getUsersStartingWith("test");
+
+		result = this.userDAO.getUsersStartingWith("test");
 		assertEquals(3, result.size());
 		assertEquals("[[name1 test@example.com], [Name2 test2@example.com], [Name3 test3@example.com]]", result.toString());
-		
-		result  = this.userDAO.getUsersStartingWith("user");
+
+		result = this.userDAO.getUsersStartingWith("user");
 		assertEquals(2, result.size());
 		assertEquals("[[Lalala user2@example.com], [User lalala@example.com]]", result.toString());
-		
-		result  = this.userDAO.getUsersStartingWith("lal");
+
+		result = this.userDAO.getUsersStartingWith("lal");
 		assertEquals(2, result.size());
 		assertEquals("[[Lalala user2@example.com], [User lalala@example.com]]", result.toString());
 	}

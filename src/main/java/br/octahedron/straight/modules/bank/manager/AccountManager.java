@@ -68,12 +68,13 @@ public class AccountManager {
 	/**
 	 * Get the N last transactions for an account.
 	 * 
-	 * @return A {@link Collection} with the last n transactions. If there's no transactions for the given account, returns an empty {@link Collection}
+	 * @return A {@link Collection} with the last n transactions. If there's no transactions for the
+	 *         given account, returns an empty {@link Collection}
 	 */
 	public Collection<BankTransaction> getLastNTransactions(String accountId, int qnt) {
 		return this.transactionDAO.getLastNTransactions(accountId, qnt);
 	}
-	
+
 	/**
 	 * TODO!
 	 * 
@@ -84,7 +85,7 @@ public class AccountManager {
 	public void insertBallast(String domainAccount, BigDecimal amount, String comment) {
 		this.transact(SystemAccount.ID, domainAccount, amount, comment, TransactionType.TRANSFER);
 	}
-	
+
 	public BigDecimal getBalance(String accountId) {
 		try {
 			return this.getBalance(this.getValidAccount(accountId));

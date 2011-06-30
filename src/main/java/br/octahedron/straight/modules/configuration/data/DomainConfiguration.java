@@ -26,7 +26,6 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-
 /**
  * Represents an domain configuration, as the domain name, and the enabled modules.
  * 
@@ -44,22 +43,22 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	@PrimaryKey
 	@Persistent
 	private String domainName;
-	
+
 	@Persistent
 	private String name;
-	
+
 	@Persistent
 	private String url;
-	
+
 	@Persistent
 	private String mailList;
-	
+
 	@Persistent
 	private String description;
-	
+
 	@Persistent
 	private String avatarKey;
-	
+
 	@Persistent
 	private HashSet<String> modulesEnabled = new HashSet<String>();
 
@@ -68,7 +67,7 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	}
 
 	/**
-	 * @return the domain name 
+	 * @return the domain name
 	 */
 	public String getDomainName() {
 		return this.domainName;
@@ -85,11 +84,12 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	 * @return the public domain name
 	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
-	
+
 	/**
 	 * Sets the domain avatar key used on blobstore
+	 * 
 	 * @param avatarKey
 	 */
 	public void setAvatarKey(String avatarKey) {
@@ -100,9 +100,9 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	 * @return the domain avatar key used on blobstore
 	 */
 	public String getAvatarKey() {
-		return avatarKey;
+		return this.avatarKey;
 	}
-	
+
 	/**
 	 * @param description
 	 */
@@ -114,11 +114,12 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	 * @return description of domain
 	 */
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
-	
+
 	/**
-	 * @param url the url to set
+	 * @param url
+	 *            the url to set
 	 */
 	public void setUrl(String url) {
 		this.url = url;
@@ -128,11 +129,12 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	 * @return the url
 	 */
 	public String getUrl() {
-		return url;
+		return this.url;
 	}
-	
+
 	/**
-	 * @param mailList the mailList to set
+	 * @param mailList
+	 *            the mailList to set
 	 */
 	public void setMailList(String mailList) {
 		this.mailList = mailList;
@@ -142,11 +144,11 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	 * @return the mailList
 	 */
 	public String getMailList() {
-		return mailList;
+		return this.mailList;
 	}
 
 	/**
-	 * Enables a module for this domain 
+	 * Enables a module for this domain
 	 */
 	public void enableModule(String moduleName) {
 		this.modulesEnabled.add(moduleName);
@@ -160,7 +162,7 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	}
 
 	/**
-	 * @return a {@link Set} of all enabled modules for this domain.  
+	 * @return a {@link Set} of all enabled modules for this domain.
 	 */
 	@SuppressWarnings("unchecked")
 	public Set<String> getModulesEnabled() {
@@ -168,7 +170,8 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	}
 
 	/**
-	 * @return <code>true</code> if the module with the given name is enabled, <code>false</code> otherwise.
+	 * @return <code>true</code> if the module with the given name is enabled, <code>false</code>
+	 *         otherwise.
 	 */
 	public boolean isModuleEnabled(String moduleName) {
 		return this.modulesEnabled.contains(moduleName);
@@ -199,7 +202,9 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)
 	 */
 	@Override

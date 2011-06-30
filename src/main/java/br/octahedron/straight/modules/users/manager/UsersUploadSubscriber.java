@@ -18,38 +18,43 @@
  */
 package br.octahedron.straight.modules.users.manager;
 
-import br.octahedron.commons.blobstore.UserUploadEvent;
-import br.octahedron.commons.eventbus.Event;
-import br.octahedron.commons.eventbus.InterestedEvent;
-import br.octahedron.commons.eventbus.Subscriber;
-import br.octahedron.commons.inject.Inject;
+import br.octahedron.cotopaxi.eventbus.Event;
+import br.octahedron.cotopaxi.eventbus.InterestedEvent;
+import br.octahedron.cotopaxi.eventbus.Subscriber;
+import br.octahedron.cotopaxi.inject.Inject;
 
 /**
  * @author vitoravelino
- *
+ * 
  */
-@InterestedEvent(events = { UserUploadEvent.class })
+@InterestedEvent(events = { }) // FIXME update this
 public class UsersUploadSubscriber implements Subscriber {
 
 	private static final long serialVersionUID = -5493253101510358283L;
 
 	@Inject
 	private UsersManager usersManager;
-	
+
 	/**
-	 * @param usersManager the usersManager to set
+	 * @param usersManager
+	 *            the usersManager to set
 	 */
 	public void setUsersManager(UsersManager usersManager) {
 		this.usersManager = usersManager;
 	}
-	
-	/* (non-Javadoc)
-	 * @see br.octahedron.commons.eventbus.Subscriber#eventPublished(br.octahedron.commons.eventbus.Event)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.commons.eventbus.Subscriber#eventPublished(br.octahedron.commons.eventbus.Event
+	 * )
 	 */
 	@Override
 	public void eventPublished(Event event) {
-		UserUploadEvent uploadEvent = (UserUploadEvent) event; 
-		usersManager.updateAvatarKey(uploadEvent.getTarget(), uploadEvent.getBlobKey());
+		// FIXME update this
+//		UserUploadEvent uploadEvent = (UserUploadEvent) event;
+//		this.usersManager.updateAvatarKey(uploadEvent.getTarget(), uploadEvent.getBlobKey());
 	}
 
 }

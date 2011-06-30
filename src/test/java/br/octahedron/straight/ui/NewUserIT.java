@@ -28,10 +28,9 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-
 /**
  * @author Vítor Avelino
- *
+ * 
  */
 public class NewUserIT extends WebDriverTestClass {
 
@@ -46,7 +45,7 @@ public class NewUserIT extends WebDriverTestClass {
 		WebElement loginButton = driver.findElement(By.xpath("//input[@value='Log In']"));
 		loginButton.click();
 	}
-	
+
 	@After
 	public void after() {
 		driver.manage().deleteAllCookies();
@@ -55,7 +54,7 @@ public class NewUserIT extends WebDriverTestClass {
 	@Test
 	public void testRegisterUser() {
 		// after login with new user, viewing register form
-		Assert.assertEquals("http://localhost:8080/user/new",  driver.getCurrentUrl());
+		Assert.assertEquals("http://localhost:8080/user/new", driver.getCurrentUrl());
 		// filling out the form
 		WebElement nameTextInput = driver.findElement(By.xpath("//input[@name='name']"));
 		nameTextInput.sendKeys("Fulano");
@@ -68,8 +67,7 @@ public class NewUserIT extends WebDriverTestClass {
 		// viewing dashboard after registration
 		Assert.assertEquals("http://localhost:8080/dashboard", driver.getCurrentUrl());
 	}
-	
-	
+
 	@Test
 	public void testLoginWithoutRegister() {
 		// after login with new user, viewing register form

@@ -20,7 +20,6 @@ package br.octahedron.straight.modules.configuration.data;
 
 import java.util.Set;
 
-
 /**
  * A read-only interface for the {@link DomainConfiguration}
  * 
@@ -30,12 +29,12 @@ import java.util.Set;
  * @author Erick Moreno
  */
 public interface DomainConfigurationView {
-	
+
 	/**
 	 * @see DomainConfiguration#getDomainName()
 	 */
 	public abstract String getDomainName();
-	
+
 	/**
 	 * @see DomainConfiguration#getName()
 	 */

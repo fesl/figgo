@@ -22,7 +22,7 @@ import java.util.Set;
 
 /**
  * @author Erick Moreno
- *
+ * 
  */
 public interface ServiceView {
 

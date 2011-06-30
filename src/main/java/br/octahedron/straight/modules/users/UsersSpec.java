@@ -21,7 +21,7 @@ package br.octahedron.straight.modules.users;
 import java.util.Set;
 import java.util.TreeSet;
 
-import br.octahedron.commons.eventbus.Subscriber;
+import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module.Type;
@@ -111,7 +111,9 @@ public class UsersSpec implements ModuleSpec {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthentication(java.lang.String)
 	 */
 	@Override
@@ -119,7 +121,9 @@ public class UsersSpec implements ModuleSpec {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthorization(java.lang.String)
 	 */
 	@Override
@@ -127,7 +131,9 @@ public class UsersSpec implements ModuleSpec {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#usesDomainNamespace()
 	 */
 	@Override

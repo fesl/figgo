@@ -28,37 +28,41 @@ import javax.jdo.annotations.PrimaryKey;
 
 /**
  * Simple entity create for Datastore tests purpose.
+ * 
  * @author Danilo Queiroz
  */
 @PersistenceCapable
 public class Entity implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@PrimaryKey
 	@Persistent
 	private String key;
-	
+
 	@Persistent
 	private List<String> elements = new LinkedList<String>();
-	
+
 	/**
 	 * 
 	 */
 	public Entity(String key) {
 		this.key = key;
 	}
-	
-	public void add(String ... elements) {
-		for(String element : elements)
+
+	public void add(String... elements) {
+		for (String element : elements) {
 			this.elements.add(element);
+		}
 	}
-	
+
 	public List<String> getElements() {
 		return this.elements;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override

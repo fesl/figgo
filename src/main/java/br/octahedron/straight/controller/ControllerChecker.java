@@ -18,12 +18,12 @@
  */
 package br.octahedron.straight.controller;
 
+import static br.octahedron.cotopaxi.datastore.NamespaceManagerFacade.changeToNamespace;
 import static br.octahedron.straight.controller.ControllerFilter.APPLICATION_DOMAIN;
 import static br.octahedron.straight.controller.ControllerFilter.BARRA;
 
 import java.util.logging.Logger;
 
-import br.octahedron.commons.database.NamespaceCommons;
 import br.octahedron.straight.modules.ManagerBuilder;
 import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
@@ -38,8 +38,8 @@ import br.octahedron.straight.modules.users.manager.UsersManager;
 public class ControllerChecker {
 
 	private static final Logger logger = Logger.getLogger(ControllerChecker.class.getName());
-	private final UsersManager usersManager = (UsersManager) ManagerBuilder.getUserManager();
-	private final AuthorizationManager authorizationManager = (AuthorizationManager) ManagerBuilder.getAuthorizationManager();
+	private final UsersManager usersManager = ManagerBuilder.getUserManager();
+	private final AuthorizationManager authorizationManager = ManagerBuilder.getAuthorizationManager();
 
 	public void check(String domain, String email, String moduleName, String action) throws NotFoundException, NotLoggedException,
 			InexistentAccountException, NotAuthorizedException {
@@ -72,7 +72,7 @@ public class ControllerChecker {
 			}
 
 			if (spec.usesDomainNamespace()) {
-				NamespaceCommons.changeToNamespace(domain);
+				changeToNamespace(domain);
 			}
 		} catch (IllegalArgumentException e) {
 			throw new NotFoundException(moduleName);

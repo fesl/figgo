@@ -56,7 +56,9 @@ public class User implements Serializable, UserView {
 		this.description = description;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.users.data.UserView#getDescription()
 	 */
 	@Override
@@ -72,7 +74,9 @@ public class User implements Serializable, UserView {
 		this.description = description;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.users.data.UserView#getName()
 	 */
 	@Override
@@ -89,7 +93,9 @@ public class User implements Serializable, UserView {
 		this.nameLowerCase = this.name.toLowerCase();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.users.data.UserView#getPhoneNumber()
 	 */
 	@Override
@@ -105,7 +111,9 @@ public class User implements Serializable, UserView {
 		this.phoneNumber = phoneNumber;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.users.data.UserView#getAvatar()
 	 */
 	@Override
@@ -121,7 +129,9 @@ public class User implements Serializable, UserView {
 		this.avatarKey = avatarKey;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.users.data.UserView#getUserId()
 	 */
 	@Override
@@ -129,12 +139,14 @@ public class User implements Serializable, UserView {
 		return this.userId;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		return "[" + this.name + " " + this.userId + "]";
 	}
-	
+
 }

@@ -18,9 +18,10 @@
  */
 package br.octahedron.straight.test;
 
+import static junit.framework.Assert.assertEquals;
+
 import java.util.Collection;
 
-import static junit.framework.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,13 +32,14 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 /**
- * Tests for Datastore Behavior 
+ * Tests for Datastore Behavior
+ * 
  * @author Danilo Queiroz
  */
 public class TestEntity {
-	
+
 	private EntityDAO dao = new EntityDAO();
-	
+
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
 	@Before
@@ -51,18 +53,18 @@ public class TestEntity {
 	 */
 	private void populate() {
 		Entity e = new Entity("1");
-		e.add("a", "b","c");
-		dao.save(e);
+		e.add("a", "b", "c");
+		this.dao.save(e);
 		e = new Entity("2");
 		e.add("a", "b");
-		dao.save(e);
+		this.dao.save(e);
 		e = new Entity("3");
 		e.add("b");
-		dao.save(e);
+		this.dao.save(e);
 		e = new Entity("4");
-		e.add("b","c");
-		dao.save(e);
-		
+		e.add("b", "c");
+		this.dao.save(e);
+
 	}
 
 	@Test
@@ -70,7 +72,7 @@ public class TestEntity {
 		Collection<Entity> entities = this.dao.getEntitiesWithElement("b");
 		assertEquals(4, entities.size());
 		System.out.println(entities);
-		
+
 		entities = this.dao.getEntitiesWithElement("a");
 		assertEquals(2, entities.size());
 		System.out.println(entities);

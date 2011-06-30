@@ -18,14 +18,14 @@
  */
 package br.octahedron.straight.modules.admin.manager;
 
-import br.octahedron.commons.eventbus.NamespaceEvent;
+import br.octahedron.cotopaxi.eventbus.NamespaceEvent;
 
 /**
  * Event to inform that an domain was created
  * 
  * @author Danilo Queiroz
  */
-public class DomainCreatedEvent extends NamespaceEvent  {
+public class DomainCreatedEvent extends NamespaceEvent {
 
 	private static final long serialVersionUID = -6348483502587001585L;
 	private String adminID;
@@ -39,6 +39,6 @@ public class DomainCreatedEvent extends NamespaceEvent  {
 	 * @return the adminID
 	 */
 	public String getAdminID() {
-		return adminID;
+		return this.adminID;
 	}
 }

@@ -41,10 +41,11 @@ public class JSONRender {
 
 	private static final long serialVersionUID = -6755680559427788645L;
 	private static final Logger logger = Logger.getLogger(JSONRender.class.getName());
-	
+
 	private static final String CONTENT_TYPE = "application/json";
 
-	public static void render(Object object, ServletRequest req, ServletResponse res) throws ResourceNotFoundException, ParseErrorException, MethodInvocationException, IOException {
+	public static void render(Object object, ServletRequest req, ServletResponse res) throws ResourceNotFoundException, ParseErrorException,
+			MethodInvocationException, IOException {
 		res.setContentType(CONTENT_TYPE);
 		res.getWriter().write(new JSONSerializer().prettyPrint(true).serialize(object));
 		logger.fine("Written json in response writer");

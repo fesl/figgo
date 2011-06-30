@@ -22,18 +22,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Set;
 
-import br.octahedron.commons.eventbus.Subscriber;
+import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 
 /**
  * It contains all module's information that is need by different parts of the system.
- *  
+ * 
  * Each module should implement this interface, and add the module to the {@link Module} enum.
  * 
  * @author Danilo Queiroz
  */
 public interface ModuleSpec {
-	
+
 	/**
 	 * @return The {@link Module.Type}
 	 */
@@ -48,7 +48,8 @@ public interface ModuleSpec {
 	/**
 	 * @return The {@link DomainSpecificModuleConfiguration} for this module, if, and only if, the
 	 *         {@link ModuleSpec#hasDomainSpecificConfiguration()} returns <code>true</code>. If the
-	 *         {@link ModuleSpec#hasDomainSpecificConfiguration()} returns <code>false</code> it returns null.
+	 *         {@link ModuleSpec#hasDomainSpecificConfiguration()} returns <code>false</code> it
+	 *         returns null.
 	 */
 	public DomainSpecificModuleConfiguration getDomainSpecificModuleConfiguration();
 
@@ -96,6 +97,5 @@ public interface ModuleSpec {
 	 * @return
 	 */
 	public boolean usesDomainNamespace();
-	
 
 }

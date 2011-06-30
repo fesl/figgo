@@ -20,11 +20,11 @@ package br.octahedron.straight.modules.configuration.manager;
 
 import java.util.logging.Logger;
 
-import br.octahedron.commons.eventbus.AbstractNamespaceSubscriber;
-import br.octahedron.commons.eventbus.Event;
-import br.octahedron.commons.eventbus.InterestedEvent;
-import br.octahedron.commons.eventbus.NamespaceEvent;
-import br.octahedron.commons.inject.Inject;
+import br.octahedron.cotopaxi.eventbus.AbstractNamespaceSubscriber;
+import br.octahedron.cotopaxi.eventbus.Event;
+import br.octahedron.cotopaxi.eventbus.InterestedEvent;
+import br.octahedron.cotopaxi.eventbus.NamespaceEvent;
+import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.admin.manager.DomainCreatedEvent;

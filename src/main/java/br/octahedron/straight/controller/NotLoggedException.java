@@ -20,7 +20,7 @@ package br.octahedron.straight.controller;
 
 /**
  * Indicates that the user is not logged
- *
+ * 
  */
 public class NotLoggedException extends Exception {
 
@@ -39,7 +39,7 @@ public class NotLoggedException extends Exception {
 	public NotLoggedException(Throwable cause) {
 		super(cause);
 	}
-	
+
 	public NotLoggedException(String message, Throwable cause) {
 		super(message, cause);
 	}

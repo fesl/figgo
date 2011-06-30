@@ -20,13 +20,15 @@ package br.octahedron.straight.modules.admin.util;
 
 /**
  * Indicates that an error occurs accessing Route53
+ * 
  * @author Danilo Queiroz
  */
 public class Route53Exception extends Exception {
 
 	private static final long serialVersionUID = -7889264324186092069L;
 
-	public Route53Exception() {	}
+	public Route53Exception() {
+	}
 
 	public Route53Exception(String message) {
 		super(message);

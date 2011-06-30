@@ -18,7 +18,7 @@
  */
 package br.octahedron.straight.modules.admin.manager;
 
-import static br.octahedron.commons.eventbus.EventBus.publish;
+import static br.octahedron.cotopaxi.eventbus.EventBus.publish;
 import static br.octahedron.straight.modules.admin.data.ApplicationConfiguration.APPLICATION_NAME;
 import br.octahedron.straight.modules.DataDoesNotExistsException;
 import br.octahedron.straight.modules.admin.data.ApplicationConfiguration;
@@ -33,9 +33,9 @@ import br.octahedron.straight.modules.admin.util.Route53Util;
  * @author Danilo Penna Queiroz
  */
 public class AdminManager {
-	
+
 	private ApplicationConfigurationDAO applicationConfigurationDAO = new ApplicationConfigurationDAO();
-	
+
 	private void createApplicationConfiguration() {
 		ApplicationConfiguration appConf = new ApplicationConfiguration();
 		this.applicationConfigurationDAO.save(appConf);
@@ -47,18 +47,18 @@ public class AdminManager {
 	public boolean hasApplicationConfiguration() {
 		return this.applicationConfigurationDAO.exists(APPLICATION_NAME);
 	}
-	
+
 	/**
 	 * @return the application configuration
 	 */
 	public ApplicationConfigurationView getApplicationConfiguration() {
-		if ( this.hasApplicationConfiguration() ) {
+		if (this.hasApplicationConfiguration()) {
 			return this.applicationConfigurationDAO.get(APPLICATION_NAME);
 		} else {
 			throw new DataDoesNotExistsException("This application isn't configured");
 		}
 	}
-	
+
 	/**
 	 * Configures this application
 	 */
@@ -66,7 +66,7 @@ public class AdminManager {
 		if (!this.hasApplicationConfiguration()) {
 			this.createApplicationConfiguration();
 		}
-		
+
 		ApplicationConfiguration appConf = this.applicationConfigurationDAO.get(APPLICATION_NAME);
 		appConf.setRoute53AccessKeyID(route53AccessKeyID);
 		appConf.setRoute53AccessKeySecret(route53AccessKeySecret);
@@ -76,10 +76,11 @@ public class AdminManager {
 	/**
 	 * Creates the domain at Rout53
 	 * 
-	 * @throws Route53Exception if some error occurs when accessing route53 API
+	 * @throws Route53Exception
+	 *             if some error occurs when accessing route53 API
 	 */
 	public void createDomain(String domainName, String adminID) throws Route53Exception {
-		if ( this.hasApplicationConfiguration() ) {
+		if (this.hasApplicationConfiguration()) {
 			ApplicationConfiguration appConf = this.applicationConfigurationDAO.get(APPLICATION_NAME);
 			Route53Util.createDomain(domainName, appConf.getRoute53AccessKeyID(), appConf.getRoute53AccessKeySecret(), appConf.getRoute53ZoneID());
 			publish(new DomainCreatedEvent(domainName, adminID));

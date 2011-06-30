@@ -22,7 +22,7 @@ import java.util.Collection;
 
 import javax.jdo.Query;
 
-import br.octahedron.commons.database.GenericDAO;
+import br.octahedron.cotopaxi.datastore.GenericDAO;
 
 /**
  * @author Danilo Queiroz
@@ -32,7 +32,7 @@ public class EntityDAO extends GenericDAO<Entity> {
 	public EntityDAO() {
 		super(Entity.class);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Collection<Entity> getEntitiesWithElement(String element) {
 		Query query = this.datastoreFacade.createQueryForClass(Entity.class);

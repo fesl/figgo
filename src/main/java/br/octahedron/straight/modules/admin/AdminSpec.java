@@ -20,18 +20,20 @@ package br.octahedron.straight.modules.admin;
 
 import java.util.Set;
 
-import br.octahedron.commons.eventbus.Subscriber;
+import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module.Type;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 
 /**
  * @author Vítor Avelino
- *
+ * 
  */
 public class AdminSpec implements ModuleSpec {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getDomainSpecificModuleConfiguration()
 	 */
 	@Override
@@ -40,7 +42,9 @@ public class AdminSpec implements ModuleSpec {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleActions()
 	 */
 	@Override
@@ -49,7 +53,9 @@ public class AdminSpec implements ModuleSpec {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleAdministrativeActions()
 	 */
 	@Override
@@ -58,7 +64,9 @@ public class AdminSpec implements ModuleSpec {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleType()
 	 */
 	@Override
@@ -66,7 +74,9 @@ public class AdminSpec implements ModuleSpec {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getSubscribers()
 	 */
 	@Override
@@ -74,7 +84,9 @@ public class AdminSpec implements ModuleSpec {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#hasDomainSpecificConfiguration()
 	 */
 	@Override
@@ -82,7 +94,9 @@ public class AdminSpec implements ModuleSpec {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#hasSubscribers()
 	 */
 	@Override
@@ -90,7 +104,9 @@ public class AdminSpec implements ModuleSpec {
 		return false;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthentication(java.lang.String)
 	 */
 	@Override
@@ -98,7 +114,9 @@ public class AdminSpec implements ModuleSpec {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthorization(java.lang.String)
 	 */
 	@Override
@@ -106,7 +124,9 @@ public class AdminSpec implements ModuleSpec {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#usesDomainNamespace()
 	 */
 	@Override

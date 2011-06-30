@@ -22,7 +22,7 @@ package br.octahedron.straight.modules.users.data;
  * Read only interface for {@link User}
  * 
  * @author Erick Moreno
- *
+ * 
  */
 public interface UserView {
 

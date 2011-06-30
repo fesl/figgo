@@ -23,7 +23,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import br.octahedron.commons.eventbus.Subscriber;
+import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module.Type;
@@ -34,14 +34,16 @@ import br.octahedron.straight.modules.configuration.manager.DomainUploadSubscrib
 
 /**
  * @author vitoravelino
- *
+ * 
  */
 public class ConfigurationSpec implements ModuleSpec {
-	
-	private static final String[] ACTIONS =  {"INDEX","DOMAIN_EDIT","DOMAIN_UPLOAD"};
-	private static final String[] ADMIN_ACTIONS =  {"DOMAIN_EDIT","DOMAIN_UPLOAD"};
-	
-	/* (non-Javadoc)
+
+	private static final String[] ACTIONS = { "INDEX", "DOMAIN_EDIT", "DOMAIN_UPLOAD" };
+	private static final String[] ADMIN_ACTIONS = { "DOMAIN_EDIT", "DOMAIN_UPLOAD" };
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleType()
 	 */
 	@Override

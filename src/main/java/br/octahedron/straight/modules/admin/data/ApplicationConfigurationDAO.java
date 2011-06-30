@@ -18,17 +18,16 @@
  */
 package br.octahedron.straight.modules.admin.data;
 
-import br.octahedron.commons.database.GenericDAO;
+import br.octahedron.cotopaxi.datastore.GenericDAO;
 
 /**
  * @author Danilo Queiroz
- *
+ * 
  */
 public class ApplicationConfigurationDAO extends GenericDAO<ApplicationConfiguration> {
 
 	public ApplicationConfigurationDAO() {
 		super(ApplicationConfiguration.class);
 	}
-	
 
 }

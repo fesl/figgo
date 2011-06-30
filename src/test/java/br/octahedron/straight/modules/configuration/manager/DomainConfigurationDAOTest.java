@@ -18,6 +18,7 @@
  */
 package br.octahedron.straight.modules.configuration.manager;
 
+import static br.octahedron.cotopaxi.datastore.NamespaceManagerFacade.*;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
@@ -26,16 +27,16 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.octahedron.commons.database.NamespaceCommons;
 import br.octahedron.straight.modules.configuration.data.DomainConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationDAO;
 
+import com.google.appengine.api.NamespaceManager;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 /**
  * @author Vítor Avelino
- *
+ * 
  */
 public class DomainConfigurationDAOTest {
 
@@ -46,17 +47,17 @@ public class DomainConfigurationDAOTest {
 	public void setUp() {
 		this.helper.setUp();
 	}
-	
+
 	public void createDomains() {
 		// storing domains configuration
-		NamespaceCommons.changeToNamespace("octa");
+		changeToNamespace("octa");
 		this.domainDAO.save(new DomainConfiguration("octa"));
-		NamespaceCommons.changeToNamespace("alua");
+		changeToNamespace("alua");
 		this.domainDAO.save(new DomainConfiguration("alua"));
-		NamespaceCommons.changeToNamespace("mundo");
+		changeToNamespace("mundo");
 		this.domainDAO.save(new DomainConfiguration("mundo"));
 	}
-	
+
 	@Test
 	public void getDomains() {
 		this.createDomains();
@@ -66,7 +67,7 @@ public class DomainConfigurationDAOTest {
 		assertEquals("alua", iterator.next().getDomainName());
 		assertEquals("mundo", iterator.next().getDomainName());
 		assertEquals("octa", iterator.next().getDomainName());
-		
+
 		// this time it will get from memcache
 		domainsConfiguration = this.domainDAO.getDomainsConfiguration();
 		iterator = domainsConfiguration.iterator();

@@ -19,7 +19,7 @@
 package br.octahedron.straight.controller;
 
 /**
- *	Indicates that the user has no permission to access the resource
+ * Indicates that the user has no permission to access the resource
  */
 public class NotAuthorizedException extends Exception {
 

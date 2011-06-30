@@ -18,12 +18,17 @@
  */
 package br.octahedron.straight.modules.authorization.data;
 
-import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import br.octahedron.straight.modules.authorization.data.Role;
+import br.octahedron.straight.modules.authorization.data.RoleDAO;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -46,27 +51,27 @@ public class RoleDAOTest {
 		Role role = new Role("domain1", "admin");
 		role.addUsers("developer");
 		role.addActivities("commit_code", "create_tasks");
-		roleDAO.save(role);
+		this.roleDAO.save(role);
 		role = new Role("domain1", "user");
 		role.addUsers("developer", "tester");
 		role.addActivities("change_tasks", "pull_code");
-		roleDAO.save(role);
+		this.roleDAO.save(role);
 		role = new Role("domain2", "admin");
 		role.addUsers("developer");
 		role.addActivities("commit_code", "create_tasks");
-		roleDAO.save(role);
+		this.roleDAO.save(role);
 		role = new Role("domain2", "user");
 		role.addUsers("developer", "coach");
 		role.addActivities("pull_code", "change_tasks");
-		roleDAO.save(role);
+		this.roleDAO.save(role);
 		role = new Role("domain3", "admin");
 		role.addUsers("developer", "coach");
 		role.addActivities("commit_code", "create_tasks");
-		roleDAO.save(role);
+		this.roleDAO.save(role);
 		role = new Role("domain3", "user");
 		role.addUsers("developer", "coach", "tester");
 		role.addActivities("pull_code", "change_tasks");
-		roleDAO.save(role);
+		this.roleDAO.save(role);
 	}
 
 	@Test

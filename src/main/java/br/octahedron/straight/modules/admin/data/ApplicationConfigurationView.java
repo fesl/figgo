@@ -20,7 +20,7 @@ package br.octahedron.straight.modules.admin.data;
 
 /**
  * @author danilo
- *
+ * 
  */
 public interface ApplicationConfigurationView {
 

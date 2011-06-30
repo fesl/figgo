@@ -30,13 +30,13 @@ import java.util.TimeZone;
 
 /**
  * @author Vítor Avelino
- *
+ * 
  */
 public class Formatter {
-	
+
 	private static final NumberFormat numberFormatter;
 	private static final DateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-	
+
 	static {
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols(new Locale("pt", "BR"));
 		symbols.setDecimalSeparator(',');
@@ -44,11 +44,11 @@ public class Formatter {
 		numberFormatter = new DecimalFormat("#,##0.00", symbols);
 		dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT-3"));
 	}
-	
+
 	public static String format(BigDecimal value) {
 		return numberFormatter.format(value);
 	}
-	
+
 	public static String format(Date date) {
 		return dateFormatter.format(date);
 	}

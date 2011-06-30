@@ -23,7 +23,7 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -35,7 +35,7 @@ import javax.jdo.Query;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.octahedron.commons.database.DatastoreFacade;
+import br.octahedron.cotopaxi.datastore.DatastoreFacade;
 import br.octahedron.straight.modules.bank.data.BankTransaction;
 import br.octahedron.straight.modules.bank.data.BankTransactionDAO;
 import br.octahedron.straight.modules.bank.data.BankTransaction.TransactionType;

@@ -18,7 +18,7 @@
  */
 package br.octahedron.straight.modules.configuration.manager;
 
-import static br.octahedron.commons.eventbus.EventBus.publish;
+import static br.octahedron.cotopaxi.eventbus.EventBus.publish;
 
 import java.util.Collection;
 import java.util.Set;
@@ -69,23 +69,24 @@ public class ConfigurationManager {
 	protected void setModuleConfigurationDAO(ModuleConfigurationDAO moduleDAO) {
 		this.moduleDAO = moduleDAO;
 	}
-	
+
 	/**
 	 * @return The {@link DomainSpecificModuleConfigurationView} for the given module
 	 */
 	private DomainSpecificModuleConfiguration createModuleConfig(Module module) {
 		return module.getModuleSpec().getDomainSpecificModuleConfiguration();
 	}
-	
+
 	/**
 	 * Updates a {@link DomainConfiguration} avatar key with the generated blob key.
 	 * 
-	 * @param avatarKey Blob key generated when uploaded avatar
+	 * @param avatarKey
+	 *            Blob key generated when uploaded avatar
 	 */
 	public void updateAvatarKey(String avatarKey) {
 		this.getDomainConfiguration().setAvatarKey(avatarKey);
 	}
-	
+
 	/**
 	 * Updates a {@link DomainConfiguration} public attributes.
 	 * 
@@ -122,7 +123,7 @@ public class ConfigurationManager {
 			throw new DataDoesNotExistsException("This domain was not configured yet");
 		}
 	}
-	
+
 	/**
 	 * @return the {@link ModulesInfoService} using the current domain's {@link DomainConfiguration}
 	 */
@@ -197,7 +198,8 @@ public class ConfigurationManager {
 
 	/**
 	 * @return The {@link DomainSpecificModuleConfigurationView} for the given module, if module is
-	 *         enabled for the current domain. If module isn't enabled, it returns <code>null</code>.
+	 *         enabled for the current domain. If module isn't enabled, it returns <code>null</code>
+	 *         .
 	 */
 	public DomainSpecificModuleConfiguration getModuleConfiguration(Module module) {
 		DomainConfiguration domainConfig = this.getDomainConfiguration();
@@ -227,6 +229,7 @@ public class ConfigurationManager {
 	 *            The new property value
 	 */
 	static final Logger logger = Logger.getLogger(ConfigurationManager.class.getName());
+
 	public void setModuleProperty(Module module, String propertyKey, String propertyValue) {
 		DomainConfiguration domainConf = this.getDomainConfiguration();
 		if (domainConf.isModuleEnabled(module.name())) {
@@ -240,7 +243,7 @@ public class ConfigurationManager {
 					}
 				}
 				moduleConf.setConfigurationValue(propertyKey, propertyValue);
-				moduleDAO.save(moduleConf);
+				this.moduleDAO.save(moduleConf);
 			} else {
 				throw new IllegalArgumentException("The module " + module.name() + "hasn't any property with key " + propertyKey);
 			}
@@ -265,12 +268,12 @@ public class ConfigurationManager {
 			throw new DataDoesNotExistsException("The module " + module.name() + " isn't enabled.");
 		}
 	}
-	
+
 	/**
-	 * @return all {@link DomainConfiguration} based on namespaces created along the application. 
+	 * @return all {@link DomainConfiguration} based on namespaces created along the application.
 	 */
 	protected Set<DomainConfiguration> getDomainsConfiguration() {
 		return this.domainDAO.getDomainsConfiguration();
 	}
-	
+
 }

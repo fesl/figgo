@@ -125,7 +125,7 @@ public class BankAccount implements Serializable {
 			// TODO LOG this event as a warning
 			this.value = this.value.add(transactionsBalance);
 			Object[] tArray = transactions.toArray();
-			this.lastTransactionId = ((BankTransaction)tArray[tArray.length - 1]).getId();
+			this.lastTransactionId = ((BankTransaction) tArray[tArray.length - 1]).getId();
 		}
 
 		return this.value;

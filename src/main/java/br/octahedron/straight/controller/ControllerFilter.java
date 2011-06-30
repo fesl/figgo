@@ -18,6 +18,8 @@
  */
 package br.octahedron.straight.controller;
 
+import static br.octahedron.cotopaxi.datastore.NamespaceManagerFacade.changeToPreviousNamespace;
+
 import java.io.IOException;
 
 import javax.servlet.Filter;
@@ -33,7 +35,6 @@ import org.apache.velocity.exception.MethodInvocationException;
 import org.apache.velocity.exception.ParseErrorException;
 import org.apache.velocity.exception.ResourceNotFoundException;
 
-import br.octahedron.commons.database.NamespaceCommons;
 import br.octahedron.straight.view.VelocityTemplateRender;
 
 import com.google.appengine.api.users.User;
@@ -97,8 +98,8 @@ public class ControllerFilter implements Filter {
 		}
 
 		String module = (requestURI.length() > 1) ? requestURI.split("/")[1].toUpperCase() : BARRA;
-		String action = (!module.equals(BARRA)) ? requestURI.substring(1).replace('/', '_').toUpperCase() : INDEX; 
-		
+		String action = (!module.equals(BARRA)) ? requestURI.substring(1).replace('/', '_').toUpperCase() : INDEX;
+
 		User user = userService.getCurrentUser();
 		String email = (user != null) ? user.getEmail() : null;
 
@@ -116,13 +117,13 @@ public class ControllerFilter implements Filter {
 		} catch (InexistentAccountException e) {
 			response.sendRedirect(this.appDomain + this.userCreate);
 		} catch (NotFoundException e) {
-			notFoundHandler(request, response);
+			this.notFoundHandler(request, response);
 		} catch (NotAuthorizedException e) {
-			notAuthorizedHandler(request, response);
+			this.notAuthorizedHandler(request, response);
 		} catch (Throwable t) {
-			genericErrorHandler(request, response, t);
+			this.genericErrorHandler(request, response, t);
 		} finally {
-			NamespaceCommons.changeToPreviousNamespace();
+			changeToPreviousNamespace();
 		}
 	}
 

@@ -18,11 +18,14 @@
  */
 package br.octahedron.straight.modules.configuration.data;
 
+import static br.octahedron.cotopaxi.datastore.NamespaceManagerFacade.changeToNamespace;
+import static br.octahedron.cotopaxi.datastore.NamespaceManagerFacade.changeToPreviousNamespace;
+import static br.octahedron.cotopaxi.datastore.NamespaceManagerFacade.getNamespaces;
+
 import java.util.Set;
 import java.util.TreeSet;
 
-import br.octahedron.commons.database.GenericDAO;
-import br.octahedron.commons.database.NamespaceCommons;
+import br.octahedron.cotopaxi.datastore.GenericDAO;
 
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
@@ -33,19 +36,19 @@ import com.google.appengine.api.memcache.MemcacheServiceFactory;
 public class DomainConfigurationDAO extends GenericDAO<DomainConfiguration> {
 
 	private MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
-	
+
 	public static final String NAMESPACE_KEY = "namespace_memcache_key";
-	
+
 	public DomainConfigurationDAO() {
 		super(DomainConfiguration.class);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Set<DomainConfiguration> getDomainsConfiguration() {
-		Set<DomainConfiguration> domainsConfiguration = (Set<DomainConfiguration>) memcacheService.get(NAMESPACE_KEY);
+		Set<DomainConfiguration> domainsConfiguration = (Set<DomainConfiguration>) this.memcacheService.get(NAMESPACE_KEY);
 		if (domainsConfiguration == null) {
 			domainsConfiguration = this.createDomainsConfiguration();
-			memcacheService.put(NAMESPACE_KEY, domainsConfiguration);
+			this.memcacheService.put(NAMESPACE_KEY, domainsConfiguration);
 		}
 		return domainsConfiguration;
 	}
@@ -55,14 +58,14 @@ public class DomainConfigurationDAO extends GenericDAO<DomainConfiguration> {
 	 */
 	private Set<DomainConfiguration> createDomainsConfiguration() {
 		Set<DomainConfiguration> domainsConfiguration = new TreeSet<DomainConfiguration>();
-		for (String namespace : this.datastoreFacade.getNamespaces()) {
+		for (String namespace : getNamespaces()) {
 			try {
-				NamespaceCommons.changeToNamespace(namespace);
+				changeToNamespace(namespace);
 				if (this.count() != 0) {
 					domainsConfiguration.add(this.getAll().iterator().next());
 				}
 			} finally {
-				NamespaceCommons.changeToPreviousNamespace();
+				changeToPreviousNamespace();
 			}
 		}
 		return domainsConfiguration;

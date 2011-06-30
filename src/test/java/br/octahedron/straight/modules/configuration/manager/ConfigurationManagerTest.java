@@ -42,6 +42,7 @@ import br.octahedron.straight.modules.configuration.data.DomainConfigurationDAO;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfiguration;
 import br.octahedron.straight.modules.configuration.data.DomainSpecificModuleConfigurationView;
 import br.octahedron.straight.modules.configuration.data.ModuleConfigurationDAO;
+import br.octahedron.straight.modules.configuration.manager.ConfigurationManager;
 
 /**
  * @author Danilo Queiroz
@@ -174,7 +175,7 @@ public class ConfigurationManagerTest {
 		// check mocks
 		verify(this.domainDAO, this.moduleDAO);
 	}
-	
+
 	@Test
 	public void getModuleTest() {
 		// mock setup
@@ -208,13 +209,13 @@ public class ConfigurationManagerTest {
 		replay(this.domainDAO, this.moduleDAO);
 		try {
 			// test
-			this.configurationManager.getModuleConfiguration(Module.AUTHORIZATION);			
+			this.configurationManager.getModuleConfiguration(Module.AUTHORIZATION);
 		} finally {
 			// check mocks
 			verify(this.domainDAO, this.moduleDAO);
 		}
 	}
-	
+
 	@Test(expected = DataDoesNotExistsException.class)
 	public void getDisabledModuleTest() {
 		// mock setup
@@ -226,7 +227,7 @@ public class ConfigurationManagerTest {
 		replay(this.domainDAO, this.moduleDAO);
 		try {
 			// test
-			this.configurationManager.getModuleConfiguration(Module.AUTHORIZATION);		
+			this.configurationManager.getModuleConfiguration(Module.AUTHORIZATION);
 		} finally {
 			// check mocks
 			verify(this.domainDAO, this.moduleDAO);
@@ -274,7 +275,6 @@ public class ConfigurationManagerTest {
 			verify(this.domainDAO, this.moduleDAO);
 		}
 	}
-
 
 	@Test(expected = IllegalArgumentException.class)
 	public void setPropertyValidationIllegalTest() {

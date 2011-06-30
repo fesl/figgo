@@ -22,7 +22,7 @@ import java.util.List;
 
 import javax.jdo.Query;
 
-import br.octahedron.commons.database.GenericDAO;
+import br.octahedron.cotopaxi.datastore.GenericDAO;
 
 /**
  * @author Danilo Queiroz

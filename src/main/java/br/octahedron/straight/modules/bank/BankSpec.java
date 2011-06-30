@@ -22,7 +22,7 @@ import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import br.octahedron.commons.eventbus.Subscriber;
+import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.straight.modules.Module;
 import br.octahedron.straight.modules.ModuleSpec;
 import br.octahedron.straight.modules.Module.Type;
@@ -33,10 +33,9 @@ import br.octahedron.straight.modules.configuration.data.ModuleProperty;
  * @author Danilo Queiroz
  */
 public class BankSpec implements ModuleSpec {
-	
-	private static final String[] ACTIONS =  {"BANK","BANK_TRANSFER","BANK_STATEMENT", "BANK_ADMIN", "BANK_BALLAST", "BANK_SHARE"};
-	private static final String[] ADMIN_ACTIONS =  {"BANK_STATEMENT", "BANK_ADMIN", "BANK_BALLAST", "BANK_SHARE"};
-	
+
+	private static final String[] ACTIONS = { "BANK", "BANK_TRANSFER", "BANK_STATEMENT", "BANK_ADMIN", "BANK_BALLAST", "BANK_SHARE" };
+	private static final String[] ADMIN_ACTIONS = { "BANK_STATEMENT", "BANK_ADMIN", "BANK_BALLAST", "BANK_SHARE" };
 
 	/*
 	 * (non-Javadoc)
@@ -48,7 +47,9 @@ public class BankSpec implements ModuleSpec {
 		return Module.Type.DOMAIN;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthentication(java.lang.String)
 	 */
 	@Override
@@ -56,7 +57,9 @@ public class BankSpec implements ModuleSpec {
 		return true;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthorization(java.lang.String)
 	 */
 	@Override
@@ -128,7 +131,9 @@ public class BankSpec implements ModuleSpec {
 		return null;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#usesDomainNamespace()
 	 */
 	@Override

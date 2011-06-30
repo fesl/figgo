@@ -28,15 +28,14 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-
 /**
  * @author Vítor Avelino
- *
+ * 
  */
 public class LoginLogoutIT extends WebDriverTestClass {
-	
+
 	private static String email = "test" + new Random().nextInt() * 10 + "@example.com";
-	
+
 	@BeforeClass
 	public static void addUser() {
 		driver.get("http://localhost:8080/");
@@ -48,7 +47,7 @@ public class LoginLogoutIT extends WebDriverTestClass {
 		emailTextInput.sendKeys(email);
 		WebElement loginButton = driver.findElement(By.xpath("//input[@value='Log In']"));
 		loginButton.click();
-		
+
 		Assert.assertEquals("http://localhost:8080/user/new", driver.getCurrentUrl());
 		// filling out the form
 		WebElement nameTextInput = driver.findElement(By.xpath("//input[@name='name']"));
@@ -59,10 +58,10 @@ public class LoginLogoutIT extends WebDriverTestClass {
 		descriptionTextInput.sendKeys("Descrição do usuário");
 		WebElement submitInput = driver.findElement(By.xpath("//input[@type='submit']"));
 		submitInput.submit();
-		
+
 		driver.manage().deleteAllCookies();
 	}
-	
+
 	@Before
 	public void doLogin() {
 		driver.get("http://localhost:8080/");
@@ -74,44 +73,43 @@ public class LoginLogoutIT extends WebDriverTestClass {
 		WebElement loginButton = driver.findElement(By.xpath("//input[@value='Log In']"));
 		loginButton.click();
 	}
-	
+
 	public void testLogin() {
 		// after login viewing dashboard
 		Assert.assertEquals("http://localhost:8080/dashboard", driver.getCurrentUrl());
 	}
-	
+
 	public void testIndexAlreadyLogged() {
 		// even trying to visit root url
 		driver.get("http://localhost:8080/");
 		// it will be redirected to dashboard
 		Assert.assertEquals("http://localhost:8080/dashboard", driver.getCurrentUrl());
 	}
-	
+
 	@Test
 	public void testLogoutDashboard() {
 		driver.get("http://localhost:8080/dashboard");
-		doLogout();
+		this.doLogout();
 		Assert.assertEquals("http://localhost:8080/", driver.getCurrentUrl());
 	}
-	
+
 	@Test
 	public void testLogoutBank() {
 		driver.navigate().to("http://localhost:8080/bank");
-		doLogout();
+		this.doLogout();
 		Assert.assertEquals("http://localhost:8080/", driver.getCurrentUrl());
 	}
-	
+
 	@Test
 	public void testLogoutServices() {
 		driver.get("http://localhost:8080/services");
-		doLogout();
+		this.doLogout();
 		Assert.assertEquals("http://localhost:8080/", driver.getCurrentUrl());
 	}
-	
+
 	private void doLogout() {
 		WebElement logoutLink = driver.findElement(By.linkText("logout"));
 		logoutLink.click();
 	}
 
-	
 }

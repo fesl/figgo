@@ -27,6 +27,9 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.octahedron.straight.modules.bank.data.BankAccount;
+import br.octahedron.straight.modules.bank.data.BankTransaction;
+import br.octahedron.straight.modules.bank.data.BankTransactionDAO;
 import br.octahedron.straight.modules.bank.data.BankTransaction.TransactionType;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
@@ -39,7 +42,7 @@ public class BankTransactionDAOTest {
 
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 	private final BankTransactionDAO transactionDAO = new BankTransactionDAO();
-	
+
 	@Before
 	public void setUp() {
 		this.helper.setUp();
@@ -52,24 +55,23 @@ public class BankTransactionDAOTest {
 		this.transactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "3"));
 	}
 
-	
-
 	@Test
 	public void getLastNTransactionsTest() {
 		this.createTransactions();
 		String conta1 = "Conta1";
 		Collection<BankTransaction> transactions = this.transactionDAO.getLastNTransactions(conta1, 1);
 		assertEquals(1, transactions.size());
-		
+
 		transactions = this.transactionDAO.getLastNTransactions(conta1, 10);
 		assertEquals(3, transactions.size());
-		
+
 		transactions = this.transactionDAO.getLastNTransactions(conta1, 2);
 		assertEquals(2, transactions.size());
-		
+
 		transactions = this.transactionDAO.getLastNTransactions("helloworld", 10);
 		assertTrue(transactions.isEmpty());
 	}
+
 	@Test
 	public void getLastTransactionsTest() {
 		this.createTransactions();

@@ -35,7 +35,7 @@ import javax.jdo.annotations.PrimaryKey;
 public class BankTransaction implements Serializable {
 
 	private static final long serialVersionUID = -7989889136597879006L;
-	
+
 	public enum TransactionType {
 		TRANSFER, PAYMENT, FINE, DEPOSIT
 	};
@@ -114,14 +114,14 @@ public class BankTransaction implements Serializable {
 	public Date getDate() {
 		return this.date;
 	}
-	
+
 	/**
 	 * @return the amount
 	 */
 	public BigDecimal getAmount() {
 		return this.amount;
 	}
-	
+
 	/**
 	 * @return the comment
 	 */

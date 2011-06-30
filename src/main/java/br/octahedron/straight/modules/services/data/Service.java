@@ -57,7 +57,9 @@ public class Service implements Serializable, ServiceView {
 		this.providers.remove(userId);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.services.data.ServiceView#getProviders()
 	 */
 	@Override
@@ -65,7 +67,9 @@ public class Service implements Serializable, ServiceView {
 		return this.providers;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.services.data.ServiceView#getName()
 	 */
 	@Override
@@ -73,7 +77,9 @@ public class Service implements Serializable, ServiceView {
 		return this.name;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.services.data.ServiceView#getValue()
 	 */
 	@Override
@@ -89,7 +95,9 @@ public class Service implements Serializable, ServiceView {
 		this.value = value;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.straight.modules.services.data.ServiceView#getDescription()
 	 */
 	@Override

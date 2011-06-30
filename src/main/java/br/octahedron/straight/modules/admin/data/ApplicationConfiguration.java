@@ -28,67 +28,80 @@ import javax.jdo.annotations.PrimaryKey;
  * @author Danilo Queiroz
  */
 @PersistenceCapable
-public class ApplicationConfiguration implements Serializable, ApplicationConfigurationView { 
-	
+public class ApplicationConfiguration implements Serializable, ApplicationConfigurationView {
+
 	private static final long serialVersionUID = 6211848005905311102L;
 
 	public static final String APPLICATION_NAME = "Figgo";
-	 
+
 	@SuppressWarnings("unused")
 	@PrimaryKey
 	@Persistent
 	private String applicationName = APPLICATION_NAME;
-	
+
 	@Persistent
 	private String route53AccessKeyID;
-	
+
 	@Persistent
 	private String route53AccessKeySecret;
-	
+
 	@Persistent
 	private String route53ZoneID;
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.admin.data.ApplicationConfigurationView#getRoute53AccessKeyID()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.straight.modules.admin.data.ApplicationConfigurationView#getRoute53AccessKeyID
+	 * ()
 	 */
 	public String getRoute53AccessKeyID() {
-		return route53AccessKeyID;
+		return this.route53AccessKeyID;
 	}
 
 	/**
-	 * @param route53AccessKeyID the route53AccessKeyID to set
+	 * @param route53AccessKeyID
+	 *            the route53AccessKeyID to set
 	 */
 	public void setRoute53AccessKeyID(String route53AccessKeyID) {
 		this.route53AccessKeyID = route53AccessKeyID;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.admin.data.ApplicationConfigurationView#getRoute53AccessKeySecret()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.straight.modules.admin.data.ApplicationConfigurationView#getRoute53AccessKeySecret
+	 * ()
 	 */
 	public String getRoute53AccessKeySecret() {
-		return route53AccessKeySecret;
+		return this.route53AccessKeySecret;
 	}
 
 	/**
-	 * @param route53AccessKeySecret the route53AccessKeySecret to set
+	 * @param route53AccessKeySecret
+	 *            the route53AccessKeySecret to set
 	 */
 	public void setRoute53AccessKeySecret(String route53AccessKeySecret) {
 		this.route53AccessKeySecret = route53AccessKeySecret;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.straight.modules.admin.data.ApplicationConfigurationView#getRoute53ZoneID()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.straight.modules.admin.data.ApplicationConfigurationView#getRoute53ZoneID()
 	 */
 	public String getRoute53ZoneID() {
-		return route53ZoneID;
+		return this.route53ZoneID;
 	}
 
 	/**
-	 * @param route53ZoneId the route53ZoneId to set
+	 * @param route53ZoneId
+	 *            the route53ZoneId to set
 	 */
 	public void setRoute53ZoneID(String route53ZoneId) {
 		this.route53ZoneID = route53ZoneId;
 	}
-
 
 }

@@ -20,9 +20,9 @@ package br.octahedron.straight.modules.configuration.manager;
 
 import java.util.logging.Logger;
 
-import br.octahedron.commons.eventbus.Event;
-import br.octahedron.commons.eventbus.InterestedEvent;
-import br.octahedron.commons.eventbus.Subscriber;
+import br.octahedron.cotopaxi.eventbus.Event;
+import br.octahedron.cotopaxi.eventbus.InterestedEvent;
+import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.straight.modules.admin.manager.DomainChangedEvent;
 import br.octahedron.straight.modules.configuration.data.DomainConfigurationDAO;
 
@@ -52,7 +52,7 @@ public class DomainChangedSubscriber implements Subscriber {
 	@Override
 	public void eventPublished(Event event) {
 		logger.info("Regenerating domains configuration list based on existing namespaces");
-		memcacheService.delete(DomainConfigurationDAO.NAMESPACE_KEY);
+		this.memcacheService.delete(DomainConfigurationDAO.NAMESPACE_KEY);
 	}
 
 }
