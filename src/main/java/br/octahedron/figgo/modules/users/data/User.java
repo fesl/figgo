@@ -29,7 +29,7 @@ import javax.jdo.annotations.PrimaryKey;
  * 
  */
 @PersistenceCapable
-public class User implements Serializable, UserView {
+public class User implements Serializable, UserView, Comparable<User> {
 
 	private static final long serialVersionUID = 3496196911059199158L;
 
@@ -38,7 +38,6 @@ public class User implements Serializable, UserView {
 	private String userId;
 	@Persistent
 	private String name;
-	@SuppressWarnings("unused")
 	@Persistent
 	private String nameLowerCase;
 	@Persistent
@@ -147,6 +146,17 @@ public class User implements Serializable, UserView {
 	@Override
 	public String toString() {
 		return "[" + this.name + " " + this.userId + "]";
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Comparable#compareTo(java.lang.Object)
+	 */
+	@Override
+	public int compareTo(User o) {
+		int comparation = this.nameLowerCase.compareTo(o.nameLowerCase);
+		return (comparation != 0) ? comparation : this.userId.toLowerCase().compareTo(o.userId.toLowerCase());
 	}
 
 }

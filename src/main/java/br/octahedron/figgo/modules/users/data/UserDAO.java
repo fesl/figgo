@@ -19,13 +19,10 @@
 package br.octahedron.figgo.modules.users.data;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import br.octahedron.cotopaxi.datastore.GenericDAO;
-
-import com.google.common.collect.ComparisonChain;
 
 /**
  * @author Erick Moreno
@@ -51,18 +48,9 @@ public class UserDAO extends GenericDAO<User> {
 	public Collection<User> getUsersStartingWith(String term) {
 		Collection<User> searchResultName = this.datastoreFacade.startsWithQuery(User.class, term.toLowerCase(), NAME_ATTRIBUTE);
 		Collection<User> searchResultEmail = this.datastoreFacade.startsWithQuery(User.class, term.toLowerCase(), EMAIL_ATTRIBUTE);
-		SortedSet<User> result = new TreeSet<User>(new UserComparator());
+		SortedSet<User> result = new TreeSet<User>();
 		result.addAll(searchResultEmail);
 		result.addAll(searchResultName);
 		return result;
 	}
-
-	private class UserComparator implements Comparator<User> {
-		@Override
-		public int compare(User o1, User o2) {
-			return ComparisonChain.start().compare(o1.getName().toLowerCase(), o2.getName().toLowerCase()).compare(o1.getUserId().toLowerCase(),
-					o2.getUserId().toLowerCase()).result();
-		}
-	}
-
 }
