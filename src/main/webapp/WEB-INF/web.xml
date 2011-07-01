@@ -35,12 +35,12 @@
 	-->
 	<!-- Cotopaxi controller -->
 	<servlet>
-		<servlet-name>Controller</servlet-name>
+		<servlet-name>CotopaxiController</servlet-name>
 		<servlet-class>br.octahedron.cotopaxi.CotopaxiServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>Controller</servlet-name>
+		<servlet-name>CotopaxiController</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 	

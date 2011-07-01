@@ -2,7 +2,7 @@
 #parse( "templates/layout.vm" )
 
 #@body()
-	$errorMessage
+	$error.message
 #end
 
 #scripts()

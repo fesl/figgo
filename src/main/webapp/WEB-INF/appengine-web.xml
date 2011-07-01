@@ -3,7 +3,7 @@
 
 	<!-- CHANGE IT FOR YOUR APPLICATION -->
 	<application>figgo-octa</application>
-	<version>demo</version>
+	<version>cotopaxi</version>
 
 	<!-- Enables Sessions -->
 	<sessions-enabled>true</sessions-enabled>
