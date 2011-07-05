@@ -81,21 +81,4 @@ public interface ModuleSpec {
 	 */
 	public Set<String> getModuleAdministrativeActions();
 
-	/**
-	 * @param action
-	 * @return
-	 */
-	public boolean needsAuthentication(String action);
-
-	/**
-	 * @param action
-	 * @return
-	 */
-	public boolean needsAuthorization(String action);
-
-	/**
-	 * @return
-	 */
-	public boolean usesDomainNamespace();
-
 }

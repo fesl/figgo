@@ -33,13 +33,13 @@ public class UsersUploadSubscriber implements Subscriber {
 	private static final long serialVersionUID = -5493253101510358283L;
 
 	@Inject
-	private UsersManager usersManager;
+	private UserManager usersManager;
 
 	/**
 	 * @param usersManager
 	 *            the usersManager to set
 	 */
-	public void setUsersManager(UsersManager usersManager) {
+	public void setUsersManager(UserManager usersManager) {
 		this.usersManager = usersManager;
 	}
 

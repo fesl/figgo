@@ -76,29 +76,6 @@ public class ConfigurationSpec implements ModuleSpec {
 	}
 
 	@Override
-	public boolean usesDomainNamespace() {
-		return true;
-	}
-
-	@Override
-	public boolean needsAuthentication(String action) {
-		if (action.equals("INDEX")) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	@Override
-	public boolean needsAuthorization(String action) {
-		if (action.equals("INDEX")) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	@Override
 	public Set<String> getModuleActions() {
 		return new LinkedHashSet<String>(Arrays.asList(ACTIONS));
 	}

@@ -50,26 +50,6 @@ public class BankSpec implements ModuleSpec {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthentication(java.lang.String)
-	 */
-	@Override
-	public boolean needsAuthentication(String action) {
-		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#needsAuthorization(java.lang.String)
-	 */
-	@Override
-	public boolean needsAuthorization(String action) {
-		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleActions()
 	 */
 	@Override
@@ -130,15 +110,4 @@ public class BankSpec implements ModuleSpec {
 	public Set<Class<? extends Subscriber>> getSubscribers() {
 		return null;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#usesDomainNamespace()
-	 */
-	@Override
-	public boolean usesDomainNamespace() {
-		return true;
-	}
-
 }

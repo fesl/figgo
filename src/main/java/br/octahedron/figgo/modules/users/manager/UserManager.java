@@ -26,7 +26,7 @@ import br.octahedron.figgo.modules.users.data.UserDAO;
 /**
  * @author Erick Moreno
  */
-public class UsersManager {
+public class UserManager {
 
 	private UserDAO userDAO = new UserDAO();
 

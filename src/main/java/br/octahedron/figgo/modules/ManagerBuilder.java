@@ -23,7 +23,7 @@ import br.octahedron.figgo.modules.admin.manager.AdminManager;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.figgo.modules.bank.manager.AccountManager;
 import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
-import br.octahedron.figgo.modules.users.manager.UsersManager;
+import br.octahedron.figgo.modules.users.manager.UserManager;
 
 /**
  * This Builder knows how to create managers for each module.
@@ -43,8 +43,8 @@ public class ManagerBuilder {
 		}
 	}
 
-	public static UsersManager getUserManager() {
-		return getInstance(UsersManager.class);
+	public static UserManager getUserManager() {
+		return getInstance(UserManager.class);
 	}
 
 	public static AuthorizationManager getAuthorizationManager() {

@@ -19,7 +19,7 @@
         		</ul>
         		#end
 				<p>Preencha o formulário abaixo:</p>
-                <form action="/user/update" method="post">
+                <form action="/edit" method="post">
             		<input type="hidden" name="_method" value="put" />
                 	<label for="name">
                 		Nome: <input type="text" name="name" value="$!{name}" />

@@ -12,21 +12,20 @@
 			<div id="single-column">
 				<p>Olá, $user.Email!</p>
 				<p>Você ainda não possui cadastro no Figgo. Faça já o seu!</p>
-				#if( $errors )
-        		<h3>Erros</h3>
-        		<ul>
-            		#foreach( $error in $errors )
-        			<li>$error</li>
-        			#end
-        		</ul>
-        		#end
+
         		<p>Preencha o formulário abaixo:</p>
-                <form action="/user/create" method="post">
+                <form action="/new" method="post">
                 	<label for="name">
                 		Nome: <input type="text" name="name" value="$!{name}" />
+                		#if ($invalid.name)
+                			$invalid.name
+                		#end
                 	</label><br />
                 	<label for="phoneNumber">
-                        Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}" />
+                	    Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}" />
+                	    #if ($invalid.phonenumber)
+                			$invalid.phoneNumber
+                		#end
                 	</label><br />
                 	<label for="description">
                 		Descrição: <textarea name="description">$!{description}</textarea>
