@@ -42,9 +42,7 @@ public class UserManager {
 	 * Creates a {@link User} with passed parameters
 	 */
 	public User createUser(String userId, String name, String phoneNumber, String description) {
-
 		User user = new User(userId, name, phoneNumber, description);
-
 		this.userDAO.save(user);
 		return user;
 	}
@@ -54,7 +52,6 @@ public class UserManager {
 	 */
 	public User updateUser(String userId, String name, String phoneNumber, String description) {
 		User user = this.userDAO.get(userId);
-
 		user.setName(name);
 		user.setPhoneNumber(phoneNumber);
 		user.setDescription(description);

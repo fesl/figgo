@@ -19,13 +19,13 @@
         		</ul>
         		#end
 				<p>Preencha o formulário abaixo:</p>
-                <form action="/edit" method="post">
+                <form action="/update" method="post">
             		<input type="hidden" name="_method" value="put" />
                 	<label for="name">
-                		Nome: <input type="text" name="name" value="$!{name}" />
+                		Nome: <input type="text" name="name" value="$!{name}" required />
                 	</label><br />
                 	<label for="phoneNumber">
-                        Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}"/>
+                        Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}" pattern="^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$" required />
                 	</label><br />
                 	<label for="description">
                 		Descrição <small>(opcional)</small>: <textarea name="description">$!{description}</textarea>

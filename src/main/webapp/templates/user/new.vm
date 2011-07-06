@@ -10,21 +10,22 @@
 		</header>
 		<div id="content">
 			<div id="single-column">
-				<p>Olá, $user.Email!</p>
+				<p>Olá, $email!</p>
 				<p>Você ainda não possui cadastro no Figgo. Faça já o seu!</p>
 
         		<p>Preencha o formulário abaixo:</p>
-                <form action="/new" method="post">
-                	<label for="name">
-                		Nome: <input type="text" name="name" value="$!{name}" />
+                <form action="/create" method="post">
+                	$invalid.entrySet()
+					<label for="name">
+                		Nome: <input type="text" name="name" value="$!{name}" required />
                 		#if ($invalid.name)
-                			$invalid.name
+                			$invalid["name"]
                 		#end
                 	</label><br />
                 	<label for="phoneNumber">
-                	    Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}" />
-                	    #if ($invalid.phonenumber)
-                			$invalid.phoneNumber
+                	    Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}" pattern="^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$" required />
+                	    #if ($invalid && $invalid["phoneNumber"])
+                			$invalid["phoneNumber"]
                 		#end
                 	</label><br />
                 	<label for="description">

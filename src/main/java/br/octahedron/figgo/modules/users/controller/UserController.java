@@ -60,44 +60,52 @@ public class UserController extends Controller {
 	}
 	
 	@AuthenticationRequired
-	public void getDashboardUser() {
-		out("user", this.userManager.getUser(this.in(CURRENT_USER_EMAIL)));
+	public void getDashboard() {
+		out("user", this.userManager.getUser(in(CURRENT_USER_EMAIL)));
 		success(DASHBOARD_TPL);
 	}
 
 	@AuthenticationRequired(authenticationLevel=AuthenticationLevel.AUTHENTICATE)
-	public void getNewUser() {
-		if (!this.userManager.existsUser(this.in(CURRENT_USER_EMAIL))) {
-			this.success(NEW_USER_TPL);
+	public void getNew() {
+		String userEmail = (String) session(CURRENT_USER_EMAIL);
+		if (!this.userManager.existsUser(userEmail)) {
+			out("email", userEmail);
+			success(NEW_USER_TPL);
 		} else {
-			this.redirect("/edit");
+			redirect("/edit");
 		}
 	}
 	
 	@AuthenticationRequired(authenticationLevel=AuthenticationLevel.AUTHENTICATE)
-	public void postCreateUser() {
+	public void postCreate() {
 		Validator validator = this.getUserValidator();
 		if (validator.isValid()) {
-			this.userManager.createUser((String)this.session(CURRENT_USER_EMAIL), this.in("name"), this.in("phoneNumber"), this.in("description"));
+			this.userManager.createUser((String) session(CURRENT_USER_EMAIL), in("name"), in("phoneNumber"), in("description"));
 			redirect(getProperty(APPLICATION_BASE_URL));
 		} else {
+			out("name", in("name"));
+			out("phoneNumber", in("phoneNumber"));
+			out("description", in("description"));
 			invalid(NEW_USER_TPL);
 		}
 	}
 
 	@AuthenticationRequired
-	public void getEditUser() {
-		out("user", this.userManager.getUser(this.in(CURRENT_USER_EMAIL)));
-		this.success(EDIT_USER_TPL);
+	public void getEdit() {
+		out("user", this.userManager.getUser(in(CURRENT_USER_EMAIL)));
+		success(EDIT_USER_TPL);
 	}
 	
-	@AuthenticationRequired()
-	public void postUpdateUser() {
+	@AuthenticationRequired
+	public void putUpdate() {
 		Validator validator = this.getUserValidator();
 		if (validator.isValid()) {
-			this.userManager.createUser((String)this.session(CURRENT_USER_EMAIL), this.in("name"), this.in("phoneNumber"), this.in("description"));
+			this.userManager.updateUser((String) session(CURRENT_USER_EMAIL), in("name"), in("phoneNumber"), in("description"));
 			redirect(getProperty(APPLICATION_BASE_URL));
 		} else {
+			out("name", in("name"));
+			out("phoneNumber", in("phoneNumber"));
+			out("description", in("description"));
 			invalid(EDIT_USER_TPL);
 		}
 	}
