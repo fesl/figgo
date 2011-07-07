@@ -16,29 +16,23 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.admin.util;
+package br.octahedron.figgo.modules.admin.controller.validation;
+
+import br.octahedron.cotopaxi.datastore.NamespaceManagerFacade;
+import br.octahedron.cotopaxi.validation.ValidationRule;
 
 /**
- * Indicates that an error occurs accessing Route53
- * 
- * @author Danilo Queiroz
+ * @author Vítor Avelino
+ *
  */
-public class Route53Exception extends RuntimeException {
+public class InexistentDomainRule implements ValidationRule {
 
-	private static final long serialVersionUID = -7889264324186092069L;
-
-	public Route53Exception() {
+	/* (non-Javadoc)
+	 * @see br.octahedron.cotopaxi.validation.ValidationRule#isValid(java.lang.String)
+	 */
+	@Override
+	public boolean isValid(final String input) {
+		return NamespaceManagerFacade.exists(input);
 	}
 
-	public Route53Exception(String message) {
-		super(message);
-	}
-
-	public Route53Exception(Throwable cause) {
-		super(cause);
-	}
-
-	public Route53Exception(String message, Throwable cause) {
-		super(message, cause);
-	}
 }

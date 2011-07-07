@@ -79,7 +79,7 @@ public class AdminManager {
 	 * @throws Route53Exception
 	 *             if some error occurs when accessing route53 API
 	 */
-	public void createDomain(String domainName, String adminID) throws Route53Exception {
+	public void createDomain(String domainName, String adminID) {
 		if (this.hasApplicationConfiguration()) {
 			ApplicationConfiguration appConf = this.applicationConfigurationDAO.get(APPLICATION_NAME);
 			Route53Util.createDomain(domainName, appConf.getRoute53AccessKeyID(), appConf.getRoute53AccessKeySecret(), appConf.getRoute53ZoneID());
