@@ -52,29 +52,17 @@ public class BankController extends Controller {
 	}
 
 	@AuthenticationRequired
-	public void getIndex() {
+	public void getIndexBank() {
 		out("balance", this.accountManager.getBalance((String) session(CURRENT_USER_EMAIL)));
 		out("transactions", this.accountManager.getLastNTransactions((String) session(CURRENT_USER_EMAIL), 5));
 		success(INDEX_TPL);
 	}
 
 	@AuthenticationRequired
-	public void getTransfer() {
+	public void getTransferBank() {
 		out("balance", this.accountManager.getBalance((String) session(CURRENT_USER_EMAIL)));
 		out("transactions", this.accountManager.getLastNTransactions((String) session(CURRENT_USER_EMAIL), 5));
 		success(TRANSFER_TPL);
-	}
-
-	@AuthenticationRequired
-	public void getStatement() {
-		out("balance", this.accountManager.getBalance((String) session(CURRENT_USER_EMAIL)));
-		success(STATEMENT_TPL);
-	}
-	
-	@AuthenticationRequired
-	public void getAdmin() {
-		out("balance", this.accountManager.getBalance(subDomain()));
-		success(ADMIN_TPL);
 	}
 	
 	@AuthenticationRequired
@@ -94,9 +82,21 @@ public class BankController extends Controller {
 			invalid(TRANSFER_TPL);
 		}
 	}
+
+	@AuthenticationRequired
+	public void getStatementBank() {
+		out("balance", this.accountManager.getBalance((String) session(CURRENT_USER_EMAIL)));
+		success(STATEMENT_TPL);
+	}
 	
 	@AuthenticationRequired
-	public void postShare() {
+	public void getAdminBank() {
+		out("balance", this.accountManager.getBalance(subDomain()));
+		success(ADMIN_TPL);
+	}
+	
+	@AuthenticationRequired
+	public void postShareBank() {
 		Validator requiredValidator = BankValidators.getRequiredValidator();
 		Validator destinationValidator = BankValidators.getDestinationValidator();
 		if (requiredValidator.isValid() && destinationValidator.isValid()) {
@@ -113,7 +113,7 @@ public class BankController extends Controller {
 	}
 	
 	@AuthenticationRequired
-	public void postBallast() {
+	public void postBallastBank() {
 		Validator requiredValidator = BankValidators.getRequiredValidator();
 		Validator comparableValidator = BankValidators.getAmountValidator();
 		if (requiredValidator.isValid() && comparableValidator.isValid()) {

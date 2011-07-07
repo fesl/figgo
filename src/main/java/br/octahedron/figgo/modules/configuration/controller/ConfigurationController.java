@@ -45,7 +45,7 @@ public class ConfigurationController extends Controller {
 	}
 	
 	@AuthenticationRequired
-	public void getConfig() {
+	public void getEditDomain() {
 		DomainConfiguration domainConfiguration = this.configurationManager.getDomainConfiguration();
 		out("domain", domainConfiguration);
 		out("name", domainConfiguration.getName());
@@ -56,19 +56,19 @@ public class ConfigurationController extends Controller {
 	}
 	
 	@AuthenticationRequired
-	public void putUpdate() {
+	public void postUpdateDomain() {
 		this.configurationManager.updateDomainConfiguration(in("name"), in("url"), in("maillist"), in("description"));
 		redirect(BASE_URL);
 	}
 	
 	@AuthenticationRequired
-	public void getList() {
+	public void getListDomain() {
 		out("domains", this.configurationManager.getDomainConfiguration());
 		success(LIST_TPL);
 	}
 	
 	@AuthenticationRequired
-	public void getModule() {
+	public void getModuleDomain() {
 		out("domain", this.configurationManager.getDomainConfiguration());
 		out("name", in("module"));
 		out("module", this.configurationManager.getModuleConfiguration(Module.valueOf(in("module").toUpperCase())));
@@ -76,7 +76,7 @@ public class ConfigurationController extends Controller {
 	}
 	
 	@AuthenticationRequired
-	public void postModule() {
+	public void postModuleDomain() {
 		
 	}
 	

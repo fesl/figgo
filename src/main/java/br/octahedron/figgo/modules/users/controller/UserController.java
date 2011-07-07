@@ -60,7 +60,7 @@ public class UserController extends Controller {
 	}
 	
 	@AuthenticationRequired
-	public void getDashboard() {
+	public void getDashboardUser() {
 		String userEmail = (String) session(CURRENT_USER_EMAIL);
 		out("user", this.userManager.getUser(userEmail));
 		out("domains", this.authorizationManager.getUserDomains(userEmail));
@@ -68,7 +68,7 @@ public class UserController extends Controller {
 	}
 
 	@AuthenticationRequired(authenticationLevel=AuthenticationLevel.AUTHENTICATE)
-	public void getNew() {
+	public void getNewUser() {
 		String userEmail = (String) session(CURRENT_USER_EMAIL);
 		if (!this.userManager.existsUser(userEmail)) {
 			out("email", userEmail);
@@ -79,7 +79,7 @@ public class UserController extends Controller {
 	}
 	
 	@AuthenticationRequired(authenticationLevel=AuthenticationLevel.AUTHENTICATE)
-	public void postCreate() {
+	public void postCreateUser() {
 		Validator validator = UserValidators.getUserValidator();
 		if (validator.isValid()) {
 			this.userManager.createUser((String) session(CURRENT_USER_EMAIL), in("name"), in("phoneNumber"), in("description"));
@@ -93,13 +93,13 @@ public class UserController extends Controller {
 	}
 
 	@AuthenticationRequired
-	public void getEdit() {
+	public void getEditUser() {
 		out("user", this.userManager.getUser(in(CURRENT_USER_EMAIL)));
 		success(EDIT_USER_TPL);
 	}
 	
 	@AuthenticationRequired
-	public void putUpdate() {
+	public void postUpdateUser() {
 		Validator validator = UserValidators.getUserValidator();
 		if (validator.isValid()) {
 			this.userManager.updateUser((String) session(CURRENT_USER_EMAIL), in("name"), in("phoneNumber"), in("description"));
