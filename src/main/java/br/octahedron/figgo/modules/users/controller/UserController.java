@@ -25,9 +25,9 @@ import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired.AuthenticationLevel;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
-import br.octahedron.cotopaxi.validation.RegexRule;
-import br.octahedron.cotopaxi.validation.RequiredRule;
 import br.octahedron.cotopaxi.validation.Validator;
+import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
+import br.octahedron.figgo.modules.users.controller.validation.UserValidators;
 import br.octahedron.figgo.modules.users.manager.UserManager;
 
 /**
@@ -42,18 +42,8 @@ public class UserController extends Controller {
 	
 	@Inject
 	private UserManager userManager;
-	private Validator userValidator;
-	
-	private synchronized Validator getUserValidator() {
-		if (this.userValidator == null) {
-			this.userValidator = new Validator();
-			this.userValidator.add("name", new RequiredRule(), "INVALID_NAME_MESSAGE");
-			this.userValidator.add("name", new RegexRule("([a-zA-ZáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûÃÕãõçÇ] *){2,}"), "INVALID_NAME_MESSAGE");
-			this.userValidator.add("phoneNumber", new RequiredRule(), "INVALID_PHONE_MESSAGE");
-			this.userValidator.add("phoneNumber", new RegexRule("^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$"), "INVALID_PHONE_MESSAGE");
-		}
-		return this.userValidator;
-	}
+	@Inject
+	private AuthorizationManager authorizationManager;
 	
 	/**
 	 * @param userManager the userManager to set
@@ -62,9 +52,18 @@ public class UserController extends Controller {
 		this.userManager = userManager;
 	}
 	
+	/**
+	 * @param authorizationManager the authorizationManager to set
+	 */
+	public void setAuthorizationManager(AuthorizationManager authorizationManager) {
+		this.authorizationManager = authorizationManager;
+	}
+	
 	@AuthenticationRequired
 	public void getDashboard() {
-		out("user", this.userManager.getUser(in(CURRENT_USER_EMAIL)));
+		String userEmail = (String) session(CURRENT_USER_EMAIL);
+		out("user", this.userManager.getUser(userEmail));
+		out("domains", this.authorizationManager.getUserDomains(userEmail));
 		success(DASHBOARD_TPL);
 	}
 
@@ -81,7 +80,7 @@ public class UserController extends Controller {
 	
 	@AuthenticationRequired(authenticationLevel=AuthenticationLevel.AUTHENTICATE)
 	public void postCreate() {
-		Validator validator = this.getUserValidator();
+		Validator validator = UserValidators.getUserValidator();
 		if (validator.isValid()) {
 			this.userManager.createUser((String) session(CURRENT_USER_EMAIL), in("name"), in("phoneNumber"), in("description"));
 			redirect(getProperty(APPLICATION_BASE_URL));
@@ -101,7 +100,7 @@ public class UserController extends Controller {
 	
 	@AuthenticationRequired
 	public void putUpdate() {
-		Validator validator = this.getUserValidator();
+		Validator validator = UserValidators.getUserValidator();
 		if (validator.isValid()) {
 			this.userManager.updateUser((String) session(CURRENT_USER_EMAIL), in("name"), in("phoneNumber"), in("description"));
 			redirect(getProperty(APPLICATION_BASE_URL));

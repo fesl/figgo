@@ -22,12 +22,12 @@ import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
-import br.octahedron.figgo.modules.admin.controller.validation.InexistentDomainRule;
+import br.octahedron.figgo.modules.admin.controller.validation.AdminValidators;
 import br.octahedron.figgo.modules.admin.data.ApplicationConfigurationView;
 import br.octahedron.figgo.modules.admin.manager.AdminManager;
 
 /**
- * @author vitoravelino
+ * @author Vítor Avelino
  *
  */
 public class AdminController extends Controller {
@@ -40,7 +40,6 @@ public class AdminController extends Controller {
 	
 	@Inject
 	private AdminManager adminManager;
-	private Validator domainValidator;
 	
 	public void setAdminManager(AdminManager adminManager) {
 		this.adminManager = adminManager;
@@ -70,21 +69,13 @@ public class AdminController extends Controller {
 	
 	@AuthenticationRequired
 	public void postCreateDomain() {
-		Validator validator = this.getDomainValidator();
+		Validator validator = AdminValidators.getDomainValidator();
 		if (validator.isValid()) {
 			this.adminManager.createDomain(in("name"), in("userId"));
 			redirect("/");
 		} else {
 			invalid(NEW_DOMAIN_TPL);
 		}
-	}
-
-	private synchronized Validator getDomainValidator() {
-		if (this.domainValidator == null) {
-			this.domainValidator = new Validator();
-			this.domainValidator.add("name", new InexistentDomainRule(), "DOMAIN_ALREADY_EXISTS_MESSAGE");
-		}
-		return this.domainValidator;
 	}
 
 //	def post_domain_create() {

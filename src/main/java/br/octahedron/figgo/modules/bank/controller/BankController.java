@@ -26,9 +26,7 @@ import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
-import br.octahedron.figgo.modules.bank.controller.validation.AmountRule;
-import br.octahedron.figgo.modules.bank.controller.validation.DestionationRule;
-import br.octahedron.figgo.modules.bank.controller.validation.TransactionRule;
+import br.octahedron.figgo.modules.bank.controller.validation.BankValidators;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
 import br.octahedron.figgo.modules.bank.manager.AccountManager;
 
@@ -48,9 +46,6 @@ public class BankController extends Controller {
 
 	@Inject
 	private AccountManager accountManager;
-	private Validator transactionValidator;
-	private Validator destinationValidator;
-	private Validator valueValidator;
 
 	public void setAccountManager(AccountManager accountManager) {
 		this.accountManager = accountManager;
@@ -84,9 +79,10 @@ public class BankController extends Controller {
 	
 	@AuthenticationRequired
 	public void postTransfer() {
-		Validator validator = this.getTransactionValidator();
-		Validator validator2 = this.getDestinationValidator();
-		if (validator.isValid() && validator2.isValid()) {
+		Validator requiredValidator = BankValidators.getRequiredValidator();
+		Validator transactionValidator = BankValidators.getTransactionValidator();
+		Validator destinationValidator = BankValidators.getDestinationValidator();
+		if (requiredValidator.isValid() && transactionValidator.isValid() && destinationValidator.isValid()) {
 			this.accountManager.transact((String) session(CURRENT_USER_EMAIL), in("userId"), new BigDecimal(in("amount")), in("comment"), TransactionType.valueOf(in("type")));
 			redirect(BASE_URL);
 		} else {
@@ -101,8 +97,9 @@ public class BankController extends Controller {
 	
 	@AuthenticationRequired
 	public void postShare() {
-		Validator validator = this.getDestinationValidator();
-		if (validator.isValid()) {
+		Validator requiredValidator = BankValidators.getRequiredValidator();
+		Validator destinationValidator = BankValidators.getDestinationValidator();
+		if (requiredValidator.isValid() && destinationValidator.isValid()) {
 			this.accountManager.transact(getSubDomain(), in("userId"), new BigDecimal(in("amount")), in("comment"), TransactionType.valueOf(in("type")));
 			redirect(ADMIN_URL);
 		} else {
@@ -117,8 +114,9 @@ public class BankController extends Controller {
 	
 	@AuthenticationRequired
 	public void postBallast() {
-		Validator validator = this.getAmountValidator();
-		if (validator.isValid()) {
+		Validator requiredValidator = BankValidators.getRequiredValidator();
+		Validator comparableValidator = BankValidators.getAmountValidator();
+		if (requiredValidator.isValid() && comparableValidator.isValid()) {
 			this.accountManager.insertBallast(getSubDomain(), new BigDecimal(in("amount")), in("comment"));
 			redirect(ADMIN_URL);
 		} else {
@@ -129,30 +127,6 @@ public class BankController extends Controller {
 			out("type", in("type"));
 			invalid(ADMIN_TPL);
 		}
-	}
-	
-	private synchronized Validator getTransactionValidator() {
-		if (this.transactionValidator == null) {
-			this.transactionValidator = new Validator();
-			this.transactionValidator.add("userId", new TransactionRule(), "INVALID_TRANSACTION_MESSAGE");
-		}
-		return this.transactionValidator;
-	}
-	
-	private synchronized Validator getDestinationValidator() {
-		if (this.destinationValidator == null) {
-			this.destinationValidator = new Validator();
-			this.destinationValidator.add("userId", new DestionationRule(), "INVALID_DESTINATION_MESSAGE");
-		}
-		return this.destinationValidator;
-	}
-	
-	private synchronized Validator getAmountValidator() {
-		if (this.valueValidator == null) {
-			this.valueValidator = new Validator();
-			this.valueValidator.add("amount", new AmountRule(), "INVALID_AMOUNT_MESSAGE");
-		}
-		return this.valueValidator;
 	}
 
 }
