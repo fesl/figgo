@@ -57,7 +57,7 @@ public class AdminController extends Controller {
 	}
 	
 	@AuthenticationRequired
-	public void postApp() {
+	public void postAppConfig() {
 		this.adminManager.configureApplication(in("accessKey"), in("keySecret"), in("zone"));
 		redirect(NEW_DOMAIN_URL);
 	}
