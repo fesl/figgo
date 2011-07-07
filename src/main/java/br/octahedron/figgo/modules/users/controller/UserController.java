@@ -26,6 +26,7 @@ import br.octahedron.cotopaxi.auth.AuthenticationRequired.AuthenticationLevel;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.RegexRule;
+import br.octahedron.cotopaxi.validation.RequiredRule;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.modules.users.manager.UserManager;
 
@@ -46,7 +47,9 @@ public class UserController extends Controller {
 	private synchronized Validator getUserValidator() {
 		if (this.userValidator == null) {
 			this.userValidator = new Validator();
+			this.userValidator.add("name", new RequiredRule(), "INVALID_NAME_MESSAGE");
 			this.userValidator.add("name", new RegexRule("([a-zA-ZáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûÃÕãõçÇ] *){2,}"), "INVALID_NAME_MESSAGE");
+			this.userValidator.add("phoneNumber", new RequiredRule(), "INVALID_PHONE_MESSAGE");
 			this.userValidator.add("phoneNumber", new RegexRule("^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$"), "INVALID_PHONE_MESSAGE");
 		}
 		return this.userValidator;
