@@ -87,7 +87,7 @@ public class BankController extends Controller {
 		Validator validator = this.getTransactionValidator();
 		Validator validator2 = this.getDestinationValidator();
 		if (validator.isValid() && validator2.isValid()) {
-			this.accountManager.transact((String) session(CURRENT_USER_EMAIL), in("userId").trim(), new BigDecimal(in("amount").trim()), in("comment"), TransactionType.valueOf(in("type")));
+			this.accountManager.transact((String) session(CURRENT_USER_EMAIL), in("userId"), new BigDecimal(in("amount")), in("comment"), TransactionType.valueOf(in("type")));
 			redirect(BASE_URL);
 		} else {
 			out("balance", this.accountManager.getBalance((String) session(CURRENT_USER_EMAIL)));
@@ -103,7 +103,7 @@ public class BankController extends Controller {
 	public void postShare() {
 		Validator validator = this.getDestinationValidator();
 		if (validator.isValid()) {
-			this.accountManager.transact(getSubDomain(), in("userId").trim(), new BigDecimal(in("amount").trim()), in("comment"), TransactionType.valueOf(in("type")));
+			this.accountManager.transact(getSubDomain(), in("userId"), new BigDecimal(in("amount")), in("comment"), TransactionType.valueOf(in("type")));
 			redirect(ADMIN_URL);
 		} else {
 			out("balance", this.accountManager.getBalance(getSubDomain()));
@@ -119,7 +119,7 @@ public class BankController extends Controller {
 	public void postBallast() {
 		Validator validator = this.getAmountValidator();
 		if (validator.isValid()) {
-			this.accountManager.insertBallast(getSubDomain(), new BigDecimal(in("amount").trim()), in("comment"));
+			this.accountManager.insertBallast(getSubDomain(), new BigDecimal(in("amount")), in("comment"));
 			redirect(ADMIN_URL);
 		} else {
 			out("balance", this.accountManager.getBalance(getSubDomain()));

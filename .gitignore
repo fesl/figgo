@@ -3,3 +3,4 @@ target
 route53/.aws-secrets
 .pydevproject
 .settings/org.eclipse.core.resources.prefs
+src/main/webapp/WEB-INF/classes/META-INF/

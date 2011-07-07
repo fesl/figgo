@@ -35,7 +35,7 @@ public class AmountRule implements ValidationRule {
 	 */
 	@Override
 	public boolean isValid(final String input) {
-		BigDecimal amount = new BigDecimal(input.trim());
+		BigDecimal amount = new BigDecimal(input);
 		return amount.compareTo(ZERO) > 0;
 	}
 

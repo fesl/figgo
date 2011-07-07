@@ -43,7 +43,7 @@ public class DestionationRule implements ValidationRule {
 	public boolean isValid(final String input) {
 		try {
 			NamespaceManagerFacade.changeToGlobalNamespace();
-			return userManager.existsUser(input.trim());
+			return userManager.existsUser(input);
 		} finally {
 			NamespaceManagerFacade.changeToPreviousNamespace();
 		}

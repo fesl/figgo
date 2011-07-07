@@ -38,7 +38,7 @@ public class TransactionRule implements ValidationRule {
 	@Override
 	public boolean isValid(String input) {
 		User currentUser = userService.getCurrentUser(); 
-		return currentUser != null && currentUser.getEmail().equals(input.trim());
+		return currentUser != null && currentUser.getEmail().equals(input);
 	}
 
 }
