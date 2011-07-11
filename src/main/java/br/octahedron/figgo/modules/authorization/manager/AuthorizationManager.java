@@ -149,6 +149,13 @@ public class AuthorizationManager {
 			return Collections.emptySet();
 		}
 	}
+	
+	/**
+	 * @return All roles from a specific domain
+	 */
+	public Collection<Role> getRoles(String subdomain) {
+		return this.roleDAO.getAll();
+	}
 
 	/**
 	 * @return <code>true</code> if the given user is authorized to perform the given activity at
