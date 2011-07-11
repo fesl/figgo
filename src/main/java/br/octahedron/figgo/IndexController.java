@@ -18,10 +18,12 @@
  */
 package br.octahedron.figgo;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
-
+import static br.octahedron.cotopaxi.auth.AbstractAuthenticationInterceptor.CURRENT_USER_EMAIL;
 import br.octahedron.cotopaxi.controller.Controller;
+import br.octahedron.cotopaxi.datastore.NamespaceManagerFacade;
+import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
+import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
 
 /**
  * 
@@ -29,10 +31,37 @@ import br.octahedron.cotopaxi.controller.Controller;
  */
 public class IndexController extends Controller {
 
-	private UserService googleUserService = UserServiceFactory.getUserService();
+	@Inject
+	private ConfigurationManager configurationManager;
+	@Inject
+	private AuthorizationManager authorizationManager;
+	
+	public void setConfigurationManager(ConfigurationManager configurationManager) {
+		this.configurationManager = configurationManager;
+	}
+	
+	public void setAuthorizationManager(AuthorizationManager authorizationManager) {
+		this.authorizationManager = authorizationManager;
+	}
 	
 	public void getIndex() {
-		boolean isLogged = this.googleUserService.isUserLoggedIn();
-		redirect("/dashboard");
+		if (serverName().equalsIgnoreCase("www.figgo.com.br") || serverName().equalsIgnoreCase("localhost")) {
+			redirect("/dashboard");
+		} else {
+			out("domain", this.configurationManager.getDomainConfiguration());
+			boolean userExists;
+			try {
+				NamespaceManagerFacade.changeToGlobalNamespace();
+				userExists = this.authorizationManager.getUserDomains((String) session(CURRENT_USER_EMAIL)).contains(subDomain());
+			} finally {
+				NamespaceManagerFacade.changeToPreviousNamespace();
+			}
+
+			if (userExists) {
+				success("domain/index.vm");
+			} else {
+				success("domain/public_index.vm");
+			}
+		}
 	}
 }
