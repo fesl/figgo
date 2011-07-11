@@ -5,7 +5,7 @@ The .aws-secret file should not be commited to VSC repository.
 
 Sample command used to create the domain zone:
 
-	./dnscurl.pl --keyname figgo_aws_account -- -H "Content-Type: text/xml; charset=UTF-8" -X POST --upload-file ./create_figgo_zone.xml https://route53.amazonaws.com/2011-05-05/hostedzone
+	./dnscurl.pl --keyname figgo_aws_account -- -H "Content-Type: text/xml; charset=UTF-8" -X POST --upload-file ./create_figgo_zone.xml https://route53.amazonaws.com/2011-05-05/hostedzone/Z1BYOY5V4T3745/rrset
 
 Sample command to get all entries for a domain zone:
 
