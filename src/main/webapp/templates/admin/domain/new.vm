@@ -11,15 +11,15 @@
 		<div id="content">
 			<div id="single-column">
 				<p>Preencha o formulário abaixo:</p>
-        		#if ( $error )
-    			<p class="warning"> Erro: domínio $error já existe!</p>				
-        		#end
-        		<form action="/admin/domain/create" method="post">
+        		<form action="/domain/new" method="post">
                 	<label for="name">
-                		Domínio: <input type="text" name="name" /> .figgo.com.br
+                		Domínio: <input type="text" name="name" value="$!{name}" /> .figgo.com.br
+						#if ( $invalid.name )
+    						<span>$invalid.name</span>
+						#end
                 	</label><br />
             		<label for="name">
-                		Administrador: <input type="text" name="userId" />
+                		Administrador: <input type="text" name="userId" value="$!{userId}" />
                 	</label><br />
             		<input type="submit" value="Criar" />
                 </form>

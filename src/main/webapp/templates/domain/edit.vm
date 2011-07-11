@@ -20,7 +20,7 @@
 			<div id="single-column">
 				<h3>Configurações do domínio</h3>
             	<p>Preencha o formulário abaixo:</p>
-                <form action="/domain/update" method="post">
+                <form action="/domain/edit" method="post">
             		<input type="hidden" name="_method" value="put" />
             		Domínio: ${domain.DomainName}.figgo.com.br <br />
             		<label for="name">

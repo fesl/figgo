@@ -11,7 +11,7 @@
 		<div id="content">
 			<div id="single-column">
 				<p>Preencha o formulário abaixo:</p>
-        		<form action="/admin/app/config" method="post">
+        		<form action="/admin/config" method="post">
                 	<label for="name">
                 		Access Key ID: <input type="text" name="accessKey" value="$!{accessKey}" />
                 	</label><br />

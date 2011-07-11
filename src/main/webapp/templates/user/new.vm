@@ -14,18 +14,17 @@
 				<p>Você ainda não possui cadastro no Figgo. Faça já o seu!</p>
 
         		<p>Preencha o formulário abaixo:</p>
-                <form action="/create" method="post">
-                	$invalid.entrySet()
+                <form action="/user/new" method="post" accept-charset="utf-8">
 					<label for="name">
-                		Nome: <input type="text" name="name" value="$!{name}" required />
-                		#if ($invalid.name)
-                			$invalid["name"]
+                		Nome: <input type="text" name="name" value="$!{name}" autofocus required />
+						#if ( $invalid.name )
+                			<span>$invalid.name</span>
                 		#end
                 	</label><br />
                 	<label for="phoneNumber">
                 	    Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}" pattern="^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$" required />
-                	    #if ($invalid && $invalid["phoneNumber"])
-                			$invalid["phoneNumber"]
+						#if ( $invalid.phoneNumber )
+                			<span>$invalid.phoneNumber</span>
                 		#end
                 	</label><br />
                 	<label for="description">
