@@ -31,6 +31,8 @@ import br.octahedron.util.Log;
  */
 public class AuthenticationInterceptor extends AbstractGoogleAuthenticationInterceptor {
 	
+	private static final String NEW_USER_URL = "/user/new";
+	
 	@Inject
 	private UserManager usersManager;
 	
@@ -51,7 +53,7 @@ public class AuthenticationInterceptor extends AbstractGoogleAuthenticationInter
 		String userEmail = (String) session(CURRENT_USER_EMAIL);
 		if (!this.usersManager.existsUser(userEmail)) {
 			log.debug("User doesn't exist. It's a new/invalid user");
-			redirect("/new");
+			redirect(NEW_USER_URL);
 		} else {
 			session("user", this.usersManager.getUser(userEmail));
 			out("user", session("user"));

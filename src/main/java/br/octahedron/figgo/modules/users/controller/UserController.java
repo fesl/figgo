@@ -28,6 +28,7 @@ import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.figgo.modules.users.controller.validation.UserValidators;
+import br.octahedron.figgo.modules.users.data.User;
 import br.octahedron.figgo.modules.users.manager.UserManager;
 
 /**
@@ -85,6 +86,7 @@ public class UserController extends Controller {
 			this.userManager.createUser((String) session(CURRENT_USER_EMAIL), in("name"), in("phoneNumber"), in("description"));
 			redirect(getProperty(APPLICATION_BASE_URL));
 		} else {
+			out("email", (String) session(CURRENT_USER_EMAIL));
 			out("name", in("name"));
 			out("phoneNumber", in("phoneNumber"));
 			out("description", in("description"));
@@ -94,7 +96,10 @@ public class UserController extends Controller {
 
 	@AuthenticationRequired
 	public void getEditUser() {
-		out("user", this.userManager.getUser(in(CURRENT_USER_EMAIL)));
+		User user = this.userManager.getUser((String) session(CURRENT_USER_EMAIL));
+		out("name", user.getName());
+		out("phoneNumber", user.getPhoneNumber());
+		out("description", user.getDescription());
 		success(EDIT_USER_TPL);
 	}
 	

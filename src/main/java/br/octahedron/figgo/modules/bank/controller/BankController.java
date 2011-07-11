@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules.bank.controller;
 
-import static br.octahedron.cotopaxi.auth.AbstractGoogleAuthenticationInterceptor.CURRENT_USER_EMAIL;
+import static br.octahedron.cotopaxi.auth.AbstractAuthenticationInterceptor.CURRENT_USER_EMAIL;
 
 import java.math.BigDecimal;
 
@@ -91,7 +91,7 @@ public class BankController extends Controller {
 	
 	@AuthenticationRequired
 	public void getAdminBank() {
-		out("balance", this.accountManager.getBalance(getSubDomain()));
+		out("balance", this.accountManager.getBalance(subDomain()));
 		success(ADMIN_TPL);
 	}
 	
@@ -100,10 +100,10 @@ public class BankController extends Controller {
 		Validator requiredValidator = BankValidators.getRequiredValidator();
 		Validator destinationValidator = BankValidators.getDestinationValidator();
 		if (requiredValidator.isValid() && destinationValidator.isValid()) {
-			this.accountManager.transact(getSubDomain(), in("userId"), new BigDecimal(in("amount")), in("comment"), TransactionType.valueOf(in("type")));
+			this.accountManager.transact(subDomain(), in("userId"), new BigDecimal(in("amount")), in("comment"), TransactionType.valueOf(in("type")));
 			redirect(ADMIN_URL);
 		} else {
-			out("balance", this.accountManager.getBalance(getSubDomain()));
+			out("balance", this.accountManager.getBalance(subDomain()));
 			out("userId", in("userId"));
 			out("amount", in("amount"));
 			out("comment", in("comment"));
@@ -117,10 +117,10 @@ public class BankController extends Controller {
 		Validator requiredValidator = BankValidators.getRequiredValidator();
 		Validator comparableValidator = BankValidators.getAmountValidator();
 		if (requiredValidator.isValid() && comparableValidator.isValid()) {
-			this.accountManager.insertBallast(getSubDomain(), new BigDecimal(in("amount")), in("comment"));
+			this.accountManager.insertBallast(subDomain(), new BigDecimal(in("amount")), in("comment"));
 			redirect(ADMIN_URL);
 		} else {
-			out("balance", this.accountManager.getBalance(getSubDomain()));
+			out("balance", this.accountManager.getBalance(subDomain()));
 			out("userId", in("userId"));
 			out("amount", in("amount"));
 			out("comment", in("comment"));
