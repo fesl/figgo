@@ -128,5 +128,4 @@ public class BankController extends Controller {
 			invalid(ADMIN_TPL);
 		}
 	}
-
 }

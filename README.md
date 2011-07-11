@@ -1,4 +1,4 @@
-# Development Guide for Straight Project
+# Development Guide for Figgo Project
 
 We use standard Java programming style guidelines found here:
 http://www.oracle.com/technetwork/java/codeconv-138413.html
