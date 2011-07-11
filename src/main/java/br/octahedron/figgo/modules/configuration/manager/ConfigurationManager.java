@@ -18,12 +18,12 @@
  */
 package br.octahedron.figgo.modules.configuration.manager;
 
-import static br.octahedron.cotopaxi.eventbus.EventBus.publish;
-
 import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import br.octahedron.cotopaxi.eventbus.EventBus;
+import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.Module;
@@ -47,8 +47,17 @@ import br.octahedron.figgo.modules.configuration.data.ModuleProperty;
  */
 public class ConfigurationManager {
 
+	@Inject
+	private EventBus eventBus;
 	private DomainConfigurationDAO domainDAO = new DomainConfigurationDAO();
 	private ModuleConfigurationDAO moduleDAO = new ModuleConfigurationDAO();
+	
+	/**
+	 * @param eventBus the eventBus to set
+	 */
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+	}
 
 	/**
 	 * To be used by tests
@@ -98,7 +107,7 @@ public class ConfigurationManager {
 		domainConfiguration.setUrl(url);
 		domainConfiguration.setMailList(mailList);
 		domainConfiguration.setDescription(description);
-		publish(new DomainChangedEvent(domainConfiguration));
+		eventBus.publish(new DomainChangedEvent(domainConfiguration));
 	}
 
 	/**

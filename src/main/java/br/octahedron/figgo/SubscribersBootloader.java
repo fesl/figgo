@@ -18,12 +18,12 @@
  */
 package br.octahedron.figgo;
 
-import static br.octahedron.cotopaxi.eventbus.EventBus.subscribe;
-
 import java.util.Set;
 
 import br.octahedron.cotopaxi.Bootloader;
+import br.octahedron.cotopaxi.eventbus.EventBus;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
+import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.ModuleSpec;
 import br.octahedron.util.Log;
@@ -36,6 +36,16 @@ import br.octahedron.util.Log;
 public class SubscribersBootloader implements Bootloader {
 
 	private static final Log log = new Log(SubscribersBootloader.class);
+	
+	@Inject
+	private EventBus eventBus;
+	
+	/**
+	 * @param eventBus the eventBus to set
+	 */
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+	}
 
 	@Override
 	public void boot() {
@@ -46,7 +56,7 @@ public class SubscribersBootloader implements Bootloader {
 				Set<Class<? extends Subscriber>> subscribers = spec.getSubscribers();
 				for (Class<? extends Subscriber> subscriber : subscribers) {
 					log.info("Registering Subscriber to EventBus: %s", subscriber.getName());
-					subscribe(subscriber);
+					eventBus.subscribe(subscriber);
 				}
 			}
 		}

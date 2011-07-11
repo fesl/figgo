@@ -18,8 +18,9 @@
  */
 package br.octahedron.figgo.modules.admin.manager;
 
-import static br.octahedron.cotopaxi.eventbus.EventBus.publish;
 import static br.octahedron.figgo.modules.admin.data.ApplicationConfiguration.APPLICATION_NAME;
+import br.octahedron.cotopaxi.eventbus.EventBus;
+import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.admin.data.ApplicationConfiguration;
 import br.octahedron.figgo.modules.admin.data.ApplicationConfigurationDAO;
@@ -34,7 +35,16 @@ import br.octahedron.figgo.modules.admin.util.Route53Util;
  */
 public class AdminManager {
 
+	@Inject
+	private EventBus eventBus;
 	private ApplicationConfigurationDAO applicationConfigurationDAO = new ApplicationConfigurationDAO();
+	
+	/**
+	 * @param eventBus the eventBus to set
+	 */
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+	}
 
 	private void createApplicationConfiguration() {
 		ApplicationConfiguration appConf = new ApplicationConfiguration();
@@ -83,7 +93,7 @@ public class AdminManager {
 		if (this.hasApplicationConfiguration()) {
 			ApplicationConfiguration appConf = this.applicationConfigurationDAO.get(APPLICATION_NAME);
 			Route53Util.createDomain(domainName, appConf.getRoute53AccessKeyID(), appConf.getRoute53AccessKeySecret(), appConf.getRoute53ZoneID());
-			publish(new DomainCreatedEvent(domainName, adminID));
+			eventBus.publish(new DomainCreatedEvent(domainName, adminID));
 		} else {
 			throw new DataDoesNotExistsException("This application isn't configured");
 		}
