@@ -74,6 +74,8 @@ public class AdminController extends Controller {
 			this.adminManager.createDomain(in("name"), in("userId"));
 			redirect("/");
 		} else {
+			out("name", in("name"));
+			out("userId", in("userId"));
 			invalid(NEW_DOMAIN_TPL);
 		}
 	}

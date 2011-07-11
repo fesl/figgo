@@ -32,7 +32,7 @@ public class InexistentDomainRule implements ValidationRule {
 	 */
 	@Override
 	public boolean isValid(final String input) {
-		return NamespaceManagerFacade.exists(input);
+		return !NamespaceManagerFacade.exists(input);
 	}
 
 }
