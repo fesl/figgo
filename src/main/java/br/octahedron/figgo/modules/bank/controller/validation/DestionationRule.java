@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules.bank.controller.validation;
 
-import br.octahedron.cotopaxi.datastore.NamespaceManagerFacade;
+import br.octahedron.cotopaxi.datastore.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.ValidationRule;
 import br.octahedron.figgo.modules.users.manager.UserManager;
@@ -31,6 +31,12 @@ public class DestionationRule implements ValidationRule {
 
 	@Inject
 	private UserManager userManager;
+	@Inject
+	private NamespaceManager namespaceManager;
+	
+	public void setNamespaceManager(NamespaceManager namespaceManager) {
+		this.namespaceManager = namespaceManager;
+	}
 	
 	public void setAccountManager(UserManager userManager) {
 		this.userManager = userManager;
@@ -42,10 +48,10 @@ public class DestionationRule implements ValidationRule {
 	@Override
 	public boolean isValid(final String input) {
 		try {
-			NamespaceManagerFacade.changeToGlobalNamespace();
+			namespaceManager.changeToGlobalNamespace();
 			return userManager.existsUser(input);
 		} finally {
-			NamespaceManagerFacade.changeToPreviousNamespace();
+			namespaceManager.changeToPreviousNamespace();
 		}
 	}
 

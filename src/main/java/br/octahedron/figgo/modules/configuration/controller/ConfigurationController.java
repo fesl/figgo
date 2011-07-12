@@ -20,6 +20,7 @@ package br.octahedron.figgo.modules.configuration.controller;
 
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
+import br.octahedron.cotopaxi.datastore.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
@@ -29,6 +30,7 @@ import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
  * @author vitoravelino
  *
  */
+@NamespaceRequired
 public class ConfigurationController extends Controller {
 
 	private static final String BASE_DIR_TPL = "domain/";

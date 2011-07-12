@@ -18,7 +18,8 @@
  */
 package br.octahedron.figgo.modules.admin.controller.validation;
 
-import br.octahedron.cotopaxi.datastore.NamespaceManagerFacade;
+import br.octahedron.cotopaxi.datastore.NamespaceManager;
+import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.ValidationRule;
 
 /**
@@ -27,12 +28,19 @@ import br.octahedron.cotopaxi.validation.ValidationRule;
  */
 public class InexistentDomainRule implements ValidationRule {
 
+	@Inject
+	private NamespaceManager namespaceManager;
+	
+	public void setNamespaceManager(NamespaceManager namespaceManager) {
+		this.namespaceManager = namespaceManager;
+	}
+	
 	/* (non-Javadoc)
 	 * @see br.octahedron.cotopaxi.validation.ValidationRule#isValid(java.lang.String)
 	 */
 	@Override
 	public boolean isValid(final String input) {
-		return !NamespaceManagerFacade.exists(input);
+		return !namespaceManager.exists(input);
 	}
 
 }

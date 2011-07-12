@@ -18,7 +18,6 @@
  */
 package br.octahedron.figgo.modules.configuration.manager;
 
-import static br.octahedron.cotopaxi.datastore.NamespaceManagerFacade.changeToNamespace;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
@@ -27,6 +26,8 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.octahedron.cotopaxi.datastore.AppEngineNamespaceManager;
+import br.octahedron.cotopaxi.datastore.NamespaceManager;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
 import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
 
@@ -41,19 +42,21 @@ public class DomainConfigurationDAOTest {
 
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 	private final DomainConfigurationDAO domainConfigurationDAO = new DomainConfigurationDAO();
+	private final NamespaceManager namespaceManager = new AppEngineNamespaceManager();
 	
 	@Before
 	public void setUp() {
 		this.helper.setUp();
+		this.domainConfigurationDAO.setNamespaceManager(namespaceManager);
 	}
 
 	public void createDomains() {
 		// storing domains configuration
-		changeToNamespace("octa");
+		namespaceManager.changeToNamespace("octa");
 		this.domainConfigurationDAO.save(new DomainConfiguration("octa"));
-		changeToNamespace("alua");
+		namespaceManager.changeToNamespace("alua");
 		this.domainConfigurationDAO.save(new DomainConfiguration("alua"));
-		changeToNamespace("mundo");
+		namespaceManager.changeToNamespace("mundo");
 		this.domainConfigurationDAO.save(new DomainConfiguration("mundo"));
 	}
 

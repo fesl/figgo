@@ -18,8 +18,6 @@
  */
 package br.octahedron.figgo.modules.configuration.manager;
 
-import java.util.logging.Logger;
-
 import br.octahedron.cotopaxi.eventbus.AbstractNamespaceSubscriber;
 import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
@@ -28,6 +26,7 @@ import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.ModuleSpec;
 import br.octahedron.figgo.modules.admin.manager.DomainCreatedEvent;
+import br.octahedron.util.Log;
 
 /**
  * Creates the configuration domain for a new domain
@@ -37,7 +36,7 @@ import br.octahedron.figgo.modules.admin.manager.DomainCreatedEvent;
 @InterestedEvent(events = DomainCreatedEvent.class)
 public class CreateDomainConfigurationSubscriber extends AbstractNamespaceSubscriber {
 
-	private static final Logger logger = Logger.getLogger(CreateDomainConfigurationSubscriber.class.getName());
+	private static final Log log = new Log(CreateDomainConfigurationSubscriber.class);
 
 	@Inject
 	private ConfigurationManager configurationManager;
@@ -60,12 +59,12 @@ public class CreateDomainConfigurationSubscriber extends AbstractNamespaceSubscr
 	@Override
 	protected void processEvent(Event event) {
 		String namespace = ((NamespaceEvent) event).getNamespace();
-		logger.info("Creating domain configuration for domain " + namespace);
+		log.info("Creating domain configuration for domain " + namespace);
 		this.configurationManager.createDomainConfiguration(namespace);
 		for (Module m : Module.values()) {
 			ModuleSpec moduleSpec = m.getModuleSpec();
 			if (moduleSpec.getModuleType() == Module.Type.DOMAIN) {
-				logger.fine("Configuring module " + m.name() + " for domain " + namespace);
+				log.debug("Configuring module %s for domain %s", m.name(), namespace);
 				this.configurationManager.enableModule(m);
 			}
 		}

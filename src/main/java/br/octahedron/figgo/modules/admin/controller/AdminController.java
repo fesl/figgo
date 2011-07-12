@@ -35,8 +35,7 @@ public class AdminController extends Controller {
 	private static final String BASE_DIR_TPL = "admin/";
 	private static final String CONFIG_APP_TPL = BASE_DIR_TPL + "config.vm";
 	private static final String NEW_DOMAIN_TPL = BASE_DIR_TPL + "domain/new.vm";
-	private static final String BASE_URL = "/admin";
-	private static final String NEW_DOMAIN_URL = BASE_URL + "/domain/new";
+	private static final String NEW_DOMAIN_URL = "/domain/new";
 	
 	@Inject
 	private AdminManager adminManager;
@@ -80,13 +79,4 @@ public class AdminController extends Controller {
 		}
 	}
 
-//	def post_domain_create() {
-//		try {
-//			adminManager.createDomain(params.name, params.userId)
-//			redirect '/'
-//	 	} catch (DomainAlreadyExistsException e) {
-//	 		request.error = e.getMessage()
-//	 		render 'domain/new.vm', request, response	
-//	 	}
-//	}
 }

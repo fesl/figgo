@@ -18,14 +18,12 @@
  */
 package br.octahedron.figgo.modules.configuration.data;
 
-import static br.octahedron.cotopaxi.datastore.NamespaceManagerFacade.changeToNamespace;
-import static br.octahedron.cotopaxi.datastore.NamespaceManagerFacade.changeToPreviousNamespace;
-import static br.octahedron.cotopaxi.datastore.NamespaceManagerFacade.getNamespaces;
-
 import java.util.Set;
 import java.util.TreeSet;
 
 import br.octahedron.cotopaxi.datastore.GenericDAO;
+import br.octahedron.cotopaxi.datastore.NamespaceManager;
+import br.octahedron.cotopaxi.inject.Inject;
 
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
@@ -35,12 +33,18 @@ import com.google.appengine.api.memcache.MemcacheServiceFactory;
  */
 public class DomainConfigurationDAO extends GenericDAO<DomainConfiguration> {
 
-	private MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
-
 	public static final String NAMESPACE_KEY = "namespace_memcache_key";
-
+	private final MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
+	
+	@Inject
+	private NamespaceManager namespaceManager;
+	
 	public DomainConfigurationDAO() {
 		super(DomainConfiguration.class);
+	}
+
+	public void setNamespaceManager(NamespaceManager namespaceManager) {
+		this.namespaceManager = namespaceManager;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -58,14 +62,14 @@ public class DomainConfigurationDAO extends GenericDAO<DomainConfiguration> {
 	 */
 	private Set<DomainConfiguration> createDomainsConfiguration() {
 		Set<DomainConfiguration> domainsConfiguration = new TreeSet<DomainConfiguration>();
-		for (String namespace : getNamespaces()) {
+		for (String namespace : namespaceManager.getNamespaces()) {
 			try {
-				changeToNamespace(namespace);
+				namespaceManager.changeToNamespace(namespace);
 				if (this.count() != 0) {
 					domainsConfiguration.add(this.getAll().iterator().next());
 				}
 			} finally {
-				changeToPreviousNamespace();
+				namespaceManager.changeToPreviousNamespace();
 			}
 		}
 		return domainsConfiguration;

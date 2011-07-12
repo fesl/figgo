@@ -107,7 +107,7 @@ public class ConfigurationManager {
 		domainConfiguration.setUrl(url);
 		domainConfiguration.setMailList(mailList);
 		domainConfiguration.setDescription(description);
-		eventBus.publish(new DomainChangedEvent(domainConfiguration));
+		this.eventBus.publish(new DomainChangedEvent(domainConfiguration));
 	}
 
 	/**

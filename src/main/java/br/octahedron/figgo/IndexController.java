@@ -20,7 +20,8 @@ package br.octahedron.figgo;
 
 import static br.octahedron.cotopaxi.auth.AbstractAuthenticationInterceptor.CURRENT_USER_EMAIL;
 import br.octahedron.cotopaxi.controller.Controller;
-import br.octahedron.cotopaxi.datastore.NamespaceManagerFacade;
+import br.octahedron.cotopaxi.datastore.NamespaceManager;
+import br.octahedron.cotopaxi.datastore.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
@@ -29,13 +30,19 @@ import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
  * 
  * @author Danilo Queiroz - daniloqueiroz@octahedron.com.br
  */
+@NamespaceRequired
 public class IndexController extends Controller {
 
 	@Inject
 	private ConfigurationManager configurationManager;
 	@Inject
 	private AuthorizationManager authorizationManager;
-	
+	@Inject
+	private NamespaceManager namespaceManager;
+
+	public void setNamespaceManager(NamespaceManager namespaceManager) {
+		this.namespaceManager = namespaceManager;
+	}
 	public void setConfigurationManager(ConfigurationManager configurationManager) {
 		this.configurationManager = configurationManager;
 	}
@@ -48,13 +55,13 @@ public class IndexController extends Controller {
 		if (serverName().equalsIgnoreCase("www.figgo.com.br") || serverName().equalsIgnoreCase("localhost")) {
 			redirect("/dashboard");
 		} else {
-			out("domain", this.configurationManager.getDomainConfiguration());
 			boolean userExists;
+			out("domain", this.configurationManager.getDomainConfiguration());
 			try {
-				NamespaceManagerFacade.changeToGlobalNamespace();
+				namespaceManager.changeToGlobalNamespace();
 				userExists = this.authorizationManager.getUserDomains((String) session(CURRENT_USER_EMAIL)).contains(subDomain());
 			} finally {
-				NamespaceManagerFacade.changeToPreviousNamespace();
+				namespaceManager.changeToPreviousNamespace();
 			}
 
 			if (userExists) {
