@@ -52,6 +52,11 @@ public class BankTransactionDAOTest  {
 		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
 		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "3"));
 	}
+	
+	public void createBallastTransactions() {
+		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+	}
 
 	@Test
 	public void getLastNTransactionsTest() {
@@ -103,5 +108,13 @@ public class BankTransactionDAOTest  {
 		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "5"));
 		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "6"));
 		assertEquals(new BigDecimal(0), account.getBalance());
+	}
+	
+	@Test
+	public void getBallast() {
+		this.createBallastTransactions();
+		assertEquals(new BigDecimal(200).doubleValue(), this.bankTransactionDAO.getBallast().doubleValue());
+		this.createBallastTransactions();
+		assertEquals(new BigDecimal(400).doubleValue(), this.bankTransactionDAO.getBallast().doubleValue());
 	}
 }

@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.bank.data;
 
+import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
@@ -147,5 +148,21 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		public int compare(BankTransaction o1, BankTransaction o2) {
 			return (int) (o1.getId() - o2.getId());
 		}
+	}
+
+	/**
+	 * @param string
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public BigDecimal getBallast() {
+		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		query.setFilter("accountOrig == :accOrig");
+		BigDecimal sum = new BigDecimal(0.0);
+		List<BankTransaction> transactions = (List<BankTransaction>) query.execute(SystemAccount.ID);
+		for (BankTransaction transaction : transactions) {
+			sum = sum.add(transaction.getAmount());
+		}
+		return sum;
 	}
 }
