@@ -20,22 +20,25 @@ package br.octahedron.figgo.modules.admin.controller.validation;
 
 import br.octahedron.cotopaxi.datastore.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.cotopaxi.inject.SelfInjectable;
 import br.octahedron.cotopaxi.validation.ValidationRule;
 
 /**
  * @author Vítor Avelino
- *
+ * 
  */
-public class InexistentDomainRule implements ValidationRule {
+public class InexistentDomainRule extends SelfInjectable implements ValidationRule {
 
 	@Inject
 	private NamespaceManager namespaceManager;
-	
+
 	public void setNamespaceManager(NamespaceManager namespaceManager) {
 		this.namespaceManager = namespaceManager;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.cotopaxi.validation.ValidationRule#isValid(java.lang.String)
 	 */
 	@Override

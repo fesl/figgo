@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.admin.manager;
 
+import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
 import static br.octahedron.figgo.modules.admin.data.ApplicationConfiguration.APPLICATION_NAME;
 import br.octahedron.cotopaxi.eventbus.EventBus;
 import br.octahedron.cotopaxi.inject.Inject;
@@ -27,6 +28,7 @@ import br.octahedron.figgo.modules.admin.data.ApplicationConfigurationDAO;
 import br.octahedron.figgo.modules.admin.data.ApplicationConfigurationView;
 import br.octahedron.figgo.modules.admin.util.Route53Exception;
 import br.octahedron.figgo.modules.admin.util.Route53Util;
+import br.octahedron.util.Log;
 
 /**
  * The manager for Application Configuration and admin operations
@@ -35,14 +37,19 @@ import br.octahedron.figgo.modules.admin.util.Route53Util;
  */
 public class AdminManager {
 
+	private static final String NOT_ROUTE53_PROPERTY = "NOT_USE_ROUTE53";
+	private static final Log log = new Log(AdminManager.class);
+	
 	@Inject
 	private EventBus eventBus;
 	private ApplicationConfigurationDAO applicationConfigurationDAO = new ApplicationConfigurationDAO();
-	
+
 	/**
-	 * @param eventBus the eventBus to set
+	 * @param eventBus
+	 *            the eventBus to set
 	 */
 	public void setEventBus(EventBus eventBus) {
+		log.debug("event bus injected");
 		this.eventBus = eventBus;
 	}
 
@@ -95,7 +102,12 @@ public class AdminManager {
 			Route53Util.createDomain(domainName, appConf.getRoute53AccessKeyID(), appConf.getRoute53AccessKeySecret(), appConf.getRoute53ZoneID());
 			eventBus.publish(new DomainCreatedEvent(domainName, adminID));
 		} else {
-			throw new DataDoesNotExistsException("This application isn't configured");
+			if (Boolean.parseBoolean(getProperty(NOT_ROUTE53_PROPERTY))) {
+				log.info("%s Property set to true, will fire domain created event!", NOT_ROUTE53_PROPERTY);
+				eventBus.publish(new DomainCreatedEvent(domainName, adminID));
+			} else {
+				throw new DataDoesNotExistsException("This application isn't configured");
+			}
 		}
 	}
 }
