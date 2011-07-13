@@ -72,12 +72,9 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	public Collection<BankTransaction> getTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
 		Collection<BankTransaction> transactions = this.getTransactionsByDateRange(startDate, endDate);
 		TreeSet<BankTransaction> result = new TreeSet<BankTransaction>(new BankTransactionComparator());
-		Iterator<BankTransaction> iterator = transactions.iterator();
-		BankTransaction current;
-		while (iterator.hasNext()) {
-			current = iterator.next();
-			if (current.belongsTo(accountId)) {
-				result.add(current);
+		for (BankTransaction transaction : transactions) {
+			if (transaction.belongsTo(accountId)) {
+				result.add(transaction);
 			}
 		}
 		return result;
