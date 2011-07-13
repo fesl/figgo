@@ -22,6 +22,9 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;
 
 import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 
 import org.junit.Before;
@@ -39,8 +42,8 @@ public class BankTransactionDAOTest  {
 
 	
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+	private final DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
 	private BankTransactionDAO bankTransactionDAO = new BankTransactionDAO();
-
 	@Before
 	public void setUp() throws InstantiationException {
 		this.helper.setUp();
@@ -53,9 +56,12 @@ public class BankTransactionDAOTest  {
 		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "3"));
 	}
 	
-	public void createBallastTransactions() {
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+	private void createDateTransactions() throws ParseException {
+		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter.parse("16/01/2011")));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter.parse("10/01/2011")));
+		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter.parse("11/01/2011")));
+		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta2", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter.parse("12/01/2011")));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter.parse("13/01/2011")));
 	}
 
 	@Test
@@ -112,9 +118,32 @@ public class BankTransactionDAOTest  {
 	
 	@Test
 	public void getBallast() {
-		this.createBallastTransactions();
-		assertEquals(new BigDecimal(200).doubleValue(), this.bankTransactionDAO.getBallast().doubleValue());
-		this.createBallastTransactions();
-		assertEquals(new BigDecimal(400).doubleValue(), this.bankTransactionDAO.getBallast().doubleValue());
+		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+		assertEquals(new BigDecimal(200), this.bankTransactionDAO.getBallast());
+		
+		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+		assertEquals(new BigDecimal(400), this.bankTransactionDAO.getBallast());
 	}
+	
+	@Test
+	public void getUserTransactionsByDateRange() throws ParseException {
+		this.createDateTransactions();
+		assertEquals(1, this.bankTransactionDAO.getTransactionsByDateRange("Conta1", formatter.parse("12/01/11"), formatter.parse("15/01/11")).size());
+		assertEquals(2, this.bankTransactionDAO.getTransactionsByDateRange("Conta1", formatter.parse("11/01/11"), formatter.parse("15/01/11")).size());
+	}
+	
+	public void getTransactionsByDateRange() throws ParseException {
+		this.createDateTransactions();
+		assertEquals(2, this.bankTransactionDAO.getTransactionsByDateRange(formatter.parse("12/01/11"), formatter.parse("15/01/11")).size());
+		assertEquals(3, this.bankTransactionDAO.getTransactionsByDateRange(formatter.parse("11/01/11"), formatter.parse("15/01/11")).size());
+	}
+	
+	@Test
+	public void getAmountByDateRange() throws ParseException {
+		this.createDateTransactions();
+//		assertEquals(3, this.bankTransactionDAO.getAmountByDateRange("mundo", formatter.parse("11/01/11"), formatter.parse("15/01/11")));
+	}
+
 }
