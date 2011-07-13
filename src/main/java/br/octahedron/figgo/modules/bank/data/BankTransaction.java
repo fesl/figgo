@@ -65,12 +65,16 @@ public class BankTransaction implements Serializable {
 	 * @param comment
 	 */
 	public BankTransaction(String accountOrig, String accountDest, BigDecimal value, TransactionType type, String comment) {
+		this(accountOrig, accountDest, value, type, comment, new Date());
+	}
+	
+	protected BankTransaction(String accountOrig, String accountDest, BigDecimal value, TransactionType type, String comment, Date date) {
 		this.accountOrig = accountOrig;
 		this.accountDest = accountDest;
 		this.amount = value;
 		this.type = type;
 		this.comment = comment;
-		this.date = new Date();
+		this.date = date;
 	}
 
 	/**
@@ -134,6 +138,14 @@ public class BankTransaction implements Serializable {
 	 */
 	public TransactionType getType() {
 		return this.type;
+	}
+	
+	public boolean belongsTo(String accountId) {
+		return accountDest.equals(accountId) || accountOrig.equals(accountId);
+	}
+	
+	public boolean isOrigin(String accountId) {
+		return accountOrig.equals(accountId);
 	}
 
 	/*

@@ -65,15 +65,29 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * br.octahedron.straight.bank.TransactionInfoService#getTransactionsByDateRange(java.lang.Long,
+	 * br.octahedron.straight.bank.TransactionInfoService#getTransactionsByDateRange(java.lang.String,
 	 * java.util.Date, java.util.Date)
 	 */
 	@Override
-	public List<BankTransaction> getTransactionsByDateRange(Long accountId, Date startDate, Date endDate) {
-		// List<BankTransaction> transactions =
-		// this.datastoreFacade.getObjectsByQuery(BankTransaction.class, "")
-
-		return null;
+	public Collection<BankTransaction> getTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
+		Collection<BankTransaction> transactions = this.getTransactionsByDateRange(startDate, endDate);
+		TreeSet<BankTransaction> result = new TreeSet<BankTransaction>(new BankTransactionComparator());
+		Iterator<BankTransaction> iterator = transactions.iterator();
+		BankTransaction current;
+		while (iterator.hasNext()) {
+			current = iterator.next();
+			if (current.belongsTo(accountId)) {
+				result.add(current);
+			}
+		}
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Collection<BankTransaction> getTransactionsByDateRange(Date startDate, Date endDate) {
+		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		query.setFilter("date >= :startDate && date <= :endDate");
+		return (List<BankTransaction>) query.execute(startDate, endDate);
 	}
 
 	/**
@@ -158,11 +172,31 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	public BigDecimal getBallast() {
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("accountOrig == :accOrig");
-		BigDecimal sum = new BigDecimal(0.0);
 		List<BankTransaction> transactions = (List<BankTransaction>) query.execute(SystemAccount.ID);
+		BigDecimal sum = new BigDecimal(0.0);
 		for (BankTransaction transaction : transactions) {
 			sum = sum.add(transaction.getAmount());
 		}
 		return sum;
 	}
+
+	/**
+	 * @param parse
+	 * @param parse2
+	 * @return
+	 */
+	public Collection<BankTransaction> getAmountByDateRange(String accountId, Date startDate, Date endDate) {
+		Collection<BankTransaction> transactions = this.getTransactionsByDateRange(accountId, startDate, endDate);
+		BigDecimal debit = new BigDecimal(0.0);
+		BigDecimal credit = new BigDecimal(0.0);
+		for (BankTransaction transaction : transactions) {
+			if (transaction.isOrigin(accountId)) {
+				debit = debit.add(transaction.getAmount());
+			} else {
+				credit = credit.add(transaction.getAmount());
+			}
+		}
+		return null;
+	}
+
 }

@@ -57,5 +57,5 @@ public interface TransactionInfoService {
 	 * @param endDate
 	 * @return
 	 */
-	public Collection<BankTransaction> getTransactionsByDateRange(Long accountId, Date startDate, Date endDate);
+	public Collection<BankTransaction> getTransactionsByDateRange(String accountId, Date startDate, Date endDate);
 }
