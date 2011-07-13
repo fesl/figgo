@@ -70,21 +70,44 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 */
 	@Override
 	public Collection<BankTransaction> getTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
-		Collection<BankTransaction> transactions = this.getTransactionsByDateRange(startDate, endDate);
-		TreeSet<BankTransaction> result = new TreeSet<BankTransaction>(new BankTransactionComparator());
-		for (BankTransaction transaction : transactions) {
-			if (transaction.belongsTo(accountId)) {
-				result.add(transaction);
-			}
-		}
-		return result;
+		Collection<BankTransaction> creditTransactions = this.getCreditTransactionsByDateRange(accountId, startDate, endDate);
+		Collection<BankTransaction> debitTransactions = this.getDebitTransactionsByDateRange(accountId, startDate, endDate);
+		return this.mergeTransactions(creditTransactions, debitTransactions, Long.MIN_VALUE);
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Collection<BankTransaction> getTransactionsByDateRange(Date startDate, Date endDate) {
+	protected Collection<BankTransaction> getCreditTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
+		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		query.setFilter("accountDest == :accountId && date >= :startDate && date <= :endDate");
+		return (List<BankTransaction>) query.execute(accountId, startDate, endDate);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Collection<BankTransaction> getDebitTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
+		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		query.setFilter("accountOrig == :accountId && date >= :startDate && date <= :endDate");
+		return (List<BankTransaction>) query.execute(accountId, startDate, endDate);
+	}
+	
+	public BigDecimal getAmountCreditByDateRange(String accountId, Date startDate, Date endDate) {
+		Collection<BankTransaction> transactions = this.getCreditTransactionsByDateRange(accountId, startDate, endDate);
+		BigDecimal sum = BigDecimal.ZERO;
+		for (BankTransaction transaction : transactions) {
+			sum = sum.add(transaction.getAmount());
+		}
+		return sum;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public BigDecimal getGenericAmountByDateRange(Date startDate, Date endDate) {
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("date >= :startDate && date <= :endDate");
-		return (List<BankTransaction>) query.execute(startDate, endDate);
+		List<BankTransaction> transactions = (List<BankTransaction>) query.execute(startDate, endDate);
+		BigDecimal sum = BigDecimal.ZERO;
+		for (BankTransaction transaction : transactions) {
+			sum = sum.add(transaction.getAmount());
+		}
+		return sum;
 	}
 
 	/**
@@ -162,7 +185,6 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	}
 
 	/**
-	 * @param string
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
@@ -170,30 +192,11 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("accountOrig == :accOrig");
 		List<BankTransaction> transactions = (List<BankTransaction>) query.execute(SystemAccount.ID);
-		BigDecimal sum = new BigDecimal(0.0);
+		BigDecimal sum = BigDecimal.ZERO;
 		for (BankTransaction transaction : transactions) {
 			sum = sum.add(transaction.getAmount());
 		}
 		return sum;
-	}
-
-	/**
-	 * @param parse
-	 * @param parse2
-	 * @return
-	 */
-	public Collection<BankTransaction> getAmountByDateRange(String accountId, Date startDate, Date endDate) {
-		Collection<BankTransaction> transactions = this.getTransactionsByDateRange(accountId, startDate, endDate);
-		BigDecimal debit = new BigDecimal(0.0);
-		BigDecimal credit = new BigDecimal(0.0);
-		for (BankTransaction transaction : transactions) {
-			if (transaction.isOrigin(accountId)) {
-				debit = debit.add(transaction.getAmount());
-			} else {
-				credit = credit.add(transaction.getAmount());
-			}
-		}
-		return null;
 	}
 
 }
