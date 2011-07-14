@@ -20,7 +20,6 @@ package br.octahedron.figgo.modules.users.controller;
 
 import static br.octahedron.cotopaxi.CotopaxiProperty.APPLICATION_BASE_URL;
 import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
-import static br.octahedron.cotopaxi.auth.AbstractGoogleAuthenticationInterceptor.CURRENT_USER_EMAIL;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired.AuthenticationLevel;
 import br.octahedron.cotopaxi.controller.Controller;
@@ -62,7 +61,7 @@ public class UserController extends Controller {
 	
 	@AuthenticationRequired
 	public void getDashboardUser() {
-		String userEmail = (String) session(CURRENT_USER_EMAIL);
+		String userEmail = this.currentUser();
 		out("user", this.userManager.getUser(userEmail));
 		out("domains", this.authorizationManager.getUserDomains(userEmail));
 		success(DASHBOARD_TPL);
@@ -70,7 +69,7 @@ public class UserController extends Controller {
 
 	@AuthenticationRequired(authenticationLevel=AuthenticationLevel.AUTHENTICATE)
 	public void getNewUser() {
-		String userEmail = (String) session(CURRENT_USER_EMAIL);
+		String userEmail = this.currentUser();
 		if (!this.userManager.existsUser(userEmail)) {
 			out("email", userEmail);
 			success(NEW_USER_TPL);
@@ -83,10 +82,10 @@ public class UserController extends Controller {
 	public void postCreateUser() {
 		Validator validator = UserValidators.getUserValidator();
 		if (validator.isValid()) {
-			this.userManager.createUser((String) session(CURRENT_USER_EMAIL), in("name"), in("phoneNumber"), in("description"));
+			this.userManager.createUser(this.currentUser(), in("name"), in("phoneNumber"), in("description"));
 			redirect(getProperty(APPLICATION_BASE_URL));
 		} else {
-			out("email", (String) session(CURRENT_USER_EMAIL));
+			out("email", this.currentUser());
 			out("name", in("name"));
 			out("phoneNumber", in("phoneNumber"));
 			out("description", in("description"));
@@ -96,7 +95,7 @@ public class UserController extends Controller {
 
 	@AuthenticationRequired
 	public void getEditUser() {
-		User user = this.userManager.getUser((String) session(CURRENT_USER_EMAIL));
+		User user = this.userManager.getUser(this.currentUser());
 		out("name", user.getName());
 		out("phoneNumber", user.getPhoneNumber());
 		out("description", user.getDescription());
@@ -107,7 +106,7 @@ public class UserController extends Controller {
 	public void postUpdateUser() {
 		Validator validator = UserValidators.getUserValidator();
 		if (validator.isValid()) {
-			this.userManager.updateUser((String) session(CURRENT_USER_EMAIL), in("name"), in("phoneNumber"), in("description"));
+			this.userManager.updateUser(this.currentUser(), in("name"), in("phoneNumber"), in("description"));
 			redirect(getProperty(APPLICATION_BASE_URL));
 		} else {
 			out("name", in("name"));

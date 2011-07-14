@@ -18,13 +18,14 @@
  */
 package br.octahedron.figgo;
 
-import static br.octahedron.cotopaxi.auth.AbstractAuthenticationInterceptor.CURRENT_USER_EMAIL;
+import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.NamespaceManager;
 import br.octahedron.cotopaxi.datastore.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
+import br.octahedron.util.Log;
 
 /**
  * 
@@ -52,14 +53,19 @@ public class IndexController extends Controller {
 	}
 	
 	public void getIndex() {
-		if (serverName().equalsIgnoreCase("www.figgo.com.br") || serverName().equalsIgnoreCase("localhost")) {
+		String username = this.currentUser();
+		boolean userLogged = username != null;
+		
+		// TODO refactor -> check if user is logged
+		if (fullRequestedUrl().equalsIgnoreCase(getProperty("APPLICATION_BASE_URL"))) {
 			redirect("/dashboard");
 		} else {
+			// TODO refactor this /main
 			boolean userExists;
 			out("domain", this.configurationManager.getDomainConfiguration());
 			try {
 				namespaceManager.changeToGlobalNamespace();
-				userExists = this.authorizationManager.getUserDomains((String) session(CURRENT_USER_EMAIL)).contains(subDomain());
+				userExists = this.authorizationManager.getUserDomains(this.currentUser()).contains(subDomain());
 			} finally {
 				namespaceManager.changeToPreviousNamespace();
 			}

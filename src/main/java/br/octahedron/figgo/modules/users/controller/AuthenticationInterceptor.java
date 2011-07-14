@@ -50,7 +50,7 @@ public class AuthenticationInterceptor extends AbstractGoogleAuthenticationInter
 	
 	@Override
 	protected void checkUserValidation() {
-		String userEmail = (String) session(CURRENT_USER_EMAIL);
+		String userEmail = this.currentUser();
 		if (!this.usersManager.existsUser(userEmail)) {
 			log.debug("User doesn't exist. It's a new/invalid user");
 			redirect(NEW_USER_URL);

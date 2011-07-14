@@ -18,8 +18,6 @@
  */
 package br.octahedron.figgo.modules.bank.controller;
 
-import static br.octahedron.cotopaxi.auth.AbstractAuthenticationInterceptor.CURRENT_USER_EMAIL;
-
 import java.math.BigDecimal;
 
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
@@ -32,7 +30,7 @@ import br.octahedron.figgo.modules.bank.manager.AccountManager;
 
 /**
  * @author Vítor Avelino
- *
+ * 
  */
 public class BankController extends Controller {
 
@@ -53,79 +51,81 @@ public class BankController extends Controller {
 
 	@AuthenticationRequired
 	public void getIndexBank() {
-		out("balance", this.accountManager.getBalance((String) session(CURRENT_USER_EMAIL)));
-		out("transactions", this.accountManager.getLastNTransactions((String) session(CURRENT_USER_EMAIL), 5));
-		success(INDEX_TPL);
+		this.out("balance", this.accountManager.getBalance(this.currentUser()));
+		this.out("transactions", this.accountManager.getLastNTransactions(this.currentUser(), 5));
+		this.success(INDEX_TPL);
 	}
 
 	@AuthenticationRequired
 	public void getTransferBank() {
-		out("balance", this.accountManager.getBalance((String) session(CURRENT_USER_EMAIL)));
-		out("transactions", this.accountManager.getLastNTransactions((String) session(CURRENT_USER_EMAIL), 5));
-		success(TRANSFER_TPL);
+		this.out("balance", this.accountManager.getBalance(this.currentUser()));
+		this.out("transactions", this.accountManager.getLastNTransactions(this.currentUser(), 5));
+		this.success(TRANSFER_TPL);
 	}
-	
+
 	@AuthenticationRequired
 	public void postTransfer() {
 		Validator requiredValidator = BankValidators.getRequiredValidator();
 		Validator transactionValidator = BankValidators.getTransactionValidator();
 		Validator destinationValidator = BankValidators.getDestinationValidator();
 		if (requiredValidator.isValid() && transactionValidator.isValid() && destinationValidator.isValid()) {
-			this.accountManager.transact((String) session(CURRENT_USER_EMAIL), in("userId"), new BigDecimal(in("amount")), in("comment"), TransactionType.valueOf(in("type")));
-			redirect(BASE_URL);
+			this.accountManager.transact(this.currentUser(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"),
+					TransactionType.valueOf(this.in("type")));
+			this.redirect(BASE_URL);
 		} else {
-			out("balance", this.accountManager.getBalance((String) session(CURRENT_USER_EMAIL)));
-			out("userId", in("userId"));
-			out("amount", in("amount"));
-			out("comment", in("comment"));
-			out("type", in("type"));
-			invalid(TRANSFER_TPL);
+			this.out("balance", this.accountManager.getBalance(this.currentUser()));
+			this.out("userId", this.in("userId"));
+			this.out("amount", this.in("amount"));
+			this.out("comment", this.in("comment"));
+			this.out("type", this.in("type"));
+			this.invalid(TRANSFER_TPL);
 		}
 	}
 
 	@AuthenticationRequired
 	public void getStatementBank() {
-		out("balance", this.accountManager.getBalance((String) session(CURRENT_USER_EMAIL)));
-		success(STATEMENT_TPL);
+		this.out("balance", this.accountManager.getBalance(this.currentUser()));
+		this.success(STATEMENT_TPL);
 	}
-	
+
 	@AuthenticationRequired
 	public void getAdminBank() {
-		out("balance", this.accountManager.getBalance(subDomain()));
-		success(ADMIN_TPL);
+		this.out("balance", this.accountManager.getBalance(this.subDomain()));
+		this.success(ADMIN_TPL);
 	}
-	
+
 	@AuthenticationRequired
 	public void postShareBank() {
 		Validator requiredValidator = BankValidators.getRequiredValidator();
 		Validator destinationValidator = BankValidators.getDestinationValidator();
 		if (requiredValidator.isValid() && destinationValidator.isValid()) {
-			this.accountManager.transact(subDomain(), in("userId"), new BigDecimal(in("amount")), in("comment"), TransactionType.valueOf(in("type")));
-			redirect(ADMIN_URL);
+			this.accountManager.transact(this.subDomain(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"), TransactionType
+					.valueOf(this.in("type")));
+			this.redirect(ADMIN_URL);
 		} else {
-			out("balance", this.accountManager.getBalance(subDomain()));
-			out("userId", in("userId"));
-			out("amount", in("amount"));
-			out("comment", in("comment"));
-			out("type", in("type"));
-			invalid(ADMIN_TPL);
+			this.out("balance", this.accountManager.getBalance(this.subDomain()));
+			this.out("userId", this.in("userId"));
+			this.out("amount", this.in("amount"));
+			this.out("comment", this.in("comment"));
+			this.out("type", this.in("type"));
+			this.invalid(ADMIN_TPL);
 		}
 	}
-	
+
 	@AuthenticationRequired
 	public void postBallastBank() {
 		Validator requiredValidator = BankValidators.getRequiredValidator();
 		Validator comparableValidator = BankValidators.getAmountValidator();
 		if (requiredValidator.isValid() && comparableValidator.isValid()) {
-			this.accountManager.insertBallast(subDomain(), new BigDecimal(in("amount")), in("comment"));
-			redirect(ADMIN_URL);
+			this.accountManager.insertBallast(this.subDomain(), new BigDecimal(this.in("amount")), this.in("comment"));
+			this.redirect(ADMIN_URL);
 		} else {
-			out("balance", this.accountManager.getBalance(subDomain()));
-			out("userId", in("userId"));
-			out("amount", in("amount"));
-			out("comment", in("comment"));
-			out("type", in("type"));
-			invalid(ADMIN_TPL);
+			this.out("balance", this.accountManager.getBalance(this.subDomain()));
+			this.out("userId", this.in("userId"));
+			this.out("amount", this.in("amount"));
+			this.out("comment", this.in("comment"));
+			this.out("type", this.in("type"));
+			this.invalid(ADMIN_TPL);
 		}
 	}
 }

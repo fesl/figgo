@@ -18,11 +18,10 @@
  */
 package br.octahedron.figgo.modules.authorization.controller;
 
-import static br.octahedron.cotopaxi.auth.AbstractGoogleAuthenticationInterceptor.CURRENT_USER_EMAIL;
 import br.octahedron.cotopaxi.auth.AbstractAuthorizationInterceptor;
-import br.octahedron.cotopaxi.auth.AuthorizationRequired.NonAuthorizedConsequence;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
+import br.octahedron.util.Log;
 
 /**
  * {@link AbstractAuthorizationInterceptor} implementation for Figgo.
@@ -30,6 +29,8 @@ import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
  * @author Danilo Queiroz - daniloqueiroz@octahedron.com.br
  */
 public class AuthorizationInterceptor extends AbstractAuthorizationInterceptor {
+	
+	private final Log log = new Log(AuthorizationInterceptor.class);
 	
 	@Inject
 	private AuthorizationManager authorizationManager;
@@ -41,20 +42,18 @@ public class AuthorizationInterceptor extends AbstractAuthorizationInterceptor {
 		this.authorizationManager = authorizationManager;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.cotopaxi.auth.AbstractAuthorizationInterceptor#authorizeUser(java.lang.String, br.octahedron.cotopaxi.auth.AuthorizationRequired.NonAuthorizedConsequence)
-	 */
 	@Override
-	protected void authorizeUser(String actionName, NonAuthorizedConsequence consequence, String redirectAddress) {
-		String user = (String) session(CURRENT_USER_EMAIL);
+	protected void authorizeUser(String actionName, String currentUser, boolean showForbiddenPage) {
+		String user = this.currentUser();
 		String domain = subDomain();
-		if (!this.authorizationManager.isAuthorized(domain, user, actionName)) {
-			if (consequence == NonAuthorizedConsequence.SET_RESTRICTED) {
-				setRestricted();
-			} else {
-				redirect(redirectAddress);
+		if (user!= null && !this.authorizationManager.isAuthorized(domain, user, actionName)) {
+			log.debug("User %s is not authorized to perform action %s on domain %s", user, actionName, domain);
+			if( showForbiddenPage) { 
+				forbidden();
 			}
-		}
+		} else {
+			this.authorized();
+			log.debug("User %s is authorized to perform action %s on domain %s", user, actionName, domain);
+		}		
 	}
-
 }

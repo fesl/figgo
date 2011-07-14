@@ -19,6 +19,7 @@
 package br.octahedron.figgo.modules.admin.controller;
 
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
+import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
@@ -30,6 +31,8 @@ import br.octahedron.figgo.modules.admin.manager.AdminManager;
  * @author Vítor Avelino
  *
  */
+@AuthorizationRequired
+@AuthenticationRequired
 public class AdminController extends Controller {
 
 	private static final String BASE_DIR_TPL = "admin/";
@@ -44,7 +47,7 @@ public class AdminController extends Controller {
 		this.adminManager = adminManager;
 	}
 	
-	@AuthenticationRequired
+	
 	public void getAppConfig() {
 		if (adminManager.hasApplicationConfiguration()) {
 			ApplicationConfigurationView applicationConfiguration = this.adminManager.getApplicationConfiguration();
@@ -55,18 +58,15 @@ public class AdminController extends Controller {
 		success(CONFIG_APP_TPL);
 	}
 	
-	@AuthenticationRequired
 	public void postAppConfig() {
 		this.adminManager.configureApplication(in("accessKey"), in("keySecret"), in("zone"));
 		redirect(NEW_DOMAIN_URL);
 	}
 	
-	@AuthenticationRequired
 	public void getNewDomain() {
 		success(NEW_DOMAIN_TPL);
 	}
 	
-	@AuthenticationRequired
 	public void postCreateDomain() {
 		Validator validator = AdminValidators.getDomainValidator();
 		if (validator.isValid()) {
@@ -78,5 +78,4 @@ public class AdminController extends Controller {
 			invalid(NEW_DOMAIN_TPL);
 		}
 	}
-
 }
