@@ -21,7 +21,9 @@ package br.octahedron.figgo.modules.bank.controller;
 import java.math.BigDecimal;
 
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
+import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
+import br.octahedron.cotopaxi.datastore.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.modules.bank.controller.validation.BankValidators;
@@ -32,7 +34,14 @@ import br.octahedron.figgo.modules.bank.manager.AccountManager;
  * @author Vítor Avelino
  * 
  */
+@AuthenticationRequired
+@AuthorizationRequired
+@NamespaceRequired
 public class BankController extends Controller {
+	
+	/*
+	 * TODO public bank pages should be in other controller
+	 */
 
 	private static final String BASE_DIR_TPL = "bank/";
 	private static final String ADMIN_TPL = BASE_DIR_TPL + "admin.vm";
@@ -49,21 +58,18 @@ public class BankController extends Controller {
 		this.accountManager = accountManager;
 	}
 
-	@AuthenticationRequired
 	public void getIndexBank() {
 		this.out("balance", this.accountManager.getBalance(this.currentUser()));
 		this.out("transactions", this.accountManager.getLastNTransactions(this.currentUser(), 5));
 		this.success(INDEX_TPL);
 	}
 
-	@AuthenticationRequired
 	public void getTransferBank() {
 		this.out("balance", this.accountManager.getBalance(this.currentUser()));
 		this.out("transactions", this.accountManager.getLastNTransactions(this.currentUser(), 5));
 		this.success(TRANSFER_TPL);
 	}
 
-	@AuthenticationRequired
 	public void postTransfer() {
 		Validator requiredValidator = BankValidators.getRequiredValidator();
 		Validator transactionValidator = BankValidators.getTransactionValidator();
@@ -82,19 +88,16 @@ public class BankController extends Controller {
 		}
 	}
 
-	@AuthenticationRequired
 	public void getStatementBank() {
 		this.out("balance", this.accountManager.getBalance(this.currentUser()));
 		this.success(STATEMENT_TPL);
 	}
 
-	@AuthenticationRequired
 	public void getAdminBank() {
 		this.out("balance", this.accountManager.getBalance(this.subDomain()));
 		this.success(ADMIN_TPL);
 	}
 
-	@AuthenticationRequired
 	public void postShareBank() {
 		Validator requiredValidator = BankValidators.getRequiredValidator();
 		Validator destinationValidator = BankValidators.getDestinationValidator();
@@ -112,7 +115,6 @@ public class BankController extends Controller {
 		}
 	}
 
-	@AuthenticationRequired
 	public void postBallastBank() {
 		Validator requiredValidator = BankValidators.getRequiredValidator();
 		Validator comparableValidator = BankValidators.getAmountValidator();

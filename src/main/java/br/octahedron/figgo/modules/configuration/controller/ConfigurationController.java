@@ -19,6 +19,7 @@
 package br.octahedron.figgo.modules.configuration.controller;
 
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
+import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
@@ -30,6 +31,8 @@ import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
  * @author vitoravelino
  *
  */
+@AuthenticationRequired
+@AuthorizationRequired
 @NamespaceRequired
 public class ConfigurationController extends Controller {
 
@@ -46,7 +49,6 @@ public class ConfigurationController extends Controller {
 		this.configurationManager = configurationManager;
 	}
 	
-	@AuthenticationRequired
 	public void getEditDomain() {
 		DomainConfiguration domainConfiguration = this.configurationManager.getDomainConfiguration();
 		out("domain", domainConfiguration);
@@ -57,19 +59,16 @@ public class ConfigurationController extends Controller {
 		success(EDIT_TPL);
 	}
 	
-	@AuthenticationRequired
 	public void postUpdateDomain() {
 		this.configurationManager.updateDomainConfiguration(in("name"), in("url"), in("maillist"), in("description"));
 		redirect(BASE_URL);
 	}
 	
-	@AuthenticationRequired
 	public void getListDomain() {
 		out("domains", this.configurationManager.getDomainConfiguration());
 		success(LIST_TPL);
 	}
 	
-	@AuthenticationRequired
 	public void getModuleDomain() {
 		out("domain", this.configurationManager.getDomainConfiguration());
 		out("name", in("module"));
@@ -77,7 +76,6 @@ public class ConfigurationController extends Controller {
 		success(MODULE_CONFIG_TPL);
 	}
 	
-	@AuthenticationRequired
 	public void postModuleDomain() {
 		
 	}
