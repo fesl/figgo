@@ -29,7 +29,7 @@ import javax.jdo.annotations.PrimaryKey;
  * 
  */
 @PersistenceCapable
-public class User implements Serializable, UserView, Comparable<User> {
+public class User implements Serializable, Comparable<User> {
 
 	private static final long serialVersionUID = 3496196911059199158L;
 
@@ -55,12 +55,9 @@ public class User implements Serializable, UserView, Comparable<User> {
 		this.description = description;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.users.data.UserView#getDescription()
+	/**
+	 * @return the description
 	 */
-	@Override
 	public String getDescription() {
 		return this.description;
 	}
@@ -73,12 +70,9 @@ public class User implements Serializable, UserView, Comparable<User> {
 		this.description = description;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.users.data.UserView#getName()
+	/**
+	 * @return the name
 	 */
-	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -92,12 +86,9 @@ public class User implements Serializable, UserView, Comparable<User> {
 		this.nameLowerCase = this.name.toLowerCase();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.users.data.UserView#getPhoneNumber()
+	/**
+	 * @return the phone number
 	 */
-	@Override
 	public String getPhoneNumber() {
 		return this.phoneNumber;
 	}
@@ -110,12 +101,9 @@ public class User implements Serializable, UserView, Comparable<User> {
 		this.phoneNumber = phoneNumber;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.users.data.UserView#getAvatar()
+	/**
+	 * @return the avatar key
 	 */
-	@Override
 	public String getAvatarKey() {
 		return this.avatarKey;
 	}
@@ -128,12 +116,9 @@ public class User implements Serializable, UserView, Comparable<User> {
 		this.avatarKey = avatarKey;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.users.data.UserView#getUserId()
+	/**
+	 * @return the user id
 	 */
-	@Override
 	public String getUserId() {
 		return this.userId;
 	}

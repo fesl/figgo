@@ -43,7 +43,8 @@ public class BankTransactionDAOTest  {
 	
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 	private final DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
-	private BankTransactionDAO bankTransactionDAO = new BankTransactionDAO();
+	private final BankTransactionDAO bankTransactionDAO = new BankTransactionDAO();
+	
 	@Before
 	public void setUp() throws InstantiationException {
 		this.helper.setUp();
