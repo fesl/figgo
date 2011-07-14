@@ -22,6 +22,7 @@ import br.octahedron.figgo.modules.admin.AdminSpec;
 import br.octahedron.figgo.modules.authorization.AuthorizationSpec;
 import br.octahedron.figgo.modules.bank.BankSpec;
 import br.octahedron.figgo.modules.configuration.ConfigurationSpec;
+import br.octahedron.figgo.modules.services.ServicesSpec;
 import br.octahedron.figgo.modules.users.UsersSpec;
 
 /**
@@ -31,7 +32,7 @@ import br.octahedron.figgo.modules.users.UsersSpec;
  */
 public enum Module {
 
-	BANK(new BankSpec()), AUTHORIZATION(new AuthorizationSpec()), USER(new UsersSpec()), ADMIN(new AdminSpec()), DOMAIN(new ConfigurationSpec());
+	BANK(new BankSpec()), SERVICES(new ServicesSpec()), AUTHORIZATION(new AuthorizationSpec()), USER(new UsersSpec()), ADMIN(new AdminSpec()), DOMAIN(new ConfigurationSpec());
 
 	/**
 	 * Indicates the module Type

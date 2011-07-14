@@ -16,34 +16,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.services.data;
+package br.octahedron.figgo.modules.services.manager;
 
-import java.util.Set;
+import br.octahedron.cotopaxi.eventbus.Event;
+import br.octahedron.figgo.modules.services.data.ServiceContract;
 
 /**
- * @author Erick Moreno
- * 
+ * @author vitoravelino
+ *
  */
-public interface ServiceView {
+public class ServiceContractPaidEvent implements Event {
 
-	/**
-	 * @return the providers
-	 */
-	public abstract Set<String> getProviders();
+	private static final long serialVersionUID = -6579332745876992770L;
 
-	/**
-	 * @return the name
-	 */
-	public abstract String getName();
-
-	/**
-	 * @return the value
-	 */
-	public abstract String getValue();
-
-	/**
-	 * @return the description
-	 */
-	public abstract String getDescription();
+	private ServiceContract serviceContract;
+	
+	public ServiceContractPaidEvent(ServiceContract serviceContract) {
+		this.serviceContract = serviceContract;
+	}
+	
+	public ServiceContract getServiceContract() {
+		return this.serviceContract;
+	}
 
 }

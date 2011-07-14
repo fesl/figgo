@@ -16,39 +16,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.users.data;
+package br.octahedron.figgo.modules.services.manager;
+
+import br.octahedron.cotopaxi.eventbus.Event;
+import br.octahedron.figgo.modules.services.data.ServiceContract;
 
 /**
- * Read only interface for {@link User}
- * 
- * @author Erick Moreno
- * 
+ * @author vitoravelino
+ *
  */
-public interface UserView {
+public class ServiceContractRequestedEvent implements Event {
 
-	/**
-	 * @return the description
-	 */
-	public abstract String getDescription();
+	private static final long serialVersionUID = 3399608569244063176L;
 
-	/**
-	 * @return the name
-	 */
-	public abstract String getName();
-
-	/**
-	 * @return the phone number
-	 */
-	public abstract String getPhoneNumber();
-
-	/**
-	 * @return the avatar key from blobstore
-	 */
-	public abstract String getAvatarKey();
-
-	/**
-	 * @return the userId
-	 */
-	public abstract String getUserId();
+	private ServiceContract serviceContract;
+	
+	public ServiceContractRequestedEvent(ServiceContract serviceContract) {
+		this.serviceContract = serviceContract;
+	}
+	
+	public ServiceContract getServiceContract() {
+		return this.serviceContract;
+	}
 
 }

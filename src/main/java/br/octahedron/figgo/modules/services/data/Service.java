@@ -19,16 +19,19 @@
 package br.octahedron.figgo.modules.services.data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 /**
  * @author Erick Moreno
  */
-public class Service implements Serializable, ServiceView {
+@PersistenceCapable
+public class Service implements Serializable {
 
 	private static final long serialVersionUID = -1270664240981744528L;
 
@@ -36,15 +39,18 @@ public class Service implements Serializable, ServiceView {
 	@Persistent
 	private String name;
 	@Persistent
-	private String value;
+	private BigDecimal amount;
 	@Persistent
 	private String description;
 	@Persistent
+	private String category;
+	@Persistent
 	private Set<String> providers;
 
-	public Service(String name, String value, String description) {
+	public Service(String name, BigDecimal amount, String category, String description) {
 		this.name = name;
-		this.value = value;
+		this.amount = amount;
+		this.category = category;
 		this.description = description;
 		this.providers = new TreeSet<String>();
 	}
@@ -57,50 +63,45 @@ public class Service implements Serializable, ServiceView {
 		this.providers.remove(userId);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.services.data.ServiceView#getProviders()
+	/**
+	 * @return the providers
 	 */
-	@Override
 	public Set<String> getProviders() {
 		return this.providers;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.services.data.ServiceView#getName()
+	/**
+	 * @return the name
 	 */
-	@Override
 	public String getName() {
 		return this.name;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.services.data.ServiceView#getValue()
+	/**
+	 * @return the category
 	 */
-	@Override
-	public String getValue() {
-		return this.value;
+	public String getCategory() {
+		return this.category;
+	}
+	
+	/**
+	 * @return the value
+	 */
+	public BigDecimal getValue() {
+		return this.amount;
 	}
 
 	/**
-	 * @param value
+	 * @param amount
 	 *            the value to set
 	 */
-	public void setValue(String value) {
-		this.value = value;
+	public void setAmount(BigDecimal amount) {
+		this.amount = amount;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.services.data.ServiceView#getDescription()
+	/**
+	 * @return the description
 	 */
-	@Override
 	public String getDescription() {
 		return this.description;
 	}

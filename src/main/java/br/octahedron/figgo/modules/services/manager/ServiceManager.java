@@ -18,30 +18,42 @@
  */
 package br.octahedron.figgo.modules.services.manager;
 
+import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.LinkedList;
 
+import br.octahedron.cotopaxi.eventbus.EventBus;
+import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.services.data.Service;
+import br.octahedron.figgo.modules.services.data.ServiceContract;
+import br.octahedron.figgo.modules.services.data.ServiceContractDAO;
 import br.octahedron.figgo.modules.services.data.ServiceDAO;
-import br.octahedron.figgo.modules.services.data.ServiceView;
+import br.octahedron.figgo.modules.services.data.ServiceContract.ServiceContractStatus;
 import br.octahedron.figgo.modules.users.data.User;
 
 /**
  * This entity is responsible by manage services
  * 
  * @author Erick Moreno
+ * @author Vítor Avelino
  */
 public class ServiceManager {
 
-	private ServiceDAO serviceDAO = new ServiceDAO();
-
+	private final ServiceDAO serviceDAO = new ServiceDAO();
+	private final ServiceContractDAO serviceContractDAO = new ServiceContractDAO();
+	
+	@Inject
+	private EventBus eventBus;
+	
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+	}
 	/**
 	 * Creates and saves a new service
 	 * 
 	 * @return The {@link Service} created
 	 */
-	public Service createService(String name, String value, String description) {
-		Service service = new Service(name, value, description);
+	public Service createService(String name, BigDecimal value, String category, String description) {
+		Service service = new Service(name, value, category, description);
 		this.serviceDAO.save(service);
 		return service;
 	}
@@ -49,13 +61,11 @@ public class ServiceManager {
 	/**
 	 * Updates an service
 	 */
-	public Service updateService(String name, String value, String description) {
+	public Service updateService(String name, BigDecimal value, String description) {
 		Service serv = this.serviceDAO.get(name);
-
-		serv.setValue(value);
+		serv.setAmount(value);
 		serv.setDescription(description);
 		// This object will be updated to the DB by JDO persistence manager
-
 		return serv;
 	}
 
@@ -119,10 +129,38 @@ public class ServiceManager {
 	 *            The key that identifies a {@link User}
 	 * @return A collection with all services that has the passed user as provider.
 	 */
-	public Collection<ServiceView> getUserServices(String userId) {
-		Collection<ServiceView> wrapperCollection = new LinkedList<ServiceView>();
-		wrapperCollection.addAll(this.serviceDAO.getUserServices(userId));
-		return wrapperCollection;
+	public Collection<Service> getUserServices(String userId) {
+		return this.serviceDAO.getUserServices(userId);
+	}
+	
+	/**
+	 * creates a new contract TODO
+	 * 
+	 * @param serviceName
+	 * @param contractor
+	 * @param provider
+	 * @param amount
+	 */
+	public void requestContract(String serviceName, String contractor, String provider, BigDecimal amount) {
+		ServiceContract serviceContract = new ServiceContract(serviceName, contractor, provider, amount);
+		this.serviceContractDAO.save(serviceContract);
+		this.eventBus.publish(new ServiceContractRequestedEvent(serviceContract));
+	}
+	
+	public void updateContractStatus(Long id, ServiceContractStatus status) {
+		ServiceContract serviceContract = this.serviceContractDAO.get(id);
+		serviceContract.setStatus(status);
+		this.eventBus.publish(new ServiceContractUpdatedEvent(serviceContract));
+	}
+	
+	public void makePayment(Long id) {
+		ServiceContract serviceContract = this.serviceContractDAO.get(id);
+		serviceContract.setPaid(true);
+		this.eventBus.publish(new ServiceContractPaidEvent(serviceContract));
+	}
+	
+	public Collection<ServiceContract> getContractsHistory(String userId) {
+		return this.serviceContractDAO.getHistory(userId);
 	}
 
 }

@@ -113,7 +113,7 @@ public class BankAccount implements Serializable {
 			BigDecimal transactionsBalance = new BigDecimal(0);
 
 			for (BankTransaction bankTransaction : transactions) {
-				if (bankTransaction.getAccountOrig().equals(this.ownerId)) {
+				if (bankTransaction.isOrigin(this.ownerId)) {
 					transactionsBalance = transactionsBalance.subtract(bankTransaction.getAmount());
 				} else {
 					transactionsBalance = transactionsBalance.add(bankTransaction.getAmount());

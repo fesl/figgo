@@ -43,7 +43,8 @@ public class BankTransactionDAOTest  {
 	
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 	private final DateFormat formatter = new SimpleDateFormat("dd/MM/yy");
-	private BankTransactionDAO bankTransactionDAO = new BankTransactionDAO();
+	private final BankTransactionDAO bankTransactionDAO = new BankTransactionDAO();
+	
 	@Before
 	public void setUp() throws InstantiationException {
 		this.helper.setUp();
@@ -60,6 +61,7 @@ public class BankTransactionDAOTest  {
 		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter.parse("16/01/2011")));
 		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter.parse("10/01/2011")));
 		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter.parse("11/01/2011")));
+		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta3", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter.parse("11/01/2011")));
 		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta2", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter.parse("12/01/2011")));
 		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter.parse("13/01/2011")));
 	}
@@ -128,22 +130,24 @@ public class BankTransactionDAOTest  {
 	}
 	
 	@Test
-	public void getUserTransactionsByDateRange() throws ParseException {
+	public void getTransactionsByDateRange() throws ParseException {
 		this.createDateTransactions();
 		assertEquals(1, this.bankTransactionDAO.getTransactionsByDateRange("Conta1", formatter.parse("12/01/11"), formatter.parse("15/01/11")).size());
 		assertEquals(2, this.bankTransactionDAO.getTransactionsByDateRange("Conta1", formatter.parse("11/01/11"), formatter.parse("15/01/11")).size());
 	}
 	
-	public void getTransactionsByDateRange() throws ParseException {
+	@Test
+	public void getAmountCreditByDateRange() throws ParseException {
 		this.createDateTransactions();
-		assertEquals(2, this.bankTransactionDAO.getTransactionsByDateRange(formatter.parse("12/01/11"), formatter.parse("15/01/11")).size());
-		assertEquals(3, this.bankTransactionDAO.getTransactionsByDateRange(formatter.parse("11/01/11"), formatter.parse("15/01/11")).size());
+		assertEquals(BigDecimal.ZERO, this.bankTransactionDAO.getAmountCreditByDateRange("Conta1", formatter.parse("12/01/11"), formatter.parse("15/01/11")));
+		assertEquals(new BigDecimal(100), this.bankTransactionDAO.getAmountCreditByDateRange("Conta1", formatter.parse("11/01/11"), formatter.parse("15/01/11")));
 	}
 	
 	@Test
-	public void getAmountByDateRange() throws ParseException {
+	public void getGenericTransactionsByDateRange() throws ParseException {
 		this.createDateTransactions();
-//		assertEquals(3, this.bankTransactionDAO.getAmountByDateRange("mundo", formatter.parse("11/01/11"), formatter.parse("15/01/11")));
+		assertEquals(new BigDecimal(200), this.bankTransactionDAO.getGenericAmountByDateRange(formatter.parse("12/01/11"), formatter.parse("15/01/11")));
+		assertEquals(new BigDecimal(400), this.bankTransactionDAO.getGenericAmountByDateRange(formatter.parse("11/01/11"), formatter.parse("15/01/11")));
 	}
-
+	
 }

@@ -140,10 +140,6 @@ public class BankTransaction implements Serializable {
 		return this.type;
 	}
 	
-	public boolean belongsTo(String accountId) {
-		return accountDest.equals(accountId) || accountOrig.equals(accountId);
-	}
-	
 	public boolean isOrigin(String accountId) {
 		return accountOrig.equals(accountId);
 	}
