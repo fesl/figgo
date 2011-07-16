@@ -1,0 +1,49 @@
+#set( $title = "Figgo - $!{domain.Name} - Serviços" )
+#set( $currentModule = "SERVICES" )
+#parse( "templates/layout_intern.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<header>
+    		<h1>Serviços</h1>
+    		<nav id="tabs">
+        		<ul class="inline">
+                    <li><a href="/">Dashboard</a></li>
+                    #foreach( $module in $domain.ModulesEnabled )
+						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+					#end
+        		</ul>
+    		</nav>
+		</header>
+		<div id="content">
+			<div id="single-column">
+				<p>Preencha o formulário abaixo:</p>
+        		<form action="/service/new" method="post" accept-charset="utf-8">
+                	<label for="name">
+                		Nome do serviço: <input type="text" name="name" value="$!{name}" />
+						#if ( $invalid.name )
+                			<span>$invalid.name</span>
+                		#end
+                	</label><br />
+        			<label for="value">
+                		Valor: <input type="text" name="value" value="$!{value}" />
+						#if ( $invalid.value )
+                			<span>$invalid.value</span>
+                		#end
+                	</label><br />
+            		<label for="category">
+                		Categoria: <input type="text" name="category" value="$!{category}" />
+                	</label><br />
+					<label for="description">
+                        Descrição: <textarea name="description">$!{description}</textarea>
+                	</label><br />
+            		<input type="submit" value="Criar" />
+                </form>
+			</div>
+		</div>
+	</div>
+#end
+	
+#scripts()

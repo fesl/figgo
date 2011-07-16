@@ -1,0 +1,66 @@
+#set( $title = "Figgo - $!{domain.Name} - Serviços" )
+#set( $currentModule = "SERVICES" )
+#parse( "templates/layout_intern.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<header>
+    		<h1>Serviços</h1>
+    		<nav id="tabs">
+        		<ul class="inline">
+                    <li><a href="/">Dashboard</a></li>
+                    #foreach( $module in $domain.ModulesEnabled )
+						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+					#end
+        		</ul>
+    		</nav>
+		</header>
+		<div id="content">
+			<div id="column-my-services">
+				<section id="my-services">
+					<h3>Meus serviços</h3>
+					<table class="simple">
+						<tbody>
+                        #foreach( $service in $myServices )
+                    		<tr>
+                    			<td>$service.Name</td>
+                    		</tr>
+                        #end
+                        </tbody>
+                    </table>
+                </section>
+			</div>
+			<div id="column-services">
+    			<section id="organization-services">
+					<h3>Serviços a serem contratados</h3>
+					<input type="text" name="service" placeholder="Busca por serviço" />
+					<table class="simple">
+						<thead>
+                    		<tr>
+                    			<th>Serviço</th>
+    							<th>Valor</th>
+    							<th>Eu faço!</th>
+                    		</tr>
+                        </thead>
+                		<tbody>
+                        #foreach( $service in $services )
+                    		<tr class="service">
+                    			<td><a href="/services/$service.Name/show">$service.Name</a></td>
+								<td>$service.Value</td>
+								<td><input type="checkbox" id="$service.Name" /></td>
+                    		</tr>
+                        #end
+                        </tbody>
+                    </table>
+                    <button>Sugerir serviço</button>
+				</section>
+            </div>
+		</div>
+	</div>
+#end
+	
+#@scripts()
+	<script src="/js/services.js"></script>
+#end
