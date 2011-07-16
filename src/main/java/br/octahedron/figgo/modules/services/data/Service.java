@@ -85,9 +85,17 @@ public class Service implements Serializable {
 	}
 	
 	/**
+	 * @param category
+	 *            the category to set
+	 */
+	public void setCategory(String category) {
+		this.category = category;
+	}
+	
+	/**
 	 * @return the value
 	 */
-	public BigDecimal getValue() {
+	public BigDecimal getAmount() {
 		return this.amount;
 	}
 

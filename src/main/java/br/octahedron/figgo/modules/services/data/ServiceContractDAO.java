@@ -26,6 +26,7 @@ import java.util.TreeSet;
 import javax.jdo.Query;
 
 import br.octahedron.cotopaxi.datastore.GenericDAO;
+import br.octahedron.figgo.modules.services.data.ServiceContract.ServiceContractStatus;
 
 /**
  * @author Vítor Avelino
@@ -41,21 +42,17 @@ public class ServiceContractDAO extends GenericDAO<ServiceContract> {
 	 * @param accountId
 	 * @return
 	 */
-	public Collection<ServiceContract> getHistory(String accountId) {
-		Collection<ServiceContract> providerContracts = this.getProviderHistory(accountId);
-		Collection<ServiceContract> contractorContracts = this.getContractorHistory(accountId);
-		return this.mergeServiceContracts(providerContracts, contractorContracts, Long.MIN_VALUE);
-	}
-	
-	public Collection<ServiceContract> getHistory(String accountId, long count) {
-		Collection<ServiceContract> providerContracts = this.getProviderHistory(accountId);
-		Collection<ServiceContract> contractorContracts = this.getContractorHistory(accountId);
-		return this.mergeServiceContracts(providerContracts, contractorContracts, count);
-	}
-	
-
 	@SuppressWarnings("unchecked")
-	protected Collection<ServiceContract> getProviderHistory(String accountId) {
+	public Collection<ServiceContract> getHistory(String userId) {
+		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
+		query.setFilter("provider == :accountId && status == :status");
+		query.setOrdering("id desc");
+		return (Collection<ServiceContract>) query.execute(userId, ServiceContractStatus.COMPLETED);
+		
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Collection<ServiceContract> getProviderContracts(String accountId) {
 		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
 		query.setFilter("provider == :accountId");
 		query.setOrdering("id desc");
@@ -63,7 +60,7 @@ public class ServiceContractDAO extends GenericDAO<ServiceContract> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected Collection<ServiceContract> getContractorHistory(String accountId) {
+	protected Collection<ServiceContract> getContractorContracts(String accountId) {
 		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
 		query.setFilter("contractor == :accountId");
 		query.setOrdering("id desc");
@@ -100,6 +97,23 @@ public class ServiceContractDAO extends GenericDAO<ServiceContract> {
 		public int compare(ServiceContract o1, ServiceContract o2) {
 			return (int) (o2.getId() - o1.getId());
 		}
+	}
+
+	/**
+	 * @param userId
+	 * @return 
+	 * @return
+	 */
+	public Collection<ServiceContract> getContracts(String userId) {
+		Collection<ServiceContract> providerContracts = this.getProviderContracts(userId);
+		Collection<ServiceContract> contractorContracts = this.getContractorContracts(userId);
+		return this.mergeServiceContracts(providerContracts, contractorContracts, Long.MIN_VALUE);
+	}
+	
+	public Collection<ServiceContract> getContracts(String userId, long count) {
+		Collection<ServiceContract> providerContracts = this.getProviderContracts(userId);
+		Collection<ServiceContract> contractorContracts = this.getContractorContracts(userId);
+		return this.mergeServiceContracts(providerContracts, contractorContracts, count);
 	}
 
 }

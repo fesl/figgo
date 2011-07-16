@@ -44,9 +44,7 @@ public class ServiceDAO extends GenericDAO<Service> {
 	@SuppressWarnings("unchecked")
 	public Collection<Service> getUserServices(String userId) {
 		Query query = this.datastoreFacade.createQueryForClass(Service.class);
-		query.setFilter("providers == userId");
-		query.declareParameters("java.lang.String userId");
-
+		query.setFilter("providers == :userId");
 		return (Collection<Service>) query.execute(userId);
 	}
 

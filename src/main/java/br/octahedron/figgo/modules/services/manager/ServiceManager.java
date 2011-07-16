@@ -61,12 +61,13 @@ public class ServiceManager {
 	/**
 	 * Updates an service
 	 */
-	public Service updateService(String name, BigDecimal value, String description) {
-		Service serv = this.serviceDAO.get(name);
-		serv.setAmount(value);
-		serv.setDescription(description);
+	public Service updateService(String name, BigDecimal value, String category, String description) {
+		Service service = this.serviceDAO.get(name);
+		service.setAmount(value);
+		service.setDescription(description);
+		service.setCategory(category);
 		// This object will be updated to the DB by JDO persistence manager
-		return serv;
+		return service;
 	}
 
 	/**
@@ -93,10 +94,12 @@ public class ServiceManager {
 	 * 
 	 * @param serviceName
 	 * @param userId
+	 * @return 
 	 */
-	public void addProvider(String serviceName, String userId) {
-		Service serv = this.serviceDAO.get(serviceName);
-		serv.addProvider(userId);
+	public Service addProvider(String serviceName, String userId) {
+		Service service = this.serviceDAO.get(serviceName);
+		service.addProvider(userId);
+		return service;
 	}
 
 	/**
@@ -104,10 +107,12 @@ public class ServiceManager {
 	 * 
 	 * @param serviceName
 	 * @param userId
+	 * @return 
 	 */
-	public void removeProvider(String serviceName, String userId) {
-		Service serv = this.serviceDAO.get(serviceName);
-		serv.removeProvider(userId);
+	public Service removeProvider(String serviceName, String userId) {
+		Service service = this.serviceDAO.get(serviceName);
+		service.removeProvider(userId);
+		return service;
 	}
 
 	/**
@@ -141,8 +146,9 @@ public class ServiceManager {
 	 * @param provider
 	 * @param amount
 	 */
-	public void requestContract(String serviceName, String contractor, String provider, BigDecimal amount) {
-		ServiceContract serviceContract = new ServiceContract(serviceName, contractor, provider, amount);
+	public void requestContract(String serviceName, String contractor, String provider) {
+		Service service = this.serviceDAO.get(serviceName);
+		ServiceContract serviceContract = new ServiceContract(serviceName, contractor, provider, service.getAmount());
 		this.serviceContractDAO.save(serviceContract);
 		this.eventBus.publish(new ServiceContractRequestedEvent(serviceContract));
 	}
@@ -161,6 +167,29 @@ public class ServiceManager {
 	
 	public Collection<ServiceContract> getContractsHistory(String userId) {
 		return this.serviceContractDAO.getHistory(userId);
+	}
+	
+	/**
+	 * @return all services
+	 */
+	public Collection<Service> getServices() {
+		return this.serviceDAO.getAll();
+	}
+	
+	/**
+	 * @param serviceName
+	 * @return
+	 */
+	public void removeService(String serviceName) {
+		Service service = this.serviceDAO.get(serviceName);
+		this.serviceDAO.delete(service);
+	}
+	/**
+	 * @param currentUser
+	 * @return 
+	 */
+	public Collection<ServiceContract> getContracts(String userId) {
+		return this.serviceContractDAO.getContracts(userId);
 	}
 
 }

@@ -29,7 +29,7 @@ import br.octahedron.figgo.modules.Module.Type;
 import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfiguration;
 
 /**
- * @author Danilo Queiroz
+ * @author Vítor Avelino
  */
 public class ServicesSpec implements ModuleSpec {
 
