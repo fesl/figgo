@@ -39,8 +39,7 @@ public class RoleDAO extends GenericDAO<Role> {
 	@SuppressWarnings("unchecked")
 	public List<Role> getUserRoles(String username) {
 		Query query = this.datastoreFacade.createQueryForClass(Role.class);
-		query.setFilter("users == username");
-		query.declareParameters("java.lang.String username");
+		query.setFilter("users == :username");
 		return (List<Role>) query.execute(username);
 	}
 
@@ -50,8 +49,7 @@ public class RoleDAO extends GenericDAO<Role> {
 	 */
 	public boolean existsRoleFor(String domainName, String username, String activityName) {
 		Query query = this.datastoreFacade.createQueryForClass(Role.class);
-		query.setFilter("domain == domainName && users == username && activities == activity");
-		query.declareParameters("java.lang.String domainName, java.lang.String username, java.lang.String activity");
+		query.setFilter("domain == :domainName && users == :username && activities == :activity");
 		query.setResult("count(this)");
 		return ((Integer) query.execute(domainName, username, activityName)) != 0;
 	}

@@ -30,7 +30,7 @@ import br.octahedron.util.Log;
  */
 public class AuthorizationInterceptor extends AbstractAuthorizationInterceptor {
 	
-	private final Log log = new Log(AuthorizationInterceptor.class);
+	private static final Log log = new Log(AuthorizationInterceptor.class);
 	
 	@Inject
 	private AuthorizationManager authorizationManager;
@@ -48,7 +48,7 @@ public class AuthorizationInterceptor extends AbstractAuthorizationInterceptor {
 		String domain = subDomain();
 		if (user!= null && !this.authorizationManager.isAuthorized(domain, user, actionName)) {
 			log.debug("User %s is not authorized to perform action %s on domain %s", user, actionName, domain);
-			if( showForbiddenPage) { 
+			if (showForbiddenPage) { 
 				forbidden();
 			}
 		} else {
