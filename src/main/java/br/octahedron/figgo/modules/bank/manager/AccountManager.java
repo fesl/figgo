@@ -20,6 +20,7 @@ package br.octahedron.figgo.modules.bank.manager;
 
 import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Date;
 import java.util.logging.Logger;
 
 import br.octahedron.figgo.modules.bank.data.BankAccount;
@@ -93,12 +94,16 @@ public class AccountManager {
 			return this.getBalance(this.createAccount(accountId));
 		}
 	}
-
+	
 	protected BigDecimal getBalance(BankAccount account) {
 		account.setTransactionInfoService(this.transactionDAO);
 		return account.getBalance();
 	}
-
+	
+	public Collection<BankTransaction> getTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
+		return this.transactionDAO.getTransactionsByDateRange(accountId, startDate, endDate);
+	}
+	
 	/**
 	 * @param accountOrig
 	 * @param accountDest

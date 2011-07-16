@@ -20,6 +20,7 @@ package br.octahedron.figgo.modules.bank.controller.validation;
 
 import br.octahedron.cotopaxi.datastore.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.cotopaxi.inject.SelfInjectable;
 import br.octahedron.cotopaxi.validation.ValidationRule;
 import br.octahedron.figgo.modules.users.manager.UserManager;
 
@@ -27,7 +28,7 @@ import br.octahedron.figgo.modules.users.manager.UserManager;
  * @author vitoravelino
  *
  */
-public class DestionationRule implements ValidationRule {
+public class DestionationRule extends SelfInjectable implements ValidationRule {
 
 	@Inject
 	private UserManager userManager;
@@ -38,7 +39,7 @@ public class DestionationRule implements ValidationRule {
 		this.namespaceManager = namespaceManager;
 	}
 	
-	public void setAccountManager(UserManager userManager) {
+	public void setUserManager(UserManager userManager) {
 		this.userManager = userManager;
 	}
 	

@@ -23,6 +23,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -36,6 +37,7 @@ public class Formatter {
 
 	private static final NumberFormat numberFormatter;
 	private static final DateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
+	private static final DateFormat dateStatementFormatter = new SimpleDateFormat("dd/MM/yy");
 
 	static {
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols(new Locale("pt", "BR"));
@@ -51,5 +53,13 @@ public class Formatter {
 
 	public static String format(Date date) {
 		return dateFormatter.format(date);
+	}
+	
+	public static Date parse(String date) {
+		try {
+			return dateStatementFormatter.parse(date);
+		} catch (ParseException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }
