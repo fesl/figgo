@@ -1,1 +1,0 @@
-render 'services/index.vm', request, response
