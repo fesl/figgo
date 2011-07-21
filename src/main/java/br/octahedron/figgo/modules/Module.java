@@ -41,14 +41,14 @@ public enum Module {
 		/**
 		 * Indicates that the module is an Application Module and has a global scope.
 		 * 
-		 * An application module is a module that ins internal to the application and provides
+		 * An application module is an internal module to the application and provides
 		 * features needed by the system. This kind of module can't be enabled/disabled.
 		 */
 		APPLICATION_GLOBAL,
 		/**
 		 * Indicates that the module is an Application Module and has domain scope.
 		 * 
-		 * An application module is a module that ins internal to the application and provides
+		 * An application module is an internal module to the application and provides
 		 * features needed by the system. This kind of module can't be enabled/disabled.
 		 */
 		APPLICATION_DOMAIN,

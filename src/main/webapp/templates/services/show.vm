@@ -1,0 +1,44 @@
+#set( $title = "Figgo - $!{domain.Name} - Serviços" )
+#set( $currentModule = "SERVICES" )
+#parse( "templates/layout_intern.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<header>
+    		<h1>Serviços</h1>
+    		<nav id="tabs">
+        		<ul class="inline">
+                    <li><a href="/">Dashboard</a></li>
+                    #foreach( $module in $domain.ModulesEnabled )
+						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+					#end
+        		</ul>
+    		</nav>
+		</header>
+		<div id="content">
+			<div id="single-column">
+				<section id="service">
+					<h3>$!{service.Name}</h3>
+            		Valor: $!{service.Value} <br />
+            		Categoria: $!{service.Category} <br />
+                    Descrição: $!{service.Description} <br />
+					<a id="remove" href="/service/$service.Name/delete">remover serviço</a>
+                </section>
+				<section id="providers">
+					<h3>Prestadores</h3>
+					<ul>
+					#foreach( $provider in $service.Providers )
+						<li>$provider -  <a class="contract-link" href="/service/$service.Name/contract/$provider">contratar</a></li>
+					#end
+					</ul>
+                </section>
+			</div>
+		</div>
+	</div>
+#end
+	
+#@scripts()
+	<script src="/js/services.js"></script>
+#end

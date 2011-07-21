@@ -1,0 +1,63 @@
+#set( $title = "Figgo - $!{domain.Name} - Serviços" )
+#set( $currentModule = "SERVICES" )
+#parse( "templates/layout_intern.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<header>
+    		<h1>Serviços</h1>
+    		<nav id="tabs">
+        		<ul class="inline">
+                    <li><a href="/">Dashboard</a></li>
+                    #foreach( $module in $domain.ModulesEnabled )
+						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+					#end
+        		</ul>
+    		</nav>
+		</header>
+		<div id="content">
+			<div id="single-column">
+				<section id="my-contracts">
+    				<table class="simple">
+    					<thead>
+    						<th>
+    							<td>Serviço</td>
+    						</th>
+    						<th>
+    							<td>Prestador</td>
+    						</th>
+    						<th>
+    							<td>Status</td>
+    						</th>
+    						<th></th>
+                        </thead>
+    					<tbody>
+                        #foreach( $contract in $myContracts )
+                    		<tr>
+                    			<td>$contract.Name</td>
+                    		</tr>
+							<tr>
+                    			<td>$contract.Provider</td>
+                    		</tr>
+							<tr>
+                    			<td>$contract.Status</td>
+                    		</tr>
+							#if ($contract.Provider == $user.Email)
+							<tr>
+                    			<td><a href="/services/contract/{id}/edit">Editar</a></td>
+                    		</tr>
+							#end
+                        #end
+                        </tbody>
+                    </table>
+				</section>
+			</div>
+		</div>
+	</div>
+#end
+	
+#@scripts()
+	<script src="/js/services.js"></script>
+#end

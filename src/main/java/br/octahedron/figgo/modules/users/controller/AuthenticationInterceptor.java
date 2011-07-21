@@ -55,8 +55,7 @@ public class AuthenticationInterceptor extends AbstractGoogleAuthenticationInter
 			log.debug("User doesn't exist. It's a new/invalid user");
 			redirect(NEW_USER_URL);
 		} else {
-			session("user", this.usersManager.getUser(userEmail));
-			out("user", session("user"));
+			out("user", this.usersManager.getUser(userEmail));
 		}
 	}
 }

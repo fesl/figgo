@@ -27,6 +27,8 @@ import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.octahedron.figgo.modules.services.data.ServiceContract.ServiceContractStatus;
+
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
@@ -52,15 +54,27 @@ public class ServiceContractDAOTest {
 		this.serviceContractDAO.save(new ServiceContract("Serviço2", "Pessoa1", "Pessoa3", new BigDecimal(80)));
 	}
 	
+	private void createHistoryServiceContracts() {
+		ServiceContract serviceContract1 = new ServiceContract("Serviço1", "Pessoa1", "Pessoa2", new BigDecimal(100));
+		serviceContract1.setStatus(ServiceContractStatus.COMPLETED);
+		this.serviceContractDAO.save(serviceContract1);
+		ServiceContract serviceContract2 = new ServiceContract("Serviço4", "Pessoa2", "Pessoa3", new BigDecimal(50));
+		serviceContract2.setStatus(ServiceContractStatus.COMPLETED);
+		this.serviceContractDAO.save(serviceContract2);
+		ServiceContract serviceContract3 = new ServiceContract("Serviço6", "Pessoa3", "Pessoa2", new BigDecimal(35));
+		serviceContract3.setStatus(ServiceContractStatus.COMPLETED);
+		this.serviceContractDAO.save(serviceContract3);
+	}
+	
 	@Test
-	public void getProviderHistory() {
+	public void getProviderContracts() {
 		this.createServiceContracts();
-		Collection<ServiceContract> contracts = this.serviceContractDAO.getProviderHistory("Pessoa1");
+		Collection<ServiceContract> contracts = this.serviceContractDAO.getProviderContracts("Pessoa1");
 		Iterator<ServiceContract> iterator = contracts.iterator();
 		assertEquals(1, contracts.size());
 		assertEquals("Serviço3", iterator.next().getServiceName());
 		
-		contracts = this.serviceContractDAO.getProviderHistory("Pessoa2");
+		contracts = this.serviceContractDAO.getProviderContracts("Pessoa2");
 		iterator = contracts.iterator();
 		assertEquals(2, contracts.size());
 		assertEquals("Serviço6", iterator.next().getServiceName());
@@ -68,37 +82,47 @@ public class ServiceContractDAOTest {
 	}
 	
 	@Test
-	public void getContractorHistory() {
+	public void getContractorContracts() {
 		this.createServiceContracts();
-		Collection<ServiceContract> contracts = this.serviceContractDAO.getContractorHistory("Pessoa1");
+		Collection<ServiceContract> contracts = this.serviceContractDAO.getContractorContracts("Pessoa1");
 		Iterator<ServiceContract> iterator = contracts.iterator();
 		assertEquals(2, contracts.size());
 		assertEquals("Serviço2", iterator.next().getServiceName());
 		assertEquals("Serviço1", iterator.next().getServiceName());
 		
-		contracts = this.serviceContractDAO.getContractorHistory("Pessoa2");
+		contracts = this.serviceContractDAO.getContractorContracts("Pessoa2");
 		iterator = contracts.iterator();
 		assertEquals(1, contracts.size());
 		assertEquals("Serviço4", iterator.next().getServiceName());
 	}
 	
 	@Test
-	public void getHistory() {
+	public void getContracts() {
 		this.createServiceContracts();
-		Collection<ServiceContract> contracts = this.serviceContractDAO.getHistory("Pessoa1");
+		Collection<ServiceContract> contracts = this.serviceContractDAO.getContracts("Pessoa1");
 		Iterator<ServiceContract> iterator = contracts.iterator();
 		assertEquals(3, contracts.size());
 		assertEquals("Serviço2", iterator.next().getServiceName());
 		assertEquals("Serviço3", iterator.next().getServiceName());
 		assertEquals("Serviço1", iterator.next().getServiceName());
 		
-		contracts = this.serviceContractDAO.getHistory("Pessoa3");
+		contracts = this.serviceContractDAO.getContracts("Pessoa3");
 		iterator = contracts.iterator();
 		assertEquals(4, contracts.size());
 		assertEquals("Serviço2", iterator.next().getServiceName());
 		assertEquals("Serviço6", iterator.next().getServiceName());
 		assertEquals("Serviço3", iterator.next().getServiceName());
 		assertEquals("Serviço4", iterator.next().getServiceName());
+	}
+	
+	@Test
+	public void getHistory() {
+		this.createHistoryServiceContracts();
+		Collection<ServiceContract> contracts = this.serviceContractDAO.getHistory("Pessoa2");
+		Iterator<ServiceContract> iterator = contracts.iterator();
+		assertEquals(2, contracts.size());
+		assertEquals("Serviço6", iterator.next().getServiceName());
+		assertEquals("Serviço1", iterator.next().getServiceName());
 	}
 	
 }

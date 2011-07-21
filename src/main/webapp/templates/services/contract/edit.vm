@@ -1,0 +1,38 @@
+#set( $title = "Figgo - $!{domain.Name} - Serviços" )
+#set( $currentModule = "SERVICES" )
+#parse( "templates/layout_intern.vm" )
+
+#@body()
+	<a href="$logout_url">logout</a>
+	
+    <div id="main" class="center">
+		<header>
+    		<h1>Serviços</h1>
+    		<nav id="tabs">
+        		<ul class="inline">
+                    <li><a href="/">Dashboard</a></li>
+                    #foreach( $module in $domain.ModulesEnabled )
+						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+					#end
+        		</ul>
+    		</nav>
+		</header>
+		<div id="content">
+			<div id="single-column">
+				$contract.
+        		<form action="/services/contract/$contract.Id/edit" method="post" accept-charset="utf-8">
+					<label for="status">
+                        <select>
+							<option value="PENDING">Pendente</option>
+							<option value="IN_PROGRESS">Em andamento</option>
+							<option value="COMPLETED">Completo</option>
+                        </select>
+                	</label><br />
+            		<input type="submit" value="Atualizar" />
+                </form>
+			</div>
+		</div>
+	</div>
+#end
+	
+#scripts()

@@ -19,8 +19,19 @@
 		<div id="content" class="bank">
 			<div id="column-left">
                 <section id="balance">
-                    <h3>Extrato $month</h3>
-    				<table class="simple">
+                    <h3>Extrato</h3>
+					<form id="statement-form" action="/bank/statement" method="post">
+						<fieldset >
+                        	<label for="startDate">
+                                Início: <input type="text" name="startDate" />
+                        	</label> <br />
+							<label for="endDate">
+                                Fim: <input type="text" name="endDate" />
+                        	</label> <br />
+                    		<input type="submit" value="Visualizar" />
+                        </fieldset>
+                    </form>
+    				<table class="simple bank">
                 		<thead>
                     		<tr>
                     			<th>Data</th>
@@ -30,32 +41,12 @@
                     		</tr>
                         </thead>
                 		<tbody>
-                        ##foreach( $transation in $account.LatestTransations )
-                    		<tr>
-                    			<td>transaction.Date</td>
-								<td>transaction.To</td>
-								<td>transaction.Description</td>
-								<td>transaction.Value</td>
-                    		</tr>
-							<tr>
-                    			<td>transaction.Date</td>
-								<td>transaction.To</td>
-								<td>transaction.Description</td>
-								<td>transaction.Value</td>
-                    		</tr>
-							<tr>
-                    			<td>transaction.Date</td>
-								<td>transaction.To</td>
-								<td>transaction.Description</td>
-								<td>transaction.Value</td>
-                    		</tr>
-                        ##end
                         </tbody>
 						<tfoot>
 							<td />
 							<td />
                             <td>SALDO</td>
-                            <td>$account.Balance</td>
+                            <td>$balance</td>
                         </tfoot>
                     </table>
     			</section>
@@ -78,4 +69,6 @@
 	</div>
 #end
 	
-#scripts()
+#@scripts()
+	<script src="/js/bank.js"></script>
+#end
