@@ -75,9 +75,8 @@ public class BankController extends Controller {
 
 	public void postTransfer() {
 		Validator requiredValidator = BankValidators.getRequiredValidator();
-		Validator transactionValidator = BankValidators.getTransactionValidator();
 		Validator destinationValidator = BankValidators.getDestinationValidator();
-		if (requiredValidator.isValid() && transactionValidator.isValid() && destinationValidator.isValid()) {
+		if (requiredValidator.isValid() && destinationValidator.isValid()) {
 			this.accountManager.transact(this.currentUser(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"),
 					TransactionType.valueOf(this.in("type")));
 			this.redirect(BASE_URL);

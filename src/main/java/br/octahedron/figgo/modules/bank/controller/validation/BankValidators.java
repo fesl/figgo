@@ -27,7 +27,6 @@ import br.octahedron.cotopaxi.validation.Validator;
  */
 public class BankValidators {
 	
-	private static Validator transactionValidator;
 	private static Validator destinationValidator;
 	private static Validator valueValidator;
 	private static Validator requiredValidator;
@@ -40,14 +39,6 @@ public class BankValidators {
 			requiredValidator.add("type", new RequiredRule(), "REQUIRED_TRANSACTION_TYPE_MESSAGE");
 		}
 		return requiredValidator;
-	}
-	
-	public static synchronized Validator getTransactionValidator() {
-		if (transactionValidator == null) {
-			transactionValidator = new Validator();
-			transactionValidator.add("userId", new TransactionRule(), "INVALID_TRANSACTION_USERID_MESSAGE");
-		}
-		return transactionValidator;
 	}
 	
 	public static synchronized Validator getDestinationValidator() {
