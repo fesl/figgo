@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules.bank.controller.validation;
 
-import br.octahedron.cotopaxi.datastore.NamespaceManager;
+import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.ValidationRule;
 import br.octahedron.figgo.modules.users.manager.UserManager;
@@ -27,7 +27,7 @@ import br.octahedron.figgo.modules.users.manager.UserManager;
  * @author vitoravelino
  *
  */
-public class DestionationRule implements ValidationRule {
+public class DestinationRule implements ValidationRule {
 
 	@Inject
 	private UserManager userManager;
