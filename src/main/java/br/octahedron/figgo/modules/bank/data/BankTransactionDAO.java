@@ -28,7 +28,7 @@ import java.util.TreeSet;
 
 import javax.jdo.Query;
 
-import br.octahedron.cotopaxi.datastore.GenericDAO;
+import br.octahedron.cotopaxi.datastore.jdo.GenericDAO;
 import br.octahedron.figgo.modules.bank.TransactionInfoService;
 
 /**

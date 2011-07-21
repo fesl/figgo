@@ -20,12 +20,11 @@ package br.octahedron.figgo;
 
 import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
 import br.octahedron.cotopaxi.controller.Controller;
-import br.octahedron.cotopaxi.datastore.NamespaceManager;
-import br.octahedron.cotopaxi.datastore.NamespaceRequired;
+import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
+import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
-import br.octahedron.util.Log;
 
 /**
  * 

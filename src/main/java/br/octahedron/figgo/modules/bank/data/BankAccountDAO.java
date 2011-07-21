@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules.bank.data;
 
-import br.octahedron.cotopaxi.datastore.GenericDAO;
+import br.octahedron.cotopaxi.datastore.jdo.GenericDAO;
 
 /**
  * @author Danilo Queiroz

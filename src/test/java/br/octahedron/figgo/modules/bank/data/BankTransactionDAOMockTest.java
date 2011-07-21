@@ -35,9 +35,7 @@ import javax.jdo.Query;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.octahedron.cotopaxi.datastore.DatastoreFacade;
-import br.octahedron.figgo.modules.bank.data.BankTransaction;
-import br.octahedron.figgo.modules.bank.data.BankTransactionDAO;
+import br.octahedron.cotopaxi.datastore.jdo.DatastoreFacade;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
 
 /**

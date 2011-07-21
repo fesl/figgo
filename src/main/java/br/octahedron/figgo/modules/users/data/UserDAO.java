@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import br.octahedron.cotopaxi.datastore.GenericDAO;
+import br.octahedron.cotopaxi.datastore.jdo.GenericDAO;
 
 /**
  * @author Erick Moreno

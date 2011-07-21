@@ -53,7 +53,7 @@ public class BankValidators {
 	public static synchronized Validator getDestinationValidator() {
 		if (destinationValidator == null) {
 			destinationValidator = new Validator();
-			destinationValidator.add("userId", new DestionationRule(), "INVALID_TRANSACTION_DESTINATION_MESSAGE");
+			destinationValidator.add("userId", new DestinationRule(), "INVALID_TRANSACTION_DESTINATION_MESSAGE");
 		}
 		return destinationValidator;
 	}

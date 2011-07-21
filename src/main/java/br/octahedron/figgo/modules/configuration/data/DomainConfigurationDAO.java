@@ -21,8 +21,8 @@ package br.octahedron.figgo.modules.configuration.data;
 import java.util.Set;
 import java.util.TreeSet;
 
-import br.octahedron.cotopaxi.datastore.GenericDAO;
-import br.octahedron.cotopaxi.datastore.NamespaceManager;
+import br.octahedron.cotopaxi.datastore.jdo.GenericDAO;
+import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
 
 import com.google.appengine.api.memcache.MemcacheService;

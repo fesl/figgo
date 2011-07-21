@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules.admin.controller.validation;
 
-import br.octahedron.cotopaxi.datastore.NamespaceManager;
+import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.inject.SelfInjectable;
 import br.octahedron.cotopaxi.validation.ValidationRule;

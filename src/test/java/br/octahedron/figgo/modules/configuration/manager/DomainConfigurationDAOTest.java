@@ -26,8 +26,8 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 
-import br.octahedron.cotopaxi.datastore.AppEngineNamespaceManager;
-import br.octahedron.cotopaxi.datastore.NamespaceManager;
+import br.octahedron.cotopaxi.datastore.namespace.AppEngineNamespaceManager;
+import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
 import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
 
