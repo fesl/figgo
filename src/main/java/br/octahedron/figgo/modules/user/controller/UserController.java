@@ -116,19 +116,9 @@ public class UserController extends Controller {
 		}
 	}
 	
+	public void getSearchUser() {
+		out("result", userManager.getUsersStartingWith(in("term")));
+		jsonSuccess();
+	}
 	
-	/*
-
-	def get_search() {
-		def result = usersManager.getUsersStartingWith(params.term)
-		renderJSON result, request, response
-	}
-
-	def get_upload() {
-		request.user = usersManager.getUser(request.user.email)
-		request.upload_url = blobstore.createUploadUrl('/blob/user/upload')
-		render 'user/upload.vm', request, response
-	}
-
-	*/
 }
