@@ -142,6 +142,10 @@ public class Role implements Serializable {
 	public void addActivities(String... activities) {
 		this.addActivities(Arrays.asList(activities));
 	}
+	
+	public void removeUser(String user) {
+		this.users.remove(user);
+	}
 
 	/*
 	 * (non-Javadoc)

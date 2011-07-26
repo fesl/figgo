@@ -22,7 +22,6 @@ import static br.octahedron.figgo.modules.authorization.data.Role.createRoleKey;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -131,12 +130,16 @@ public class AuthorizationManager {
 	public void addActivitiesToRole(String domainName, String roleName, Collection<String> activities) {
 		((Role) this.getRole(domainName, roleName)).addActivities(activities);
 	}
+	
+	public void removeUserFromRole(String domainName, String roleName, String user) {
+		((Role) this.getRole(domainName, roleName)).removeUser(user);
+	}
 
 	/**
 	 * @return All domains that the user has some role.
 	 */
 	public Collection<String> getUserDomains(String username) {
-		List<Role> roles = this.roleDAO.getUserRoles(username);
+		Collection<Role> roles = this.getUserRoles(username);
 
 		if (!roles.isEmpty()) {
 			Set<String> domains = new TreeSet<String>();
@@ -147,6 +150,10 @@ public class AuthorizationManager {
 		} else {
 			return Collections.emptySet();
 		}
+	}
+	
+	public Collection<Role> getUserRoles(String username) {
+		return this.roleDAO.getUserRoles(username);
 	}
 	
 	/**
@@ -162,5 +169,15 @@ public class AuthorizationManager {
 	 */
 	public boolean isAuthorized(String domainName, String username, String activityName) {
 		return this.googleAuthorizer.isApplicationAdmin() || this.roleDAO.existsRoleFor(domainName, username, activityName);
+	}
+
+	/**
+	 * @param subDomain
+	 * @param in
+	 */
+	public void removeUserFromRoles(String subDomain, String username) {
+		for (Role role : this.getUserRoles(username)) {
+			role.removeUser(username);
+		}
 	}
 }
