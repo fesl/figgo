@@ -22,12 +22,13 @@ import br.octahedron.cotopaxi.eventbus.AbstractNamespaceSubscriber;
 import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.figgo.modules.upload.controller.DomainUploadEvent;
 
 /**
  * @author Vítor Avelino
  * 
  */
-@InterestedEvent(events = { }) // FIXME update this
+@InterestedEvent(events = { DomainUploadEvent.class })
 public class DomainUploadSubscriber extends AbstractNamespaceSubscriber {
 
 	private static final long serialVersionUID = -5493253101510358283L;
@@ -52,9 +53,8 @@ public class DomainUploadSubscriber extends AbstractNamespaceSubscriber {
 	 */
 	@Override
 	public void processEvent(Event event) {
-		// FIXME update this
-//		DomainUploadEvent uploadEvent = (DomainUploadEvent) event;
-//		this.configurationManager.updateAvatarKey(uploadEvent.getBlobKey());
+		DomainUploadEvent uploadEvent = (DomainUploadEvent) event;
+		this.configurationManager.updateAvatarKey(uploadEvent.getBlobKey());
 	}
 
 }

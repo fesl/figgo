@@ -11,7 +11,7 @@
 		<div id="content">
 			<div id="single-column">
 				<p>Faça upload do seu avatar abaixo:</p>
-                <form action="$upload_url" method="post" enctype="multipart/form-data">
+                <form action="$uploadUrl" method="post" enctype="multipart/form-data" accept-charset="utf-8">
                 	<label for="avatar">
                         Arquivo (max 1mb): <input type="file" name="file" />
                 	</label><br />

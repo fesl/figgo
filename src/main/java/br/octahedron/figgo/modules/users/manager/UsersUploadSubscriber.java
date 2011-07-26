@@ -22,16 +22,19 @@ import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.figgo.modules.upload.controller.UserUploadEvent;
+import br.octahedron.util.Log;
 
 /**
  * @author vitoravelino
  * 
  */
-@InterestedEvent(events = { }) // FIXME update this
+@InterestedEvent(events = { UserUploadEvent.class })
 public class UsersUploadSubscriber implements Subscriber {
 
 	private static final long serialVersionUID = -5493253101510358283L;
-
+	private static final Log log = new Log(UsersUploadSubscriber.class);
+	
 	@Inject
 	private UserManager usersManager;
 
@@ -39,7 +42,7 @@ public class UsersUploadSubscriber implements Subscriber {
 	 * @param usersManager
 	 *            the usersManager to set
 	 */
-	public void setUsersManager(UserManager usersManager) {
+	public void setUserManager(UserManager usersManager) {
 		this.usersManager = usersManager;
 	}
 
@@ -52,9 +55,9 @@ public class UsersUploadSubscriber implements Subscriber {
 	 */
 	@Override
 	public void eventPublished(Event event) {
-		// FIXME update this
-//		UserUploadEvent uploadEvent = (UserUploadEvent) event;
-//		this.usersManager.updateAvatarKey(uploadEvent.getTarget(), uploadEvent.getBlobKey());
+		UserUploadEvent uploadEvent = (UserUploadEvent) event;
+		log.debug("@@@@@@@@@@@@@@@@@@ %s @@@@@@@@@@ %s", uploadEvent.getTarget(), uploadEvent.getBlobKey());
+		this.usersManager.updateAvatarKey(uploadEvent.getTarget(), uploadEvent.getBlobKey());
 	}
 
 }
