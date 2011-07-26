@@ -40,9 +40,7 @@ import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
 import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
 import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfiguration;
-import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfigurationView;
 import br.octahedron.figgo.modules.configuration.data.ModuleConfigurationDAO;
-import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
 
 /**
  * @author Danilo Queiroz
@@ -189,7 +187,7 @@ public class ConfigurationManagerTest {
 		replay(this.domainDAO, this.moduleDAO);
 		try {
 			// test
-			DomainSpecificModuleConfigurationView moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
+			DomainSpecificModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
 			assertNotNull(moduleInfo);
 		} finally {
 			// check mocks
@@ -247,7 +245,7 @@ public class ConfigurationManagerTest {
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
 		// test
-		DomainSpecificModuleConfigurationView moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
+		DomainSpecificModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
 		assertEquals("Banco", moduleInfo.getPropertyValue("name"));
 		this.configurationManager.setModuleProperty(Module.BANK, "name", "Octa Banco");
 		moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
@@ -289,7 +287,7 @@ public class ConfigurationManagerTest {
 		replay(this.domainDAO, this.moduleDAO);
 		try {
 			// test
-			DomainSpecificModuleConfigurationView moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
+			DomainSpecificModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
 			assertEquals("Banco", moduleInfo.getPropertyValue("name"));
 			this.configurationManager.setModuleProperty(Module.BANK, "name", "b");
 			fail();
@@ -313,7 +311,7 @@ public class ConfigurationManagerTest {
 		replay(this.domainDAO, this.moduleDAO);
 		// test
 		this.configurationManager.setModuleProperty(Module.BANK, "name", "Octa Banco");
-		DomainSpecificModuleConfigurationView moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
+		DomainSpecificModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
 		assertEquals("Octa Banco", moduleInfo.getPropertyValue("name"));
 		this.configurationManager.restoreModuleProperties(Module.BANK);
 		moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);

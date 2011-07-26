@@ -30,7 +30,6 @@ import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.authorization.data.Role;
 import br.octahedron.figgo.modules.authorization.data.RoleDAO;
-import br.octahedron.figgo.modules.authorization.data.RoleView;
 
 /**
  * This entity is responsible to manage authorization issues, such as roles operations
@@ -67,7 +66,7 @@ public class AuthorizationManager {
 	 * @throws DataAlreadyExistsException
 	 *             if the role already exists
 	 */
-	public RoleView createRole(String domainName, String roleName) {
+	public Role createRole(String domainName, String roleName) {
 		if (!this.existsRole(domainName, roleName)) {
 			Role role = new Role(domainName, roleName);
 			this.roleDAO.save(role);
@@ -97,7 +96,7 @@ public class AuthorizationManager {
 	 * @throws DataDoesNotExistsException
 	 *             if theres no such role
 	 */
-	public RoleView getRole(String domainName, String roleName) {
+	public Role getRole(String domainName, String roleName) {
 		if (this.existsRole(domainName, roleName)) {
 			return this.roleDAO.get(createRoleKey(domainName, roleName));
 		} else {

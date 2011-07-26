@@ -24,7 +24,6 @@ import java.util.Set;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.Module.Type;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
-import br.octahedron.figgo.modules.configuration.data.DomainConfigurationView;
 
 /**
  * Retrieves the information about the modules existent and enabled for a domain.
@@ -44,9 +43,9 @@ public class ModulesInfoService {
 		}
 	}
 
-	private DomainConfigurationView domainConfiguration;
+	private DomainConfiguration domainConfiguration;
 
-	public ModulesInfoService(DomainConfigurationView domainConfiguration) {
+	public ModulesInfoService(DomainConfiguration domainConfiguration) {
 		this.domainConfiguration = domainConfiguration;
 	}
 

@@ -18,12 +18,10 @@
  */
 package br.octahedron.figgo.modules;
 
-import br.octahedron.figgo.modules.admin.AdminSpec;
 import br.octahedron.figgo.modules.authorization.AuthorizationSpec;
 import br.octahedron.figgo.modules.bank.BankSpec;
 import br.octahedron.figgo.modules.configuration.ConfigurationSpec;
-import br.octahedron.figgo.modules.services.ServicesSpec;
-import br.octahedron.figgo.modules.users.UsersSpec;
+import br.octahedron.figgo.modules.service.ServicesSpec;
 
 /**
  * All the Modules existent at the project
@@ -32,7 +30,13 @@ import br.octahedron.figgo.modules.users.UsersSpec;
  */
 public enum Module {
 
-	BANK(new BankSpec()), SERVICES(new ServicesSpec()), AUTHORIZATION(new AuthorizationSpec()), USER(new UsersSpec()), ADMIN(new AdminSpec()), DOMAIN(new ConfigurationSpec());
+	BANK(new BankSpec()),
+
+	SERVICES(new ServicesSpec()),
+
+	AUTHORIZATION(new AuthorizationSpec()),
+
+	DOMAIN(new ConfigurationSpec());
 
 	/**
 	 * Indicates the module Type
@@ -41,15 +45,15 @@ public enum Module {
 		/**
 		 * Indicates that the module is an Application Module and has a global scope.
 		 * 
-		 * An application module is an internal module to the application and provides
-		 * features needed by the system. This kind of module can't be enabled/disabled.
+		 * An application module is an internal module to the application and provides features
+		 * needed by the system. This kind of module can't be enabled/disabled.
 		 */
 		APPLICATION_GLOBAL,
 		/**
 		 * Indicates that the module is an Application Module and has domain scope.
 		 * 
-		 * An application module is an internal module to the application and provides
-		 * features needed by the system. This kind of module can't be enabled/disabled.
+		 * An application module is an internal module to the application and provides features
+		 * needed by the system. This kind of module can't be enabled/disabled.
 		 */
 		APPLICATION_DOMAIN,
 		/**

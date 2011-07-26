@@ -29,10 +29,12 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 /**
+ * A role specify a set of activities that can be performed by a set of users for a given domain.
+ * 
  * @author Danilo Penna Queiroz
  */
 @PersistenceCapable
-public class Role implements Serializable, RoleView {
+public class Role implements Serializable {
 
 	private static final String SEPARATOR = "#";
 
@@ -73,64 +75,70 @@ public class Role implements Serializable, RoleView {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.authorization.data.RoleView#getId()
+	/**
+	 * @return the id
 	 */
 	public String getId() {
 		this.fixId();
 		return this.id;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.authorization.data.RoleView#getDomain()
+	/**
+	 * @return the domain
 	 */
 	public String getDomain() {
 		return this.domain;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.authorization.data.RoleView#getName()
+	/**
+	 * @return the name
 	 */
 	public String getName() {
 		return this.name;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.authorization.data.RoleView#getActivities()
+	/**
+	 * @return the activities
 	 */
 	public Set<String> getActivities() {
 		return this.activities;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.authorization.data.RoleView#getUsers()
+	/**
+	 * @return the users
 	 */
 	public Set<String> getUsers() {
 		return this.users;
 	}
 
+	/**
+	 * @param users
+	 *            Adds a bunch of users to this role.
+	 */
 	public void addUsers(Collection<String> users) {
 		this.users.addAll(users);
 	}
 
+	/**
+	 * @param users
+	 *            Adds a bunch of users to this role.
+	 */
 	public void addUsers(String... users) {
 		this.addUsers(Arrays.asList(users));
 	}
 
+	/**
+	 * @param users
+	 *            Adds a bunch of activities to this role.
+	 */
 	public void addActivities(Collection<String> activities) {
 		this.activities.addAll(activities);
 	}
 
+	/**
+	 * @param users
+	 *            Adds a bunch of activities to this role.
+	 */
 	public void addActivities(String... activities) {
 		this.addActivities(Arrays.asList(activities));
 	}

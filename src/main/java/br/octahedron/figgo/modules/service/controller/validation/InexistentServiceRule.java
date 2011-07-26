@@ -16,44 +16,31 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.bank.controller.validation;
+package br.octahedron.figgo.modules.service.controller.validation;
 
-import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
-import br.octahedron.cotopaxi.inject.SelfInjectable;
 import br.octahedron.cotopaxi.validation.ValidationRule;
-import br.octahedron.figgo.modules.user.manager.UserManager;
+import br.octahedron.figgo.modules.service.manager.ServiceManager;
 
 /**
- * @author vitoravelino
+ * @author Vítor Avelino
  *
  */
-public class DestinationRule extends SelfInjectable implements ValidationRule {
+public class InexistentServiceRule implements ValidationRule {
 
 	@Inject
-	private UserManager userManager;
-	@Inject
-	private NamespaceManager namespaceManager;
+	private ServiceManager serviceManager;
 	
-	public void setNamespaceManager(NamespaceManager namespaceManager) {
-		this.namespaceManager = namespaceManager;
-	}
-	
-	public void setUserManager(UserManager userManager) {
-		this.userManager = userManager;
+	public void setServiceManager(ServiceManager serviceManager) {
+		this.serviceManager = serviceManager;
 	}
 	
 	/* (non-Javadoc)
 	 * @see br.octahedron.cotopaxi.validation.ValidationRule#isValid(java.lang.String)
 	 */
 	@Override
-	public boolean isValid(final String input) {
-		try {
-			namespaceManager.changeToGlobalNamespace();
-			return userManager.existsUser(input);
-		} finally {
-			namespaceManager.changeToPreviousNamespace();
-		}
+	public boolean isValid(String input) {
+		return !serviceManager.existsService(input);
 	}
 
 }

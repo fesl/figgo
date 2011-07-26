@@ -24,7 +24,7 @@ import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.modules.admin.controller.validation.AdminValidators;
-import br.octahedron.figgo.modules.admin.data.ApplicationConfigurationView;
+import br.octahedron.figgo.modules.admin.data.ApplicationConfiguration;
 import br.octahedron.figgo.modules.admin.manager.AdminManager;
 
 /**
@@ -50,7 +50,7 @@ public class AdminController extends Controller {
 	
 	public void getAppConfig() {
 		if (adminManager.hasApplicationConfiguration()) {
-			ApplicationConfigurationView applicationConfiguration = this.adminManager.getApplicationConfiguration();
+			ApplicationConfiguration applicationConfiguration = this.adminManager.getApplicationConfiguration();
 			out("accessKey", applicationConfiguration.getRoute53AccessKeyID());
 			out("keySecret", applicationConfiguration.getRoute53AccessKeySecret());
 			out("zone", applicationConfiguration.getRoute53ZoneID());

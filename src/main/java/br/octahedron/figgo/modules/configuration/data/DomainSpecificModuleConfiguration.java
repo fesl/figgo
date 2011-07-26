@@ -34,7 +34,7 @@ import javax.jdo.annotations.PrimaryKey;
  * @author Danilo Penna Queiroz
  */
 @PersistenceCapable
-public class DomainSpecificModuleConfiguration implements Serializable, DomainSpecificModuleConfigurationView {
+public class DomainSpecificModuleConfiguration implements Serializable {
 
 	private static final long serialVersionUID = -2814532770225964507L;
 

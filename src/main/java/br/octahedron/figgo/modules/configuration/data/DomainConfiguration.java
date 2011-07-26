@@ -32,7 +32,7 @@ import javax.jdo.annotations.PrimaryKey;
  * @author Danilo Queiroz
  */
 @PersistenceCapable
-public class DomainConfiguration implements Serializable, Comparable<DomainConfiguration>, DomainConfigurationView {
+public class DomainConfiguration implements Serializable, Comparable<DomainConfiguration> {
 
 	/*
 	 * TODO missing data as description, avatar, mail-list address, site url
@@ -184,7 +184,7 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	 */
 	@Override
 	public int hashCode() {
-		return this.domainName.hashCode() << 3;
+		return this.domainName.hashCode();
 	}
 
 	/*

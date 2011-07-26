@@ -25,7 +25,6 @@ import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.admin.data.ApplicationConfiguration;
 import br.octahedron.figgo.modules.admin.data.ApplicationConfigurationDAO;
-import br.octahedron.figgo.modules.admin.data.ApplicationConfigurationView;
 import br.octahedron.figgo.modules.admin.util.Route53Exception;
 import br.octahedron.figgo.modules.admin.util.Route53Util;
 import br.octahedron.util.Log;
@@ -68,7 +67,7 @@ public class AdminManager {
 	/**
 	 * @return the application configuration
 	 */
-	public ApplicationConfigurationView getApplicationConfiguration() {
+	public ApplicationConfiguration getApplicationConfiguration() {
 		if (this.hasApplicationConfiguration()) {
 			return this.applicationConfigurationDAO.get(APPLICATION_NAME);
 		} else {

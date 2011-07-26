@@ -69,7 +69,7 @@ public class UploadController extends BlobstoreController {
 			this.eventBus.publish(new DomainUploadEvent(subDomain(), blobKey.getKeyString()));
 			redirect("/");
 		} else {
-			redirect("/user/upload");
+			redirect("/domain/upload");
 		}
 	}
 	

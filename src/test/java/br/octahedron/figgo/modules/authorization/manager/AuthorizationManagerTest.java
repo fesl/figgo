@@ -40,8 +40,6 @@ import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.authorization.data.Role;
 import br.octahedron.figgo.modules.authorization.data.RoleDAO;
-import br.octahedron.figgo.modules.authorization.data.RoleView;
-import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
@@ -111,7 +109,7 @@ public class AuthorizationManagerTest {
 		replay(this.roleDAO);
 		try {
 			// test
-			RoleView role = this.authManager.getRole("domain", "role");
+			Role role = this.authManager.getRole("domain", "role");
 			assertNotNull(role);
 			assertEquals(new Role("domain", "role"), role);
 			this.authManager.getRole("domain", "role");

@@ -28,7 +28,7 @@ import javax.jdo.annotations.PrimaryKey;
  * @author Danilo Queiroz
  */
 @PersistenceCapable
-public class ApplicationConfiguration implements Serializable, ApplicationConfigurationView {
+public class ApplicationConfiguration implements Serializable {
 
 	private static final long serialVersionUID = 6211848005905311102L;
 
@@ -48,60 +48,47 @@ public class ApplicationConfiguration implements Serializable, ApplicationConfig
 	@Persistent
 	private String route53ZoneID;
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.octahedron.straight.modules.admin.data.ApplicationConfigurationView#getRoute53AccessKeyID
-	 * ()
+	/**
+	 * @return the route53AccessKeyID
 	 */
 	public String getRoute53AccessKeyID() {
-		return this.route53AccessKeyID;
+		return route53AccessKeyID;
 	}
 
 	/**
-	 * @param route53AccessKeyID
-	 *            the route53AccessKeyID to set
+	 * @param route53AccessKeyID the route53AccessKeyID to set
 	 */
 	public void setRoute53AccessKeyID(String route53AccessKeyID) {
 		this.route53AccessKeyID = route53AccessKeyID;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.octahedron.straight.modules.admin.data.ApplicationConfigurationView#getRoute53AccessKeySecret
-	 * ()
+	/**
+	 * @return the route53AccessKeySecret
 	 */
 	public String getRoute53AccessKeySecret() {
-		return this.route53AccessKeySecret;
+		return route53AccessKeySecret;
 	}
 
 	/**
-	 * @param route53AccessKeySecret
-	 *            the route53AccessKeySecret to set
+	 * @param route53AccessKeySecret the route53AccessKeySecret to set
 	 */
 	public void setRoute53AccessKeySecret(String route53AccessKeySecret) {
 		this.route53AccessKeySecret = route53AccessKeySecret;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.octahedron.straight.modules.admin.data.ApplicationConfigurationView#getRoute53ZoneID()
+	/**
+	 * @return the route53ZoneID
 	 */
 	public String getRoute53ZoneID() {
-		return this.route53ZoneID;
+		return route53ZoneID;
 	}
 
 	/**
-	 * @param route53ZoneId
-	 *            the route53ZoneId to set
+	 * @param route53ZoneID the route53ZoneID to set
 	 */
-	public void setRoute53ZoneID(String route53ZoneId) {
-		this.route53ZoneID = route53ZoneId;
+	public void setRoute53ZoneID(String route53ZoneID) {
+		this.route53ZoneID = route53ZoneID;
 	}
+
 
 }
