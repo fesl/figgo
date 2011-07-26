@@ -18,16 +18,18 @@
  */
 package br.octahedron.figgo.modules.authorization.manager;
 
-import java.util.Set;
-import java.util.logging.Logger;
 
 import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.figgo.modules.ApplicationDomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.ModuleSpec;
+import br.octahedron.figgo.modules.ApplicationDomainModuleSpec.ActionSpec;
+import br.octahedron.figgo.modules.ModuleSpec.Type;
 import br.octahedron.figgo.modules.admin.manager.DomainCreatedEvent;
+import br.octahedron.util.Log;
 
 /**
  * 
@@ -36,10 +38,10 @@ import br.octahedron.figgo.modules.admin.manager.DomainCreatedEvent;
 @InterestedEvent(events = { DomainCreatedEvent.class })
 public class CreateDomainAuthorizationSubscriber implements Subscriber {
 
-	private static final String USERS_ROLE_NAME = "usuários";
-	private static final String ADMINS_ROLE_NAME = "administradores";
+	private static final String USERS_ROLE_NAME = "USERS";
+	private static final String ADMINS_ROLE_NAME = "ADMINS";
 
-	private static final Logger logger = Logger.getLogger(CreateDomainAuthorizationSubscriber.class.getName());
+	private static final Log logger = new Log(CreateDomainAuthorizationSubscriber.class);
 
 	@Inject
 	private AuthorizationManager authorizationManager;
@@ -67,23 +69,28 @@ public class CreateDomainAuthorizationSubscriber implements Subscriber {
 		logger.info("Creating the default roles authorizations for domain: " + domainName + ". The domain admin is " + domainAdmin);
 
 		// create roles
-		logger.fine("Creating roles for domain " + domainName);
 		this.authorizationManager.createRole(domainName, USERS_ROLE_NAME);
 		this.authorizationManager.createRole(domainName, ADMINS_ROLE_NAME);
+
 		// add actions to roles
 		for (Module m : Module.values()) {
 			ModuleSpec moduleSpec = m.getModuleSpec();
-			if (moduleSpec.getModuleType() == Module.Type.DOMAIN || moduleSpec.getModuleType() == Module.Type.APPLICATION_DOMAIN) {
-				logger.fine("Adding actions for module " + m.name() + " for domain " + domainName);
-				Set<String> adminActions = moduleSpec.getModuleAdministrativeActions();
-				Set<String> userActions = moduleSpec.getModuleActions();
-				userActions.removeAll(adminActions);
-				this.authorizationManager.addActivitiesToRole(domainName, ADMINS_ROLE_NAME, adminActions);
-				this.authorizationManager.addActivitiesToRole(domainName, USERS_ROLE_NAME, userActions);
+			if (moduleSpec.getModuleType() == Type.DOMAIN || moduleSpec.getModuleType() == Type.APPLICATION_DOMAIN) {
+				logger.debug("Adding actions for module %s for domain %s", m.name(), domainName);
+				ApplicationDomainModuleSpec spec = (ApplicationDomainModuleSpec) moduleSpec;
+				for(ActionSpec action : spec.getModuleActions()) {
+					String name = action.getAction();
+					logger.debug("Module %s; Action %s", m.toString(), name);
+					this.authorizationManager.addActivitiesToRole(domainName, ADMINS_ROLE_NAME, name);
+					if (!action.isAdministrativeOnly()) {
+						this.authorizationManager.addActivitiesToRole(domainName, USERS_ROLE_NAME, name);
+					}
+				}
 			}
 		}
+		
 		// add admin user to admin role
-		logger.fine("Configuring the admin for domain " + domainName + ". Admin: " + domainAdmin);
+		logger.info("Configuring the admin for domain %s. Admin: %s", domainName, domainAdmin);
 		this.authorizationManager.addUsersToRole(domainName, ADMINS_ROLE_NAME, domainAdmin);
 		this.authorizationManager.addUsersToRole(domainName, USERS_ROLE_NAME, domainAdmin);
 	}

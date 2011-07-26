@@ -32,7 +32,6 @@ import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
  *
  */
 @AuthenticationRequired
-@AuthorizationRequired
 @NamespaceRequired
 public class ConfigurationController extends Controller {
 
@@ -48,7 +47,13 @@ public class ConfigurationController extends Controller {
 	public void setConfigurationManager(ConfigurationManager configurationManager) {
 		this.configurationManager = configurationManager;
 	}
+
+	public void getListDomain() {
+		out("domains", this.configurationManager.getDomainConfiguration());
+		success(LIST_TPL);
+	}
 	
+	@AuthorizationRequired
 	public void getEditDomain() {
 		DomainConfiguration domainConfiguration = this.configurationManager.getDomainConfiguration();
 		out("domain", domainConfiguration);
@@ -59,16 +64,13 @@ public class ConfigurationController extends Controller {
 		success(EDIT_TPL);
 	}
 	
+	@AuthorizationRequired
 	public void postUpdateDomain() {
 		this.configurationManager.updateDomainConfiguration(in("name"), in("url"), in("maillist"), in("description"));
 		redirect(BASE_URL);
 	}
 	
-	public void getListDomain() {
-		out("domains", this.configurationManager.getDomainConfiguration());
-		success(LIST_TPL);
-	}
-	
+	@AuthorizationRequired
 	public void getModuleDomain() {
 		out("domain", this.configurationManager.getDomainConfiguration());
 		out("name", in("module"));
@@ -76,35 +78,8 @@ public class ConfigurationController extends Controller {
 		success(MODULE_CONFIG_TPL);
 	}
 	
+	@AuthorizationRequired
 	public void postModuleDomain() {
 		
 	}
-	
-//	def post_module() {
-//		def errors = []
-//		params.each() { key, value -> 
-//			try {
-//				if (key.startsWith("__")) {
-//					configurationManager.setModuleProperty(Module.valueOf(params.module.toUpperCase()), key.substring(2), value)
-//				}
-//			} catch (IllegalArgumentException e) {
-//				errors.add(e.getMessage())
-//			}
-//		}
-//		if (errors.isEmpty()) {
-//			redirect '/'
-//		} else {
-//			request.errors = errors
-//			request.name = params.module
-//			request.module = configurationManager.getModuleConfiguration(Module.valueOf(params.module.toUpperCase()))
-//			render 'module/config.vm', request, response
-//		}
-//	}
-	
-//	def get_upload() {
-//		request.domain = configurationManager.getDomainConfiguration()
-//		request.upload_url = blobstore.createUploadUrl('/blob/domain/upload')
-//		render 'domain/upload.vm', request, response
-//	}
-//
 }

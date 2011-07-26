@@ -18,70 +18,32 @@
  */
 package br.octahedron.figgo.modules.authorization;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
-import br.octahedron.figgo.modules.Module;
+import br.octahedron.figgo.modules.ApplicationDomainModuleSpec;
 import br.octahedron.figgo.modules.ModuleSpec;
-import br.octahedron.figgo.modules.Module.Type;
 import br.octahedron.figgo.modules.authorization.manager.CreateDomainAuthorizationSubscriber;
-import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfiguration;
 
 /**
- * @author danilo
+ * The {@link ModuleSpec} for 
  * 
+ * @author Danilo Queiroz
  */
-public class AuthorizationSpec implements ModuleSpec {
+public class AuthorizationSpec implements ApplicationDomainModuleSpec {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleType()
-	 */
 	@Override
 	public Type getModuleType() {
-		return Module.Type.APPLICATION_DOMAIN;
+		return Type.APPLICATION_DOMAIN;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#hasDomainSpecificConfiguration()
-	 */
-	@Override
-	public boolean hasDomainSpecificConfiguration() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getDomainSpecificModuleConfiguration()
-	 */
-	@Override
-	public DomainSpecificModuleConfiguration getDomainSpecificModuleConfiguration() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#hasSubscribers()
-	 */
 	@Override
 	public boolean hasSubscribers() {
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getSubscribers()
-	 */
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
 		Set<Class<? extends Subscriber>> subscribers = new HashSet<Class<? extends Subscriber>>();
@@ -89,23 +51,11 @@ public class AuthorizationSpec implements ModuleSpec {
 		return subscribers;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleActions()
-	 */
-	@Override
-	public Set<String> getModuleActions() {
-		return Collections.emptySet();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleAdministrativeActions()
-	 */
-	@Override
-	public Set<String> getModuleAdministrativeActions() {
-		return Collections.emptySet();
+	public Set<ActionSpec> getModuleActions() {
+		Set<ActionSpec> actions = new TreeSet<ActionSpec>();
+		actions.add(new ActionSpec("ListRoles", true));
+		// TODO add more actions
+		
+		return actions;
 	}
 }

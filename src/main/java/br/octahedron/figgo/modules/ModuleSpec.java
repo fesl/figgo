@@ -18,12 +18,9 @@
  */
 package br.octahedron.figgo.modules;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Set;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
-import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfiguration;
 
 /**
  * It contains all module's information that is need by different parts of the system.
@@ -33,25 +30,37 @@ import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfig
  * @author Danilo Queiroz
  */
 public interface ModuleSpec {
+	
+	/**
+	 * Indicates the module Type
+	 */
+	public enum Type {
+		/**
+		 * Indicates that the module is an Application Module and has a global scope.
+		 * 
+		 * An application module is an internal module to the application and provides features
+		 * needed by the system. This kind of module can't be enabled/disabled.
+		 */
+		APPLICATION_GLOBAL,
+		/**
+		 * Indicates that the module is an Application Module and has domain scope.
+		 * 
+		 * An application module is an internal module to the application and provides features
+		 * needed by the system. This kind of module can't be enabled/disabled.
+		 */
+		APPLICATION_DOMAIN,
+		/**
+		 * Indicates that the module is a domain module, and provides functionalities specific for a
+		 * domain needs. This kind of module can be enable/disabled per domain.
+		 */
+		DOMAIN;
+	}
 
 	/**
 	 * @return The {@link Module.Type}
 	 */
-	public Module.Type getModuleType();
+	public Type getModuleType();
 
-	/**
-	 * @return <code>true</code> if this module has configurations parameter specific for each
-	 *         domain or <code>false</code> if not.
-	 */
-	public boolean hasDomainSpecificConfiguration();
-
-	/**
-	 * @return The {@link DomainSpecificModuleConfiguration} for this module, if, and only if, the
-	 *         {@link ModuleSpec#hasDomainSpecificConfiguration()} returns <code>true</code>. If the
-	 *         {@link ModuleSpec#hasDomainSpecificConfiguration()} returns <code>false</code> it
-	 *         returns null.
-	 */
-	public DomainSpecificModuleConfiguration getDomainSpecificModuleConfiguration();
 
 	/**
 	 * @return <code>true</code> if this module has any subscriber interested in any kind of event
@@ -65,20 +74,4 @@ public interface ModuleSpec {
 	 *         {@link ModuleSpec#hasSubscribers()} returns <code>false</code> it returns null.
 	 */
 	public Set<Class<? extends Subscriber>> getSubscribers();
-
-	/**
-	 * Suggestion: for implementation use {@link Arrays#asList(Object...)}
-	 * 
-	 * @return A {@link Collection} with all module's activities.
-	 */
-	public Set<String> getModuleActions();
-
-	/**
-	 * Suggestion: for implementation use {@link Arrays#asList(Object...)}
-	 * 
-	 * @return A sub-set of the all module activities {@link Collection}, with all activities that
-	 *         should require administrative privileges.
-	 */
-	public Set<String> getModuleAdministrativeActions();
-
 }

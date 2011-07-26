@@ -22,7 +22,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import br.octahedron.figgo.modules.Module;
-import br.octahedron.figgo.modules.Module.Type;
+import br.octahedron.figgo.modules.ModuleSpec.Type;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
 
 /**

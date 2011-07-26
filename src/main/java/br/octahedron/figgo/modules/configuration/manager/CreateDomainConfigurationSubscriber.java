@@ -25,6 +25,7 @@ import br.octahedron.cotopaxi.eventbus.NamespaceEvent;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.ModuleSpec;
+import br.octahedron.figgo.modules.ModuleSpec.Type;
 import br.octahedron.figgo.modules.admin.manager.DomainCreatedEvent;
 import br.octahedron.util.Log;
 
@@ -63,7 +64,7 @@ public class CreateDomainConfigurationSubscriber extends AbstractNamespaceSubscr
 		this.configurationManager.createDomainConfiguration(namespace);
 		for (Module m : Module.values()) {
 			ModuleSpec moduleSpec = m.getModuleSpec();
-			if (moduleSpec.getModuleType() == Module.Type.DOMAIN) {
+			if (moduleSpec.getModuleType() == Type.DOMAIN) {
 				log.debug("Configuring module %s for domain %s", m.name(), namespace);
 				this.configurationManager.enableModule(m);
 			}

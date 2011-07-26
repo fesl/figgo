@@ -18,16 +18,12 @@
  */
 package br.octahedron.figgo.modules.configuration;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
-import br.octahedron.figgo.modules.Module;
-import br.octahedron.figgo.modules.ModuleSpec;
-import br.octahedron.figgo.modules.Module.Type;
-import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfiguration;
+import br.octahedron.figgo.modules.ApplicationDomainModuleSpec;
 import br.octahedron.figgo.modules.configuration.manager.CreateDomainConfigurationSubscriber;
 import br.octahedron.figgo.modules.configuration.manager.DomainChangedSubscriber;
 import br.octahedron.figgo.modules.configuration.manager.DomainUploadSubscriber;
@@ -36,29 +32,12 @@ import br.octahedron.figgo.modules.configuration.manager.DomainUploadSubscriber;
  * @author vitoravelino
  * 
  */
-public class ConfigurationSpec implements ModuleSpec {
+public class ConfigurationSpec implements ApplicationDomainModuleSpec {
 
-	private static final String[] ACTIONS = { "INDEX", "DOMAIN_EDIT", "DOMAIN_UPLOAD" };
-	private static final String[] ADMIN_ACTIONS = { "DOMAIN_EDIT", "DOMAIN_UPLOAD" };
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleType()
-	 */
 	@Override
 	public Type getModuleType() {
-		return Module.Type.APPLICATION_DOMAIN;
-	}
-
-	@Override
-	public boolean hasDomainSpecificConfiguration() {
-		return false;
-	}
-
-	@Override
-	public DomainSpecificModuleConfiguration getDomainSpecificModuleConfiguration() {
-		return null;
+		return Type.APPLICATION_DOMAIN;
 	}
 
 	@Override
@@ -76,13 +55,15 @@ public class ConfigurationSpec implements ModuleSpec {
 	}
 
 	@Override
-	public Set<String> getModuleActions() {
-		return new LinkedHashSet<String>(Arrays.asList(ACTIONS));
+	public Set<ActionSpec> getModuleActions() {
+		Set<ActionSpec> actions = new TreeSet<ActionSpec>();
+		
+		actions.add(new ActionSpec("EditDomain", true));
+		actions.add(new ActionSpec("UpdateDomain", true));
+		actions.add(new ActionSpec("ModuleDomain", true));
+		
+		return actions;
 	}
 
-	@Override
-	public Set<String> getModuleAdministrativeActions() {
-		return new LinkedHashSet<String>(Arrays.asList(ADMIN_ACTIONS));
 
-	}
 }

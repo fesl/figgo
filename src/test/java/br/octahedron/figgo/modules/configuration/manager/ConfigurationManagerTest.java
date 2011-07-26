@@ -36,6 +36,7 @@ import org.junit.Test;
 
 import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
+import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
 import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
@@ -138,7 +139,7 @@ public class ConfigurationManagerTest {
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
 		expect(this.moduleDAO.exists(Module.BANK.name())).andReturn(false);
-		this.moduleDAO.save(Module.getModuleSpec(Module.BANK).getDomainSpecificModuleConfiguration());
+		this.moduleDAO.save(((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration());
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
 		// test
@@ -182,7 +183,7 @@ public class ConfigurationManagerTest {
 		Collection<DomainConfiguration> result = new LinkedList<DomainConfiguration>();
 		result.add(this.domain);
 		expect(this.domainDAO.getAll()).andReturn(result).anyTimes();
-		expect(this.moduleDAO.get("BANK")).andReturn(Module.getModuleSpec(Module.BANK).getDomainSpecificModuleConfiguration());
+		expect(this.moduleDAO.get("BANK")).andReturn(((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration());
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
 		try {
@@ -238,7 +239,7 @@ public class ConfigurationManagerTest {
 		this.domain.enableModule("BANK");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
-		DomainSpecificModuleConfiguration moduleConf = Module.getModuleSpec(Module.BANK).getDomainSpecificModuleConfiguration();
+		DomainSpecificModuleConfiguration moduleConf = ((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration();
 		this.moduleDAO.save(moduleConf);
 		expect(this.moduleDAO.get("BANK")).andReturn(moduleConf).anyTimes();
 
@@ -260,7 +261,7 @@ public class ConfigurationManagerTest {
 		this.domain.enableModule("BANK");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
-		DomainSpecificModuleConfiguration moduleConf = Module.getModuleSpec(Module.BANK).getDomainSpecificModuleConfiguration();
+		DomainSpecificModuleConfiguration moduleConf = ((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration();
 		expect(this.moduleDAO.get("BANK")).andReturn(moduleConf).anyTimes();
 
 		try {
@@ -280,7 +281,7 @@ public class ConfigurationManagerTest {
 		this.domain.enableModule("BANK");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
-		DomainSpecificModuleConfiguration moduleConf = Module.getModuleSpec(Module.BANK).getDomainSpecificModuleConfiguration();
+		DomainSpecificModuleConfiguration moduleConf = ((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration();
 		expect(this.moduleDAO.get("BANK")).andReturn(moduleConf).anyTimes();
 
 		// enable mock
@@ -303,7 +304,7 @@ public class ConfigurationManagerTest {
 		this.domain.enableModule("BANK");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
-		DomainSpecificModuleConfiguration moduleConf = Module.getModuleSpec(Module.BANK).getDomainSpecificModuleConfiguration();
+		DomainSpecificModuleConfiguration moduleConf = ((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration();
 		this.moduleDAO.save(moduleConf);
 		expect(this.moduleDAO.get("BANK")).andReturn(moduleConf).anyTimes();
 

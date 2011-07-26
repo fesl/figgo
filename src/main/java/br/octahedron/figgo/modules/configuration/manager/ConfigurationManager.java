@@ -26,7 +26,9 @@ import br.octahedron.cotopaxi.eventbus.EventBus;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
+import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
+import br.octahedron.figgo.modules.ModuleSpec.Type;
 import br.octahedron.figgo.modules.admin.manager.DomainChangedEvent;
 import br.octahedron.figgo.modules.configuration.ModulesInfoService;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
@@ -51,9 +53,10 @@ public class ConfigurationManager {
 	private EventBus eventBus;
 	private DomainConfigurationDAO domainDAO = new DomainConfigurationDAO();
 	private ModuleConfigurationDAO moduleDAO = new ModuleConfigurationDAO();
-	
+
 	/**
-	 * @param eventBus the eventBus to set
+	 * @param eventBus
+	 *            the eventBus to set
 	 */
 	public void setEventBus(EventBus eventBus) {
 		this.eventBus = eventBus;
@@ -77,13 +80,6 @@ public class ConfigurationManager {
 	 */
 	protected void setModuleConfigurationDAO(ModuleConfigurationDAO moduleDAO) {
 		this.moduleDAO = moduleDAO;
-	}
-
-	/**
-	 * @return The {@link DomainSpecificModuleConfigurationView} for the given module
-	 */
-	private DomainSpecificModuleConfiguration createModuleConfig(Module module) {
-		return module.getModuleSpec().getDomainSpecificModuleConfiguration();
 	}
 
 	/**
@@ -175,12 +171,15 @@ public class ConfigurationManager {
 	 * module is already enabled, nothing happens
 	 */
 	public void enableModule(Module module) {
-		DomainConfiguration config = this.getDomainConfiguration();
-		if (!config.isModuleEnabled(module.name())) {
-			config.enableModule(module.name());
-			// TODO testar este comportamento!
-			if (!this.moduleDAO.exists(module.name()) && module.getModuleSpec().hasDomainSpecificConfiguration()) {
-				this.moduleDAO.save(this.createModuleConfig(module));
+		if (module.getModuleSpec().getModuleType() == Type.DOMAIN) {
+			DomainModuleSpec spec = (DomainModuleSpec) module.getModuleSpec();
+			DomainConfiguration config = this.getDomainConfiguration();
+			if (!config.isModuleEnabled(module.name())) {
+				config.enableModule(module.name());
+				// TODO testar este comportamento!
+				if (!this.moduleDAO.exists(module.name()) && spec.hasDomainSpecificConfiguration()) {
+					this.moduleDAO.save(spec.getDomainSpecificModuleConfiguration());
+				}
 			}
 		}
 	}
@@ -211,12 +210,15 @@ public class ConfigurationManager {
 	 *         .
 	 */
 	public DomainSpecificModuleConfiguration getModuleConfiguration(Module module) {
-		DomainConfiguration domainConfig = this.getDomainConfiguration();
-		if (domainConfig.isModuleEnabled(module.name()) && module.getModuleSpec().hasDomainSpecificConfiguration()) {
-			return this.moduleDAO.get(module.name());
-		} else {
-			throw new DataDoesNotExistsException("The module " + module.name() + " isn't enabled.");
+		if (module.getModuleSpec().getModuleType() == Type.DOMAIN) {
+			DomainModuleSpec spec = (DomainModuleSpec) module.getModuleSpec();
+			DomainConfiguration domainConfig = this.getDomainConfiguration();
+			if (domainConfig.isModuleEnabled(module.name()) && spec.hasDomainSpecificConfiguration()) {
+				return this.moduleDAO.get(module.name());
+			} 
 		}
+		
+		throw new DataDoesNotExistsException("The module " + module.name() + " isn't enabled or isn't configurable.");
 	}
 
 	/**

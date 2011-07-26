@@ -18,70 +18,31 @@
  */
 package br.octahedron.figgo.modules.bank;
 
-import java.util.Arrays;
-import java.util.LinkedHashSet;
+import java.util.Collections;
 import java.util.Set;
+import java.util.TreeSet;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
+import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
-import br.octahedron.figgo.modules.ModuleSpec;
-import br.octahedron.figgo.modules.Module.Type;
 import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfiguration;
 import br.octahedron.figgo.modules.configuration.data.ModuleProperty;
 
 /**
  * @author Danilo Queiroz
  */
-public class BankSpec implements ModuleSpec {
+public class BankSpec implements DomainModuleSpec {
 
-	private static final String[] ACTIONS = { "BANK", "BANK_TRANSFER", "BANK_STATEMENT", "BANK_ADMIN", "BANK_BALLAST", "BANK_SHARE" };
-	private static final String[] ADMIN_ACTIONS = { "BANK_STATEMENT", "BANK_ADMIN", "BANK_BALLAST", "BANK_SHARE" };
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleType()
-	 */
 	@Override
 	public Type getModuleType() {
-		return Module.Type.DOMAIN;
+		return Type.DOMAIN;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleActions()
-	 */
-	@Override
-	public Set<String> getModuleActions() {
-		return new LinkedHashSet<String>(Arrays.asList(ACTIONS));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getModuleAdministrativeActions()
-	 */
-	@Override
-	public Set<String> getModuleAdministrativeActions() {
-		return new LinkedHashSet<String>(Arrays.asList(ADMIN_ACTIONS));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#hasDomainSpecificConfiguration()
-	 */
 	@Override
 	public boolean hasDomainSpecificConfiguration() {
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getDomainSpecificModuleConfiguration()
-	 */
 	@Override
 	public DomainSpecificModuleConfiguration getDomainSpecificModuleConfiguration() {
 		DomainSpecificModuleConfiguration bankConfig = new DomainSpecificModuleConfiguration(Module.BANK.name());
@@ -91,23 +52,28 @@ public class BankSpec implements ModuleSpec {
 		return bankConfig;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#hasSubscribers()
-	 */
 	@Override
 	public boolean hasSubscribers() {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.modules.ModuleSpec#getSubscribers()
-	 */
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
-		return null;
+		return Collections.emptySet();
+	}
+
+	@Override
+	public Set<ActionSpec> getModuleActions() {
+		Set<ActionSpec> actions = new TreeSet<ActionSpec>();
+		
+		actions.add(new ActionSpec("IndexBank"));
+		actions.add(new ActionSpec("TransferBank"));
+		actions.add(new ActionSpec("StatementBank"));
+		actions.add(new ActionSpec("TransactionsBank"));
+		actions.add(new ActionSpec("AdminBank", true));
+		actions.add(new ActionSpec("ShareBank", true));
+		actions.add(new ActionSpec("BallastBank", true));
+		
+		return actions;
 	}
 }

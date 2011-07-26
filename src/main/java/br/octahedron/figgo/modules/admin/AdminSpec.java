@@ -16,20 +16,19 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.user;
+package br.octahedron.figgo.modules.admin;
 
+import java.util.Collections;
 import java.util.Set;
-import java.util.TreeSet;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.ModuleSpec;
-import br.octahedron.figgo.modules.user.manager.UsersUploadSubscriber;
 
 /**
- * @author Vítor Avelino vitoravelino@octahedron.com.br
- * @author Danilo Queiroz daniloqueiroz@octahedron.com.br
+ * @author Danilo Queiroz
+ *
  */
-public class UserSpec implements ModuleSpec {
+public class AdminSpec implements ModuleSpec {
 
 	@Override
 	public Type getModuleType() {
@@ -38,13 +37,11 @@ public class UserSpec implements ModuleSpec {
 
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
-		Set<Class<? extends Subscriber>> subscribers = new TreeSet<Class<? extends Subscriber>>();
-		subscribers.add(UsersUploadSubscriber.class);
-		return subscribers;
+		return Collections.emptySet();
 	}
 
 	@Override
 	public boolean hasSubscribers() {
-		return true;
+		return false;
 	}
 }

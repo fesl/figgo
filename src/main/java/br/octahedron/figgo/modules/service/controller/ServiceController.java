@@ -21,6 +21,7 @@ package br.octahedron.figgo.modules.service.controller;
 import java.math.BigDecimal;
 
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
+import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
@@ -56,22 +57,26 @@ public class ServiceController extends Controller {
 		this.servicesManager = serviceManager;
 	}
 	
+	@AuthorizationRequired
 	public void getListServices() {
 		out("myServices", this.servicesManager.getUserServices(currentUser()));
 		out("services", this.servicesManager.getServices());
 		success(LIST_SERVICE_TPL);
 	}
 	
+	@AuthorizationRequired
 	public void getShowService() {
 		out("service", this.servicesManager.getService(in("name")));
 		success(SHOW_SERVICE_TPL);
 	}
 	
+	@AuthorizationRequired
 	public void getNewService() {
 		success(NEW_SERVICE_TPL);
 	}
 	
-	public void postCreateService() {
+	@AuthorizationRequired
+	public void postNewService() {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		Validator valueValidator = ServiceValidators.getValueValidator();
 		if (inexistentValidator.isValid() && valueValidator.isValid()) {
@@ -86,6 +91,7 @@ public class ServiceController extends Controller {
 		}
 	}
 	
+	@AuthorizationRequired
 	public void getEditService() {
 		Service service = this.servicesManager.getService(in("name"));
 		out("name", service.getName());
@@ -95,7 +101,8 @@ public class ServiceController extends Controller {
 		success(EDIT_SERVICE_TPL);
 	}
 	
-	public void postUpdateService() {
+	@AuthorizationRequired
+	public void postEditService() {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		Validator valueValidator = ServiceValidators.getValueValidator();
 		if (inexistentValidator.isValid() && valueValidator.isValid()) {
@@ -110,6 +117,7 @@ public class ServiceController extends Controller {
 		}
 	}
 	
+	@AuthorizationRequired
 	public void postAddProvider() {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		if (inexistentValidator.isValid()) {
@@ -120,6 +128,7 @@ public class ServiceController extends Controller {
 		}
 	}
 	
+	@AuthorizationRequired
 	public void postRemoveProvider() {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		if (inexistentValidator.isValid()) {
@@ -130,7 +139,7 @@ public class ServiceController extends Controller {
 		}
 	}
 	
-	// authorized only for services domain admin
+	@AuthorizationRequired
 	public void postRemoveService() {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		if (inexistentValidator.isValid()) {
@@ -182,5 +191,4 @@ public class ServiceController extends Controller {
 			jsonInvalid();
 		}
 	}
-	
 }

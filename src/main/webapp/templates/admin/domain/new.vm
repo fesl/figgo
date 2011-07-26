@@ -11,7 +11,7 @@
 		<div id="content">
 			<div id="single-column">
 				<p>Preencha o formulário abaixo:</p>
-        		<form action="/domain/new" method="post">
+        		<form action="/admin/domain/new" method="post">
                 	<label for="name">
                 		Domínio: <input type="text" name="name" value="$!{name}" /> .figgo.com.br
 						#if ( $invalid.name )

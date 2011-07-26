@@ -16,35 +16,46 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.user;
+package br.octahedron.figgo.modules;
 
+import java.util.Collection;
 import java.util.Set;
-import java.util.TreeSet;
-
-import br.octahedron.cotopaxi.eventbus.Subscriber;
-import br.octahedron.figgo.modules.ModuleSpec;
-import br.octahedron.figgo.modules.user.manager.UsersUploadSubscriber;
 
 /**
- * @author Vítor Avelino vitoravelino@octahedron.com.br
- * @author Danilo Queiroz daniloqueiroz@octahedron.com.br
+ * @author Danilo Queiroz
+ *
  */
-public class UserSpec implements ModuleSpec {
+public interface ApplicationDomainModuleSpec extends ModuleSpec {
+	
+	/** 
+	 * @return A {@link Collection} with all module's activities.
+	 */
+	public Set<ActionSpec> getModuleActions();
 
-	@Override
-	public Type getModuleType() {
-		return Type.APPLICATION_GLOBAL;
+	/**
+	 *	The module actions specification
+	 */
+	public static class ActionSpec {
+		
+		private String action;
+		private boolean admin;
+		
+		public ActionSpec(String action) {
+			this(action, false);
+		}
+
+		public ActionSpec(String action, boolean isAdministrative) {
+			this.action = action;
+			this.admin = isAdministrative;
+		}
+		
+		public String getAction() {
+			return this.action;
+		}
+		
+		public boolean isAdministrativeOnly() {
+			return this.admin;
+		}
 	}
 
-	@Override
-	public Set<Class<? extends Subscriber>> getSubscribers() {
-		Set<Class<? extends Subscriber>> subscribers = new TreeSet<Class<? extends Subscriber>>();
-		subscribers.add(UsersUploadSubscriber.class);
-		return subscribers;
-	}
-
-	@Override
-	public boolean hasSubscribers() {
-		return true;
-	}
 }

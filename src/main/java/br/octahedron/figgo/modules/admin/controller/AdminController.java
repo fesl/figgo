@@ -63,7 +63,7 @@ public class AdminController extends Controller {
 		redirect(NEW_DOMAIN_URL);
 	}
 	
-	public void getNewDomain() {
+	public void getCreateDomain() {
 		success(NEW_DOMAIN_TPL);
 	}
 	
