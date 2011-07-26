@@ -55,7 +55,7 @@ public class AuthorizationController extends Controller {
 	}
 	
 	public void getListUsers() {
-		// out("users", this.authorizationManager.getRoles(subDomain()));
+		// out("users", this.authorizationManager.getUsersFromDomain(subDomain()));
 		// out("pending", this.authorizationManager.getRoles(subDomain()));
 		success(LIST_USER_TPL);
 	}
@@ -65,8 +65,6 @@ public class AuthorizationController extends Controller {
 		out("roles", this.authorizationManager.getRoles(subDomain()));
 		success(EDIT_USER_ROLES);
 	}
-	
-	private static final Log log = new Log(AuthorizationController.class);
 	
 	public void postAddUserRole() {
 		this.authorizationManager.addUsersToRole(subDomain(), in("role"), in("user"));
@@ -79,7 +77,7 @@ public class AuthorizationController extends Controller {
 	}
 	
 	public void postRemoveUserRoles() {
-		// this.authorizationManager.removeUserFromRoles(subDomain(), in("user"));
+		this.authorizationManager.removeUserFromRoles(subDomain(), in("user"));
 		jsonSuccess();
 	}
 	
