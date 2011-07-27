@@ -20,7 +20,6 @@ package br.octahedron.figgo.modules.configuration;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.ApplicationDomainModuleSpec;
@@ -56,7 +55,7 @@ public class ConfigurationSpec implements ApplicationDomainModuleSpec {
 
 	@Override
 	public Set<ActionSpec> getModuleActions() {
-		Set<ActionSpec> actions = new TreeSet<ActionSpec>();
+		Set<ActionSpec> actions = new HashSet<ActionSpec>();
 		
 		actions.add(new ActionSpec("EditDomain", true));
 		actions.add(new ActionSpec("UpdateDomain", true));

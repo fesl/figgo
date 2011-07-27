@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules.authorization.manager;
 
-
+import br.octahedron.cotopaxi.datastore.jdo.PersistenceManagerPool;
 import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
@@ -78,7 +78,7 @@ public class CreateDomainAuthorizationSubscriber implements Subscriber {
 			if (moduleSpec.getModuleType() == Type.DOMAIN || moduleSpec.getModuleType() == Type.APPLICATION_DOMAIN) {
 				logger.debug("Adding actions for module %s for domain %s", m.name(), domainName);
 				ApplicationDomainModuleSpec spec = (ApplicationDomainModuleSpec) moduleSpec;
-				for(ActionSpec action : spec.getModuleActions()) {
+				for (ActionSpec action : spec.getModuleActions()) {
 					String name = action.getAction();
 					logger.debug("Module %s; Action %s", m.toString(), name);
 					this.authorizationManager.addActivitiesToRole(domainName, ADMINS_ROLE_NAME, name);
@@ -88,10 +88,12 @@ public class CreateDomainAuthorizationSubscriber implements Subscriber {
 				}
 			}
 		}
-		
+
 		// add admin user to admin role
 		logger.info("Configuring the admin for domain %s. Admin: %s", domainName, domainAdmin);
 		this.authorizationManager.addUsersToRole(domainName, ADMINS_ROLE_NAME, domainAdmin);
 		this.authorizationManager.addUsersToRole(domainName, USERS_ROLE_NAME, domainAdmin);
+
+		PersistenceManagerPool.forceClose();
 	}
 }

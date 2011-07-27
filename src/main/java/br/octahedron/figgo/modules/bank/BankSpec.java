@@ -19,8 +19,8 @@
 package br.octahedron.figgo.modules.bank;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.DomainModuleSpec;
@@ -64,7 +64,7 @@ public class BankSpec implements DomainModuleSpec {
 
 	@Override
 	public Set<ActionSpec> getModuleActions() {
-		Set<ActionSpec> actions = new TreeSet<ActionSpec>();
+		Set<ActionSpec> actions = new HashSet<ActionSpec>();
 		
 		actions.add(new ActionSpec("IndexBank"));
 		actions.add(new ActionSpec("TransferBank"));

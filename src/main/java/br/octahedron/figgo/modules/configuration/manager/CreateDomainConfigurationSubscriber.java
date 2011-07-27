@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.configuration.manager;
 
+import br.octahedron.cotopaxi.datastore.jdo.PersistenceManagerPool;
 import br.octahedron.cotopaxi.eventbus.AbstractNamespaceSubscriber;
 import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
@@ -69,5 +70,6 @@ public class CreateDomainConfigurationSubscriber extends AbstractNamespaceSubscr
 				this.configurationManager.enableModule(m);
 			}
 		}
+		PersistenceManagerPool.forceClose();
 	}
 }

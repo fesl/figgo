@@ -20,7 +20,6 @@ package br.octahedron.figgo.modules.authorization;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.ApplicationDomainModuleSpec;
@@ -52,7 +51,7 @@ public class AuthorizationSpec implements ApplicationDomainModuleSpec {
 	}
 
 	public Set<ActionSpec> getModuleActions() {
-		Set<ActionSpec> actions = new TreeSet<ActionSpec>();
+		Set<ActionSpec> actions = new HashSet<ActionSpec>();
 		actions.add(new ActionSpec("ListRoles", true));
 		// TODO add more actions
 		

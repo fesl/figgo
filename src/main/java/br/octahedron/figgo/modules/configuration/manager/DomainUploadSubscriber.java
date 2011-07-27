@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.configuration.manager;
 
+import br.octahedron.cotopaxi.datastore.jdo.PersistenceManagerPool;
 import br.octahedron.cotopaxi.eventbus.AbstractNamespaceSubscriber;
 import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
@@ -55,6 +56,7 @@ public class DomainUploadSubscriber extends AbstractNamespaceSubscriber {
 	public void processEvent(Event event) {
 		DomainUploadEvent uploadEvent = (DomainUploadEvent) event;
 		this.configurationManager.updateAvatarKey(uploadEvent.getBlobKey());
+		PersistenceManagerPool.forceClose();
 	}
 
 }
