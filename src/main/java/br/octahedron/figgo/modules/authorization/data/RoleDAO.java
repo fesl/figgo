@@ -42,6 +42,13 @@ public class RoleDAO extends GenericDAO<Role> {
 		query.setFilter("users == :username");
 		return (List<Role>) query.execute(username);
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Role> getAll(String domain) {
+		Query query = this.datastoreFacade.createQueryForClass(Role.class);
+		query.setFilter("domain == :domain");
+		return (List<Role>) query.execute(domain);
+	}
 
 	/**
 	 * @return <code>true</code> if exists at least one role that match the given domain, user and
