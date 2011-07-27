@@ -1,0 +1,41 @@
+#set( $title = "Figgo - Nova permissões" )
+#parse( "templates/layout_intern.vm" )
+
+#header()
+
+#@body()
+	<div id="main" class="center">
+		<header>
+    		<h1>Nova permissão</h1>
+		</header>
+		<div id="content">
+			<div id="single-column" class="domain">
+                <section id="roles">
+					<form action="/roles/new" method="post" accept-charset="utf-8">
+    					<table class="simple">
+                    		<thead>
+                        		<tr>
+                        			<th colspan="2">Atividade</th>
+    								<th><input type="text" name="name" value="$!{$role.name}"/></th>
+                        		</tr>
+                            </thead>
+                    		<tbody>
+    							#foreach( $activity in $activities )
+                        		<tr>
+    								<td>$activity</td>
+									<td><input type="checkbox" name="activities" value="$activity" /></td>
+                        		</tr>
+    							#end
+                            </tbody>
+                        </table>
+						<input type="submit" value="Criar" />
+					</form>
+                </section>
+            </div>
+		</div>
+	</div>
+#end
+
+#@scripts()
+	<script type="text/javascript" src="/js/libs/jquery.uitablefilter.js"></script>
+#end

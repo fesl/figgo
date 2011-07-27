@@ -22,11 +22,14 @@ import static br.octahedron.figgo.modules.authorization.data.Role.createRoleKey;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
+import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.authorization.data.Role;
 import br.octahedron.figgo.modules.authorization.data.RoleDAO;
 import br.octahedron.figgo.modules.authorization.data.RoleView;
@@ -43,7 +46,7 @@ public class AuthorizationManager {
 
 	private GoogleAuthorizer googleAuthorizer = new GoogleAuthorizer();
 	private RoleDAO roleDAO = new RoleDAO();
-
+	
 	/**
 	 * @param roleDAO
 	 *            the roleDAO to set
@@ -66,14 +69,9 @@ public class AuthorizationManager {
 	 * @throws DataAlreadyExistsException
 	 *             if the role already exists
 	 */
-	public RoleView createRole(String domainName, String roleName) {
-		if (!this.existsRole(domainName, roleName)) {
-			Role role = new Role(domainName, roleName);
-			this.roleDAO.save(role);
-			return role;
-		} else {
-			throw new DataAlreadyExistsException("Already exists role " + roleName + " at domain " + domainName);
-		}
+	public RoleView createRole(String domain, String roleName) {
+		List<String> emtpyList = Collections.emptyList();
+		return this.createRole(domain, roleName, emtpyList);
 	}
 
 	/**
@@ -96,7 +94,7 @@ public class AuthorizationManager {
 	 * @throws DataDoesNotExistsException
 	 *             if theres no such role
 	 */
-	public RoleView getRole(String domainName, String roleName) {
+	public Role getRole(String domainName, String roleName) {
 		if (this.existsRole(domainName, roleName)) {
 			return this.roleDAO.get(createRoleKey(domainName, roleName));
 		} else {
@@ -160,8 +158,8 @@ public class AuthorizationManager {
 	/**
 	 * @return All roles from a specific domain
 	 */
-	public Collection<Role> getRoles(String subdomain) {
-		return this.roleDAO.getAll();
+	public Collection<Role> getRoles(String domain) {
+		return this.roleDAO.getAll(domain);
 	}
 
 	/**
@@ -173,12 +171,55 @@ public class AuthorizationManager {
 	}
 
 	/**
-	 * @param subDomain
-	 * @param in
+	 * @param domain
+	 * @param username
 	 */
-	public void removeUserFromRoles(String subDomain, String username) {
+	public void removeUserFromRoles(String domain, String username) {
 		for (Role role : this.getUserRoles(username)) {
-			role.removeUser(username);
+			if (role.getDomain().equals(domain)) {
+				role.removeUser(username);
+			}
 		}
 	}
+
+	/**
+	 * @return
+	 */
+	public Collection<String> getAcitivities() {
+		// TODO cache?
+		List<String> activities = new LinkedList<String>();
+		for (Module module : Module.values()) {
+			if (module.getModuleSpec().getModuleType() == Module.Type.DOMAIN) {
+				activities.addAll(module.getModuleSpec().getModuleActions());
+			}
+		}
+		return activities;
+	}
+
+	/**
+	 * @param domain
+	 * @param roleName
+	 * @param activities
+	 */
+	public Role createRole(String domain, String roleName, List<String> activities) {
+		if (!this.existsRole(domain, roleName)) {
+			Role role = new Role(domain, roleName);
+			role.addActivities(activities);
+			this.roleDAO.save(role);
+			return role;
+		} else {
+			throw new DataAlreadyExistsException("Already exists role " + roleName + " at domain " + domain);
+		}
+	}
+	
+	/**
+	 * @param domain
+	 * @param roleName
+	 * @param activities
+	 */
+	public void updateRoleActivities(String domain, String roleName, List<String> activities) {
+		Role role = this.getRole(domain, roleName);
+		role.updateActivities(activities);
+	}
+	
 }

@@ -1,0 +1,60 @@
+#set( $title = "Figgo - Usuários do domínio" )
+#parse( "templates/layout_intern.vm" )
+
+#header()
+
+#@body()
+	<div id="main" class="center">
+		<header>
+    		<h1>Usuários no domínio</h1>
+		</header>
+		<div id="content">
+			<div id="single-column" class="domain">
+                <section id="users">
+					<table class="simple">
+                		<thead>
+                    		<tr>
+                    			<th>Nome</th>
+								<th>Email</th>
+								<th>Perfis</th>
+                    		</tr>
+                        </thead>
+                		<tbody>
+                        #foreach( $user in $users )
+                    		<tr>
+								<td>$user.Name</td>
+								<td>$user.UserId</td>
+								<td>$user.Roles</td>
+                    		</tr>
+						#end
+                        </tbody>
+                    </table>
+                </section>
+				<section id="pending">
+					<table class="simple">
+                		<thead>
+                    		<tr>
+                    			<th>Nome</th>
+								<th>Email</th>
+								<th></th>
+                    		</tr>
+                        </thead>
+                		<tbody>
+                        #foreach( $user in $pending )
+                    		<tr>
+								<td>$user.Name</td>
+								<td>$user.UserId</td>
+                                <td><button>aceitar</button></td>
+                    		</tr>
+						#end
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+		</div>
+	</div>
+#end
+
+#@scripts()
+	<script type="text/javascript" src="/js/libs/jquery.uitablefilter.js"></script>
+#end
