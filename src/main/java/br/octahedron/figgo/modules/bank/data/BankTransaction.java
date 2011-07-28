@@ -37,7 +37,7 @@ public class BankTransaction implements Serializable {
 	private static final long serialVersionUID = -7989889136597879006L;
 
 	public enum TransactionType {
-		TRANSFER, PAYMENT, FINE, DEPOSIT
+		TRANSFER, PAYMENT, FINE, DEPOSIT, BALLAST
 	};
 
 	@PrimaryKey

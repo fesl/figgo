@@ -57,16 +57,6 @@ public class AccountManager {
 	}
 
 	/**
-	 * @param ownerId
-	 * @return
-	 */
-	public BankAccount createAccount(String ownerId) {
-		BankAccount account = new BankAccount(ownerId);
-		this.accountDAO.save(account);
-		return account;
-	}
-
-	/**
 	 * Get the N last transactions for an account.
 	 * 
 	 * @return A {@link Collection} with the last n transactions. If there's no transactions for the
@@ -77,44 +67,35 @@ public class AccountManager {
 	}
 
 	/**
-	 * TODO!
-	 * 
-	 * @param domainAccount
-	 * @param amount
-	 * @param comment
+	 * Transfers a amount from the system account to a given domain account
 	 */
 	public void insertBallast(String domainAccount, BigDecimal amount, String comment) {
-		this.transact(SystemAccount.ID, domainAccount, amount, comment, TransactionType.TRANSFER);
+		this.transact(SystemAccount.ID, domainAccount, amount, comment, TransactionType.BALLAST);
 	}
 
+	/**
+	 * Gets a account's balance 
+	 */
 	public BigDecimal getBalance(String accountId) {
-		try {
-			return this.getBalance(this.getValidAccount(accountId));
-		} catch (InexistentBankAccountException e) {
-			return this.getBalance(this.createAccount(accountId));
-		}
+		return this.getBalance(this.getValidAccount(accountId));
 	}
-	
-	protected BigDecimal getBalance(BankAccount account) {
-		account.setTransactionInfoService(this.transactionDAO);
-		return account.getBalance();
-	}
-	
+
+	/**
+	 * Get all {@link BankAccount}'s transactions for a given date range. 
+	 */
 	public Collection<BankTransaction> getTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
 		return this.transactionDAO.getTransactionsByDateRange(accountId, startDate, endDate);
 	}
-	
+
 	/**
-	 * @param accountOrig
-	 * @param accountDest
-	 * @param value
-	 * @param comment
-	 * @param type
+	 * Makes a transfer between to accounts.
 	 */
 	public void transact(String accountOrigId, String accountDestId, BigDecimal value, String comment, TransactionType type) {
 		BankTransaction transaction = this.createTransaction(accountOrigId, accountDestId, value, comment, type);
 		BankAccount accountOrig = this.getValidAccount(accountOrigId);
-		this.getValidAccount(accountDestId); // just to check validation of destination
+		// don't need to store the destination account. The method is called only to ensure that the
+		// destination account exists (or will be created) and is valid
+		this.getValidAccount(accountDestId);
 
 		if (this.hasSufficientBalance(accountOrig, value)) {
 			this.transactionDAO.save(transaction);
@@ -124,24 +105,47 @@ public class AccountManager {
 		}
 	}
 
-	private BankTransaction createTransaction(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
-		return new BankTransaction(accountOrig, accountDest, value, type, comment);
+	/**
+	 * Gets the ball
+	 */
+	protected BigDecimal getBalance(BankAccount account) {
+		account.setTransactionInfoService(this.transactionDAO);
+		return account.getBalance();
 	}
 
+	/**
+	 * Checks if the given account funds' is greater than a given value.
+	 */
 	protected boolean hasSufficientBalance(BankAccount account, BigDecimal value) {
 		return this.getBalance(account).compareTo(value) >= 0;
 	}
 
+	/**
+	 * Gets a valid account. If there's no {@link BankAccount} for thr given account id, it creates
+	 * the account.
+	 */
 	protected BankAccount getValidAccount(String accountId) {
 		BankAccount account = this.accountDAO.get(accountId);
 		if (account == null) {
-			logger.info("Does not exist an account associated to '" + accountId + "' id on bank");
-			throw new InexistentBankAccountException("Does not exist an account associated to '" + accountId + "' id on bank");
+			this.createAccount(accountId);
+			return this.getValidAccount(accountId);
 		} else if (!account.isEnabled()) {
 			logger.info("'" + accountId + "' account is disabled.");
 			throw new DisabledBankAccountException("'" + accountId + "' account is disabled.");
 		} else {
 			return account;
 		}
+	}
+
+	/**
+	 * Creates a bank account
+	 */
+	private void createAccount(String ownerId) {
+		BankAccount account = new BankAccount(ownerId);
+		this.accountDAO.save(account);
+	}
+
+	private BankTransaction createTransaction(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
+		return new BankTransaction(accountOrig, accountDest, value, type, comment);
 	}
 }

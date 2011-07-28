@@ -31,6 +31,9 @@ public class BankValidators {
 	private static Validator valueValidator;
 	private static Validator requiredValidator;
 	
+	/**
+	 * A validator for transfers that checks the required fields
+	 */
 	public static synchronized Validator getRequiredValidator() {
 		if (requiredValidator == null) {
 			requiredValidator = new Validator();
@@ -41,6 +44,9 @@ public class BankValidators {
 		return requiredValidator;
 	}
 	
+	/**
+	 * A validator that check if the destination account exists and has authorization at the specified domain
+	 */
 	public static synchronized Validator getDestinationValidator() {
 		if (destinationValidator == null) {
 			destinationValidator = new Validator();
@@ -49,6 +55,9 @@ public class BankValidators {
 		return destinationValidator;
 	}
 	
+	/**
+	 * A validator that check if the transfer's amount is positive 
+	 */
 	public static synchronized Validator getAmountValidator() {
 		if (valueValidator == null) {
 			valueValidator = new Validator();

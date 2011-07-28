@@ -39,10 +39,6 @@ import br.octahedron.figgo.modules.bank.data.BankAccountDAO;
 import br.octahedron.figgo.modules.bank.data.BankTransaction;
 import br.octahedron.figgo.modules.bank.data.BankTransactionDAO;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
-import br.octahedron.figgo.modules.bank.manager.AccountManager;
-import br.octahedron.figgo.modules.bank.manager.DisabledBankAccountException;
-import br.octahedron.figgo.modules.bank.manager.InexistentBankAccountException;
-import br.octahedron.figgo.modules.bank.manager.InsufficientBalanceException;
 
 /**
  * @author Vítor Avelino
@@ -96,19 +92,60 @@ public class AccountManagerTest {
 		}
 	}
 
-	@Test(expected = InexistentBankAccountException.class)
-	public void getValidAccountNull() {
+	@Test
+	public void getCreateValidAccount() {
 		String origin = "Conta1";
-		BankAccount account = createMock(BankAccount.class);
+		BankAccount account = new BankAccount(origin);
+		expect(this.accountDAO.get(origin)).andReturn(null);
+		this.accountDAO.save(account);
+		expect(this.accountDAO.get(origin)).andReturn(account);
+		replay(this.accountDAO);
 
-		try {
-			expect(this.accountDAO.get(origin)).andReturn(null);
-			replay(this.accountDAO, account);
+		this.accountManager.getValidAccount(origin);
+		verify(this.accountDAO);
+	}
+	
+	@Test
+	public void transactInixestentAccount1() {
+		String origin = "Conta1";
+		String dest = "Conta2";
+		BankAccount originAccount = createMock(BankAccount.class);
+		BankAccount destAccount = new BankAccount(dest);
+		expect(this.accountDAO.get(origin)).andReturn(originAccount);
+		expect(originAccount.isEnabled()).andReturn(true).anyTimes();
+		
+		expect(this.accountDAO.get(dest)).andReturn(null);
+		this.accountDAO.save(destAccount);
+		expect(this.accountDAO.get(dest)).andReturn(destAccount);
+		
+		originAccount.setTransactionInfoService(this.transactionDAO);
+		expect(originAccount.getBalance()).andReturn(new BigDecimal("15"));
+		
+		replay(this.accountDAO, originAccount);
 
-			this.accountManager.getValidAccount(origin);
-		} finally {
-			verify(this.accountDAO, account);
-		}
+		this.accountManager.transact(origin, dest, new BigDecimal("10"), "", TransactionType.TRANSFER);
+		verify(this.accountDAO, originAccount);
+	}
+	
+	@Test(expected=InsufficientBalanceException.class)
+	public void transactInixestentAccount2() {
+		String origin = "Conta1";
+		String dest = "Conta2";
+		BankAccount originAccount = new BankAccount(origin);
+		BankAccount destAccount = new BankAccount(dest);
+		
+		expect(this.accountDAO.get(origin)).andReturn(null);
+		this.accountDAO.save(originAccount);
+		expect(this.accountDAO.get(origin)).andReturn(originAccount);
+		
+		expect(this.accountDAO.get(dest)).andReturn(destAccount);
+		
+		expect(this.transactionDAO.getLastTransactions(origin, null)).andReturn(new LinkedList<BankTransaction>());
+		
+		replay(this.accountDAO, this.transactionDAO);
+
+		this.accountManager.transact(origin, dest, new BigDecimal("10"), "", TransactionType.TRANSFER);
+		verify(this.accountDAO, originAccount);
 	}
 
 	@Test

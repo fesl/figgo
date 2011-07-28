@@ -20,8 +20,10 @@ package br.octahedron.figgo.modules.bank.controller.validation;
 
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.cotopaxi.inject.Injector;
 import br.octahedron.cotopaxi.inject.SelfInjectable;
 import br.octahedron.cotopaxi.validation.ValidationRule;
+import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.figgo.modules.user.manager.UserManager;
 
 /**
@@ -33,7 +35,13 @@ public class DestinationRule extends SelfInjectable implements ValidationRule {
 	@Inject
 	private UserManager userManager;
 	@Inject
+	private AuthorizationManager authorizationManager;
+	@Inject
 	private NamespaceManager namespaceManager;
+	
+	public void setAuthorizationManager(AuthorizationManager authorizationManager) {
+		this.authorizationManager = authorizationManager;
+	}
 	
 	public void setNamespaceManager(NamespaceManager namespaceManager) {
 		this.namespaceManager = namespaceManager;
@@ -51,6 +59,8 @@ public class DestinationRule extends SelfInjectable implements ValidationRule {
 		try {
 			namespaceManager.changeToGlobalNamespace();
 			return userManager.existsUser(input);
+			// TODO check if the user has authorization at the domain
+			//&& this.authorizationManager.getUserDomains(input).contains(subdomain);
 		} finally {
 			namespaceManager.changeToPreviousNamespace();
 		}

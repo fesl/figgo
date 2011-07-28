@@ -41,8 +41,6 @@ public class BankAccount implements Serializable {
 	@Persistent
 	private String ownerId;
 	@Persistent
-	private String password;
-	@Persistent
 	private boolean enabled;
 	@Persistent
 	private BigDecimal value;
@@ -50,7 +48,8 @@ public class BankAccount implements Serializable {
 	private Long lastTransactionId;
 	@NotPersistent
 	private transient TransactionInfoService transactionInfoService;
-
+	
+	
 	public BankAccount(String ownerId) {
 		this.ownerId = ownerId;
 		this.value = new BigDecimal(0);
@@ -60,21 +59,6 @@ public class BankAccount implements Serializable {
 
 	public void setTransactionInfoService(TransactionInfoService tInfoService) {
 		this.transactionInfoService = tInfoService;
-	}
-
-	/**
-	 * @return the password
-	 */
-	public String getPassword() {
-		return this.password;
-	}
-
-	/**
-	 * @param password
-	 *            the password to set
-	 */
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	/**
@@ -129,5 +113,20 @@ public class BankAccount implements Serializable {
 		}
 
 		return this.value;
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.ownerId.hashCode();
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof BankAccount) {
+			BankAccount other = (BankAccount) obj;
+			return this.ownerId.equals(other.ownerId);
+		} else {
+			return false;
+		}
 	}
 }

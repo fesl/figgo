@@ -23,8 +23,9 @@ import java.math.BigDecimal;
 import br.octahedron.cotopaxi.validation.ValidationRule;
 
 /**
+ * TODO create a generic validator
+ * 
  * @author vitoravelino
- *
  */
 public class AmountRule implements ValidationRule {
 
