@@ -18,8 +18,6 @@
  */
 package br.octahedron.figgo.modules.authorization.controller;
 
-import java.util.Arrays;
-
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
@@ -90,7 +88,7 @@ public class AuthorizationController extends Controller {
 	}
 	
 	public void postNewRole() {
-		this.authorizationManager.createRole(subDomain(), in("name"), Arrays.asList(request().getParameterValues("activities")));
+		this.authorizationManager.createRole(subDomain(), in("name"), values("activities"));
 		redirect(BASE_URL);
 	}
 	
@@ -101,7 +99,7 @@ public class AuthorizationController extends Controller {
 	}
 	
 	public void postEditRole() {
-		this.authorizationManager.updateRoleActivities(subDomain(), in("role"), Arrays.asList(request().getParameterValues("activities")));
+		this.authorizationManager.updateRoleActivities(subDomain(), in("role"), values("activities"));
 		redirect(BASE_URL);
 	}
 	

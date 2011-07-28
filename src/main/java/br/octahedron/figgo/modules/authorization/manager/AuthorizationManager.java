@@ -209,7 +209,7 @@ public class AuthorizationManager {
 	 * @param roleName
 	 * @param activities
 	 */
-	public void createRole(String domain, String roleName, List<String> activities) {
+	public void createRole(String domain, String roleName, Collection<String> activities) {
 		if (!this.existsRole(domain, roleName)) {
 			Role role = new Role(domain, roleName);
 			role.addActivities(activities);
@@ -224,7 +224,7 @@ public class AuthorizationManager {
 	 * @param roleName
 	 * @param activities
 	 */
-	public void updateRoleActivities(String domain, String roleName, List<String> activities) {
+	public void updateRoleActivities(String domain, String roleName, Collection<String> activities) {
 		Role role = this.getRole(domain, roleName);
 		role.updateActivities(activities);
 	}
