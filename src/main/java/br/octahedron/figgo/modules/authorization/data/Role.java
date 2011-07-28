@@ -146,6 +146,10 @@ public class Role implements Serializable {
 	public void removeUser(String user) {
 		this.users.remove(user);
 	}
+	
+	public boolean containsActivity(String activity) {
+		return this.activities.contains(activity);
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -170,5 +174,14 @@ public class Role implements Serializable {
 		} else {
 			return false;
 		}
+	}
+
+	/**
+	 * @param activities
+	 */
+	public void updateActivities(Collection<String> activities) {
+		// FIXME maybe another option?
+		this.activities.addAll(activities);
+		this.activities.retainAll(activities);
 	}
 }

@@ -53,8 +53,13 @@ public class AuthorizationSpec implements ApplicationDomainModuleSpec {
 	public Set<ActionSpec> getModuleActions() {
 		Set<ActionSpec> actions = new HashSet<ActionSpec>();
 		actions.add(new ActionSpec("ListRoles", true));
-		// TODO add more actions
-		
+		actions.add(new ActionSpec("ListUsers", true));
+		actions.add(new ActionSpec("NewRole", true));
+		actions.add(new ActionSpec("EditRole", true));
+		actions.add(new ActionSpec("RemoveRole", true));
+		actions.add(new ActionSpec("AddUserRole", true));
+		actions.add(new ActionSpec("EditUserRole", true));
+		actions.add(new ActionSpec("RemoveUserRole", true));
 		return actions;
 	}
 }

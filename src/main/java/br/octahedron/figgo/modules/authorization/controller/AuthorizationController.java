@@ -18,8 +18,9 @@
  */
 package br.octahedron.figgo.modules.authorization.controller;
 
+import java.util.Arrays;
+
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
-import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
@@ -29,14 +30,15 @@ import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
  *
  */
 @AuthenticationRequired
-@AuthorizationRequired
 public class AuthorizationController extends Controller {
 
 	private static final String BASE_DIR_TPL = "domain/roles/";
-	private static final String LIST_ROLES_TPL = BASE_DIR_TPL + "list.vm";
+	private static final String LIST_ROLES_TPL = BASE_DIR_TPL + "roles.vm";
 	private static final String LIST_USER_TPL = BASE_DIR_TPL + "users.vm";
-	private static final String EDIT_USER_ROLES = BASE_DIR_TPL + "edit_user.vm";
-	private static final String BASE_URL = "/domain/role";
+	private static final String EDIT_USER_ROLES = BASE_DIR_TPL + "user_edit.vm";
+	private static final String NEW_ROLE_TPL = BASE_DIR_TPL + "role_new.vm";
+	private static final String EDIT_ROLE_TPL = BASE_DIR_TPL + "role_edit.vm";
+	private static final String BASE_URL = "/roles";
 	
 	@Inject
 	private AuthorizationManager authorizationManager;
@@ -47,6 +49,7 @@ public class AuthorizationController extends Controller {
 	
 	public void getListRoles() {
 		out("roles", this.authorizationManager.getRoles(subDomain()));
+		out("activities", this.authorizationManager.getAcitivities());
 		success(LIST_ROLES_TPL);
 	}
 
@@ -81,5 +84,29 @@ public class AuthorizationController extends Controller {
 		jsonSuccess();
 	}
 	
+	public void getNewRole() {
+		out("activities", this.authorizationManager.getAcitivities());
+		success(NEW_ROLE_TPL);
+	}
 	
+	public void postNewRole() {
+		this.authorizationManager.createRole(subDomain(), in("name"), Arrays.asList(request().getParameterValues("activities")));
+		redirect(BASE_URL);
+	}
+	
+	public void getEditRole() {
+		out("activities", this.authorizationManager.getAcitivities());
+		out("role", this.authorizationManager.getRole(subDomain(), in("role")));
+		success(EDIT_ROLE_TPL);
+	}
+	
+	public void postEditRole() {
+		this.authorizationManager.updateRoleActivities(subDomain(), in("role"), Arrays.asList(request().getParameterValues("activities")));
+		redirect(BASE_URL);
+	}
+	
+	public void postRemoveRole() {
+		this.authorizationManager.removeRole(subDomain(), in("role"));
+		jsonSuccess();
+	}
 }
