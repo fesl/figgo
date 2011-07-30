@@ -62,7 +62,7 @@ public class AuthorizationController extends Controller {
 	}
 	
 	public void getEditUserRoles() {
-		out("userRoles", this.authorizationManager.getUserRoles(currentUser()));
+		out("userRoles", this.authorizationManager.getUserRoles(subDomain(), currentUser()));
 		out("roles", this.authorizationManager.getRoles(subDomain()));
 		success(EDIT_USER_ROLES);
 	}

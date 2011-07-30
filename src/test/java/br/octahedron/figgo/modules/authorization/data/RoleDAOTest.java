@@ -72,21 +72,43 @@ public class RoleDAOTest {
 		role.addUsers("developer", "coach", "tester");
 		role.addActivities("pull_code", "change_tasks");
 		this.roleDAO.save(role);
+		role = new Role("domain4", "user");
+		role.addUsers("developer", "coach", "tester");
+		role.addActivities("pull_code", "change_tasks");
+		this.roleDAO.save(role);		
 	}
 
 	@Test
-	public void queryRolesTest() {
+	public void queryForUserRoles() {
 		List<Role> roles = this.roleDAO.getUserRoles("none");
 		assertTrue(roles.isEmpty());
 
 		roles = this.roleDAO.getUserRoles("developer");
-		assertEquals(6, roles.size());
+		assertEquals(7, roles.size());
 
 		roles = this.roleDAO.getUserRoles("coach");
-		assertEquals(3, roles.size());
+		assertEquals(4, roles.size());
 
 		roles = this.roleDAO.getUserRoles("tester");
+		assertEquals(3, roles.size());
+	}
+	
+	@Test
+	public void queryForUserRolesByDomain() {
+		List<Role> roles = this.roleDAO.getUserRoles("domain1", "none");
+		assertTrue(roles.isEmpty());
+		
+		roles = this.roleDAO.getUserRoles("domain1", "none");
+		assertTrue(roles.isEmpty());
+
+		roles = this.roleDAO.getUserRoles("domain1", "developer");
 		assertEquals(2, roles.size());
+		
+		roles = this.roleDAO.getUserRoles("domain1", "tester");
+		assertEquals(1, roles.size());
+		
+		roles = this.roleDAO.getUserRoles("domain4", "coach");
+		assertEquals(1, roles.size());
 	}
 
 	@Test
@@ -100,6 +122,21 @@ public class RoleDAOTest {
 		assertTrue(this.roleDAO.existsRoleFor("domain3", "coach", "pull_code"));
 		assertTrue(this.roleDAO.existsRoleFor("domain1", "tester", "change_tasks"));
 		assertTrue(this.roleDAO.existsRoleFor("domain3", "coach", "create_tasks"));
+	}
+	
+	@Test
+	public void queryGetAll() {
+		List<Role> roles = this.roleDAO.getAll("domain3"); 
+		assertEquals(2, roles.size());
+		
+		roles = this.roleDAO.getAll("domain1");
+		assertEquals(2, roles.size());
+		
+		roles = this.roleDAO.getAll("domain4");
+		assertEquals(1, roles.size());
+		
+		roles = this.roleDAO.getAll("domainX");
+		assertTrue(roles.isEmpty());
 	}
 
 }

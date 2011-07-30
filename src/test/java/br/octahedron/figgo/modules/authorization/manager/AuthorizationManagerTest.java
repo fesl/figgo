@@ -28,6 +28,7 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -161,9 +162,75 @@ public class AuthorizationManagerTest {
 		}
 	}
 
+	@Test(expected = DataDoesNotExistsException.class)
+	public void removeUserFromRole() {
+		// setup mock
+		Role role = new Role("domain", "role");
+		role.addUsers("user1", "user2");
+		String key = createRoleKey("domain", "role");
+		expect(this.roleDAO.exists(key)).andReturn(true).times(1);
+		expect(this.roleDAO.get(key)).andReturn(role).times(1);
+		expect(this.roleDAO.exists(key)).andReturn(false).times(1);
+		replay(this.roleDAO);
+		try {
+			// test
+			assertEquals(2, role.getUsers().size());
+			this.authManager.removeUserFromRole("domain", "role", "user1");
+			assertEquals(1, role.getUsers().size());
+			this.authManager.removeUserFromRole("domain", "role", "user1");
+		} finally {
+			// verify
+			verify(this.roleDAO);
+		}
+	}
+
+	@Test
+	public void removeUserFromRoles() {
+		// setup mock
+		Role role = new Role("domain", "role");
+		role.addUsers("user1", "user2");
+		Role role2 = new Role("domain", "role2");
+		role2.addUsers("user1", "user2");
+		List<Role> roles = new LinkedList<Role>();
+		roles.add(role);
+		roles.add(role2);
+		expect(this.roleDAO.getUserRoles("domain", "user1")).andReturn(roles);
+		replay(this.roleDAO);
+		try {
+			// test
+			this.authManager.removeUserFromRoles("domain", "user1");
+			assertEquals(1, role.getUsers().size());
+			assertEquals(1, role2.getUsers().size());
+		} finally {
+			// verify
+			verify(this.roleDAO);
+		}
+	}
+
+	@Test
+	public void updateRoleActivities() {
+		// setup mock
+		Role role = new Role("domain", "role");
+		role.addUsers("user1");
+		role.addActivities("activity1", "activity2", "activity3");
+		String key = createRoleKey("domain", "role");
+		expect(this.roleDAO.exists(key)).andReturn(true).times(1);
+		expect(this.roleDAO.get(key)).andReturn(role).times(1);
+		replay(this.roleDAO);
+		try {
+			// test
+			this.authManager.updateRoleActivities("domain", "role", Arrays.asList("activity1"));
+			assertEquals(1, role.getActivities().size());
+			assertEquals("[activity1]", role.getActivities().toString());
+		} finally {
+			// verify
+			verify(this.roleDAO);
+		}
+	}
+
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getDomainForUserTest() {
+	public void getUserDomains() {
 		// setup mock
 		List<Role> roles = new LinkedList<Role>();
 		Role role = new Role("domain1", "user");
