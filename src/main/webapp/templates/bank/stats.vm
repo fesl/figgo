@@ -1,0 +1,43 @@
+#set( $title = "Figgo - $!{domain.Name} - Banco - Extrato" )
+#parse( "templates/layout_intern.vm" )
+
+#header()
+
+#@body()
+    <div id="main" class="center">
+		<header>
+    		<h1>Nome do coletivo</h1>
+    		<nav id="tabs">
+        		<ul class="inline">
+                    <li><a href="/">Dashboard</a></li>
+                    #foreach( $module in $domain.ModulesEnabled )
+						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+					#end
+        		</ul>
+    		</nav>
+		</header>
+		<div id="content" class="bank">
+			<div id="single-column">
+                <section id="stats">
+                    <h3>Informações do banco no mês atual</h3>
+					<dl>
+						<dt>Saldo:</dt>
+						<dd>$balance</dd>
+						<dt>Lastro:</dt>
+						<dd>$ballast</dd>
+						<dt>Em circulação:</dt>
+						<dd>$inCirculation</dd>
+						<dt>Movimentação:</dt>
+						<dd>$monthCirculation</dd>
+						<dt>Entrada de moeda:</dt>
+						<dd>$inputMoney</dd>
+					</dl>
+    			</section>
+			</div>
+		</div>
+	</div>
+#end
+	
+#@scripts()
+	<script src="/js/bank.js"></script>
+#end

@@ -65,8 +65,8 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * br.octahedron.straight.bank.TransactionInfoService#getTransactionsByDateRange(java.lang.String,
-	 * java.util.Date, java.util.Date)
+	 * br.octahedron.straight.bank.TransactionInfoService#getTransactionsByDateRange(java.lang.String
+	 * , java.util.Date, java.util.Date)
 	 */
 	@Override
 	public Collection<BankTransaction> getTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
@@ -74,21 +74,33 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		Collection<BankTransaction> debitTransactions = this.getDebitTransactionsByDateRange(accountId, startDate, endDate);
 		return this.mergeTransactions(creditTransactions, debitTransactions, Long.MIN_VALUE);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected Collection<BankTransaction> getCreditTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("accountDest == :accountId && date >= :startDate && date <= :endDate");
 		return (List<BankTransaction>) query.execute(accountId, startDate, endDate);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected Collection<BankTransaction> getDebitTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("accountOrig == :accountId && date >= :startDate && date <= :endDate");
 		return (List<BankTransaction>) query.execute(accountId, startDate, endDate);
 	}
-	
+
+	/**
+	 * Returns the bank amount credit specified by a date range
+	 * 
+	 * @param accountId
+	 *            accountId of the account
+	 * @param startDate
+	 *            startDate of the range
+	 * @param endDate
+	 *            endDate of the range
+	 * 
+	 * @return an amount representing the sum of all credit transactions of an account
+	 */
 	public BigDecimal getAmountCreditByDateRange(String accountId, Date startDate, Date endDate) {
 		Collection<BankTransaction> transactions = this.getCreditTransactionsByDateRange(accountId, startDate, endDate);
 		BigDecimal sum = BigDecimal.ZERO;
@@ -97,9 +109,19 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		}
 		return sum;
 	}
-	
+
+	/**
+	 * Returns the amount of transactions specified by a date range
+	 * 
+	 * @param startDate
+	 *            startDate of the range
+	 * @param endDate
+	 *            endDate of the range
+	 * 
+	 * @return an amount representing the sum of all transactions made on the date range
+	 */
 	@SuppressWarnings("unchecked")
-	public BigDecimal getGenericAmountByDateRange(Date startDate, Date endDate) {
+	public BigDecimal getAmountByDateRange(Date startDate, Date endDate) {
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("date >= :startDate && date <= :endDate");
 		List<BankTransaction> transactions = (List<BankTransaction>) query.execute(startDate, endDate);
@@ -185,7 +207,9 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	}
 
 	/**
-	 * @return
+	 * Returns the whole amount injected on the bank by admin.
+	 * 
+	 * @return an amount representing the whole injected amount on the bank
 	 */
 	@SuppressWarnings("unchecked")
 	public BigDecimal getBallast() {

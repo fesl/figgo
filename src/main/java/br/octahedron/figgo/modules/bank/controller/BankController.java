@@ -45,12 +45,11 @@ public class BankController extends Controller {
 	 */
 
 	private static final String BASE_DIR_TPL = "bank/";
-	private static final String ADMIN_TPL = BASE_DIR_TPL + "admin.vm";
 	private static final String INDEX_TPL = BASE_DIR_TPL + "index.vm";
 	private static final String STATEMENT_TPL = BASE_DIR_TPL + "statement.vm";
 	private static final String TRANSFER_TPL = BASE_DIR_TPL + "transfer.vm";
 	private static final String BASE_URL = "/bank";
-	private static final String ADMIN_URL = BASE_URL + "/admin";
+	private static final String STATS_TPL = BASE_DIR_TPL + "stats.vm";
 
 	@Inject
 	private AccountManager accountManager;
@@ -112,52 +111,28 @@ public class BankController extends Controller {
 	 * Posts parameters to get user's transactions
 	 */
 	public void postTransactionsBank() {
-		// TODO date validation ASAP
-		// Need to validate is begin date is lesser than end date
-		this.out("transactions", this.accountManager.getTransactionsByDateRange(currentUser(), Formatter.parse(in("startDate")), Formatter.parse(in("endDate"))));
-		jsonSuccess();
-	}
-
-	// TODO move admin bank operations to a new controller
-
-	/**
-	 * Gets the bank admin interface
-	 */
-	public void getAdminBank() {
-		this.out("balance", this.accountManager.getBalance(this.subDomain()));
-		this.success(ADMIN_TPL);
-	}
-
-	/**
-	 * Transfer from bank account to a user account
-	 */
-	public void postShareBank() {
-		Validator requiredValidator = BankValidators.getRequiredValidator();
-		Validator destinationValidator = BankValidators.getDestinationValidator();
-		if (requiredValidator.isValid() && destinationValidator.isValid()) {
-			this.accountManager.transact(this.subDomain(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"), TransactionType.valueOf(this.in("type")));
-			this.redirect(ADMIN_URL);
+		Validator dateValidator = BankValidators.getDateValidator();
+		if (dateValidator.isValid()) {
+			this.out("transactions", this.accountManager.getTransactions(currentUser(), Formatter.parse(in("startDate")), Formatter.parse(in("endDate"))));
+			jsonSuccess();
 		} else {
-			this.echo();
-			this.out("balance", this.accountManager.getBalance(this.subDomain()));
-			this.invalid(ADMIN_TPL);
+			jsonInvalid();
 		}
 	}
-
+	
 	/**
-	 * Transfer from system account to bank account
+	 * Gets some important information about the bank
 	 */
-	public void postBallastBank() {
-		Validator requiredValidator = BankValidators.getRequiredValidator();
-		// TODO change validation (we dont need the type)
-		Validator comparableValidator = BankValidators.getAmountValidator();
-		if (requiredValidator.isValid() && comparableValidator.isValid()) {
-			this.accountManager.insertBallast(this.subDomain(), new BigDecimal(this.in("amount")), this.in("comment"));
-			this.redirect(ADMIN_URL);
-		} else {
-			this.echo();
-			this.out("balance", this.accountManager.getBalance(this.subDomain()));
-			this.invalid(ADMIN_TPL);
-		}
+	public void getStatsBank() {
+		BigDecimal balance = this.accountManager.getBalance(this.currentUser());
+		BigDecimal ballast = this.accountManager.getBallast();
+		this.out("balance", balance);
+		this.out("ballast", ballast);
+		this.out("inCirculation", ballast.subtract(balance));
+		this.out("monthCirculation", this.accountManager.getCurrentAmountTransactions());
+		this.out("inputMoney", this.accountManager.getCurrentAmountCredit());
+		this.success(STATS_TPL);
 	}
+
 }
+

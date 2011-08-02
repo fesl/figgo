@@ -19,16 +19,19 @@
 package br.octahedron.figgo.modules.bank.manager;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Logger;
 
+import br.octahedron.commons.util.Formatter;
 import br.octahedron.figgo.modules.bank.data.BankAccount;
 import br.octahedron.figgo.modules.bank.data.BankAccountDAO;
 import br.octahedron.figgo.modules.bank.data.BankTransaction;
 import br.octahedron.figgo.modules.bank.data.BankTransactionDAO;
 import br.octahedron.figgo.modules.bank.data.SystemAccount;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
+import br.octahedron.util.DateUtil;
 
 /**
  * @author Erick Moreno
@@ -74,16 +77,16 @@ public class AccountManager {
 	}
 
 	/**
-	 * Gets a account's balance 
+	 * Gets a account's balance
 	 */
 	public BigDecimal getBalance(String accountId) {
 		return this.getBalance(this.getValidAccount(accountId));
 	}
 
 	/**
-	 * Get all {@link BankAccount}'s transactions for a given date range. 
+	 * Get all {@link BankAccount}'s transactions for a given date range.
 	 */
-	public Collection<BankTransaction> getTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
+	public Collection<BankTransaction> getTransactions(String accountId, Date startDate, Date endDate) {
 		return this.transactionDAO.getTransactionsByDateRange(accountId, startDate, endDate);
 	}
 
@@ -106,7 +109,71 @@ public class AccountManager {
 	}
 
 	/**
-	 * Gets the ball
+	 * Returns the current amount of transactions of the current month.
+	 * 
+	 * @return an amount representing the sum of all transactions made on the current month
+	 */
+	public BigDecimal getCurrentAmountTransactions() {
+		return this.transactionDAO.getAmountByDateRange(this.getFirstDateOfCurrentMonth(), DateUtil.getDate());
+	}
+
+	/**
+	 * Returns the amount of transactions specified by a date range
+	 * 
+	 * @param startDate
+	 *            startDate of the range
+	 * @param endDate
+	 *            endDate of the range
+	 * 
+	 * @return an amount representing the sum of all transactions made on the date range
+	 */
+	public BigDecimal getAmountTransactions(Date startDate, Date endDate) {
+		return this.transactionDAO.getAmountByDateRange(startDate, endDate);
+	}
+
+	/**
+	 * Returns the current amount credit by bank on the current month.
+	 * 
+	 * @return an amount representing the sum of all credit transactions that has bank as
+	 *         destination
+	 */
+	public BigDecimal getCurrentAmountCredit() {
+		return this.transactionDAO.getAmountCreditByDateRange(SystemAccount.ID, this.getFirstDateOfCurrentMonth(), DateUtil.getDate());
+	}
+
+	/**
+	 * Returns the bank amount credit specified by a date range
+	 * 
+	 * @param startDate
+	 *            startDate of the range
+	 * @param endDate
+	 *            endDate of the range
+	 * 
+	 * @return an amount representing the sum of all credit transactions that has bank as
+	 *         destination
+	 */
+	public BigDecimal getAmountCredit(Date startDate, Date endDate) {
+		return this.transactionDAO.getAmountCreditByDateRange(SystemAccount.ID, startDate, endDate);
+	}
+
+	/**
+	 * Returns the whole amount added on the bank by admin.
+	 * 
+	 * @return an amount representing the whole injected amount on the bank
+	 */
+	public BigDecimal getBallast() {
+		return this.transactionDAO.getBallast();
+	}
+
+	/**
+	 * Returns a {@link Date} with the first day of the current month.
+	 */
+	private Date getFirstDateOfCurrentMonth() {
+		return Formatter.parse("01/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR));
+	}
+
+	/**
+	 * Gets the an account balance
 	 */
 	protected BigDecimal getBalance(BankAccount account) {
 		account.setTransactionInfoService(this.transactionDAO);

@@ -144,10 +144,10 @@ public class BankTransactionDAOTest  {
 	}
 	
 	@Test
-	public void getGenericTransactionsByDateRange() throws ParseException {
+	public void getAmountTransactionsByDateRange() throws ParseException {
 		this.createDateTransactions();
-		assertEquals(new BigDecimal(200), this.bankTransactionDAO.getGenericAmountByDateRange(formatter.parse("12/01/11"), formatter.parse("15/01/11")));
-		assertEquals(new BigDecimal(400), this.bankTransactionDAO.getGenericAmountByDateRange(formatter.parse("11/01/11"), formatter.parse("15/01/11")));
+		assertEquals(new BigDecimal(200), this.bankTransactionDAO.getAmountByDateRange(formatter.parse("12/01/11"), formatter.parse("15/01/11")));
+		assertEquals(new BigDecimal(400), this.bankTransactionDAO.getAmountByDateRange(formatter.parse("11/01/11"), formatter.parse("15/01/11")));
 	}
 	
 }

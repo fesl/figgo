@@ -30,6 +30,7 @@ public class BankValidators {
 	private static Validator destinationValidator;
 	private static Validator valueValidator;
 	private static Validator requiredValidator;
+	private static Validator dateValidator;
 	
 	/**
 	 * A validator for transfers that checks the required fields
@@ -64,6 +65,17 @@ public class BankValidators {
 			valueValidator.add("amount", new AmountRule(), "INVALID_TRANSACTION_AMOUNT_MESSAGE");
 		}
 		return valueValidator;
+	}
+
+	/**
+	 * A validator that check if start date is less than end date
+	 */
+	// TODO implement it ASAP!
+	public static Validator getDateValidator() {
+		if (dateValidator == null) {
+			dateValidator = new Validator();
+		}
+		return dateValidator;
 	}
 	
 }
