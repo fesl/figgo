@@ -19,7 +19,6 @@
 		</header>
 		<div id="content">
 			<div id="single-column">
-				$contract.
         		<form action="/services/contract/$contract.Id/edit" method="post" accept-charset="utf-8">
 					<label for="status">
                         <select name="status">
