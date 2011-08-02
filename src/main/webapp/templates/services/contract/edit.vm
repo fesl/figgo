@@ -22,7 +22,7 @@
 				$contract.
         		<form action="/services/contract/$contract.Id/edit" method="post" accept-charset="utf-8">
 					<label for="status">
-                        <select>
+                        <select name="status">
 							<option value="PENDING">Pendente</option>
 							<option value="IN_PROGRESS">Em andamento</option>
 							<option value="COMPLETED">Completo</option>
