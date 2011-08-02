@@ -18,8 +18,8 @@
 		</header>
 		<div id="content" class="bank">
 			<div id="single-column">
-                <section id="stats">
-                    <h3>Informações do banco no mês atual</h3>
+                <section id="static-stats">
+                    <h3>Informações atuais do banco</h3>
 					<dl>
 						<dt>Saldo:</dt>
 						<dd>$balance</dd>
@@ -27,10 +27,26 @@
 						<dd>$ballast</dd>
 						<dt>Em circulação:</dt>
 						<dd>$inCirculation</dd>
+					</dl>
+    			</section>
+				<section id="dynamic-stats">
+                    <h3>Informações do banco no mês atual</h3>
+					<form id="stats-form" action="/bank/stats" method="post">
+						<fieldset >
+                        	<label for="startDate">
+                                Início: <input type="text" name="startDate" />
+                        	</label> <br />
+							<label for="endDate">
+                                Fim: <input type="text" name="endDate" />
+                        	</label> <br />
+                    		<input type="submit" value="Visualizar" />
+                        </fieldset>
+                    </form>
+					<dl>
 						<dt>Movimentação:</dt>
 						<dd>$monthCirculation</dd>
-						<dt>Entrada de moeda:</dt>
-						<dd>$inputMoney</dd>
+						<dt>Retorno:</dt>
+						<dd>$creditAmount</dd>
 					</dl>
     			</section>
 			</div>

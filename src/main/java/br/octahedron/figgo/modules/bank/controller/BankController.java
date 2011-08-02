@@ -19,6 +19,7 @@
 package br.octahedron.figgo.modules.bank.controller;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import br.octahedron.commons.util.Formatter;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
@@ -28,6 +29,7 @@ import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.modules.bank.controller.validation.BankValidators;
+import br.octahedron.figgo.modules.bank.data.SystemAccount;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
 import br.octahedron.figgo.modules.bank.manager.AccountManager;
 
@@ -83,7 +85,7 @@ public class BankController extends Controller {
 	/**
 	 * Posts a transfer between users
 	 */
-	public void postTransfer() {
+	public void postTransferBank() {
 		// TODO validate value
 		Validator requiredValidator = BankValidators.getRequiredValidator();
 		Validator destinationValidator = BankValidators.getDestinationValidator();
@@ -108,9 +110,9 @@ public class BankController extends Controller {
 	}
 
 	/**
-	 * Posts parameters to get user's transactions
+	 * Posts parameters to get user's statement by transactions
 	 */
-	public void postTransactionsBank() {
+	public void postStatementBank() {
 		Validator dateValidator = BankValidators.getDateValidator();
 		if (dateValidator.isValid()) {
 			this.out("transactions", this.accountManager.getTransactions(currentUser(), Formatter.parse(in("startDate")), Formatter.parse(in("endDate"))));
@@ -119,20 +121,34 @@ public class BankController extends Controller {
 			jsonInvalid();
 		}
 	}
-	
+
 	/**
 	 * Gets some important information about the bank
 	 */
 	public void getStatsBank() {
-		BigDecimal balance = this.accountManager.getBalance(this.currentUser());
+		BigDecimal balance = this.accountManager.getBalance(SystemAccount.ID);
 		BigDecimal ballast = this.accountManager.getBallast();
 		this.out("balance", balance);
 		this.out("ballast", ballast);
 		this.out("inCirculation", ballast.subtract(balance));
 		this.out("monthCirculation", this.accountManager.getCurrentAmountTransactions());
-		this.out("inputMoney", this.accountManager.getCurrentAmountCredit());
+		this.out("creditAmount", this.accountManager.getCurrentAmountCredit());
 		this.success(STATS_TPL);
 	}
 
+	/**
+	 * Posts parameters to get bank's statis information
+	 */
+	public void postStatsBank() {
+		Validator dateValidator = BankValidators.getDateValidator();
+		if (dateValidator.isValid()) {
+			Date startDate = Formatter.parse(in("startDate"));
+			Date endDate = Formatter.parse(in("endDate"));
+			this.out("circulation", this.accountManager.getAmountTransactions(startDate, endDate));
+			this.out("creditAmount", this.accountManager.getAmountCredit(startDate, endDate));
+			jsonSuccess();
+		} else {
+			jsonInvalid();
+		}
+	}
 }
-
