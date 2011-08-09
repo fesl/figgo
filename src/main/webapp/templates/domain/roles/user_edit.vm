@@ -19,7 +19,7 @@
 						</label>
 					#end
 					</form>
-					<a href="/domain/user/remove" class="remove-roles">remover permissões</a>
+					<a href="/roles/user/remove" class="remove-roles">remover permissões</a>
                 </section>
             </div>
 		</div>

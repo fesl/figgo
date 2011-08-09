@@ -6,7 +6,7 @@
 		<div id="content" class="domain">
 			<div id="single-column">
 				#if( $domain.AvatarKey )
-				<a href="/domain/upload"><img id="avatar" src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+				<a href="/domain/upload"><img id="avatar" src="/serve/$domain.AvatarKey" alt="Avatar do domínio" /></a>
 				#else
 				<a href="/domain/upload"><img id="avatar" src="http://lorempixum.com/100/100/" alt="Avatar do domínio" /></a>
 				#end
@@ -17,7 +17,7 @@
 					<p>$domain.Description</p>
     			</section>
 				<hr />
-				<a href="#">requisitar participação</a>
+				<a href="/user/request">requisitar participação</a>
 			</div>
 		</div>
 	</div>

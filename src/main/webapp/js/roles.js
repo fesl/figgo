@@ -7,7 +7,7 @@ $(function() {
 			console.log($("form").data('user'));
 			$.ajax({
 				type: "POST",
-				url: "/domain/user/role/add",
+				url: "/roles/user/add",
 				dataType: "json",
 				data: {role: $this.attr('id'), user: userId}
 			}).success(function(data) {
@@ -18,7 +18,7 @@ $(function() {
 		} else {
 			$.ajax({
 				type: "POST",
-				url: "/domain/user/role/del",
+				url: "/roles/user/del",
 				dataType: "json",
 				data: {role: $this.attr('id'), user: userId}
 			}).success(function(data) {
