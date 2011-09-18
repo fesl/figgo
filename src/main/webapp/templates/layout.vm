@@ -1,3 +1,5 @@
+#set( $jqueryVersion = "1.6.4" )
+
 <!doctype html>
 <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
@@ -9,14 +11,13 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="description" content="TODO">
-    <meta name="author" content="Vítor Avelino">
+    <meta name="author" content="Octahedron LTDA">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
     <link rel="stylesheet" href="/css/style.css">
       
-    <script src="/js/libs/modernizr-1.7.min.js"></script>
-    <script src="/js/libs/respond.min.js"></script>
+    <script src="/js/libs/modernizr.min.js"></script>
     <!--[if (gte IE 6) & (lte IE 8)]>
     	<script type="text/javascript" src="/js/libs/selectivizr.js"></script>
     <![endif]-->
@@ -40,8 +41,8 @@
 #end
 
 #macro( scripts )
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/js/libs/jquery-1.6.1.min.js">\x3C/script>')</script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/${jqueryVersion}/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="/js/libs/jquery-${jqueryVersion}.min.js">\x3C/script>')</script>
     <script src="/js/script.js"></script>
     <script>
         var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview'],['_trackPageLoadTime']];

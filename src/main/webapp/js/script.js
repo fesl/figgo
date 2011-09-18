@@ -31,10 +31,13 @@ $(function() {
 		$('#domain-search').keyup(function() {
 			$.uiTableFilter( theTable, this.value, "Nome" );
 		});
+	}
 		
+	var searchUserInput = $(".autocomplete");
+	if (searhUserInput.length) {
 		var cache = {},
-		lastXhr;
-		$(".autocomplete").autocomplete({
+		lastXhr
+		searhUserInput.autocomplete({
 			minLength: 2,
 			source: function( request, response ) {
 				var term = request.term;
