@@ -1,11 +1,45 @@
-#set( $title = "Figgo - Início" )
-#parse( "templates/layout.vm" )
+<!doctype html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8 oldie" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+    <title>Figgo - Plataforma para gestão e apoio a núcleos culturais</title>
 
-#@body()
-	<div id="main" class="center">
-		<h1>Figgo</h1>
-		<a href="$login_url">login</a>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="O Figgo é uma plataforma para gestão e apoio a núcleos culturais que visa melhorar e solucionar problemas do dia-a-dia.">
+    <meta name="author" content="Octahedron LTDA">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
+    <link rel="stylesheet" href="/css/index.css">
+      
+    <script src="/js/libs/modernizr.min.js"></script>
+    <!--[if (gte IE 6) & (lte IE 8)]>
+    	<script type="text/javascript" src="/js/libs/selectivizr.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+	<div id="landing">
+		<div id="info" class="left">
+			<h1 class="ir">Figgo</h1>
+			<p>O Figgo é uma plataforma para gestão e apoio a núcleos culturais que visa melhorar e solucionar problemas do dia-a-dia.</p>
+		</div>
+		<div id="actions" class="left">
+			<a href="#" class="btn">Login</a>
+			<span>ou</span>
+			<a href="#" class="btn">Criar conta</a>
+            <p>É necessário uma <a href="">conta Google</a> para utilizar o sistema.</p>
+		</div>
 	</div>
-#end
 
-#scripts()
+    <script>
+        var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview'],['_trackPageLoadTime']];
+        (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+        g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+        s.parentNode.insertBefore(g,s)}(document,'script'));
+    </script>
+</body>
+</html>

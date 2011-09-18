@@ -1,0 +1,55 @@
+@import "mixins"
+@import "boilerplate"
+@import "global"
+
+$light-color: #eedd7e
+$dark-color: #d5c256
+$text-color: #d4c155
+$bg-color: #9a8f19
+
+html, body
+	background: $bg-color
+
+#landing
+	width: 530px
+	height: 170px
+	top: 50%
+	left: 50%
+	position: absolute
+	margin: -85px 0 0 -265px
+	overflow: hidden
+	color: $text-color
+	h1
+		width: 270px
+		height: 85px
+		background: url('/img/logo-270x85-75p.jpg') no-repeat
+
+#info
+	width: 300px
+	padding: 0 10px 0 0
+	border-right: 1px solid $dark-color
+
+#actions
+	width: 200px
+	padding: 10px 0 0 10px
+	span
+		display: block
+		margin: 5px
+		text-align: center
+	p a
+		color: white
+	a.btn
+		width: 200px
+		height: 40px
+		line-height: 40px
+		display: inline-block
+		background: linear-gradient(top, $light-color, $dark-color)
+		background: -webkit-gradient(linear, left top, left bottom, from($light-color), to($dark-color))
+		background: -moz-linear-gradient(top, $light-color, $dark-color)
+		color: #363636
+		font-weight: bold
+		text-align: center
+		text-decoration: none
+		border: none
+		@include shadow(0, 1px, 2px, #444)
+		@include rounded(5px)
