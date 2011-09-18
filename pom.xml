@@ -71,7 +71,7 @@
 	<properties>
 		<gaeplugin.version>0.8.4</gaeplugin.version>
 		<project_charset>UTF-8</project_charset>
-		<gae.version>1.5.1</gae.version>
+		<gae.version>1.5.4</gae.version>
 	</properties>
 
 	<!-- repositories -->
