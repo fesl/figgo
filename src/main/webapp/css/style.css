@@ -376,6 +376,12 @@ a {
 .right {
   float: right; }
 
+html {
+  border-top: 2px solid #9a8f19; }
+
+html, body {
+  background: #eeeeee; }
+
 /* ============================================
  * iPad in landscape
  * ============================================ */

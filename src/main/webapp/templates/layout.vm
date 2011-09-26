@@ -26,16 +26,11 @@
 #macro( body )
 <body>
 	<header>
-        <h1><a href="/">Figgo</a></h1>
-		#if( $user.Name )
-		<div id="account" class="dropdown">
-            <a href="/user/edit">$user.UserId <img src="/img/arrow.png" alt="" /></a>
-			<ul>
-                <li>$user.Name</li>
-				<li><a href="/user/edit">Editar conta</a></li>
-			</ul>
-		</div>
-		#end
+        <h1 class"ir"><a href="/">Figgo</a></h1>
+		<ul class="inline">
+            <li>Sobre</li>
+            <li>Contato</li>
+        </ul>
 	</header>
 	$!bodyContent
 #end
