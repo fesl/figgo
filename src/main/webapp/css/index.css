@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* HTML5 ✰ Boilerplate
  *
  * What follows is the result of much research on cross-browser styling.
@@ -370,17 +371,27 @@ td {
 a {
   text-decoration: none; }
 
+a, a:hover, a:visited {
+  color: #c4ae30; }
+
 .left {
   float: left; }
 
 .right {
   float: right; }
 
-html {
-  border-top: 2px solid #9a8f19; }
+.wrapper {
+  width: 960px;
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden; }
 
-html, body {
-  background: #eeeeee; }
+ul.inline li {
+  display: inline; }
+
+ul.unstyled li {
+  list-style: none; }
 
 html, body {
   background: #9a8f19; }
