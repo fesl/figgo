@@ -12,7 +12,7 @@
     <meta name="author" content="Octahedron LTDA">
     <meta name="robots" content="noindex" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-#macro( header )    
+#macro( head )    
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
     <link rel="stylesheet" href="/css/style.css">
     $!bodyContent
@@ -21,21 +21,51 @@
     	<script type="text/javascript" src="/js/libs/selectivizr.js"></script>
     <![endif]-->
 </head>
+<body>
+#end
+
+#macro( simpleHeader )
+    <header id="global-header">
+        <div id="top">
+            <div class="wrapper">
+                <a href="/"><h1 class="ir">Figgo</h1></a>
+                <ul class="inline">
+                    <li><a href="">Sobre</a></li>
+                    <li></li>
+                    <li><a href="">Contato</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
+#end
+
+#macro( fullHeader )
+    <header id="global-header">
+        <div id="top">
+            <div class="wrapper">
+                <a href="/"><h1 class="ir">Figgo</h1></a>
+                <ul class="inline">
+                    <li><a href="">Sobre</a></li>
+                    <li></li>
+                    <li><a href="">Contato</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="bottom">
+            <div class="wrapper">
+                <div id="avatar-info">
+                    <img src="http://lorempixum.com/45/45" />
+                    <span>
+                        $name <br /> 
+                        <a href="/dashboard">Dashboard</a>
+                    </span>
+                </div>
+            </div>    
+        </div>
+    </header>
 #end
 
 #macro( body )
-<body>
-    <header id="global-header">
-        <div class="wrapper">
-            <a href="/"><h1 class="ir">Figgo</h1></a>
-            <ul class="inline">
-                <li><a href="">Sobre</a></li>
-                <li></li>
-                <li><a href="">Contato</a></li>
-            </ul>
-        </div>
-    </header>
-    
     <div id="content">
         <div class="wrapper">
             $!bodyContent

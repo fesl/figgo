@@ -1,50 +1,65 @@
 #set( $title = "Figgo - Dashboard" )
 #parse( "templates/layout_intern.vm" )
 
-#header()
+#head()
+
+#simpleHeader()
 
 #@body()
-	<div id="main" class="center">
-		<h1>Dashboard</h1>
-		<div id="content" class="user">
-			<div id="column-left">
-				#if( $user.AvatarKey )
-				<a href="/user/upload"><img id="avatar" src="/serve/$user.AvatarKey" alt="Avatar do usuário" /></a>
-				#else
-				<a href="/user/upload"><img id="avatar" src="http://lorempixum.com/100/100/" alt="Avatar do usuário" /></a>
-				#end
-                <section id="about">
-    				<h2>$user.Name</h2>
-    				<small>$user.UserId</small><br />
-    				<small>$user.PhoneNumber</small>
-					<p>$user.Description</p>
-    			</section>
-				<hr />
-				<section id="organizations">
-                    <h3>Coletivos associados</h3>
-					#foreach( $domain in $domains )
-					<section class="organization">
-						<h4>$domain</h4>
-						<ul class="inline">
-							#foreach( $module in $organization.Modules )
-							<li><a href="$serverName/$module.Url">$module.Name</a></li>
-							#end
-                        </ul>
-					</section>
-					#end
-                </section>
-			</div>
-			<div id="column-right">
-    			<section id="notifications">
-					<h3>Notificações</h3>
-					<ul>
-						<li>Notificação 1</li>
-                        <li>Notificação 2</li>
-                    </ul>
-				</section>
-            </div>
-		</div>
-	</div>
+<div class="left">
+    <section id="about-user">
+        <h2>$user.Name</h2>
+        #if( $user.AvatarKey )
+        <a href="/user/upload"><img id="avatar" src="/serve/$user.AvatarKey" alt="Avatar do usuário" /></a>
+        #else
+        <a href="/user/upload"><img id="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do usuário" /></a>
+        #end
+        <ul class="unstyled">
+            <li>$user.UserId</li>
+            <li>$user.PhoneNumber</li>
+            <li>$user.City</li>
+        </ul>
+        <p>$user.Description</p>
+    </section>
+
+    <hr />
+
+    <section>
+        <h3>Coletivos associados</h3>
+        #foreach( $domain in $domains )
+        <div class="organization">
+            <h4>$domain</h4>
+            <ul class="inline">
+                #foreach( $module in $organization.Modules )
+                <li><a href="$serverName/$module.Url">$module.Name</a></li>
+                #end
+            </ul>
+        </section>
+        #end
+    </section>
+</div>
+
+<div class="left">
+    <section id="notifications">
+        <h2>Notificações</h2>
+        <ul class="unstyled">
+            <li>
+                <img class="notification" src="/img/notify-27x27.png" />
+                <span>
+                    Notificação 1 <br />
+                    <small>1 min atrás</small>
+                </span>
+            </li>
+            <li>
+                <img class="notification" src="/img/notify-27x27.png" />
+                <span>
+                    Notificação 2 <br />
+                    <small>3 min atrás</small>
+                </span>
+            </li>
+        </ul>
+    </section>
+</div>
 #end
 
 #scripts()

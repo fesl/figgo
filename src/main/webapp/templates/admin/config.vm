@@ -1,31 +1,41 @@
 #set( $title = "Figgo - Configuração inicial" )
 #parse( "templates/layout_intern.vm" )
 
-#header()
+#head()
+
+#simpleHeader()
 
 #@body()
-	<div id="main" class="center">
-		<header>
-			<h1>Configuração inicial (Route53)</h1>
-		</header>
-		<div id="content">
-			<div id="single-column">
-				<p>Preencha o formulário abaixo:</p>
-        		<form action="/admin/config" method="post">
-                	<label for="name">
-                		Access Key ID: <input type="text" name="accessKey" value="$!{accessKey}" />
-                	</label><br />
-        			<label for="name">
-                		Access Key Secret: <input type="text" name="keySecret" value="$!{keySecret}" />
-                	</label><br />
-            		<label for="name">
-                		Zone ID: <input type="text" name="zone" value="$!{zone}" />
-                	</label><br />
-            		<input type="submit" value="Salvar" />
-                </form>
-			</div>
-		</div>
-	</div>
+<div id="info-form" class="left">
+    <section>
+        <header>
+            <h1>Route53</h1>
+        </header>
+        <p><a href="http://aws.amazon.com/route53/">Amazon Route 53</a> é um serviço web altamente disponíveil e escalável para resolução de nomes (DNS).</p>
+        <p>Como o Figgo é uma aplicação multi-inquilino que utiliza subdomínios para separação de dados. Assim, se faz necessário algum mecanismo que gerenciasse os subdomínios de forma flexível.</p>
+        <p>Preencha atentamente os dados ao lado para que o Figgo funcione de forma correta.</p>
+    </section>
+</div>
+<div class="left">
+    <form action="/admin/config" method="post">
+        <fieldset>
+            <legend>Configuração Route53</legend>
+            <div>
+                <label for="accessKey">Access Key ID</label>
+                <input type="text" id="accessKey" name="accessKey" value="$!{accessKey}" />
+            </div>
+            <div>
+                <label for="keySecret">Access Key Secret</label>
+                <input type="text" id="keySecret" name="keySecret" value="$!{keySecret}" />
+            </div>
+            <div>
+                <label for="zone">Zone ID</label>
+                <input type="text" id="zone" name="zone" value="$!{zone}" />
+            </div>
+        </fieldset>
+        <input type="submit" value="Salvar" />
+    </form>
+</div>
 #end
 
 #scripts()

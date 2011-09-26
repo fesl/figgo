@@ -1,31 +1,38 @@
 #set( $title = "Figgo - Novo domínio" )
 #parse( "templates/layout_intern.vm" )
 
-#header()
+#head()
+
+#simpleHeader()
 
 #@body()
-    <div id="main" class="center">
+<div id="info-form" class="left">
+	<section>
 		<header>
-			<h1>Novo domínio</h1>
+			<h1>Núcleo cultural</h1>
 		</header>
-		<div id="content">
-			<div id="single-column">
-				<p>Preencha o formulário abaixo:</p>
-        		<form action="/admin/domain/new" method="post">
-                	<label for="name">
-                		Domínio: <input type="text" name="name" value="$!{name}" /> .figgo.com.br
-						#if ( $invalid.name )
-    						<span>$invalid.name</span>
-						#end
-                	</label><br />
-            		<label for="name">
-                		Administrador: <input type="text" name="userId" value="$!{userId}" />
-                	</label><br />
-            		<input type="submit" value="Criar" />
-                </form>
-			</div>
-		</div>
-	</div>
+		<p>TBD</p>
+	</section>
+</div>
+<div class="left">
+    <form action="/admin/domain/new" method="post">
+        <fieldset>
+            <legend>Criação de núcleo</legend>
+            <div>
+                <label for="name">Domínio</label>
+                <input type="text" id="name" name="name" value="$!{name}" /> .figgo.com.br
+                #if ( $invalid.name )
+                    <span>$invalid.name</span>
+                #end
+            </div>
+            <div>
+                <label for="userId">Administrador</label>
+                <input type="text" id="userId" name="userId" value="$!{userId}" />
+            </div>
+        </fieldset>
+        <input type="submit" value="Criar núcleo" />
+    </form>
+</div>
 #end
 
 #scripts()

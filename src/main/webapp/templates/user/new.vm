@@ -1,7 +1,7 @@
 #set( $title = "Figgo - Início" )
 #parse( "templates/layout_intern.vm" )
 
-#header()
+#head()
 
 #@body()
 <div id="info-form" class="left">

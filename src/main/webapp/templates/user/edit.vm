@@ -1,38 +1,48 @@
 #set( $title = "Figgo - Minha conta" )
 #parse( "templates/layout_intern.vm" )
 
-#header()
+#head()
+
+#fullHeader()
 
 #@body()
-	<div id="main" class="center">
-		<header>
-			<h1>Minha conta</h1>
-		</header>
-		<div id="content">
-			<div id="single-column">
-				<p>Preencha o formulário abaixo:</p>
-                <form action="/user/edit" method="post" accept-charset="utf-8">
-            		<input type="hidden" name="_method" value="put" />
-                	<label for="name">
-                		Nome: <input type="text" name="name" value="$!{name}" required />
-						#if ($invalid.name)
-                			<span>$invalid.name</span>
-                		#end
-                	</label><br />
-                	<label for="phoneNumber">
-                        Telefone: <small>(formato: 83 9999 9999)</small> <input type="text" name="phoneNumber" value="$!{phoneNumber}" pattern="^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$" required />
-						#if ($invalid.phoneNumber)
-                			<span>$invalid.phoneNumber</span>
-                		#end
-                	</label><br />
-                	<label for="description">
-                		Descrição <small>(opcional)</small>: <textarea name="description">$!{description}</textarea>
-                	</label><br />
-            		<input type="submit" value="Editar" />
-                </form>
-			</div>
-		</div>
-	</div>
+<div id="info-form" class="left">
+    <section>
+        <header>
+            <h1>Minha conta</h1>
+        </header>
+        <p>Olá, $name!</p>
+        <p>Matenha seus dados atualizados para que as pessoas possam entrar em contato com você sem maiores dificuldades.</p>
+        <p><span class="label important">Atenção!</span> Faça um favor a si mesmo, preencha de forma correta e verídica a fim de evitar problemas futuros.</p>
+    </section>
+</div>
+<div class="left">
+    <form action="/user/edit" method="post" accept-charset="utf-8">
+        <fieldset>
+            <legend>Atualização da conta</legend>
+            <input type="hidden" name="_method" value="put" />
+            <div>
+                <label for="name">Nome</label>
+                <input type="text" id="name" name="name" value="$!{name}" required />
+                #if ($invalid.name)
+                <span>$invalid.name</span>
+                #end
+            </div>
+            <div>
+                <label for="phoneNumber">Telefone</label>
+                <input type="text" name="phoneNumber" value="$!{phoneNumber}" pattern="^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$" required />
+                #if ($invalid.phoneNumber)
+                <span>$invalid.phoneNumber</span>
+                #end
+            </div>
+            <div>
+                <label for="description">Descrição</label>
+                <textarea name="description">$!{description}</textarea>
+            </div>
+        </fieldset>
+        <input type="submit" value="É hora de mudar!" />
+    </form>
+</div>
 #end
 
 #scripts()
