@@ -2,7 +2,7 @@
 #parse( "templates/layout.vm" )
 
 #@body()
-	404 not found
+	<h1>404 not found</h1>
 #end
 
 #scripts()

@@ -1,8 +1,8 @@
-#set( $title = "Figgo - Erro" )
+#set( $title = "Figgo - Erro interno" )
 #parse( "templates/layout.vm" )
 
 #@body()
-	$error.message
+	<h1>$error.message</h1>
 #end
 
 #scripts()
