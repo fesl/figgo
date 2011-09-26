@@ -3,6 +3,8 @@
 
 #head()
 
+#simpleHeader()
+
 #@body()
 <div id="info-form" class="left">
     <section>
