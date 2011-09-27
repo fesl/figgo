@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules.bank.controller.validation;
 
-import br.octahedron.cotopaxi.validation.RequiredRule;
+import static br.octahedron.cotopaxi.validation.Rule.Builder.*;
 import br.octahedron.cotopaxi.validation.Validator;
 
 /**
@@ -38,9 +38,9 @@ public class BankValidators {
 	public static synchronized Validator getRequiredValidator() {
 		if (requiredValidator == null) {
 			requiredValidator = new Validator();
-			requiredValidator.add("userId", new RequiredRule(), "REQUIRED_TRANSASCTION_USERID_MESSAGE");
-			requiredValidator.add("amount", new RequiredRule(), "REQUIRED_TRANSACTION_AMOUT_MESSAGE");
-			requiredValidator.add("type", new RequiredRule(), "REQUIRED_TRANSACTION_TYPE_MESSAGE");
+			requiredValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"));
+			requiredValidator.add("amount", required("REQUIRED_TRANSACTION_AMOUT"));
+			requiredValidator.add("type", required("REQUIRED_TRANSACTION_TYPE"));
 		}
 		return requiredValidator;
 	}
@@ -51,7 +51,7 @@ public class BankValidators {
 	public static synchronized Validator getDestinationValidator() {
 		if (destinationValidator == null) {
 			destinationValidator = new Validator();
-			destinationValidator.add("userId", new DestinationRule(), "INVALID_TRANSACTION_DESTINATION_MESSAGE");
+			destinationValidator.add("userId", new DestinationRule());
 		}
 		return destinationValidator;
 	}
@@ -62,7 +62,7 @@ public class BankValidators {
 	public static synchronized Validator getAmountValidator() {
 		if (valueValidator == null) {
 			valueValidator = new Validator();
-			valueValidator.add("amount", new AmountRule(), "INVALID_TRANSACTION_AMOUNT_MESSAGE");
+			valueValidator.add("amount", new AmountRule());
 		}
 		return valueValidator;
 	}

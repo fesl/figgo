@@ -20,14 +20,18 @@ package br.octahedron.figgo.modules.bank.controller.validation;
 
 import java.math.BigDecimal;
 
-import br.octahedron.cotopaxi.validation.ValidationRule;
+import br.octahedron.cotopaxi.validation.rule.AbstractRule;
 
 /**
  * TODO create a generic validator
  * 
  * @author vitoravelino
  */
-public class AmountRule implements ValidationRule {
+public class AmountRule extends AbstractRule {
+
+	public AmountRule() {
+		super("INVALID_TRANSACTION_AMOUNT");
+	}
 
 	private static final BigDecimal ZERO = new BigDecimal("0.00");
 	

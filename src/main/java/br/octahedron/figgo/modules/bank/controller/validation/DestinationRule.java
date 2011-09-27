@@ -20,9 +20,8 @@ package br.octahedron.figgo.modules.bank.controller.validation;
 
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
-import br.octahedron.cotopaxi.inject.Injector;
 import br.octahedron.cotopaxi.inject.SelfInjectable;
-import br.octahedron.cotopaxi.validation.ValidationRule;
+import br.octahedron.cotopaxi.validation.Rule;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.figgo.modules.user.manager.UserManager;
 
@@ -30,7 +29,7 @@ import br.octahedron.figgo.modules.user.manager.UserManager;
  * @author vitoravelino
  *
  */
-public class DestinationRule extends SelfInjectable implements ValidationRule {
+public class DestinationRule extends SelfInjectable implements Rule {
 
 	@Inject
 	private UserManager userManager;
@@ -64,6 +63,14 @@ public class DestinationRule extends SelfInjectable implements ValidationRule {
 		} finally {
 			namespaceManager.changeToPreviousNamespace();
 		}
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.cotopaxi.validation.Rule#getMessage()
+	 */
+	@Override
+	public String getMessage() {
+		return "INVALID_TRANSACTION_DESTINATION";
 	}
 
 }

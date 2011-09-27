@@ -18,8 +18,8 @@
  */
 package br.octahedron.figgo.modules.user.controller.validation;
 
-import br.octahedron.cotopaxi.validation.RegexRule;
-import br.octahedron.cotopaxi.validation.RequiredRule;
+import static br.octahedron.cotopaxi.validation.Rule.Builder.*;
+
 import br.octahedron.cotopaxi.validation.Validator;
 
 /**
@@ -33,10 +33,8 @@ public class UserValidators {
 	public static synchronized Validator getUserValidator() {
 		if (userValidator == null) {
 			userValidator = new Validator();
-			userValidator.add("name", new RequiredRule(), "REQUIRED_USER_NAME_MESSAGE");
-			userValidator.add("name", new RegexRule("([a-zA-ZáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûÃÕãõçÇ] *){2,}"), "INVALID_USER_NAME_MESSAGE");
-			userValidator.add("phoneNumber", new RequiredRule(), "REQUIRED_USER_PHONE_MESSAGE");
-			userValidator.add("phoneNumber", new RegexRule("^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$"), "INVALID_USER_PHONE_MESSAGE");
+			userValidator.add("name", required("REQUIRED_USER_NAME"), regex("([a-zA-ZáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûÃÕãõçÇ] *){2,}", "INVALID_USER_NAME"));
+			userValidator.add("phoneNumber", required("REQUIRED_USER_PHONE"), regex("^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$", "INVALID_USER_PHONE"));
 		}
 		return userValidator;
 	}

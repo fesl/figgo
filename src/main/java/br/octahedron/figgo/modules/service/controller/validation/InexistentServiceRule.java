@@ -19,14 +19,18 @@
 package br.octahedron.figgo.modules.service.controller.validation;
 
 import br.octahedron.cotopaxi.inject.Inject;
-import br.octahedron.cotopaxi.validation.ValidationRule;
+import br.octahedron.cotopaxi.validation.rule.AbstractRule;
 import br.octahedron.figgo.modules.service.manager.ServiceManager;
 
 /**
  * @author Vítor Avelino
  *
  */
-public class InexistentServiceRule implements ValidationRule {
+public class InexistentServiceRule extends AbstractRule {
+
+	public InexistentServiceRule(String message) {
+		super(message);
+	}
 
 	@Inject
 	private ServiceManager serviceManager;

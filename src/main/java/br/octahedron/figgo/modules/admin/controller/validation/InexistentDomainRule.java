@@ -21,13 +21,13 @@ package br.octahedron.figgo.modules.admin.controller.validation;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.inject.SelfInjectable;
-import br.octahedron.cotopaxi.validation.ValidationRule;
+import br.octahedron.cotopaxi.validation.Rule;
 
 /**
  * @author Vítor Avelino
  * 
  */
-public class InexistentDomainRule extends SelfInjectable implements ValidationRule {
+public class InexistentDomainRule extends SelfInjectable implements Rule {
 
 	@Inject
 	private NamespaceManager namespaceManager;
@@ -44,6 +44,14 @@ public class InexistentDomainRule extends SelfInjectable implements ValidationRu
 	@Override
 	public boolean isValid(final String input) {
 		return !namespaceManager.exists(input);
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.cotopaxi.validation.Rule#getMessage()
+	 */
+	@Override
+	public String getMessage() {
+		return "DOMAIN_ALREADY_EXISTS";
 	}
 
 }

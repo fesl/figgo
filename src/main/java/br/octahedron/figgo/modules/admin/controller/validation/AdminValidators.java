@@ -18,21 +18,39 @@
  */
 package br.octahedron.figgo.modules.admin.controller.validation;
 
+import static br.octahedron.cotopaxi.validation.Rule.Builder.*;
 import br.octahedron.cotopaxi.validation.Validator;
 
 /**
  * @author vitoravelino
- *
  */
 public class AdminValidators {
 
 	private static Validator domainValidator;
+	private static Validator configValidator;
 
+	/**
+	 * 	Validator for domain creation input
+	 */
 	public static synchronized Validator getDomainValidator() {
 		if (domainValidator == null) {
 			domainValidator = new Validator();
-			domainValidator.add("name", new InexistentDomainRule(), "DOMAIN_ALREADY_EXISTS_MESSAGE");
+			domainValidator.add("name", new InexistentDomainRule());
+		}
+		return domainValidator;
+	}
+	
+	/**
+	 * Validator for admin configuration input
+	 */
+	public static synchronized Validator getConfigValidator() {
+		if (configValidator == null) {
+			configValidator = new Validator();
+			configValidator.add("accessKey", required("FIELD_REQUIRED"));
+			configValidator.add("keySecret", required("FIELD_REQUIRED"));
+			configValidator.add("zone", required("FIELD_REQUIRED"));
 		}
 		return domainValidator;
 	}
 }
+

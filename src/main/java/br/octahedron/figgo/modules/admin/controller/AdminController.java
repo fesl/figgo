@@ -27,9 +27,9 @@ import br.octahedron.figgo.modules.admin.controller.validation.AdminValidators;
 import br.octahedron.figgo.modules.admin.data.ApplicationConfiguration;
 import br.octahedron.figgo.modules.admin.manager.AdminManager;
 
+import static br.octahedron.figgo.modules.admin.controller.validation.AdminValidators.*;
 /**
  * @author Vítor Avelino
- *
  */
 @AuthorizationRequired
 @AuthenticationRequired
@@ -47,7 +47,9 @@ public class AdminController extends Controller {
 		this.adminManager = adminManager;
 	}
 	
-	
+	/**
+	 *  Shows app config form
+	 */
 	public void getAppConfig() {
 		if (adminManager.hasApplicationConfiguration()) {
 			ApplicationConfiguration applicationConfiguration = this.adminManager.getApplicationConfiguration();
@@ -58,15 +60,30 @@ public class AdminController extends Controller {
 		success(CONFIG_APP_TPL);
 	}
 	
+	/**
+	 * Process app config form 
+	 */
 	public void postAppConfig() {
-		this.adminManager.configureApplication(in("accessKey"), in("keySecret"), in("zone"));
-		redirect(NEW_DOMAIN_URL);
+		if ( getConfigValidator().isValid() ) {
+			this.adminManager.configureApplication(in("accessKey"), in("keySecret"), in("zone"));
+			redirect(NEW_DOMAIN_URL);
+		} else {
+			echo();
+			invalid(CONFIG_APP_TPL);
+		}
+		
 	}
 	
+	/**
+	 * Shows new domain form
+	 */
 	public void getCreateDomain() {
 		success(NEW_DOMAIN_TPL);
 	}
 	
+	/**
+	 * Process new domain form
+	 */
 	public void postCreateDomain() {
 		Validator validator = AdminValidators.getDomainValidator();
 		if (validator.isValid()) {
