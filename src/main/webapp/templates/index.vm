@@ -28,10 +28,10 @@
 			<p>O Figgo é uma plataforma para gestão e apoio a núcleos culturais que visa melhorar e solucionar problemas do dia-a-dia.</p>
 		</div>
 		<div id="actions" class="left">
-			<a href="#" class="btn">Login</a>
+			<a href="/login" class="btn">Login</a>
 			<span>ou</span>
-			<a href="#" class="btn">Criar conta</a>
-            <p>É necessário uma <a href="">conta Google</a> para utilizar o sistema.</p>
+			<a href="/user/new" class="btn">Criar conta</a>
+            <p>É necessário uma <a href="https://accounts.google.com/">conta Google</a> para utilizar o sistema.</p>
 		</div>
 	</div>
 

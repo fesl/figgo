@@ -20,13 +20,13 @@ package br.octahedron.figgo.modules.user.controller;
 
 import static br.octahedron.cotopaxi.CotopaxiProperty.APPLICATION_BASE_URL;
 import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
+import static br.octahedron.figgo.modules.user.controller.validation.UserValidators.getUserValidator;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired.AuthenticationLevel;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
-import br.octahedron.figgo.modules.user.controller.validation.UserValidators;
 import br.octahedron.figgo.modules.user.data.User;
 import br.octahedron.figgo.modules.user.manager.UserManager;
 
@@ -59,14 +59,9 @@ public class UserController extends Controller {
 		this.authorizationManager = authorizationManager;
 	}
 	
-	@AuthenticationRequired
-	public void getDashboardUser() {
-		String userEmail = this.currentUser();
-		out("user", this.userManager.getUser(userEmail));
-		out("domains", this.authorizationManager.getUserDomains(userEmail));
-		success(DASHBOARD_TPL);
-	}
-
+	/**
+	 * Shows new user form
+	 */
 	@AuthenticationRequired(authenticationLevel=AuthenticationLevel.AUTHENTICATE)
 	public void getNewUser() {
 		String userEmail = this.currentUser();
@@ -78,21 +73,39 @@ public class UserController extends Controller {
 		}
 	}
 	
+	/**
+	 * Process new user form
+	 */
 	@AuthenticationRequired(authenticationLevel=AuthenticationLevel.AUTHENTICATE)
 	public void postCreateUser() {
-		Validator validator = UserValidators.getUserValidator();
+		Validator validator = getUserValidator();
 		if (validator.isValid()) {
 			this.userManager.createUser(this.currentUser(), in("name"), in("phoneNumber"), in("description"));
 			redirect(getProperty(APPLICATION_BASE_URL));
 		} else {
 			out("email", this.currentUser());
-			out("name", in("name"));
-			out("phoneNumber", in("phoneNumber"));
-			out("description", in("description"));
+			echo();
 			invalid(NEW_USER_TPL);
 		}
 	}
+	
+	
+	/**
+	 * Shows user dashboard
+	 */
+	@AuthenticationRequired
+	public void getDashboardUser() {
+		String userEmail = this.currentUser();
+		out("user", this.userManager.getUser(userEmail));
+		out("domains", this.authorizationManager.getUserDomains(userEmail));
+		success(DASHBOARD_TPL);
+	}
 
+	
+
+	/**
+	 * Shows user edit form
+	 */
 	@AuthenticationRequired
 	public void getEditUser() {
 		User user = this.userManager.getUser(this.currentUser());
@@ -104,18 +117,19 @@ public class UserController extends Controller {
 	
 	@AuthenticationRequired
 	public void postUpdateUser() {
-		Validator validator = UserValidators.getUserValidator();
+		Validator validator = getUserValidator();
 		if (validator.isValid()) {
 			this.userManager.updateUser(this.currentUser(), in("name"), in("phoneNumber"), in("description"));
 			redirect(getProperty(APPLICATION_BASE_URL));
 		} else {
-			out("name", in("name"));
-			out("phoneNumber", in("phoneNumber"));
-			out("description", in("description"));
+			echo();
 			invalid(EDIT_USER_TPL);
 		}
 	}
 	
+	/**
+	 * AJAX function to search user 
+	 */
 	public void getSearchUser() {
 		out("result", userManager.getUsersStartingWith(in("term")));
 		jsonSuccess();

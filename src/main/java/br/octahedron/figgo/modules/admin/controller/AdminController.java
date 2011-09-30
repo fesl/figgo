@@ -88,10 +88,10 @@ public class AdminController extends Controller {
 		Validator validator = AdminValidators.getDomainValidator();
 		if (validator.isValid()) {
 			this.adminManager.createDomain(in("name"), in("userId"));
+			// TODO redirect to the new domain dashboard
 			redirect("/");
 		} else {
-			out("name", in("name"));
-			out("userId", in("userId"));
+			echo();
 			invalid(NEW_DOMAIN_TPL);
 		}
 	}

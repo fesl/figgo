@@ -19,6 +19,7 @@
 package br.octahedron.figgo;
 
 import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
+import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
@@ -30,8 +31,9 @@ import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
  * 
  * @author Danilo Queiroz - daniloqueiroz@octahedron.com.br
  */
-@NamespaceRequired
 public class IndexController extends Controller {
+	
+	private static final String INDEX_TPL = "index.vm";
 
 	@Inject
 	private ConfigurationManager configurationManager;
@@ -51,20 +53,27 @@ public class IndexController extends Controller {
 		this.authorizationManager = authorizationManager;
 	}
 	
+	/**
+	 * Shows initial land page or redirect user to dashboard/domain page
+	 */
+	@NamespaceRequired
 	public void getIndex() {
 		String username = this.currentUser();
-		boolean userLogged = username != null;
+		boolean userLogged = (username != null);
 		
-		// TODO refactor -> check if user is logged
-		if (fullRequestedUrl().equalsIgnoreCase(getProperty("APPLICATION_BASE_URL"))) {
+		if (!userLogged) {
+			// user not logged, show the initial land page
+			success(INDEX_TPL);
+		} else if (fullRequestedUrl().equalsIgnoreCase(getProperty("APPLICATION_BASE_URL"))) {
+			// user accessing the raw url (www), redirects it to dash board
 			redirect("/dashboard");
 		} else {
-			// TODO refactor this /main
+			// user is accessing an specific domain page
 			boolean userExists;
 			out("domain", this.configurationManager.getDomainConfiguration());
 			try {
 				namespaceManager.changeToGlobalNamespace();
-				userExists = this.authorizationManager.getUserDomains(this.currentUser()).contains(subDomain());
+				userExists = this.authorizationManager.getUserDomains(username).contains(subDomain());
 			} finally {
 				namespaceManager.changeToPreviousNamespace();
 			}
@@ -75,5 +84,13 @@ public class IndexController extends Controller {
 				success("domain/public_index.vm");
 			}
 		}
+	}
+	
+	/**
+	 * Just to force user to login. If user already logged, redirect to main page
+	 */
+	@AuthenticationRequired
+	public void getLogin() {
+		redirect("/");
 	}
 }
