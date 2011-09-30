@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.admin.controller;
 
+import static br.octahedron.figgo.Utils.getDomainURL;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
@@ -38,7 +39,7 @@ public class AdminController extends Controller {
 	private static final String BASE_DIR_TPL = "admin/";
 	private static final String CONFIG_APP_TPL = BASE_DIR_TPL + "config.vm";
 	private static final String NEW_DOMAIN_TPL = BASE_DIR_TPL + "domain/new.vm";
-	private static final String NEW_DOMAIN_URL = "/domain/new";
+	private static final String NEW_DOMAIN_URL = "/admin/domain/new";
 	
 	@Inject
 	private AdminManager adminManager;
@@ -87,9 +88,9 @@ public class AdminController extends Controller {
 	public void postCreateDomain() {
 		Validator validator = AdminValidators.getDomainValidator();
 		if (validator.isValid()) {
-			this.adminManager.createDomain(in("name"), in("userId"));
-			// TODO redirect to the new domain dashboard
-			redirect("/");
+			String domain = in("name");
+			this.adminManager.createDomain(domain, in("userId"));
+			redirect(getDomainURL(domain));
 		} else {
 			echo();
 			invalid(NEW_DOMAIN_TPL);

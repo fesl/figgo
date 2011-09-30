@@ -32,7 +32,7 @@ import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
  * @author Danilo Queiroz - daniloqueiroz@octahedron.com.br
  */
 public class IndexController extends Controller {
-	
+
 	private static final String INDEX_TPL = "index.vm";
 
 	@Inject
@@ -45,14 +45,15 @@ public class IndexController extends Controller {
 	public void setNamespaceManager(NamespaceManager namespaceManager) {
 		this.namespaceManager = namespaceManager;
 	}
+
 	public void setConfigurationManager(ConfigurationManager configurationManager) {
 		this.configurationManager = configurationManager;
 	}
-	
+
 	public void setAuthorizationManager(AuthorizationManager authorizationManager) {
 		this.authorizationManager = authorizationManager;
 	}
-	
+
 	/**
 	 * Shows initial land page or redirect user to dashboard/domain page
 	 */
@@ -60,20 +61,25 @@ public class IndexController extends Controller {
 	public void getIndex() {
 		String username = this.currentUser();
 		boolean userLogged = (username != null);
-		
-		if (!userLogged) {
-			// user not logged, show the initial land page
-			success(INDEX_TPL);
-		} else if (fullRequestedUrl().equalsIgnoreCase(getProperty("APPLICATION_BASE_URL"))) {
+
+		if (fullRequestedUrl().equalsIgnoreCase(getProperty("APPLICATION_BASE_URL"))) {
 			// user accessing the raw url (www), redirects it to dash board
-			redirect("/dashboard");
+			if (!userLogged) {
+				// user not logged, show the initial land page
+				success(INDEX_TPL);
+			} else {
+				redirect("/dashboard");
+			}
 		} else {
 			// user is accessing an specific domain page
-			boolean userExists;
 			out("domain", this.configurationManager.getDomainConfiguration());
+
+			boolean userExists = false;
 			try {
-				namespaceManager.changeToGlobalNamespace();
-				userExists = this.authorizationManager.getUserDomains(username).contains(subDomain());
+				if (userLogged) {
+					namespaceManager.changeToGlobalNamespace();
+					userExists = this.authorizationManager.getUserDomains(username).contains(subDomain());
+				}
 			} finally {
 				namespaceManager.changeToPreviousNamespace();
 			}
@@ -85,7 +91,7 @@ public class IndexController extends Controller {
 			}
 		}
 	}
-	
+
 	/**
 	 * Just to force user to login. If user already logged, redirect to main page
 	 */

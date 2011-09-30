@@ -35,6 +35,7 @@ import br.octahedron.figgo.modules.ApplicationDomainModuleSpec.ActionSpec;
 import br.octahedron.figgo.modules.ModuleSpec.Type;
 import br.octahedron.figgo.modules.authorization.data.Role;
 import br.octahedron.figgo.modules.authorization.data.RoleDAO;
+import br.octahedron.util.Log;
 
 /**
  * This entity is responsible to manage authorization issues, such as roles operations
@@ -46,6 +47,8 @@ import br.octahedron.figgo.modules.authorization.data.RoleDAO;
  * @author Vítor Avelino
  */
 public class AuthorizationManager {
+	
+	private static final Log logger = new Log(AuthorizationManager.class);
 
 	private GoogleAuthorizer googleAuthorizer = new GoogleAuthorizer();
 	private RoleDAO roleDAO = new RoleDAO();
@@ -241,17 +244,17 @@ public class AuthorizationManager {
 	 *         one role.
 	 */
 	public Collection<String> getUserDomains(String username) {
+		Collection<String> domains = Collections.emptySet();  
 		Collection<Role> roles = this.roleDAO.getUserRoles(username);
 
 		if (!roles.isEmpty()) {
-			Set<String> domains = new TreeSet<String>();
+			domains = new TreeSet<String>();
 			for (Role role : roles) {
 				domains.add(role.getDomain());
 			}
-			return domains;
-		} else {
-			return Collections.emptySet();
 		}
+		logger.debug("User %s has %d domain", username, domains.size());
+		return domains;
 	}
 
 	/**

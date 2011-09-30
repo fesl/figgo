@@ -50,7 +50,7 @@ public class AdminValidators {
 			configValidator.add("keySecret", required("FIELD_REQUIRED"));
 			configValidator.add("zone", required("FIELD_REQUIRED"));
 		}
-		return domainValidator;
+		return configValidator;
 	}
 }
 
