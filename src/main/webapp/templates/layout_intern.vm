@@ -25,8 +25,8 @@
 #end
 
 #macro( simpleHeader )
-    <header id="global-header">
-        <div id="top">
+    <header>
+        <div id="header-top">
             <div class="wrapper">
                 <a href="/"><h1 class="ir">Figgo</h1></a>
                 <ul class="inline">
@@ -40,8 +40,8 @@
 #end
 
 #macro( fullHeader )
-    <header id="global-header">
-        <div id="top">
+    <header>
+        <div id="header-top">
             <div class="wrapper">
                 <a href="/"><h1 class="ir">Figgo</h1></a>
                 <ul class="inline">
@@ -51,7 +51,7 @@
                 </ul>
             </div>
         </div>
-        <div id="bottom">
+        <div id="header-bottom">
             <div class="wrapper">
                 <div id="avatar-info">
                     <img src="http://lorempixum.com/45/45" />
@@ -59,6 +59,39 @@
                         $name <br /> 
                         <a href="/dashboard">Dashboard</a>
                     </span>
+                </div>
+            </div>    
+        </div>
+    </header>
+#end
+
+#macro( fullHeaderDomain )
+    <header>
+        <div id="header-top">
+            <div class="wrapper">
+                <a href="/"><h1 class="ir">Figgo</h1></a>
+                <ul class="inline">
+                    <li><a href="">Sobre</a></li>
+                    <li></li>
+                    <li><a href="">Contato</a></li>
+                </ul>
+            </div>
+        </div>
+        <div id="header-bottom">
+            <div class="wrapper">
+                <div id="avatar-info" class="left">
+                    <img src="http://lorempixum.com/45/45" />
+                    <span>
+                        $name <br /> 
+                        <a href="/dashboard">Dashboard</a>
+                    </span>
+                </div>
+                <div id="shortcuts" class="right">
+                    <ul class="inline">
+                        <li><a href="">Meu extrato</a></li>
+                        <li></li>
+                        <li><a href="">Meus serviços</a></li>
+                    </ul>
                 </div>
             </div>    
         </div>

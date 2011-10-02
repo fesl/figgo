@@ -1,7 +1,9 @@
 #set( $title = "Figgo - $!{domain.Name} - Banco - Extrato" )
 #parse( "templates/layout_intern.vm" )
 
-#header()
+#head()
+
+#fullHeaderDomain()
 
 #@body()
     <div id="main" class="center">

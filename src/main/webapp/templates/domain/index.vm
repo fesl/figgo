@@ -1,44 +1,50 @@
 #set( $title = "Figgo - $!{domain.Name}" )
-#parse( "templates/layout.vm" )
+#parse( "templates/layout_intern.vm" )
+
+#head()
+
+#fullHeaderDomain()
 
 #@body()
-    <div id="main" class="center">
-		<header>
-			<nav id="tabs">
-        		<ul class="inline">
-                    <li class="selected"><a href="/">Dashboard</a></li>
-                    #foreach( $module in $domain.ModulesEnabled )
-						<li><a href="/$module.toLowerCase()">$module</a></li>
-					#end
-        		</ul>
-			</nav>
-		</header>
-		<div id="content" class="domain">
-			<div id="column-left">
-				#if( $domain.AvatarKey )
-				<a href="/domain/upload"><img id="avatar" src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
-				#else
-				<a href="/domain/upload"><img id="avatar" src="http://lorempixum.com/100/100/" alt="Avatar do domínio" /></a>
-				#end
-                <section id="about">
-    				<h2>$domain.Name</h2>
-    				<small>$domain.Url</small><br />
-    				<small>$domain.MailList</small>
-					<p>$domain.Description</p>
-    			</section>
-				<hr />
-			</div>
-			<div id="column-right">
-    			<section id="notifications">
-					<h3>Notificações</h3>
-					<ul>
-						<li>Notificação 1</li>
-                        <li>Notificação 2</li>
-                    </ul>
-				</section>
-            </div>
-		</div>
-	</div>
+<div class="left">
+    <section id="about-intern">
+        <h2>$domain.name</h2>
+        #if( $domain.AvatarKey )
+        <a href="/domain/upload"><img class="avatar" src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+        #else
+        <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
+        #end
+        <ul class="unstyled">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            #foreach( $module in $domain.ModulesEnabled )
+                <li><a href="/$module.toLowerCase()">$module</a></li>
+            #end
+        </ul>
+    </section>
+</div>
+
+<div class="left">
+    <section id="main-intern">
+        <h2>Notificações</h2>
+        <ul class="unstyled">
+            <li>
+                <img class="notification" src="/img/notify-27x27.png" />
+                <span>
+                    Notificação 1 <br />
+                    <small>1 min atrás</small>
+                </span>
+            </li>
+            <li>
+                <img class="notification" src="/img/notify-27x27.png" />
+                <span>
+                    Notificação 2 <br />
+                    <small>3 min atrás</small>
+                </span>
+            </li>
+        </ul>
+    </section>
+</div>
 #end
-	
+    
 #scripts()

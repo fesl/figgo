@@ -1,9 +1,11 @@
 #set( $title = "Figgo - $!{domain.Name} - Banco - Transações" )
 #parse( "templates/layout_intern.vm" )
 
-#@header()
+#@head()
 	<link type="text/css" href="/css/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
 #end
+
+#fullHeaderDomain()
 
 #@body()
     <div id="main" class="center">

@@ -1,7 +1,9 @@
 #set( $title = "Figgo - Domínios" )
 #parse( "templates/layout_intern.vm" )
 
-#header()
+#head()
+
+#simpleHeader()
 
 #@body()
 	<div id="main" class="center">

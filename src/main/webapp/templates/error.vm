@@ -3,6 +3,8 @@
 
 #@body()
 	<h1>$error.message</h1>
+	<h2>$error.localizedMessage</h2>
+	<h3>$error.cause.message</h3>
 #end
 
 #scripts()

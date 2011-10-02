@@ -7,7 +7,7 @@
 
 #@body()
 <div class="left">
-    <section id="about-user">
+    <section id="about-intern">
         <h2>$user.Name</h2>
         #if( $user.AvatarKey )
         <a href="/user/upload"><img id="avatar" src="/serve/$user.AvatarKey" alt="Avatar do usuário" /></a>
@@ -40,7 +40,7 @@
 </div>
 
 <div class="left">
-    <section id="notifications">
+    <section id="main-intern">
         <h2>Notificações</h2>
         <ul class="unstyled">
             <li>

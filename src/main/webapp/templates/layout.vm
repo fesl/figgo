@@ -26,7 +26,7 @@
 #macro( body )
 <body>
     <header>
-        <div id="top">
+        <div id="header-top">
             <div class="wrapper">
                 <a href="/"><h1 class="ir">Figgo</h1></a>
                 <ul class="inline">
@@ -42,6 +42,11 @@
             $!bodyContent
         </div>
     </div>
+
+    <footer>
+        <div class="wrapper">
+        </div>
+    </footer>
 #end
 
 #macro( scripts )
