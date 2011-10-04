@@ -14,7 +14,7 @@
         #else
         <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
         #end
-        <ul class="unstyled">
+        <ul class="unstyled links">
             <li><a href="#">Home</a></li>
             <li><a href="#">Sobre</a></li>
             #foreach( $module in $domain.ModulesEnabled )
@@ -26,23 +26,8 @@
 
 <div class="left">
     <section id="main-intern">
-        <h2>Notificações</h2>
-        <ul class="unstyled">
-            <li>
-                <img class="notification" src="/img/notify-27x27.png" />
-                <span>
-                    Notificação 1 <br />
-                    <small>1 min atrás</small>
-                </span>
-            </li>
-            <li>
-                <img class="notification" src="/img/notify-27x27.png" />
-                <span>
-                    Notificação 2 <br />
-                    <small>3 min atrás</small>
-                </span>
-            </li>
-        </ul>
+        <h2>Home</h2>
+        <p>TBD</p>
     </section>
 </div>
 #end

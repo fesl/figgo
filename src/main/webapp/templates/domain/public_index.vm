@@ -1,30 +1,29 @@
 #set( $title = "Figgo - $!{domain.Name}" )
 #parse( "templates/layout.vm" )
 
-#head()
-
-#simpleHeader()
-
 #@body()
-    <div id="main" class="center">
-		<div id="content" class="domain">
-			<div id="single-column">
-				#if( $domain.AvatarKey )
-				<a href="/domain/upload"><img id="avatar" src="/serve/$domain.AvatarKey" alt="Avatar do domínio" /></a>
-				#else
-				<a href="/domain/upload"><img id="avatar" src="http://lorempixum.com/100/100/" alt="Avatar do domínio" /></a>
-				#end
-                <section id="about">
-    				<h2>$domain.Name</h2>
-    				<small>$domain.Url</small><br />
-    				<small>$domain.MailList</small>
-					<p>$domain.Description</p>
-    			</section>
-				<hr />
-				<a href="/user/request">requisitar participação</a>
-			</div>
-		</div>
-	</div>
+<div class="left">
+    <section id="about-intern">
+        <h2>$domain.Name</h2>
+        #if( $domain.AvatarKey )
+        <a href="/domain/upload"><img class="avatar" src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+        #else
+        <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
+        #end
+        <ul class="unstyled links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            <li><a href="/user/request">Requisitar Participação</a></li>
+        </ul>
+    </section>
+</div>
+
+<div class="left">
+    <section id="main-intern">
+        <h2>Home</h2>
+        <p>TBD</p>
+    </section>
+</div>
 #end
-	
+    
 #scripts()

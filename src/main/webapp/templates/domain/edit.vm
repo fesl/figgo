@@ -14,7 +14,7 @@
         #else
         <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
         #end
-        <ul>
+        <ul class="links">
             <li><a href="#">Home</a></li>
             <li><a href="#">Sobre</a></li>
             #foreach( $module in $domain.ModulesEnabled )
@@ -27,6 +27,7 @@
 <div class="left">
     <section id="main-intern">
         <h2>Configurações do domínio</h2>
+        <p><span class="label important">Atenção!</span> As operações de cada formulário são feitas individualmente.</p>
         <form action="/domain/edit" method="post">
             <input type="hidden" name="_method" value="put" />
             <fieldset>
@@ -48,17 +49,23 @@
                     <label for="description">Descrição</label>
                     <textarea id="description" name="description">$!{description}</textarea>
                 </div>
+                <input type="submit" value="Salvar" />
             </fieldset>
-            <fieldset>
-                <legend>Módulos</legend>
-            #foreach( $module in $modules.getExistentModules() )
-                <label for="$module">
-                    <input type="checkbox" id="$module" name="$module" #if( $modules.isModuleEnabled($module) )checked#end/> $module #if( $modules.isModuleEnabled($module) )<a href="/domain/module/$module.toLowerCase()">Configurar</a>#end
-                </label>
-            #end
-            </fieldset>
-            <input type="submit" value="Salvar" />
         </form>
+        <h3>Módulos</h3>
+        
+        #foreach( $module in $modules.getExistentModules() )
+        <form action="/domain/edit" method="post">
+            <input type="hidden" name="_method" value="put" />
+            <fieldset>
+                <legend>$module</legend>
+                <div>
+                    <label for="$module">Ativado?</label>
+                    <input type="checkbox" id="$module" name="$module" #if( $modules.isModuleEnabled($module) )checked#end/> #if( $modules.isModuleEnabled($module) )<a href="/domain/module/$module.toLowerCase()">Configurar</a>#end
+                </div>
+            </fieldset>
+        </form>
+        #end
     </section>
 </div>
 #end
