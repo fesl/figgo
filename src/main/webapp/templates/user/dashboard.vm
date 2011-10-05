@@ -30,7 +30,7 @@
         <div class="organization">
             <h4>$domain</h4>
             <ul class="inline">
-                #foreach( $module in $organization.Modules )
+                #foreach( $module in $domain.Modules )
                 <li><a href="$serverName/$module.Url">$module.Name</a></li>
                 #end
             </ul>
@@ -42,7 +42,7 @@
 <div class="left">
     <section id="main-intern">
         <h2>Notificações</h2>
-        <ul class="unstyled">
+        <ul class="unstyled notifications">
             <li>
                 <img class="notification" src="/img/notify-27x27.png" />
                 <span>

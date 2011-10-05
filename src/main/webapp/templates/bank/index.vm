@@ -25,9 +25,21 @@
     </section>
 </div>
 <div class="left">
-    <section id="balance">
+    <section id="main-intern">
+        <h3>Acesso rápido</h3>
+        <nav>
+            <ul class="bank-shortcuts">
+                <li><a href="/bank">Minha conta</a></li>
+                <li><a href="/bank/transfer">Trasferência</a></li>
+                <li><a href="/bank/statement">Extrato</a></li>
+                <li><a href="/bank/other">Outras consultas</a></li>
+            </ul>
+        </nav>
+
+        <hr />
+
         <h3>Minha conta</h3>
-        <table class="simple">
+        <table>
             <thead>
                 <tr>
                     <th>Data</th>
@@ -36,6 +48,10 @@
                     <th>Valor</th>
                 </tr>
             </thead>
+            <tfoot>
+                <td colspan="3" class="balance">SALDO</td>
+                <td class=#if( $balance >= 0 )"blue"#else"red"#end>M$ $formatter. format($balance)</td>
+            </tfoot>
             <tbody>
             #if( $transactions.size() > 0 )
                 #foreach( $transaction in $transactions )
@@ -47,31 +63,13 @@
                 </tr>
                 #end
             #else
-                <tr><td>Nenhuma transação até o momento.</td></tr>
+                <tr><td colspan="4">Nenhuma transação até o momento.</td></tr>
+                <tr><td colspan="4">Nenhuma transação até o momento.</td></tr>
+                <tr><td colspan="4">Nenhuma transação até o momento.</td></tr>
             #end
             </tbody>
-            <tfoot>
-                <td />
-                <td />
-                <td>SALDO</td>
-                <td class=#if( $balance >= 0 )"blue"#else"red"#end>M$ $formatter.format($balance)</td>
-            </tfoot>
         </table>
     </section>
-    <hr />
-    <div id="column-right">
-        <section id="menu">
-            <h3>Acesso rápido</h3>
-            <aside>
-                <ul>
-                    <li><a href="/bank">Minha conta</a></li>
-                    <li><a href="/bank/transfer">Trasferência</a></li>
-                    <li><a href="/bank/statement">Extrato</a></li>
-                    <li><a href="/bank/other">Outras consultas</a></li>
-                </ul>
-            </aside>
-        </section>
-    </div>
 </div>
 #end
     
