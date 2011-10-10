@@ -1,41 +1,47 @@
 #set( $title = "Figgo - Nova permissões" )
 #parse( "templates/layout_intern.vm" )
 
-#header()
+#head()
+
+#fullHeaderDomain()
 
 #@body()
-	<div id="main" class="center">
-		<header>
-    		<h1>Nova permissão</h1>
-		</header>
-		<div id="content">
-			<div id="single-column" class="domain">
-                <section id="roles">
-					<form action="/roles/edit/$role.name" method="post" accept-charset="utf-8">
-    					<table class="simple">
-                    		<thead>
-                        		<tr>
-                        			<th colspan="2">Atividade</th>
-    								<th>$role.name</th>
-                        		</tr>
-                            </thead>
-                    		<tbody>
-    							#foreach( $activity in $activities )
-                        		<tr>
-    								<td>$activity</td>
-									<td><input type="checkbox" name="activities" value="$activity" #if( $role.containsActivity($activity) ) checked #end /></td>
-                        		</tr>
-    							#end
-                            </tbody>
-                        </table>
-						<input type="submit" value="Salvar" />
-					</form>
-                </section>
-            </div>
-		</div>
-	</div>
+<div class="left">
+    <section id="about-intern">
+        <h2>$domain.Name</h2>
+        #if( $domain.AvatarKey )
+        <a href="/domain/upload"><img class="avatar" src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+        #else
+        <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
+        #end
+        <ul class="links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            #foreach( $module in $domain.ModulesEnabled )
+                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+            #end
+        </ul>
+    </section>
+</div>
+<div class="left">
+    <section id="main-intern">
+        <h2>Editar permissão</h2>
+        <form action="/roles/edit/$role.name" method="post" accept-charset="utf-8">
+            <fieldset>
+                <legend>Permissões de $role.name</legend>
+                <div class="roles">
+                #foreach( $activity in $activities )
+                    <div>
+                        <label for="name">${activity}?</label>
+                        <input type="checkbox" name="activities" value="$activity" #if( $role.containsActivity($activity) ) checked #end />
+                    </div>
+                #end
+                </div>
+            </fieldset>
+            <input type="submit" value="Salvar" />
+        </form>
+    </section>
+</div>
 #end
 
-#@scripts()
-	<script type="text/javascript" src="/js/libs/jquery.uitablefilter.js"></script>
-#end
+#scripts()
