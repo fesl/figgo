@@ -1,21 +1,28 @@
 $(function() {
 	$("#statement-form").submit(function(e) {
-		var $this = $(this);
+		var $this = $(this),
+		$table = $("table");
+		$table.show();
 		$.ajax({
 			type: "POST",
 			url: "/bank/statement",
 			data: {startDate: $this.find('input[name=startDate]').val(), endDate: $this.find('input[name=endDate]').val()}
 		}).success(function(data) {
-			var $tbody = $("#my-services > table > tbody"); 
+			var $tbody = $table.find("tbody"); 
 			$tbody.empty();
-			for (var i = 0, length = data.transactions.length; i < length; i++) {
-				$tbody.append("<tr><td>" + data.transactions[i].date + "</td>\n" +
-							  "<td>" + data.transactions[i].accountDest + "</td>\n" +
-							  "<td>" + data.transactions[i].comment + "</td></tr>");
+			if (data.transactions.length > 0) {
+				for (var i = 0, length = data.transactions.length; i < length; i+=1) {
+					$tbody.append("<tr><td>" + data.transactions[i].date + "</td>\n" +
+								  "<td>" + data.transactions[i].accountDest + "</td>\n" +
+								  "<td>" + data.transactions[i].comment + "</td></tr>");
+				}
+			} else {
+				$tbody.append("<tr><td colspan=\"4\">Nenhuma transação nesse período.</td></tr>");
 			}
-			console.log(data);
+			// TODO set balance
 		}).error(function(data) {
-			alert('não foi possível buscar extrato')
+			console.log('Não foi possível buscar extrato');
+			console.log(data);
 		});
 		e.preventDefault();
 	});
@@ -34,7 +41,7 @@ $(function() {
 			$("dl > dd:first").html(data.circulation);
 			$("dl > dd:eq(2)").html(data.creditAmount);
 		}).error(function(data) {
-			alert('não foi possível recuperar stats do banco')
+			console.log('Não foi possível recuperar stats do banco');
 		});
 		e.preventDefault();
 	});

@@ -2,78 +2,82 @@
 #parse( "templates/layout_intern.vm" )
 
 #@head()
-	<link type="text/css" href="/css/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+    <link type="text/css" href="/css/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
 #end
 
 #fullHeaderDomain()
 
 #@body()
-    <div id="main" class="center">
-		<header>
-    		<h1>$domain.Name</h1>
-    		<nav id="tabs">
-        		<ul class="inline">
-                    <li><a href="/">Dashboard</a></li>
-                    #foreach( $module in $domain.ModulesEnabled )
-						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
-					#end
-        		</ul>
-    		</nav>
-		</header>
-		<div id="content" class="bank">
-			<div id="column-left">
-                <section id="transfer">
-                    <h3>Transferência</h3>
-					<span>Saldo atual: M$ $balance</span>
-					#if( $errors )
-        			<h3>Erros</h3>
-        			<ul>
-        	    		#foreach( $error in $errors )
-        				<li>$error</li>
-        				#end
-        			</ul>
-        			#end
-					<form action="/bank/transfer" method="post">
-						<fieldset >
-    						<label for="userId">
-                        		Usuário: <input type="text" name="userId" class="autocomplete" />
-                        	</label>
-                        	<label for="amount">
-                                Valor: <input type="text" name="amount" />
-                        	</label>
-                        	<label for="type">
-                                Tipo:
-    							<select type="text" name="type">
-                                    <option value="PAYMENT">Pagamento</option>
-    								<option value="TRANSFER">Transferência</option>
-                                </select>
-                        	</label>
-                        	<label for="comment">
-                        		Comentário (opcional): <textarea name="comment"></textarea>
-                        	</label>
-                    		<input type="submit" value="Transferir" />
-                        </fieldset>
-                    </form>
-    			</section>
-				<hr />
-			</div>
-			<div id="column-right">
-    			<section id="menu">
-					<h3>Acesso rápido</h3>
-					<aside>
-    					<ul>
-    						<li><a href="/bank">Minha conta</a></li>
-                            <li><a href="/bank/transfer">Trasferência</a></li>
-    						<li><a href="/bank/statement">Extrato</a></li>
-    						<li><a href="/bank/other">Outras consultas</a></li>
-                        </ul>
-					</aside>
-				</section>
-            </div>
-		</div>
-	</div>
+<div class="left">
+    <section id="about-intern">
+        <h2>$domain.Name</h2>
+        #if( $domain.AvatarKey )
+        <a href="/domain/upload"><img class="avatar" src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+        #else
+        <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
+        #end
+        <ul class="links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            #foreach( $module in $domain.ModulesEnabled )
+                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+            #end
+        </ul>
+    </section>
+</div>
+<div class="left">
+    <section id="main-intern">
+        <h3>Acesso rápido</h3>
+        <nav>
+            <ul class="bank-shortcuts">
+                <li><a href="/bank">Minha conta</a></li>
+                <li><a href="/bank/transfer">Trasferência</a></li>
+                <li><a href="/bank/statement">Extrato</a></li>
+                <li><a href="/bank/other">Outras consultas</a></li>
+            </ul>
+        </nav>
+
+        <hr />
+
+        <h3>Transferência</h3>
+        <span>Saldo atual: M$ $balance</span>
+        #if( $errors )
+        <h3>Erros</h3>
+        <ul>
+            #foreach( $error in $errors )
+            <li>$error</li>
+            #end
+        </ul>
+        #end
+        <form action="/bank/transfer" method="post">
+            <fieldset>
+                <legend>TBD</legend>
+                <div>
+                    <label for="userId">Usuário</label>
+                    <input type="text" name="userId" class="autocomplete" />
+                </div>
+                <div>
+                    <label for="amount">Valor</label>
+                    <input type="text" name="amount" />
+                </div>
+                <div>
+                    <label for="type">Tipo</label>
+                    <select type="text" name="type">
+                        <option value="PAYMENT">Pagamento</option>
+                        <option value="TRANSFER">Transferência</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="comment">Comentário (opcional)</label>
+                    <textarea name="comment"></textarea>
+                </div>
+                <input type="submit" value="Transferir" />
+            </fieldset>
+        </form>
+    </section>
+</div>
 #end
-	
+    
 #@scripts()
-	<script type="text/javascript" src="/js/libs/jquery-ui-1.8.13.custom.min.js"></script>
+    <script type="text/javascript" src="/js/libs/jquery-ui-1.8.13.custom.min.js"></script>
 #end

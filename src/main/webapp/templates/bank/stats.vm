@@ -6,56 +6,67 @@
 #fullHeaderDomain()
 
 #@body()
-    <div id="main" class="center">
-		<header>
-    		<h1>Nome do coletivo</h1>
-    		<nav id="tabs">
-        		<ul class="inline">
-                    <li><a href="/">Dashboard</a></li>
-                    #foreach( $module in $domain.ModulesEnabled )
-						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
-					#end
-        		</ul>
-    		</nav>
-		</header>
-		<div id="content" class="bank">
-			<div id="single-column">
-                <section id="static-stats">
-                    <h3>Informações atuais do banco</h3>
-					<dl>
-						<dt>Saldo:</dt>
-						<dd>$balance</dd>
-						<dt>Lastro:</dt>
-						<dd>$ballast</dd>
-						<dt>Em circulação:</dt>
-						<dd>$inCirculation</dd>
-					</dl>
-    			</section>
-				<section id="dynamic-stats">
-                    <h3>Informações do banco no mês atual</h3>
-					<form id="stats-form" action="/bank/stats" method="post">
-						<fieldset >
-                        	<label for="startDate">
-                                Início: <input type="text" name="startDate" />
-                        	</label> <br />
-							<label for="endDate">
-                                Fim: <input type="text" name="endDate" />
-                        	</label> <br />
-                    		<input type="submit" value="Visualizar" />
-                        </fieldset>
-                    </form>
-					<dl>
-						<dt>Movimentação:</dt>
-						<dd>$monthCirculation</dd>
-						<dt>Retorno:</dt>
-						<dd>$creditAmount</dd>
-					</dl>
-    			</section>
-			</div>
-		</div>
-	</div>
+<div class="left">
+    <section id="about-intern">
+        <h2>$domain.Name</h2>
+        #if( $domain.AvatarKey )
+        <a href="/domain/upload"><img class="avatar" src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+        #else
+        <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
+        #end
+        <ul class="links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            #foreach( $module in $domain.ModulesEnabled )
+                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+            #end
+        </ul>
+    </section>
+</div>
+<div class="left">
+    <section id="main-intern">
+        <h3>Acesso rápido</h3>
+        <nav>
+            <ul class="bank-shortcuts">
+                <li><a href="/bank">Minha conta</a></li>
+                <li><a href="/bank/transfer">Trasferência</a></li>
+                <li><a href="/bank/statement">Extrato</a></li>
+                <li><a href="/bank/other">Outras consultas</a></li>
+            </ul>
+        </nav>
+
+        <hr />
+        
+        <h3>Informações atuais do banco</h3>
+        <ul class="unstyled">
+            <li>Saldo: $balance</li>
+            <li>Lastro: $ballast</li>
+            <li>Em circulação: $inCirculation</li>
+        </ul>
+
+        <h3>Informações do banco no mês atual</h3>
+        <ul class="unstyled">
+            <li>Movimentação: $monthCirculation</li>
+            <li>Retorno: $creditAmount</li>
+        </ul>
+        <form id="stats-form" action="/bank/stats" method="post">
+            <fieldset>
+                <legend>Selecione um intervalo</legend>
+                <div>
+                    <label for="startDate">Início</label>
+                    <input type="text" name="startDate" />
+                </div>
+                <div>
+                    <label for="endDate">Fim</label>
+                    <input type="text" name="endDate" />
+                </div>
+                <input type="submit" value="Visualizar" />
+            </fieldset>
+        </form>
+    </section>
+</div>
 #end
-	
+    
 #@scripts()
-	<script src="/js/bank.js"></script>
+    <script src="/js/bank.js"></script>
 #end

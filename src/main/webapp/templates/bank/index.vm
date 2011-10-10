@@ -64,8 +64,6 @@
                 #end
             #else
                 <tr><td colspan="4">Nenhuma transação até o momento.</td></tr>
-                <tr><td colspan="4">Nenhuma transação até o momento.</td></tr>
-                <tr><td colspan="4">Nenhuma transação até o momento.</td></tr>
             #end
             </tbody>
         </table>
