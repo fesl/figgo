@@ -34,6 +34,8 @@ import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
 public class IndexController extends Controller {
 
 	private static final String INDEX_TPL = "index.vm";
+	private static final String DOMAIN_INDEX_TPL = "domain/index.vm";
+	private static final String DOMAIN_PUBLIC_INDEX_TPL = "domain/public_index.vm";
 
 	@Inject
 	private ConfigurationManager configurationManager;
@@ -85,9 +87,9 @@ public class IndexController extends Controller {
 			}
 
 			if (userExists) {
-				success("domain/index.vm");
+				success(DOMAIN_INDEX_TPL);
 			} else {
-				success("domain/public_index.vm");
+				success(DOMAIN_PUBLIC_INDEX_TPL);
 			}
 		}
 	}

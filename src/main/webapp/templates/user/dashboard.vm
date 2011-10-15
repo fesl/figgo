@@ -17,7 +17,6 @@
         <ul class="unstyled">
             <li>$user.UserId</li>
             <li>$user.PhoneNumber</li>
-            <li>$user.City</li>
         </ul>
         <p>$user.Description</p>
     </section>
