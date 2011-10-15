@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeSet;
 
 import br.octahedron.figgo.modules.DataAlreadyExistsException;
@@ -35,6 +34,7 @@ import br.octahedron.figgo.modules.ApplicationDomainModuleSpec.ActionSpec;
 import br.octahedron.figgo.modules.ModuleSpec.Type;
 import br.octahedron.figgo.modules.authorization.data.Role;
 import br.octahedron.figgo.modules.authorization.data.RoleDAO;
+import br.octahedron.figgo.modules.user.data.User;
 import br.octahedron.util.Log;
 
 /**
@@ -333,6 +333,7 @@ public class AuthorizationManager {
 	public void updateRoleActivities(String domain, String roleName, Collection<String> activities) {
 		Role role = this.getRole(domain, roleName);
 		role.updateActivities(activities);
+		this.roleDAO.save(role);
 	}
 
 }

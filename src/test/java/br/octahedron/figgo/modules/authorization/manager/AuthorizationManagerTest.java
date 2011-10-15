@@ -216,6 +216,7 @@ public class AuthorizationManagerTest {
 		String key = createRoleKey("domain", "role");
 		expect(this.roleDAO.exists(key)).andReturn(true).times(1);
 		expect(this.roleDAO.get(key)).andReturn(role).times(1);
+		this.roleDAO.save(role);
 		replay(this.roleDAO);
 		try {
 			// test

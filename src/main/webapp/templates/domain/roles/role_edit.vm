@@ -32,8 +32,8 @@
                 <div class="roles">
                 #foreach( $activity in $activities )
                     <div>
-                        <label for="name">${activity}?</label>
-                        <input type="checkbox" name="activities" value="$activity" #if( $role.containsActivity($activity) ) checked #end />
+                        <label for="${activity}">${activity}?</label>
+                        <input type="checkbox" name="activities" id="${activity}" value="$activity" #if( $role.containsActivity($activity) ) checked #end />
                     </div>
                 #end
                 </div>
