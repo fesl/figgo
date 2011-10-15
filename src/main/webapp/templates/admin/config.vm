@@ -23,14 +23,23 @@
             <div>
                 <label for="accessKey">Access Key ID</label>
                 <input type="text" id="accessKey" name="accessKey" value="$!{accessKey}" />
+                #if ($invalid.accessKey)
+                <span>$invalid.accessKey</span>
+                #end
             </div>
             <div>
                 <label for="keySecret">Access Key Secret</label>
                 <input type="text" id="keySecret" name="keySecret" value="$!{keySecret}" />
+                #if ($invalid.keySecret)
+                <span>$invalid.keySecret</span>
+                #end
             </div>
             <div>
                 <label for="zone">Zone ID</label>
                 <input type="text" id="zone" name="zone" value="$!{zone}" />
+                #if ($invalid.zone)
+                <span>$invalid.zone</span>
+                #end
             </div>
         </fieldset>
         <input type="submit" value="Salvar" />
