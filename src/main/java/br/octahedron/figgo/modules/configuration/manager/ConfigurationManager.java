@@ -102,6 +102,7 @@ public class ConfigurationManager {
 		domainConfiguration.setUrl(url);
 		domainConfiguration.setMailList(mailList);
 		domainConfiguration.setDescription(description);
+		this.domainDAO.save(domainConfiguration);
 		this.eventBus.publish(new DomainChangedEvent(domainConfiguration));
 	}
 

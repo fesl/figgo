@@ -72,6 +72,7 @@ public class ConfigurationController extends Controller {
 			redirect(BASE_URL);
 		} else {
 			out("domain", this.configurationManager.getDomainConfiguration());
+			out("modules", this.configurationManager.getModulesInfoService());
 			echo();
 			invalid(EDIT_DOMAIN_TPL);
 		}

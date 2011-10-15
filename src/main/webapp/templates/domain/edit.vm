@@ -8,7 +8,7 @@
 #@body()
 <div class="left">
     <section id="about-intern">
-        <h2>$domain.Name</h2>
+        <h2>$domain.name</h2>
         #if( $domain.AvatarKey )
         <a href="/domain/upload"><img class="avatar" src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
         #else
@@ -29,12 +29,14 @@
         <h2>Configurações do domínio</h2>
         <p><span class="label important">Atenção!</span> As operações de cada formulário são feitas individualmente.</p>
         <form action="/domain/edit" method="post">
-            <input type="hidden" name="_method" value="put" />
             <fieldset>
                 <legend>Dados gerais</legend>
                 <div>
                     <label for="name">Nome</label>
                     <input type="text" id="name" name="name" value="$!{name}" />
+                    #if ($invalid.name)
+                    <span>$invalid.name</span>
+                    #end
                 </div>
                 <div>   
                     <label for="url">Site</label>
@@ -56,7 +58,6 @@
         
         #foreach( $module in $modules.getExistentModules() )
         <form action="/domain/edit" method="post">
-            <input type="hidden" name="_method" value="put" />
             <fieldset>
                 <legend>$module</legend>
                 <div>
