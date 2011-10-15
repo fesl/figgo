@@ -3,45 +3,43 @@
 
 #head()
 
-#simpleHeader()
+#fullHeader()
 
 #@body()
-	<div id="main" class="center">
-		<header>
-    		<h1>Lista de domínios</h1>
-		</header>
-		<div id="content">
-			<div id="single-column" class="domain">
-                <section id="domains">
-					<input type="text" id="domain-search" placeholder="Buscar domínio" />
-					<table class="simple">
-                		<thead>
-                    		<tr>
-                    			<th></th>
-								<th>Nome</th>
-                    			<th>Domínio</th>
-                    		</tr>
-                        </thead>
-                		<tbody>
-                        #foreach( $domain in $domains )
-                    		<tr>
-                    			#if( $domain.AvatarKey )
-								<td><img src="$domain.AvatarKey" alt="Avatar do $domain.Name" title="Avatar do $domain.Name"/></td>
-								#else
-								<td><img src="/img/blank.jpg" alt="Avatar do $domain.Name" title="Avatar do $domain.Name" /></td>
-								#end
-								<td>$domain.Name</td>
-                    			<td>${domain.DomainName}.figgo.com.br</td>
-                    		</tr>
+<div>
+    <h2>Lista de domínios</h2>
+    <section id="domains">
+        <form>
+            <input type="text" id="domain-search" placeholder="Nome do coletivo" />
+        </form>
+        <table class="domain">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Domínio</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            #foreach( $domain in $domains )
+                <tr>
+                    <td>
+                        #if( $domain.AvatarKey )
+                        <img src="$domain.AvatarKey" alt="Avatar do $domain.Name" title="Avatar do $domain.Name"/>
+                        #else
+                        <img src="/img/blank.jpg" alt="Avatar do $domain.Name" title="Avatar do $domain.Name" />
                         #end
-                        </tbody>
-                    </table>
-                </section>
-            </div>
-		</div>
-	</div>
+                        $domain.name
+                    </td>
+                    <td>${domain.domainName}.figgo.com.br</td>
+                </tr>
+            #end
+            </tbody>
+        </table>
+    </section>
+</div>
 #end
 
 #@scripts()
-	<script type="text/javascript" src="/js/libs/jquery.uitablefilter.js"></script>
+    <script type="text/javascript" src="/js/libs/jquery.uitablefilter.js"></script>
 #end

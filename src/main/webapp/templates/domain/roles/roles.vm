@@ -10,7 +10,7 @@
     <section id="about-intern">
         <h2>$domain.Name</h2>
         #if( $domain.AvatarKey )
-        <a href="/domain/upload"><img class="avatar" src="/blob/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+        <a href="/domain/upload"><img class="avatar" src="/serve/$domain.AvatarKey" alt="Avatar do domínio" /></a>
         #else
         <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
         #end

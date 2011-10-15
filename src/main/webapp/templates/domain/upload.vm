@@ -6,33 +6,38 @@
 #fullHeaderDomain()
 
 #@body()
-	<a href="$logout_url">logout</a>
-	
-	<div id="main" class="center">
-		<header>
-			<h1>$domain.Name</h1>
-			<nav id="tabs">
-        		<ul class="inline">
-                    <li><a href="/">Dashboard</a></li>
-                    #foreach( $module in $domain.ModulesEnabled )
-						<li><a href="/$module.toLowerCase()">$module</a></li>
-					#end
-        		</ul>
-			</nav>
-		</header>
-		<div id="content">
-			<div id="single-column">
-				<h3>Upload avatar</h3>
-        		<p>Faça upload do avatar abaixo:</p>
-                <form action="$uploadUrl" method="post" enctype="multipart/form-data">
-                	<label for="avatar">
-                        Arquivo (max 1mb): <input type="file" name="file" />
-                	</label><br />
-            		<input type="submit" value="Upload" />
-                </form>
-			</div>
-		</div>
-	</div>
+<div class="left">
+    <section id="about-intern">
+        <h2>$domain.Name</h2>
+        #if( $domain.AvatarKey )
+        <a href="/domain/upload"><img class="avatar" src="/serve/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+        #else
+        <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
+        #end
+        <ul class="links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            #foreach( $module in $domain.ModulesEnabled )
+                <li><a href="/$module.toLowerCase()">$module</a></li>
+            #end
+        </ul>
+    </section>
+</div>
+<div class="left">
+    <section id="main-intern">
+        <h2>Upload do avatar</h2>
+        <form action="$uploadUrl" method="post" enctype="multipart/form-data">
+            <fieldset>
+                <legend>Mude o avatar do seu coletivo</legend>
+                <div>
+                    <label for="avatar">Arquivo (max 1mb)</label>
+                    <input type="file" name="file" />
+                </div>
+            </fieldset>
+            <input type="submit" value="Upload" />
+        </form>
+    </section>
+</div>
 #end
 
 #scripts()
