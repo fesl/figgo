@@ -28,6 +28,9 @@
             <div>
                 <label for="userId">Administrador</label>
                 <input type="text" id="userId" name="userId" value="$!{userId}" />
+                #if ( $invalid.userId )
+                    <span>$invalid.userId</span>
+                #end
             </div>
         </fieldset>
         <input type="submit" value="Criar núcleo" />
