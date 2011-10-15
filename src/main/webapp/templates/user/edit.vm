@@ -11,7 +11,7 @@
         <header>
             <h1>Minha conta</h1>
         </header>
-        <p>Olá, $name!</p>
+        <p>Olá, $user.name!</p>
         <p>Matenha seus dados atualizados para que as pessoas possam entrar em contato com você sem maiores dificuldades.</p>
         <p><span class="label important">Atenção!</span> Faça um favor a si mesmo, preencha de forma correta e verídica a fim de evitar problemas futuros.</p>
     </section>
