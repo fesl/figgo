@@ -36,9 +36,8 @@ import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
 @NamespaceRequired
 public class ConfigurationController extends Controller {
 
-	private static final String BASE_DIR_TPL = "domain/";
+	protected static final String BASE_DIR_TPL = "domain/";
 	private static final String EDIT_DOMAIN_TPL = BASE_DIR_TPL + "edit.vm";
-	private static final String LIST_TPL = BASE_DIR_TPL + "list.vm";
 	private static final String MODULE_CONFIG_TPL = BASE_DIR_TPL + "module/config.vm";
 	private static final String BASE_URL = "/";
 
@@ -47,11 +46,6 @@ public class ConfigurationController extends Controller {
 
 	public void setConfigurationManager(ConfigurationManager configurationManager) {
 		this.configurationManager = configurationManager;
-	}
-
-	public void getListDomain() {
-		out("domains", this.configurationManager.getDomainConfiguration());
-		success(LIST_TPL);
 	}
 
 	/**
@@ -69,7 +63,7 @@ public class ConfigurationController extends Controller {
 	}
 
 	/**
-	 * 
+	 * Process the edit domain form
 	 */
 	@AuthorizationRequired
 	public void postUpdateDomain() {
@@ -83,6 +77,9 @@ public class ConfigurationController extends Controller {
 		}
 	}
 
+	/**
+	 * Shows edit module form
+	 */
 	@AuthorizationRequired
 	public void getModuleDomain() {
 		out("domain", this.configurationManager.getDomainConfiguration());
@@ -91,8 +88,11 @@ public class ConfigurationController extends Controller {
 		success(MODULE_CONFIG_TPL);
 	}
 
+	/**
+	 * Process the edit module form
+	 */
 	@AuthorizationRequired
 	public void postModuleDomain() {
-
+		
 	}
 }
