@@ -38,7 +38,7 @@ public class AdminManager {
 
 	private static final String NOT_ROUTE53_PROPERTY = "NOT_USE_ROUTE53";
 	private static final Log log = new Log(AdminManager.class);
-	
+
 	@Inject
 	private EventBus eventBus;
 	private ApplicationConfigurationDAO applicationConfigurationDAO = new ApplicationConfigurationDAO();
@@ -97,16 +97,16 @@ public class AdminManager {
 	 */
 	public void createDomain(String domainName, String adminID) {
 		if (this.hasApplicationConfiguration()) {
-			ApplicationConfiguration appConf = this.applicationConfigurationDAO.get(APPLICATION_NAME);
-			Route53Util.createDomain(domainName, appConf.getRoute53AccessKeyID(), appConf.getRoute53AccessKeySecret(), appConf.getRoute53ZoneID());
+			if (!Boolean.parseBoolean(getProperty(NOT_ROUTE53_PROPERTY))) {
+				ApplicationConfiguration appConf = this.applicationConfigurationDAO.get(APPLICATION_NAME);
+				Route53Util
+						.createDomain(domainName, appConf.getRoute53AccessKeyID(), appConf.getRoute53AccessKeySecret(), appConf.getRoute53ZoneID());
+			} else {
+				log.info("%s Property set to true, will fire domain created event!", NOT_ROUTE53_PROPERTY);
+			}
 			eventBus.publish(new DomainCreatedEvent(domainName, adminID));
 		} else {
-			if (Boolean.parseBoolean(getProperty(NOT_ROUTE53_PROPERTY))) {
-				log.info("%s Property set to true, will fire domain created event!", NOT_ROUTE53_PROPERTY);
-				eventBus.publish(new DomainCreatedEvent(domainName, adminID));
-			} else {
-				throw new DataDoesNotExistsException("This application isn't configured");
-			}
+			throw new DataDoesNotExistsException("This application isn't configured");
 		}
 	}
 }
