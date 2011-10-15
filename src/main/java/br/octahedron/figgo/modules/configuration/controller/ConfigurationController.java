@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.configuration.controller;
 
+import static br.octahedron.figgo.modules.configuration.controller.validation.DomainValidator.*;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
@@ -29,21 +30,21 @@ import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
 
 /**
  * @author vitoravelino
- *
+ * 
  */
 @AuthenticationRequired
 @NamespaceRequired
 public class ConfigurationController extends Controller {
 
 	private static final String BASE_DIR_TPL = "domain/";
-	private static final String EDIT_TPL = BASE_DIR_TPL + "edit.vm";
+	private static final String EDIT_DOMAIN_TPL = BASE_DIR_TPL + "edit.vm";
 	private static final String LIST_TPL = BASE_DIR_TPL + "list.vm";
 	private static final String MODULE_CONFIG_TPL = BASE_DIR_TPL + "module/config.vm";
 	private static final String BASE_URL = "/";
-	
+
 	@Inject
 	private ConfigurationManager configurationManager;
-	
+
 	public void setConfigurationManager(ConfigurationManager configurationManager) {
 		this.configurationManager = configurationManager;
 	}
@@ -52,7 +53,10 @@ public class ConfigurationController extends Controller {
 		out("domains", this.configurationManager.getDomainConfiguration());
 		success(LIST_TPL);
 	}
-	
+
+	/**
+	 * Get edit domain page
+	 */
 	@AuthorizationRequired
 	public void getEditDomain() {
 		DomainConfiguration domainConfiguration = this.configurationManager.getDomainConfiguration();
@@ -61,15 +65,24 @@ public class ConfigurationController extends Controller {
 		out("url", domainConfiguration.getUrl());
 		out("maillist", domainConfiguration.getMailList());
 		out("modules", this.configurationManager.getModulesInfoService());
-		success(EDIT_TPL);
+		success(EDIT_DOMAIN_TPL);
 	}
-	
+
+	/**
+	 * 
+	 */
 	@AuthorizationRequired
 	public void postUpdateDomain() {
-		this.configurationManager.updateDomainConfiguration(in("name"), in("url"), in("maillist"), in("description"));
-		redirect(BASE_URL);
+		if (getDomainValidator().isValid()) {
+			this.configurationManager.updateDomainConfiguration(in("name"), in("url"), in("maillist"), in("description"));
+			redirect(BASE_URL);
+		} else {
+			out("domain", this.configurationManager.getDomainConfiguration());
+			echo();
+			invalid(EDIT_DOMAIN_TPL);
+		}
 	}
-	
+
 	@AuthorizationRequired
 	public void getModuleDomain() {
 		out("domain", this.configurationManager.getDomainConfiguration());
@@ -77,9 +90,9 @@ public class ConfigurationController extends Controller {
 		out("module", this.configurationManager.getModuleConfiguration(Module.valueOf(in("module").toUpperCase())));
 		success(MODULE_CONFIG_TPL);
 	}
-	
+
 	@AuthorizationRequired
 	public void postModuleDomain() {
-		
+
 	}
 }

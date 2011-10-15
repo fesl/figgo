@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.admin.manager;
+package br.octahedron.figgo.modules.configuration.manager;
 
 import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;

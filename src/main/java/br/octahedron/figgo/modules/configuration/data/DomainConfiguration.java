@@ -64,6 +64,7 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 
 	public DomainConfiguration(String domainName) {
 		this.domainName = domainName;
+		this.name = domainName;
 	}
 
 	/**

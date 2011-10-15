@@ -72,7 +72,6 @@ public class AdminController extends Controller {
 			echo();
 			invalid(CONFIG_APP_TPL);
 		}
-		
 	}
 	
 	/**

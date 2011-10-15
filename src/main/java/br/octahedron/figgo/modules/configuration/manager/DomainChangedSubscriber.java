@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
-import br.octahedron.figgo.modules.admin.manager.DomainChangedEvent;
 import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
 
 import com.google.appengine.api.memcache.MemcacheService;

@@ -29,7 +29,6 @@ import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.ModuleSpec.Type;
-import br.octahedron.figgo.modules.admin.manager.DomainChangedEvent;
 import br.octahedron.figgo.modules.configuration.ModulesInfoService;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
 import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
