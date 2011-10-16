@@ -105,6 +105,6 @@ public class AuthorizationController extends Controller {
 	
 	public void postRemoveRole() {
 		this.authorizationManager.removeRole(subDomain(), in("role"));
-		jsonSuccess();
+		redirect(BASE_URL);
 	}
 }

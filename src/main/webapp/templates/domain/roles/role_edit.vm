@@ -40,8 +40,14 @@
             </fieldset>
             <input type="submit" value="Salvar" />
         </form>
+        <div>
+            <a class="delete" href="/roles/delete/$role.name" data-confirm="Você tem certeza que deseja remover esse papel?">Remover papel?</a>
+        </div>
+
     </section>
 </div>
 #end
 
-#scripts()
+#@scripts()
+    <script defer src="/js/roles.js"></script>
+#end

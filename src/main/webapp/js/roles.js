@@ -29,19 +29,13 @@ $(function() {
 		}
 	});
 	
-	$("a.remove-roles").click(function(e) {
-		if (confirm("Você tem certeza que deseja remover esse usuário do domínio?")) {
-			$.ajax({
-				type: "POST",
-				url: $(this).attr('href'),
-				dataType: "json",
-				data: {user: userId}
-			}).success(function(data) {
-				window.location.replace("/domain/users");
-			}).error(function(data) {
-				alert('não foi possível remover role do usuário')
-			});
-		}
-		e.preventDefault();
-	});
+	$("a.delete").click(function(e) {
+		var $this = $(this);
+        if (confirm($this.data('confirm'))) {
+	        var form = $('<form method="post" action="' + $this.attr('href') + '"></form>');
+	        form.appendTo('body');
+	        form.submit();
+        }
+        e.preventDefault(); 
+    });
 });

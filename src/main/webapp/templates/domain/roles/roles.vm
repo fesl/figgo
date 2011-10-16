@@ -50,6 +50,4 @@
 </div>
 #end
 
-#@scripts()
-    <script type="text/javascript" src="/js/libs/jquery.uitablefilter.js"></script>
-#end
+#scripts()

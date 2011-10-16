@@ -34,7 +34,7 @@ $(function() {
 	}
 		
 	var searchUserInput = $(".autocomplete");
-	if (searhUserInput.length) {
+	if (searchUserInput.length) {
 		var cache = {},
 		lastXhr
 		searhUserInput.autocomplete({
