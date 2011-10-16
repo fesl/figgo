@@ -7,19 +7,9 @@ ul.bank-shortcuts
 		margin-bottom: 5px
 
 table
-	width: 100%
-	border: 1px solid #dddddd
-	&.statement
-		display: none
-	td
-		border: 1px solid #dddddd
 	td.balance
 		text-align: right
-	th, td
-		padding: 10px 10px 9px
-		line-height: 18px
-	th
-		border-bottom: 1px solid #cccccc
+	&.bank th
 		&:nth-child(1)
 			width: 15%
 		&:nth-child(2)
@@ -28,7 +18,5 @@ table
 			width: 34%
 		&:nth-child(4)
 			width: 17%
-	thead
-		text-align: left
-	tbody tr:last-child td
+	&.bank tbody tr:last-child td
 		border-bottom: 1px solid #cccccc

@@ -39,7 +39,7 @@
         <hr />
 
         <h3>Minha conta</h3>
-        <table>
+        <table class="bank">
             <thead>
                 <tr>
                     <th>Data</th>

@@ -52,7 +52,7 @@
                 <input type="submit" value="Visualizar" />
             </fieldset>
         </form>
-        <table class="statement">
+        <table class="bank hidden">
             <thead>
                 <tr>
                     <th>Data</th>
