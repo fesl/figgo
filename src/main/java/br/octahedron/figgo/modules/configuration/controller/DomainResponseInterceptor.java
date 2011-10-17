@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.configuration.controller;
 
+import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.interceptor.ResponseInterceptor;
 import br.octahedron.cotopaxi.view.response.InterceptableResponse;
@@ -34,6 +35,16 @@ public class DomainResponseInterceptor extends ResponseInterceptor {
 	@Inject
 	private ConfigurationManager configurationManager;
 	
+	@Inject
+	private NamespaceManager namespaceManager;
+	
+	/**
+	 * @param namespaceManager the namespaceManager to set
+	 */
+	public void setNamespaceManager(NamespaceManager namespaceManager) {
+		this.namespaceManager = namespaceManager;
+	}
+	
 	/**
 	 * @param configurationManager the configurationManager to set
 	 */
@@ -47,10 +58,17 @@ public class DomainResponseInterceptor extends ResponseInterceptor {
 	@Override
 	public void preRender(InterceptableResponse response) {
 		try {
-			response.addOutput("domain", this.configurationManager.getDomainConfiguration());
-			response.addOutput("modules", this.configurationManager.getModulesInfoService());
+			// TODO review
+			String subdomain = this.subDomain();
+			if (!subdomain.equals("www")) {
+				this.namespaceManager.changeToNamespace(subdomain);
+				response.addOutput("domain", this.configurationManager.getDomainConfiguration());
+				response.addOutput("modules", this.configurationManager.getModulesInfoService());
+			}
 		} catch (DataDoesNotExistsException e) {
 			// nothing to do here.
+		} finally {
+			namespaceManager.changeToPreviousNamespace();
 		}
 	}
 }
