@@ -84,7 +84,6 @@ public class UserController extends Controller {
 			redirect(getProperty(APPLICATION_BASE_URL));
 		} else {
 			out("email", this.currentUser());
-			out("user", this.userManager.getUser(this.currentUser()));
 			echo();
 			invalid(NEW_USER_TPL);
 		}
@@ -97,7 +96,6 @@ public class UserController extends Controller {
 	@AuthenticationRequired
 	public void getDashboardUser() {
 		String userEmail = this.currentUser();
-		out("user", this.userManager.getUser(userEmail));
 		out("domains", this.authorizationManager.getUserDomains(userEmail));
 		success(DASHBOARD_TPL);
 	}
@@ -112,7 +110,6 @@ public class UserController extends Controller {
 		out("name", user.getName());
 		out("phoneNumber", user.getPhoneNumber());
 		out("description", user.getDescription());
-		out("user", user);
 		success(EDIT_USER_TPL);
 	}
 	
