@@ -28,6 +28,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import br.octahedron.util.Log;
+
 /**
  * A role specify a set of activities that can be performed by a set of users for a given domain.
  * 
@@ -43,6 +45,7 @@ public class Role implements Serializable {
 	}
 
 	private static final long serialVersionUID = -7580021620330781535L;
+	private final Log log = new Log(Role.class);
 
 	@PrimaryKey
 	@Persistent
@@ -128,7 +131,7 @@ public class Role implements Serializable {
 	}
 
 	/**
-	 * @param users
+	 * @param activities
 	 *            Adds a bunch of activities to this role.
 	 */
 	public void addActivities(Collection<String> activities) {
@@ -136,7 +139,7 @@ public class Role implements Serializable {
 	}
 
 	/**
-	 * @param users
+	 * @param activities
 	 *            Adds a bunch of activities to this role.
 	 */
 	public void addActivities(String... activities) {
@@ -184,4 +187,21 @@ public class Role implements Serializable {
 		this.activities.addAll(activities);
 		this.activities.retainAll(activities);
 	}
+
+	/**
+	 * @param activities
+	 *            Adds a bunch of activities to this role.
+	 */
+	public void removeActivities(String[] activities) {
+		this.removeActivities(Arrays.asList(activities));
+	}
+	
+	/**
+	 * @param activities
+	 *            Adds a bunch of activities to this role.
+	 */
+	public void removeActivities(Collection<String> activities) {
+		this.activities.removeAll(activities);
+	}
+
 }

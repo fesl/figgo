@@ -26,21 +26,36 @@
 <div class="left">
     <section id="main-intern">
         <h2>Permissões do domínio</h2>
-        <table>
+        <p><a href="#" id="add-role">Criar novo papel</a></p>
+        <form id="new-role" action="/roles/new" method="post">
+            <fieldset>
+                <legend>Novo papel de usuário</legend>
+                <div>
+                    <label for="name">Nome do papel</label>
+                    <input type="text" id="name" name="name" value="$!{$newRole}"/>
+                </div>
+                <input type="submit" value="Criar" />
+            </fieldset>
+        </form>
+        
+        <hr />
+
+        <table class="roles">
             <thead>
                 <tr>
                     <th>Atividade</th>
                 #foreach( $role in $roles ) 
-                    <th><a href="/roles/edit/$role.Name">$role.Name</a></th>
+                    <th>$role.Name <a class="delete" href="/roles/delete/$role.Name" data-confirm="Você tem certeza que deseja remover esse papel?"><small>remover?</small></a></th>
                 #end
                 </tr>
             </thead>
             <tbody>
             #foreach( $activity in $activities )
+                #set( $activityTemp = $activity )
                 <tr>
                     <td>$activity</td>
                 #foreach( $role in $roles )
-                    <td>#if( $role.containsActivity($activity) ) X #end</td>
+                    <td><input id="${role.name}${activity}" data-role="${role.name}" data-activity="${activity}" type="checkbox" #if( $role.containsActivity($activity) ) checked #end /></td>
                 #end
                 </tr>
             #end
@@ -50,4 +65,6 @@
 </div>
 #end
 
-#scripts()
+#@scripts()
+    <script defer src="/js/roles.js"></script>
+#end

@@ -50,9 +50,15 @@ public class AuthorizationController extends Controller {
 		out("activities", this.authorizationManager.getAcitivities());
 		success(LIST_ROLES_TPL);
 	}
-
-	public void postUpdateRoles() {
-		redirect(BASE_URL);
+	
+	public void postAddRoleActivity() {
+		this.authorizationManager.addActivitiesToRole(subDomain(), in("role"), in("activity"));
+		jsonSuccess();
+	}
+	
+	public void postRemoveRoleActivity() {
+		this.authorizationManager.removeActivitiesToRole(subDomain(), in("role"), in("activity"));
+		jsonSuccess();
 	}
 	
 	public void getListUsers() {

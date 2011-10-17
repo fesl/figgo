@@ -34,7 +34,6 @@ import br.octahedron.figgo.modules.ApplicationDomainModuleSpec.ActionSpec;
 import br.octahedron.figgo.modules.ModuleSpec.Type;
 import br.octahedron.figgo.modules.authorization.data.Role;
 import br.octahedron.figgo.modules.authorization.data.RoleDAO;
-import br.octahedron.figgo.modules.user.data.User;
 import br.octahedron.util.Log;
 
 /**
@@ -220,6 +219,36 @@ public class AuthorizationManager {
 	public void addActivitiesToRole(String domain, String roleName, Collection<String> activities) {
 		Role role = this.getRole(domain, roleName);
 		role.addActivities(activities);
+	}
+	
+	/**
+	 * Removes the given activities to a specific role of a specific domain.
+	 * 
+	 * @param domain
+	 *            domain that the role belongs to
+	 * @param roleName
+	 *            roleName to have its activities updated
+	 * @param activities
+	 *            activities to be removed of role
+	 */
+	public void removeActivitiesToRole(String domain, String roleName, String... activities) {
+		Role role = this.getRole(domain, roleName);
+		role.removeActivities(activities);
+	}
+	
+	/**
+	 * Removes the given activities to a specific role of a specific domain.
+	 * 
+	 * @param domain
+	 *            domain that the role belongs to
+	 * @param roleName
+	 *            roleName to have its activities updated
+	 * @param activities
+	 *            activities to be removed of role
+	 */
+	public void removeActivitiesToRole(String domain, String roleName, Collection<String> activities) {
+		Role role = this.getRole(domain, roleName);
+		role.removeActivities(activities);
 	}
 
 	/**
