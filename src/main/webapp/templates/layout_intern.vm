@@ -82,7 +82,7 @@
                 <div id="avatar-info" class="left">
                     <img src="http://lorempixum.com/45/45" />
                     <span>
-                        $name <br /> 
+                        $user.name <br /> 
                         <a href="/dashboard">Dashboard</a>
                     </span>
                 </div>
