@@ -2,7 +2,7 @@
 #parse( "templates/layout_intern.vm" )
 
 #@head()
-    <link type="text/css" href="/css/jquery-ui-1.8.13.custom.css" rel="stylesheet" />
+    <link type="text/css" href="/css/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
 #end
 
 #fullHeaderDomain()
@@ -79,5 +79,5 @@
 #end
     
 #@scripts()
-    <script type="text/javascript" src="/js/libs/jquery-ui-1.8.13.custom.min.js"></script>
+    <script defer src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
 #end

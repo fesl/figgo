@@ -4,7 +4,7 @@ $(function() {
 	if (searchUserInput.length) {
 		var cache = {},
 		lastXhr
-		searhUserInput.autocomplete({
+		searchUserInput.autocomplete({
 			minLength: 2,
 			source: function( request, response ) {
 						var term = request.term;
@@ -16,7 +16,7 @@ $(function() {
 						lastXhr = $.getJSON( "/user/search/" + term, function( data, status, xhr ) {
 						cache[ term ] = data;
 						if ( xhr === lastXhr ) {
-							response( $.map( data, function( item ) {
+							response( $.map( data.result, function( item ) {
 								return {
 									label: item.name + " <" + item.userId + ">",
 									value: item.userId

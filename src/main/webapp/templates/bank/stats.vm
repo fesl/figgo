@@ -1,7 +1,9 @@
 #set( $title = "Figgo - $!{domain.Name} - Banco - Extrato" )
 #parse( "templates/layout_intern.vm" )
 
-#head()
+#@head()
+    <link type="text/css" href="/css/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+#end
 
 #fullHeaderDomain()
 
@@ -37,36 +39,58 @@
 
         <hr />
         
-        <h3>Informações atuais do banco</h3>
-        <ul class="unstyled">
-            <li>Saldo: $balance</li>
-            <li>Lastro: $ballast</li>
-            <li>Em circulação: $inCirculation</li>
-        </ul>
+        <section id="general-stats">
+            <div class="left">
+                <h3>Informações atuais do banco</h3>
+                <ul class="unstyled">
+                    <li>Saldo: $balance</li>
+                    <li>Lastro: $ballast</li>
+                    <li>Em circulação: $inCirculation</li>
+                </ul>
+            </div>
+            <div class="left">
+                <h3>Informações do banco no mês atual</h3>
+                <ul class="unstyled">
+                    <li>Movimentação: $monthCirculation</li>
+                    <li>Retorno: $creditAmount</li>
+                </ul>
+            </div>
+        </section>
 
-        <h3>Informações do banco no mês atual</h3>
-        <ul class="unstyled">
-            <li>Movimentação: $monthCirculation</li>
-            <li>Retorno: $creditAmount</li>
-        </ul>
-        <form id="stats-form" action="/bank/stats" method="post">
-            <fieldset>
-                <legend>Selecione um intervalo</legend>
-                <div>
-                    <label for="startDate">Início</label>
-                    <input type="text" name="startDate" />
-                </div>
-                <div>
-                    <label for="endDate">Fim</label>
-                    <input type="text" name="endDate" />
-                </div>
-                <input type="submit" value="Visualizar" />
-            </fieldset>
-        </form>
+        <hr />
+
+        <section>
+            <h3>Movimentação e retorno em outros períodos?</h3>
+            <form id="stats-form" action="/bank/stats" method="post">
+                <fieldset>
+                    <legend>Selecione um intervalo</legend>
+                    <div>
+                        <label for="startDate">Início</label>
+                        <input type="text" id="startDate" name="startDate" />
+                    </div>
+                    <div>
+                        <label for="endDate">Fim</label>
+                        <input type="text" id="endDate" name="endDate" />
+                    </div>
+                    <input type="submit" value="Visualizar" />
+                </fieldset>
+            </form>
+
+            <hr />
+
+            <section id="dynamic-stats">
+                <h3></h3>
+                <ul class="unstyled">
+                    <li>Movimentação: <span id="circulation"></span></li>
+                    <li>Retorno: <span id="amount"></span></li>
+                </ul>
+            </section>
+        </section>
     </section>
 </div>
 #end
     
 #@scripts()
-    <script src="/js/bank.js"></script>
+    <script defer src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
+    <script defer src="/js/bank.js"></script>
 #end

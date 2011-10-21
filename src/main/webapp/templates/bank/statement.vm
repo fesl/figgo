@@ -54,27 +54,31 @@
                 <input type="submit" value="Visualizar" />
             </fieldset>
         </form>
-        <table class="bank hidden">
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Destino</th>
-                    <th>Comentário</th>
-                    <th>Valor</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <td colspan="3" class="balance">SALDO</td>
-                <td class=#if( $balance >= 0 )"blue"#else"red"#end>M$ $formatter. format($balance)</td>
-            </tfoot>
-            <tbody>
-            </tbody>
-        </table>
+        <hr />
+        <section id="statement-transactions">
+            <h3>Transações</h3>
+            <table class="bank">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>Destino</th>
+                        <th>Comentário</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <td colspan="3" class="balance">SALDO</td>
+                    <td class=#if( $balance >= 0 )"blue"#else"red"#end>M$ $formatter. format($balance)</td>
+                </tfoot>
+                <tbody>
+                </tbody>
+            </table>
+        </section>
     </section>
 </div>
 #end
     
 #@scripts()
-    <script src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
-    <script src="/js/bank.js"></script>
+    <script defer src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
+    <script defer type="text/javascript" src="/js/bank.js"></script>
 #end

@@ -1,12 +1,15 @@
 $(function() {
 	$("#statement-form").submit(function(e) {
 		var $this = $(this),
-		$table = $("table");
+		$table = $("table"),
+		$transactionsSection = $("#statement-transactions"),
+		startDate = $this.find('input[name=startDate]').val(),
+		endDate = $this.find('input[name=endDate]').val();
 		$table.show();
 		$.ajax({
 			type: "POST",
 			url: "/bank/statement",
-			data: {startDate: $this.find('input[name=startDate]').val(), endDate: $this.find('input[name=endDate]').val()}
+			data: {startDate: startDate, endDate: endDate}
 		}).success(function(data) {
 			var $tbody = $table.find("tbody"); 
 			$tbody.empty();
@@ -17,8 +20,10 @@ $(function() {
 								  "<td>" + data.transactions[i].comment + "</td></tr>");
 				}
 			} else {
-				$tbody.append("<tr><td colspan=\"4\">Nenhuma transação nesse período.</td></tr>");
+				$tbody.append("<tr><td colspan=\"4\">Não houve transações nesse período.</td></tr>");
 			}
+			$transactionsSection.show();
+			$transactionsSection.find('h3').text("Transações entre " + startDate + " e " + endDate);
 			// TODO set balance
 		}).error(function(data) {
 			console.log('Não foi possível buscar extrato');
@@ -27,19 +32,20 @@ $(function() {
 		e.preventDefault();
 	});
 	
-	
 	$("#stats-form").submit(function(e) {
-		var $this = $(this);
-		var $startDate = $this.find('input[name=startDate]');
-		var $endDate = $this.find('input[name=endDate]');
+		var $this = $(this),
+			$startDate = $this.find('input[name=startDate]'),
+			$endDate = $this.find('input[name=endDate]'),
+			$dynamicStats = $("#dynamic-stats");
 		$.ajax({
 			type: "POST",
 			url: "/bank/stats",
 			data: {startDate: $startDate.val(), endDate: $endDate.val()}
 		}).success(function(data) {
-			$("#dynamic-stats h3").html("Informações no intervalo de" + $endDate.val() + " a " + $startDate.val());
-			$("dl > dd:first").html(data.circulation);
-			$("dl > dd:eq(2)").html(data.creditAmount);
+			$dynamicStats.find("h3").text("Informações no intervalo de " + $startDate.val() + " a " + $endDate.val());
+			$("#circulation").text(data.circulation);
+			$("#amount").text(data.creditAmount);
+			$dynamicStats.show();
 		}).error(function(data) {
 			console.log('Não foi possível recuperar stats do banco');
 		});
