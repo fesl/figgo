@@ -32,7 +32,7 @@
                 <li><a href="/bank">Minha conta</a></li>
                 <li><a href="/bank/transfer">Trasferência</a></li>
                 <li><a href="/bank/statement">Extrato</a></li>
-                <li><a href="/bank/other">Outras consultas</a></li>
+                <li><a href="/bank/stats">Estatísticas</a></li>
             </ul>
         </nav>
 
