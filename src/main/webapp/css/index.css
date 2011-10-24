@@ -393,6 +393,9 @@ ul.inline li {
 ul.unstyled li {
   list-style: none; }
 
+.hidden {
+  display: none; }
+
 html, body {
   background: #9a8f19; }
 
