@@ -6,42 +6,69 @@
 #fullHeader()
 
 #@body()
-<div id="info-form" class="left">
+<div class="left">
+    <section id="about-intern">
+        <h2>$user.Name</h2>
+        #if( $user.AvatarKey )
+        <a href="/user/upload"><img id="avatar" src="/serve/$user.AvatarKey" alt="Avatar do usuário" /></a>
+        #else
+        <a href="/user/upload"><img id="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do usuário" /></a>
+        #end
+        <ul class="unstyled">
+            <li>$user.UserId</li>
+            <li>$user.PhoneNumber</li>
+        </ul>
+        <p>$user.Description</p>
+    </section>
+
+    <hr />
+
     <section>
-        <header>
-            <h1>Minha conta</h1>
-        </header>
-        <p>Olá, $user.name!</p>
-        <p>Matenha seus dados atualizados para que as pessoas possam entrar em contato com você sem maiores dificuldades.</p>
-        <p><span class="label important">Atenção!</span> Faça um favor a si mesmo, preencha de forma correta e verídica a fim de evitar problemas futuros.</p>
+        <h3>Coletivos associados</h3>
+        #foreach( $domain in $domains )
+        <div class="organization">
+            <h4>$domain</h4>
+            <ul class="inline">
+                #foreach( $module in $domain.Modules )
+                <li><a href="$serverName/$module.Url">$module.Name</a></li>
+                #end
+            </ul>
+        </section>
+        #end
     </section>
 </div>
 <div class="left">
-    <form action="/user/edit" method="post" accept-charset="utf-8">
-        <fieldset>
-            <legend>Atualização da conta</legend>
-            <input type="hidden" name="_method" value="put" />
-            <div>
-                <label for="name">Nome</label>
-                <input type="text" id="name" name="name" value="$!{name}" required />
-                #if ($invalid.name)
-                <span>$invalid.name</span>
-                #end
-            </div>
-            <div>
-                <label for="phoneNumber">Telefone</label>
-                <input type="text" name="phoneNumber" value="$!{phoneNumber}" pattern="^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$" required />
-                #if ($invalid.phoneNumber)
-                <span>$invalid.phoneNumber</span>
-                #end
-            </div>
-            <div>
-                <label for="description">Descrição</label>
-                <textarea name="description">$!{description}</textarea>
-            </div>
-        </fieldset>
-        <input type="submit" value="É hora de mudar!" />
-    </form>
+    <section id="main-intern">
+        <p><span class="label important">Atenção!</span> Faça um favor a si mesmo, preencha de forma correta e verídica a fim de evitar problemas futuros.</p>
+        
+        <hr />
+        
+        <form action="/user/edit" method="post" accept-charset="utf-8">
+            <fieldset>
+                <legend>Atualização da conta</legend>
+                <input type="hidden" name="_method" value="put" />
+                <div>
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" value="$!{name}" required />
+                    #if ($invalid.name)
+                    <span>$invalid.name</span>
+                    #end
+                </div>
+                <div>
+                    <label for="phoneNumber">Telefone</label>
+                    <input type="text" name="phoneNumber" value="$!{phoneNumber}" pattern="^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$" required />
+                    #if ($invalid.phoneNumber)
+                    <span>$invalid.phoneNumber</span>
+                    #end
+                </div>
+                <div>
+                    <label for="description">Descrição</label>
+                    <textarea name="description">$!{description}</textarea>
+                </div>
+            </fieldset>
+            <input type="submit" value="É hora de mudar!" />
+        </form>
+    </section>
 </div>
 #end
 
