@@ -33,7 +33,7 @@
                 <li><a href="/bank">Minha conta</a></li>
                 <li><a href="/bank/transfer">Trasferência</a></li>
                 <li><a href="/bank/statement">Extrato</a></li>
-                <li><a href="/bank/other">Outras consultas</a></li>
+                <li><a href="/bank/stats">Estatísticas</a></li>
             </ul>
         </nav>
 
@@ -41,14 +41,6 @@
 
         <h3>Admin</h3>
         <span>Saldo do banco: M$ $formatter.format($balance)</span>
-        #if( $errors )
-        <h3>Erros</h3>
-        <ul>
-            #foreach( $error in $errors )
-            <li>$error</li>
-            #end
-        </ul>
-        #end
 
         <form action="/bank/share" method="post">
             <fieldset>
@@ -56,10 +48,16 @@
                 <div>
                     <label for="userId">Usuário</label>
                     <input type="text" name="userId" class="autocomplete" />
+                    #if ($invalid.userId)
+                    <span>$invalid.userId</span>
+                    #end
                 </div>
                 <div>
                     <label for="amount">Valor</label>
                     <input type="text" name="amount" />
+                    #if ($invalid.amount)
+                    <span>$invalid.amount</span>
+                    #end
                 </div>
                 <div>
                     <label for="type">Tipo</label>
@@ -67,13 +65,16 @@
                         <option value="PAYMENT">Pagamento</option>
                         <option value="TRANSFER">Transferência</option>
                     </select>
+                    #if ($invalid.type)
+                    <span>$invalid.type</span>
+                    #end
                 </div>
                 <div>
                     <label for="comment">Comentário (opcional)</label>
                     <textarea name="comment"></textarea>
                 </div>
-                <input type="submit" value="Transferir" />
             </fieldset>
+            <input type="submit" value="Transferir" />
         </form>
 
         <form action="/bank/ballast" method="post">
@@ -82,13 +83,16 @@
                 <div>
                     <label for="amount">Valor</label>
                     <input type="text" name="amount" />
+                    #if ($invalid.amount)
+                    <span>$invalid.amount</span>
+                    #end
                 </div>
                 <div>
                     <label for="comment">Comentário (opcional)</label>
                     <textarea name="comment"></textarea>
                 </div>
-                <input type="submit" value="Inserir" />
             </fieldset>
+            <input type="submit" value="Inserir" />
         </form>
     </section>
 </div>

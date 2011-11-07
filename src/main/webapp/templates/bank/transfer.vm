@@ -41,24 +41,23 @@
 
         <h3>Transferência</h3>
         <span>Saldo atual: M$ $balance</span>
-        #if( $errors )
-        <h3>Erros</h3>
-        <ul>
-            #foreach( $error in $errors )
-            <li>$error</li>
-            #end
-        </ul>
-        #end
+
         <form action="/bank/transfer" method="post">
             <fieldset>
-                <legend>TBD</legend>
+                <legend>Faça uma transferência</legend>
                 <div>
                     <label for="userId">Usuário</label>
                     <input type="text" name="userId" class="autocomplete" />
+                    #if ($invalid.userId)
+                    <span>$invalid.userId</span>
+                    #end
                 </div>
                 <div>
                     <label for="amount">Valor</label>
                     <input type="text" name="amount" />
+                    #if ($invalid.amount)
+                    <span>$invalid.amount</span>
+                    #end
                 </div>
                 <div>
                     <label for="type">Tipo</label>
@@ -66,6 +65,9 @@
                         <option value="PAYMENT">Pagamento</option>
                         <option value="TRANSFER">Transferência</option>
                     </select>
+                    #if ($invalid.type)
+                    <span>$invalid.type</span>
+                    #end
                 </div>
                 <div>
                     <label for="comment">Comentário (opcional)</label>

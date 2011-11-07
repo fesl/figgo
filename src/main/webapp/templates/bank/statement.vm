@@ -46,10 +46,16 @@
                 <div>
                     <label for="startDate">Início</label>
                     <input type="text" id="startDate" name="startDate" />
+                    #if ($invalid.startDate)
+                    <span>$invalid.startDate</span>
+                    #end
                 </div>
                 <div>
                     <label for="endDate">Fim</label>
                     <input type="text" id="endDate" name="endDate" />
+                    #if ($invalid.endDate)
+                    <span>$invalid.endDate</span>
+                    #end
                 </div>
                 <input type="submit" value="Visualizar" />
             </fieldset>
@@ -80,5 +86,5 @@
     
 #@scripts()
     <script defer src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
-    <script defer type="text/javascript" src="/js/bank.js"></script>
+    <script defer src="/js/bank.js"></script>
 #end
