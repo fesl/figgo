@@ -1,0 +1,301 @@
+#! /bin/bash
+
+LOG_FILE=/tmp/ctpx.out
+MVN_OUT=/tmp/mvn.out
+
+web_dir=src/main/webapp
+
+## Internal Functions
+is_ubuntu() {
+	# check is running ubuntu
+
+	# TODO check version
+	lsb_release -i | grep Ubuntu &>/dev/null
+	return $?
+}
+
+try_install_maven() {
+	# tries to install maven
+	is_ubuntu
+	if [ $? -eq 0 ]
+	then
+		echo -n "Trying to install maven...	"
+		sudo apt-get -y install maven2 > ${LOG_FILE}
+		if [ $? -eq 0 ]
+		then
+			echo "Done!"
+			return 0
+		else
+			echo "Failed, see the ${LOG_FILE}."
+			return 1
+		fi
+	else
+		echo "You're not running Ubuntu. Please install Maven2 manually."
+		return 1
+	fi
+}
+check_maven() {
+	# checks if maven is installed
+	which mvn &> /dev/null
+	if [ $? -ne 0 ]
+	then
+		echo "MAVEN2	[NOT INSTALLED]"
+		try_install_maven
+		if [ $? -ne 0 ]
+		then
+			echo "Aborting..."
+			exit 1
+		fi
+	fi
+}
+
+try_install_gae() {
+	# tries to install GAE Java SDK
+	is_ubuntu
+	if [ $? -eq 0 ]
+	then
+		echo "Trying to install the gae-sdk for Java..."
+		sudo add-apt-repository ppa:daniloqueiroz/dev >${LOG_FILE} &&\
+			sudo apt-get update > ${LOG_FILE} &&\
+			sudo apt-get -y install java-gae-sdk > ${LOG_FILE}
+		if [ $? -eq 0 ]
+		then
+			echo "Done!"
+			return 0
+		else
+			echo "Failed, see the ${LOG_FILE}."
+			return 1
+		fi
+	else
+		echo "You're not running Ubuntu. Please install GAE SDK for Java manually."
+		return 1
+	fi
+}
+check_gae_sdk() {
+	# checks if GAE Java SDK is installed
+	which appcfg.sh &>/dev/null
+	if [ $? -ne 0 ]
+	then
+		echo "GAE SDK	[NOT INSTALLED]"
+		try_install_gae
+		if [ $? -ne 0 ]
+		then
+			echo "Aborting..."
+			exit 1
+		fi
+	fi
+}
+
+add_pom() {
+	# add pom snippet files to pom.xml.tmp
+	cfg_file=.extensions/$1
+	cfg_type="$(echo $1 | cut -d"." -f2) section"
+	
+
+	h=$(grep -n "${cfg_type}" pom.xml | cut -d ":" -f1 )
+	head -n$h pom.xml >> pom.xml.tmp
+	cat ${cfg_file} >> pom.xml.tmp
+	t=$(wc -l pom.xml | cut -d" " -f1); 
+	tail -n$(($t - $h)) pom.xml >> pom.xml.tmp
+
+	mv pom.xml.tmp pom.xml
+}
+
+backup_pom() {
+	# backups the pom.xml file to pom.xml.prev
+	cp pom.xml pom.xml.prev
+}
+
+add_jdoconfig() {
+    mkdir src/main/resources/META-INF
+    cp .extensions/jdoconfig.xml src/main/resources/META-INF
+}
+## Setup commands
+enable_extensions() {
+	# enable cotopaxi extensions
+
+	backup_pom
+	
+	# TODO offers a menu to choice which extensions to install
+	## by now all extensions are enable and needs gae
+	check_gae_sdk
+	add_pom jdo.plugins
+	add_pom ctpx.dependencies
+	add_pom gae.dependencies
+	add_pom tests.dependencies
+	add_jdoconfig
+}
+
+setup_project() {
+	# Setups the project (create pom.xml)
+	echo "Seems to be the first time that you are running Cotopaxi..."
+	
+	read -p "Project name: " project_name
+	read -p "Project base package: " package_name
+
+	cp pom.xml.sample pom.xml
+	sed -i "s/#PACKAGE_NAME#/${package_name}/g" pom.xml
+	sed -i "s/#PROJECT_NAME#/${project_name}/g" pom.xml
+
+	read -p "Do you want to enable cotopaxi extensions?[y/n] " resp
+	if [ ${resp} == y ]
+	then 
+		enable_extensions
+	fi
+
+	# remove empty files
+	find . -name 'empty' | xargs rm 
+}
+
+reset() {
+	# Removes the pom.xml and pom.xml.prev files
+	read -p "It will remove the pom.xml and pom.xml.prev files and the target folder. Press ENTER to continue or ^C to cancel."
+	rm -rf pom.xml pom.xml.prev target
+}
+## Commands
+clean_maven() {
+	# Execute maven clean
+	echo -ne "Cleaning Project...\t"
+	rm -r ${web_dir}/WEB-INF/{classes,lib} &> ${MVN_OUT}
+	mvn clean &> ${MVN_OUT}
+	if [ $? -eq 0 ]
+	then
+		echo "OK"
+	else
+		echo -e "Clean has failed.\nPress ENTER to see maven output"
+		read enter
+		less ${MVN_OUT}
+		return 1
+	fi
+
+}
+build_maven() {
+	# Execute maven package
+	echo -ne "Building Project...\t"
+	mvn compile war:inplace &> ${MVN_OUT}
+	if [ $? -eq 0 ]
+	then
+		echo "OK"
+	else
+		echo -e "Build has failed.\nPress ENTER to see maven output"
+		read enter
+		less ${MVN_OUT}
+		return 1
+	fi
+}
+dev_server() {
+	# Runs the development server
+
+	# TODO defines different strategies for different servers"
+	check_gae_sdk
+	echo -ne "Running Project...\t"
+#	target_dir="target/$(head -n10 pom.xml | grep -P '(artifactId|version)>' | awk -F'<|>' '{ print $3 }' | xargs | sed 's/ /-/g')"
+	target_dir=${web_dir}
+	if [ -d ${target_dir}/WEB-INF/classes ]
+	then
+		echo "OK"
+		echo -e "\nServer output will be redirect to ${LOG_FILE}.\nTry 'tail -f ${LOG_FILE} to see the server output in realtime...\n\nPress ^C to exit server."
+		dev_appserver.sh ${target_dir} &>> ${LOG_FILE}
+	else
+		echo -e "Target dir not found.\nPlease run the 'build' command first!"
+		return 1
+	fi
+
+}
+clear_log() {
+	# Remove log files
+	rm -f ${LOG_FILE} ${MVN_OUT}
+}
+# Basic Commands
+show_help() {
+	echo "CTPX commands:"
+	echo -e "\tbuild\t\tRuns maven;"
+	echo -e "\tclean\t\tClears projet;"
+	echo -e "\trun-server\tRuns the project at development server;"
+	echo -e "\tall\t\tClear, build and run-server commands;"
+	echo -e "\tclean-log\tRemove log files;"
+	echo -e "\thelp\t\tShow this help;"
+	echo -e "\texit\t\tExit interactive mode;"
+}
+
+run_cmd() {
+	cmd=$1
+	shift
+	params=$*
+	if [ $# -eq 0 ] || [ ${params:0:1} != "-" ]
+	then
+		unset params
+	fi
+	case ${cmd} in
+		clean )
+			clean_maven ${params}
+			;;
+		all )
+			clean_maven ${params}
+			build_maven ${params}
+			dev_server
+			;;
+		build )
+			build_maven ${params}
+			;;
+		run-server|run )
+			dev_server
+			;;
+		extensions )
+			enable_extensions ${params}
+			;;
+		reset )
+			reset ${params}
+			;;
+		clean-log ) 
+			clear_log
+			;;
+		exit|quit )
+			exit 0
+			;;
+		help )
+			show_help ${params}
+			;;
+		* )
+			echo "Command not found!" 
+			show_help ${params}
+			;;
+	esac
+	# check if theres other commands
+	if [ $# -ne 0 ] && [ -z $params ]
+	then
+		run_cmd $*
+	fi
+}
+
+## Script Begin
+# just a previous help check
+if [ $# -ge 1 ] && [ $1 == 'help' ]
+then
+	show_help
+	exit 0
+fi
+
+# setup log file
+echo -e "\n---- $(date)\n"	>> ${LOG_FILE}
+# check maven - essential for cotopaxi script
+check_maven
+# check pom.xml file
+if [ ! -f pom.xml ]
+then
+	setup_project
+fi
+
+# run commands
+if [ $# -ne 0 ]
+then
+	run_cmd $*
+else
+	echo "Cotopaxi interactive shell. Try 'help'"
+	while [ 1 ]
+	do
+		read -p "ctpx: " cmd
+		run_cmd $cmd
+	done
+fi
+

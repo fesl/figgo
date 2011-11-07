@@ -5,3 +5,6 @@ route53/.aws-secrets
 .settings/org.eclipse.core.resources.prefs
 src/main/webapp/WEB-INF/classes/META-INF/
 src/main/webapp/WEB-INF/classes/META-INF/jdoconfig.xml
+src/main/webapp/WEB-INF/appengine-generated/
+src/main/webapp/WEB-INF/classes/br/
+src/main/webapp/WEB-INF/lib/
