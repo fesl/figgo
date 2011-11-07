@@ -23,18 +23,16 @@
 
     <hr />
 
-    <section>
+    <section id="domains">
         <h3>Coletivos associados</h3>
+        <ul class="unstyled">
         #foreach( $domain in $domains )
-        <div class="organization">
-            <h4>$domain</h4>
-            <ul class="inline">
-                #foreach( $module in $domain.Modules )
-                <li><a href="$serverName/$module.Url">$module.Name</a></li>
-                #end
-            </ul>
-        </section>
+        <li class="organization">
+            <img src="/serve/$domain.avatarKey" alt="Avatar do $domain.name"/>
+            <a href="http://$domain.$applicationDomain">$domain.name</a>
+        </li>
         #end
+        </ul>
     </section>
 </div>
 
