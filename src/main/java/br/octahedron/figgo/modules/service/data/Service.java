@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -36,6 +37,8 @@ public class Service implements Serializable {
 	private static final long serialVersionUID = -1270664240981744528L;
 
 	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Long id;
 	@Persistent
 	private String name;
 	@Persistent
@@ -61,6 +64,14 @@ public class Service implements Serializable {
 
 	public void removeProvider(String userId) {
 		this.providers.remove(userId);
+	}
+	
+	public boolean hasProvider(String userId) {
+		return this.providers.contains(userId);
+	}
+	
+	public Long getId() {
+		return this.id;
 	}
 
 	/**
@@ -120,6 +131,15 @@ public class Service implements Serializable {
 	 */
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	/**
+	 * @param name
+	 * 			the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+		
 	}
 
 }

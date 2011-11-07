@@ -43,7 +43,7 @@ public class ServiceContract implements Serializable {
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Long id;
 	@Persistent
-	private String serviceName;
+	private Long serviceId;
 	@Persistent
 	private String contractor;
 	@Persistent
@@ -57,8 +57,8 @@ public class ServiceContract implements Serializable {
 	@Persistent
 	private Date date;
 	
-	public ServiceContract(String serviceName, String contractor, String provider, BigDecimal amount) {
-		this.serviceName = serviceName;
+	public ServiceContract(Long serviceId, String contractor, String provider, BigDecimal amount) {
+		this.serviceId = serviceId;
 		this.contractor = contractor;
 		this.provider = provider;
 		this.amount = amount;
@@ -126,8 +126,8 @@ public class ServiceContract implements Serializable {
 	/**
 	 * @return the service name
 	 */
-	public String getServiceName() {
-		return this.serviceName;
+	public Long getServiceId() {
+		return this.serviceId;
 	}
 	
 	/**
@@ -138,7 +138,7 @@ public class ServiceContract implements Serializable {
 	}
 
 	public String toString() {
-		return "[" + id + ", " + serviceName + ", " + contractor + ", " + provider + "]";
+		return "[" + id + ", " + serviceId + ", " + contractor + ", " + provider + "]";
 	}
 
 }

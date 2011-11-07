@@ -61,8 +61,9 @@ public class ServiceManager {
 	/**
 	 * Updates an service
 	 */
-	public Service updateService(String name, BigDecimal value, String category, String description) {
-		Service service = this.serviceDAO.get(name);
+	public Service updateService(Long id, String name, BigDecimal value, String category, String description) {
+		Service service = this.serviceDAO.get(id);
+		service.setName(name);
 		service.setAmount(value);
 		service.setDescription(description);
 		service.setCategory(category);
@@ -76,8 +77,8 @@ public class ServiceManager {
 	 * @return the {@link Service} with the given id, if exists, or <code>null</code>, if doesn't
 	 *         exists a user with the given id.
 	 */
-	public Service getService(String name) {
-		return this.serviceDAO.get(name);
+	public Service getService(Long id) {
+		return this.serviceDAO.get(id);
 	}
 
 	/**
@@ -86,6 +87,7 @@ public class ServiceManager {
 	 * @return <code>true</code> if exists, <code>false</code> otherwise.
 	 */
 	public boolean existsService(String name) {
+		// FIXME change to compare with the name not the key
 		return this.serviceDAO.exists(name);
 	}
 
@@ -96,8 +98,8 @@ public class ServiceManager {
 	 * @param userId
 	 * @return 
 	 */
-	public Service addProvider(String serviceName, String userId) {
-		Service service = this.serviceDAO.get(serviceName);
+	public Service addProvider(Long id, String userId) {
+		Service service = this.serviceDAO.get(id);
 		service.addProvider(userId);
 		return service;
 	}
@@ -109,8 +111,8 @@ public class ServiceManager {
 	 * @param userId
 	 * @return 
 	 */
-	public Service removeProvider(String serviceName, String userId) {
-		Service service = this.serviceDAO.get(serviceName);
+	public Service removeProvider(Long id, String userId) {
+		Service service = this.serviceDAO.get(id);
 		service.removeProvider(userId);
 		return service;
 	}
@@ -146,9 +148,9 @@ public class ServiceManager {
 	 * @param provider
 	 * @param amount
 	 */
-	public void requestContract(String serviceName, String contractor, String provider) {
-		Service service = this.serviceDAO.get(serviceName);
-		ServiceContract serviceContract = new ServiceContract(serviceName, contractor, provider, service.getAmount());
+	public void requestContract(Long id, String contractor, String provider) {
+		Service service = this.serviceDAO.get(id);
+		ServiceContract serviceContract = new ServiceContract(id, contractor, provider, service.getAmount());
 		this.serviceContractDAO.save(serviceContract);
 		this.eventBus.publish(new ServiceContractRequestedEvent(serviceContract));
 	}
@@ -180,9 +182,8 @@ public class ServiceManager {
 	 * @param serviceName
 	 * @return
 	 */
-	public void removeService(String serviceName) {
-		Service service = this.serviceDAO.get(serviceName);
-		this.serviceDAO.delete(service);
+	public void removeService(Long id) {
+		this.serviceDAO.delete(id);
 	}
 	/**
 	 * @param currentUser

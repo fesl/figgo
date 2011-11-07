@@ -2,43 +2,64 @@
 #set( $currentModule = "SERVICES" )
 #parse( "templates/layout_intern.vm" )
 
+#head()
+
+#fullHeaderDomain()
+
 #@body()
-	<a href="$logout_url">logout</a>
-	
-    <div id="main" class="center">
-		<header>
-    		<h1>Serviços</h1>
-    		<nav id="tabs">
-        		<ul class="inline">
-                    <li><a href="/">Dashboard</a></li>
-                    #foreach( $module in $domain.ModulesEnabled )
-						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
-					#end
-        		</ul>
-    		</nav>
-		</header>
-		<div id="content">
-			<div id="single-column">
-				<section id="service">
-					<h3>$!{service.Name}</h3>
-            		Valor: $!{service.Value} <br />
-            		Categoria: $!{service.Category} <br />
-                    Descrição: $!{service.Description} <br />
-					<a id="remove" href="/service/$service.Name/delete">remover serviço</a>
-                </section>
-				<section id="providers">
-					<h3>Prestadores</h3>
-					<ul>
-					#foreach( $provider in $service.Providers )
-						<li>$provider -  <a class="contract-link" href="/service/$service.Name/contract/$provider">contratar</a></li>
-					#end
-					</ul>
-                </section>
-			</div>
-		</div>
-	</div>
+<div class="left">
+    <section id="about-intern">
+        <h2>$domain.Name</h2>
+        #if( $domain.AvatarKey )
+        <a href="/domain/upload"><img class="avatar" src="/serve/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+        #else
+        <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
+        #end
+        <ul class="links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            #foreach( $module in $domain.ModulesEnabled )
+                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+            #end
+        </ul>
+    </section>
+</div>
+<div class="left">
+    <section id="main-intern">
+        <section id="service">
+            <h3>$!{service.Name}</h3>
+            <small>$!{service.category}</small>
+            <p>$!{service.description}</p>
+            <footer>
+                    Valor: $!{service.amount}
+            </footer>
+            <div id="operations">
+                // if admin
+                <a href="/service/$service.id/edit">editar</a>
+                <a href="/service/$service.id/delete">remover</a>
+            </div>
+        </section>
+        <section id="providers">
+            <h3>Prestadores <img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />#if ($service.hasProvider($user.email))<img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />#end</h3>
+            <ul>
+            #foreach( $provider in $service.providers )
+                <li>$provider -  <a class="contract-link" href="/service/$service.id/contract/$provider">contratar</a></li>
+            #end
+            </ul>
+        </section>
+    </section>
+</div>
 #end
-	
+
+#@body()
+        <div id="content">
+            <div id="single-column">
+                
+            </div>
+        </div>
+    </div>
+#end
+    
 #@scripts()
-	<script src="/js/services.js"></script>
+    <script src="/js/services.js"></script>
 #end

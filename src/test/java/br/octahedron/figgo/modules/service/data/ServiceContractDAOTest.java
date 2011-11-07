@@ -49,21 +49,21 @@ public class ServiceContractDAOTest {
 	}
 	
 	private void createServiceContracts() {
-		this.serviceContractDAO.save(new ServiceContract("Serviço1", "Pessoa1", "Pessoa2", new BigDecimal(100)));
-		this.serviceContractDAO.save(new ServiceContract("Serviço4", "Pessoa2", "Pessoa3", new BigDecimal(50)));
-		this.serviceContractDAO.save(new ServiceContract("Serviço3", "Pessoa3", "Pessoa1", new BigDecimal(10)));
-		this.serviceContractDAO.save(new ServiceContract("Serviço6", "Pessoa3", "Pessoa2", new BigDecimal(35)));
-		this.serviceContractDAO.save(new ServiceContract("Serviço2", "Pessoa1", "Pessoa3", new BigDecimal(80)));
+		this.serviceContractDAO.save(new ServiceContract(new Long(1), "Pessoa1", "Pessoa2", new BigDecimal(100)));
+		this.serviceContractDAO.save(new ServiceContract(new Long(2), "Pessoa2", "Pessoa3", new BigDecimal(50)));
+		this.serviceContractDAO.save(new ServiceContract(new Long(3), "Pessoa3", "Pessoa1", new BigDecimal(10)));
+		this.serviceContractDAO.save(new ServiceContract(new Long(4), "Pessoa3", "Pessoa2", new BigDecimal(35)));
+		this.serviceContractDAO.save(new ServiceContract(new Long(5), "Pessoa1", "Pessoa3", new BigDecimal(80)));
 	}
 	
 	private void createHistoryServiceContracts() {
-		ServiceContract serviceContract1 = new ServiceContract("Serviço1", "Pessoa1", "Pessoa2", new BigDecimal(100));
+		ServiceContract serviceContract1 = new ServiceContract(new Long(1), "Pessoa1", "Pessoa2", new BigDecimal(100));
 		serviceContract1.setStatus(ServiceContractStatus.COMPLETED);
 		this.serviceContractDAO.save(serviceContract1);
-		ServiceContract serviceContract2 = new ServiceContract("Serviço4", "Pessoa2", "Pessoa3", new BigDecimal(50));
+		ServiceContract serviceContract2 = new ServiceContract(new Long(4), "Pessoa2", "Pessoa3", new BigDecimal(50));
 		serviceContract2.setStatus(ServiceContractStatus.COMPLETED);
 		this.serviceContractDAO.save(serviceContract2);
-		ServiceContract serviceContract3 = new ServiceContract("Serviço6", "Pessoa3", "Pessoa2", new BigDecimal(35));
+		ServiceContract serviceContract3 = new ServiceContract(new Long(6), "Pessoa3", "Pessoa2", new BigDecimal(35));
 		serviceContract3.setStatus(ServiceContractStatus.COMPLETED);
 		this.serviceContractDAO.save(serviceContract3);
 	}
@@ -74,13 +74,13 @@ public class ServiceContractDAOTest {
 		Collection<ServiceContract> contracts = this.serviceContractDAO.getProviderContracts("Pessoa1");
 		Iterator<ServiceContract> iterator = contracts.iterator();
 		assertEquals(1, contracts.size());
-		assertEquals("Serviço3", iterator.next().getServiceName());
+		assertEquals(new Long(3), iterator.next().getServiceId());
 		
 		contracts = this.serviceContractDAO.getProviderContracts("Pessoa2");
 		iterator = contracts.iterator();
 		assertEquals(2, contracts.size());
-		assertEquals("Serviço6", iterator.next().getServiceName());
-		assertEquals("Serviço1", iterator.next().getServiceName());
+		assertEquals(new Long(4), iterator.next().getServiceId());
+		assertEquals(new Long(1), iterator.next().getServiceId());
 	}
 	
 	@Test
@@ -89,13 +89,13 @@ public class ServiceContractDAOTest {
 		Collection<ServiceContract> contracts = this.serviceContractDAO.getContractorContracts("Pessoa1");
 		Iterator<ServiceContract> iterator = contracts.iterator();
 		assertEquals(2, contracts.size());
-		assertEquals("Serviço2", iterator.next().getServiceName());
-		assertEquals("Serviço1", iterator.next().getServiceName());
+		assertEquals(new Long(5), iterator.next().getServiceId());
+		assertEquals(new Long(1), iterator.next().getServiceId());
 		
 		contracts = this.serviceContractDAO.getContractorContracts("Pessoa2");
 		iterator = contracts.iterator();
 		assertEquals(1, contracts.size());
-		assertEquals("Serviço4", iterator.next().getServiceName());
+		assertEquals(new Long(2), iterator.next().getServiceId());
 	}
 	
 	@Test
@@ -104,17 +104,17 @@ public class ServiceContractDAOTest {
 		Collection<ServiceContract> contracts = this.serviceContractDAO.getContracts("Pessoa1");
 		Iterator<ServiceContract> iterator = contracts.iterator();
 		assertEquals(3, contracts.size());
-		assertEquals("Serviço2", iterator.next().getServiceName());
-		assertEquals("Serviço3", iterator.next().getServiceName());
-		assertEquals("Serviço1", iterator.next().getServiceName());
+		assertEquals(new Long(5), iterator.next().getServiceId());
+		assertEquals(new Long(3), iterator.next().getServiceId());
+		assertEquals(new Long(1), iterator.next().getServiceId());
 		
 		contracts = this.serviceContractDAO.getContracts("Pessoa3");
 		iterator = contracts.iterator();
 		assertEquals(4, contracts.size());
-		assertEquals("Serviço2", iterator.next().getServiceName());
-		assertEquals("Serviço6", iterator.next().getServiceName());
-		assertEquals("Serviço3", iterator.next().getServiceName());
-		assertEquals("Serviço4", iterator.next().getServiceName());
+		assertEquals(new Long(5), iterator.next().getServiceId());
+		assertEquals(new Long(4), iterator.next().getServiceId());
+		assertEquals(new Long(3), iterator.next().getServiceId());
+		assertEquals(new Long(2), iterator.next().getServiceId());
 	}
 	
 	@Test
@@ -123,8 +123,8 @@ public class ServiceContractDAOTest {
 		Collection<ServiceContract> contracts = this.serviceContractDAO.getHistory("Pessoa2");
 		Iterator<ServiceContract> iterator = contracts.iterator();
 		assertEquals(2, contracts.size());
-		assertEquals("Serviço6", iterator.next().getServiceName());
-		assertEquals("Serviço1", iterator.next().getServiceName());
+		assertEquals(new Long(6), iterator.next().getServiceId());
+		assertEquals(new Long(1), iterator.next().getServiceId());
 	}
 	
 }

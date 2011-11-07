@@ -23,6 +23,9 @@ import java.math.BigDecimal;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
+import br.octahedron.cotopaxi.controller.ConvertionException;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.*;
+import br.octahedron.cotopaxi.controller.converter.NumberConverter.NumberType;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
@@ -59,15 +62,19 @@ public class ServiceController extends Controller {
 	
 	@AuthorizationRequired
 	public void getListServices() {
-		out("myServices", this.servicesManager.getUserServices(currentUser()));
 		out("services", this.servicesManager.getServices());
 		success(LIST_SERVICE_TPL);
 	}
 	
 	@AuthorizationRequired
-	public void getShowService() {
-		out("service", this.servicesManager.getService(in("name")));
-		success(SHOW_SERVICE_TPL);
+	public void getShowService() throws ConvertionException {
+		Service service = this.servicesManager.getService((Long) in("id", number(NumberType.LONG)));
+		if (service != null) {
+			out("service", service);
+			success(SHOW_SERVICE_TPL);
+		} else {
+			notFound();
+		}
 	}
 	
 	@AuthorizationRequired
@@ -76,24 +83,22 @@ public class ServiceController extends Controller {
 	}
 	
 	@AuthorizationRequired
-	public void postNewService() {
+	public void postNewService() throws ConvertionException {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		Validator valueValidator = ServiceValidators.getValueValidator();
 		if (inexistentValidator.isValid() && valueValidator.isValid()) {
-			this.servicesManager.createService(in("name"), new BigDecimal(in("value")), in("category"), in("description"));
+			this.servicesManager.createService(in("name"), (BigDecimal) in("value", number(NumberType.BIG_DECIMAL)), in("category"), in("description"));
 			redirect(BASE_URL);
 		} else {
-			out("name", in("name"));
-			out("value", in("value"));
-			out("category", in("category"));
-			out("description", in("description"));
+			echo();
 			invalid(NEW_SERVICE_TPL);
 		}
 	}
 	
 	@AuthorizationRequired
-	public void getEditService() {
-		Service service = this.servicesManager.getService(in("name"));
+	public void getEditService() throws ConvertionException {
+		Service service = this.servicesManager.getService((Long) in("id", number(NumberType.LONG)));
+		out("id", service.getId());
 		out("name", service.getName());
 		out("value", service.getAmount());
 		out("category", service.getCategory());
@@ -102,26 +107,23 @@ public class ServiceController extends Controller {
 	}
 	
 	@AuthorizationRequired
-	public void postEditService() {
+	public void postEditService() throws ConvertionException {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		Validator valueValidator = ServiceValidators.getValueValidator();
 		if (inexistentValidator.isValid() && valueValidator.isValid()) {
-			this.servicesManager.updateService(in("name"), new BigDecimal(in("value")), in("category"), in("description"));
+			this.servicesManager.updateService((Long) in("id", number(NumberType.LONG)), in("name"), (BigDecimal) in("value", number(NumberType.BIG_DECIMAL)), in("category"), in("description"));
 			redirect(BASE_URL);
 		} else {
-			out("name", in("name"));
-			out("value", in("value"));
-			out("category", in("category"));
-			out("description", in("description"));
+			echo();
 			invalid(EDIT_SERVICE_TPL);
 		}
 	}
 	
 	@AuthorizationRequired
-	public void postAddProvider() {
+	public void postAddProvider() throws ConvertionException {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		if (inexistentValidator.isValid()) {
-			out("service", this.servicesManager.addProvider(in("name"), currentUser()));
+			out("service", this.servicesManager.addProvider((Long) in("id", number(NumberType.LONG)), currentUser()));
 			jsonSuccess();
 		} else {
 			jsonInvalid();
@@ -129,10 +131,10 @@ public class ServiceController extends Controller {
 	}
 	
 	@AuthorizationRequired
-	public void postRemoveProvider() {
+	public void postRemoveProvider() throws ConvertionException {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		if (inexistentValidator.isValid()) {
-			out("service", this.servicesManager.removeProvider(in("name"), currentUser()));
+			out("service", this.servicesManager.removeProvider((Long) in("id", number(NumberType.LONG)), currentUser()));
 			jsonSuccess();
 		} else {
 			jsonInvalid();
@@ -140,21 +142,21 @@ public class ServiceController extends Controller {
 	}
 	
 	@AuthorizationRequired
-	public void postRemoveService() {
+	public void postRemoveService() throws ConvertionException {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		if (inexistentValidator.isValid()) {
-			this.servicesManager.removeService(in("name"));
+			this.servicesManager.removeService((Long) in("id", number(NumberType.LONG)));
 			jsonSuccess();
 		} else {
 			jsonInvalid();
 		}
 	}
 	
-	public void postRequestContract() {
+	public void postRequestContract() throws ConvertionException {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		Validator providerValidator = ServiceValidators.getProviderValidator();
 		if (inexistentValidator.isValid() && providerValidator.isValid()) {
-			this.servicesManager.requestContract(in("name"), currentUser(), in("provider"));
+			this.servicesManager.requestContract((Long) in("id", number(NumberType.LONG)), currentUser(), in("provider"));
 			jsonSuccess();
 		} else {
 			jsonInvalid();
@@ -171,21 +173,21 @@ public class ServiceController extends Controller {
 		success(LIST_CONTRACTS_TPL);
 	}
 	
-	public void getEditContract() {
+	public void getEditContract() throws ConvertionException {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		if (inexistentValidator.isValid()) {
-			this.servicesManager.updateContractStatus(new Long(in("id")), ServiceContractStatus.valueOf(in("status")));
+			this.servicesManager.updateContractStatus((Long) in("id", number(NumberType.LONG)), ServiceContractStatus.valueOf(in("status")));
 			success(EDIT_CONTRACT_TPL);
 		} else {
 			invalid(EDIT_CONTRACT_TPL);
 		}
 	}
 	
-	public void postUpdateContract() {
+	public void postUpdateContract() throws ConvertionException {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		Validator providerValidator = ServiceValidators.getProviderValidator();
 		if (inexistentValidator.isValid() && providerValidator.isValid()) {
-			this.servicesManager.updateContractStatus(new Long(in("id")), ServiceContractStatus.valueOf(in("status")));
+			this.servicesManager.updateContractStatus((Long) in("id", number(NumberType.LONG)), ServiceContractStatus.valueOf(in("status")));
 			redirect(SHOW_CONTRACTS_URL);
 		} else {
 			jsonInvalid();

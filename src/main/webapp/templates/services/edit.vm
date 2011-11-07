@@ -2,48 +2,61 @@
 #set( $currentModule = "SERVICES" )
 #parse( "templates/layout_intern.vm" )
 
+#head()
+
+#fullHeaderDomain()
+
 #@body()
-	<a href="$logout_url">logout</a>
-	
-    <div id="main" class="center">
-		<header>
-    		<h1>Serviços</h1>
-    		<nav id="tabs">
-        		<ul class="inline">
-                    <li><a href="/">Dashboard</a></li>
-                    #foreach( $module in $domain.ModulesEnabled )
-						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
-					#end
-        		</ul>
-    		</nav>
-		</header>
-		<div id="content">
-			<div id="single-column">
-				<p>Preencha o formulário abaixo:</p>
-        		<form action="/service/{$name}/edit" method="post" accept-charset="utf-8">
-                	<label for="name">
-                		Nome do serviço: <input type="text" name="name" value="$!{name}" />
-						#if ( $invalid.name )
-                			<span>$invalid.name</span>
-                		#end
-                	</label><br />
-        			<label for="value">
-                		Valor: <input type="text" name="value" value="$!{value}" />
-						#if ( $invalid.value )
-                			<span>$invalid.value</span>
-                		#end
-                	</label><br />
-            		<label for="category">
-                		Categoria: <input type="text" name="category" value="$!{category}" />
-                	</label><br />
-					<label for="description">
-                        Descrição: <textarea name="description">$!{description}</textarea>
-                	</label><br />
-            		<input type="submit" value="Criar" />
-                </form>
-			</div>
-		</div>
-	</div>
+<div class="left">
+    <section id="about-intern">
+        <h2>$domain.Name</h2>
+        #if( $domain.AvatarKey )
+        <a href="/domain/upload"><img class="avatar" src="/serve/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+        #else
+        <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
+        #end
+        <ul class="links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            #foreach( $module in $domain.ModulesEnabled )
+                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+            #end
+        </ul>
+    </section>
+</div>
+<div class="left">
+    <section id="main-intern">
+        <h2>Editar serviço</h3>
+        <form action="/service/$id/edit" method="post" accept-charset="utf-8">
+            <fieldset>
+                <legend>Dados do serviço</legend>
+                <div>
+                    <label for="name">Nome</label>
+                    <input type="text" name="name" value="$!{name}" />
+                    #if ( $invalid.name )
+                        <span>$invalid.name</span>
+                    #end
+                </div>
+                <div>
+                <label for="value">Valor</label>
+                    <input type="text" name="value" value="$!{value}" />
+                    #if ( $invalid.value )
+                        <span>$invalid.value</span>
+                    #end
+                </div>
+                <div>
+                    <label for="category">Categoria</label>
+                    <input id="category" type="text" name="category" value="$!{category}" />
+                </div>
+                <div>
+                    <label for="description">Descrição</label>
+                    <textarea id="description" name="description">$!{description}</textarea>
+                </div>
+                <input type="submit" value="Salvar" />
+            </fieldset>
+        </form>
+    </section>
+</div>
 #end
-	
+    
 #scripts()
