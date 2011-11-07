@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.configuration.controller;
 
+import static br.octahedron.cotopaxi.CotopaxiProperty.*;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.interceptor.TemplateInterceptor;
@@ -59,6 +60,8 @@ public class DomainResponseInterceptor extends TemplateInterceptor {
 	public void preRender(RenderableResponse response) {
 		try {
 			// TODO review
+			response.addOutput("applicationBaseURL", getProperty(APPLICATION_BASE_URL));
+			response.addOutput("applicationDomain", getProperty("AUTHORIZATION_DOMAIN"));
 			String subdomain = this.subDomain();
 			if (!subdomain.equals("www")) {
 				this.namespaceManager.changeToNamespace(subdomain);
