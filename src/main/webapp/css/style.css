@@ -547,8 +547,11 @@ a, a:hover, a:visited {
 ul.inline li {
   display: inline; }
 
-ul.unstyled li {
-  list-style: none; }
+ul.unstyled {
+  margin: 0;
+  padding: 0; }
+  ul.unstyled li {
+    list-style: none; }
 
 .hidden {
   display: none; }
@@ -633,7 +636,7 @@ body {
     padding: 0; }
     #main-intern ul.notifications li {
       margin: 0 0 10px;
-      padding: 12px 12px;
+      padding: 12px;
       background-color: #f3f3f3;
       border: 1px solid #e4e4e4;
       -webkit-border-radius: 10px;
@@ -718,6 +721,52 @@ table.domain thead th:nth-child(3) {
 table.roles tbody tr:hover {
   background-color: #eeeeee; }
 
+.thumbsup {
+  position: absolute;
+  top: 0;
+  right: 0; }
+
+.contract {
+  position: absolute;
+  display: none;
+  bottom: 12px;
+  right: 12px; }
+
+#service {
+  position: relative; }
+
+#operations {
+  position: absolute;
+  top: 0;
+  right: 0; }
+
+.service .thumbs-up {
+  position: absolute;
+  top: 12px;
+  right: 12px; }
+
+.thumbs-up {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-top; }
+
+ul li.service {
+  position: relative;
+  margin-top: 10px;
+  padding: 12px;
+  background-color: #f3f3f3;
+  border: 1px solid #e4e4e4;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px; }
+  ul li.service:first-child {
+    margin-top: 0; }
+  ul li.service h4 {
+    padding: 0;
+    margin: 0; }
+  ul li.service:hover .contract {
+    display: inline; }
+
 #avatar-info {
   height: 100%; }
   #avatar-info img {
@@ -733,6 +782,17 @@ table.roles tbody tr:hover {
     margin: 16px 0 0 5px; }
     #avatar-info span a {
       font-size: 13px; }
+
+#domains .organization {
+  margin-bottom: 12px;
+  overflow: hidden; }
+  #domains .organization img {
+    width: 32px;
+    height: 32px;
+    float: left; }
+  #domains .organization a {
+    margin: 7px 0 0 5px;
+    float: left; }
 
 img.notification {
   float: left;
