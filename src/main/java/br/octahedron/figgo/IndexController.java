@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo;
 
-import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
+import static br.octahedron.cotopaxi.CotopaxiProperty.*;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
@@ -64,7 +64,7 @@ public class IndexController extends Controller {
 		String username = this.currentUser();
 		boolean userLogged = (username != null);
 
-		if (fullRequestedUrl().equalsIgnoreCase(getProperty("APPLICATION_BASE_URL"))) {
+		if (fullRequestedUrl().equalsIgnoreCase(getProperty(APPLICATION_BASE_URL))) {
 			// user accessing the raw url (www), redirects it to dash board
 			if (!userLogged) {
 				// user not logged, show the initial land page
