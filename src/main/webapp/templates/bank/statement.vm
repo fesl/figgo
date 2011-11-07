@@ -57,8 +57,8 @@
                     <span>$invalid.endDate</span>
                     #end
                 </div>
-                <input type="submit" value="Visualizar" />
             </fieldset>
+            <input type="submit" value="Visualizar" />
         </form>
         <hr />
         <section id="statement-transactions">
