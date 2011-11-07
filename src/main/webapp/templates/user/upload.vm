@@ -1,25 +1,60 @@
 #set( $title = "Figgo - Upload avatar" )
 #parse( "templates/layout_intern.vm" )
 
-#header()
+#head()
+
+#fullHeader()
 
 #@body()
-	<div id="main" class="center">
-		<header>
-			<h1>Upload avatar</h1>
-		</header>
-		<div id="content">
-			<div id="single-column">
-				<p>Faça upload do seu avatar abaixo:</p>
-                <form action="$uploadUrl" method="post" enctype="multipart/form-data" accept-charset="utf-8">
-                	<label for="avatar">
-                        Arquivo (max 1mb): <input type="file" name="file" />
-                	</label><br />
-            		<input type="submit" value="Upload" />
-                </form>
-			</div>
-		</div>
-	</div>
+<div class="left">
+    <section id="about-intern">
+        <h2>$user.Name</h2>
+        #if( $user.AvatarKey )
+        <a href="/user/upload"><img id="avatar" src="/serve/$user.AvatarKey" alt="Avatar do usuário" /></a>
+        #else
+        <a href="/user/upload"><img id="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do usuário" /></a>
+        #end
+        <ul class="unstyled">
+            <li>$user.UserId</li>
+            <li>$user.PhoneNumber</li>
+        </ul>
+        <p>$user.Description</p>
+    </section>
+
+    <hr />
+
+    <section>
+        <h3>Coletivos associados</h3>
+        #foreach( $domain in $domains )
+        <div class="organization">
+            <h4>$domain</h4>
+            <ul class="inline">
+                #foreach( $module in $domain.Modules )
+                <li><a href="$serverName/$module.Url">$module.Name</a></li>
+                #end
+            </ul>
+        </section>
+        #end
+    </section>
+</div>
+<div class="left">
+	<section id="main-intern">
+		<h2>Upload de avatar</h2>
+	    <form action="$uploadUrl" method="post" enctype="multipart/form-data" accept-charset="utf-8">
+	        <fieldset>
+	            <legend>Selecione um arquivo</legend>
+	            <div>
+	                <label for="file">Arquivo</label>
+	                <input type="file" id="file" name="file" required />
+	                #if ($invalid.file)
+	                <span>$invalid.file</span>
+	                #end
+	            </div>
+	        </fieldset>
+	        <input type="submit" value="É hora de mudar!" />
+	    </form>
+	</section>
+</div>
 #end
 
 #scripts()

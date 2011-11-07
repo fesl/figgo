@@ -25,12 +25,12 @@
 </div>
 <div class="left">
     <section id="main-intern">
-        <h2>Upload do avatar</h2>
+        <h2>Upload de avatar</h2>
         <form action="$uploadUrl" method="post" enctype="multipart/form-data">
             <fieldset>
-                <legend>Mude o avatar do seu coletivo</legend>
+                <legend>Selecione um arquivo</legend>
                 <div>
-                    <label for="avatar">Arquivo (max 1mb)</label>
+                    <label for="avatar">Arquivo</label>
                     <input type="file" name="file" />
                 </div>
             </fieldset>
