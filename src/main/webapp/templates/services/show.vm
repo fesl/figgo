@@ -26,8 +26,8 @@
 </div>
 <div class="left">
     <section id="main-intern">
-        <section id="service">
-            <h3>$!{service.Name}</h3>
+        <section id="service" data-id="$service.id">
+            <h3>$!{service.name}</h3>
             <small>$!{service.category}</small>
             <p>$!{service.description}</p>
             <footer>
@@ -40,10 +40,17 @@
             </div>
         </section>
         <section id="providers">
-            <h3>Prestadores <img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />#if ($service.hasProvider($user.email))<img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />#end</h3>
-            <ul>
+            <h3>
+                Prestadores
+                #if ( $service.hasProvider($user.userId) )
+                <img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />
+                #else
+                <img class="thumbs-up not" src="/img/thumbs-up.png" title="Não faço!" alt="Não faço!" />
+                #end
+            </h3>
+            <ul data-user="$user.userId.split('@')[0]">
             #foreach( $provider in $service.providers )
-                <li>$provider -  <a class="contract-link" href="/service/$service.id/contract/$provider">contratar</a></li>
+                <li id="$provider.split('@')[0]">$provider -  <a class="contract-link" href="/service/$service.id/contract/$provider">contratar</a></li>
             #end
             </ul>
         </section>

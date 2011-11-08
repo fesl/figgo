@@ -42,7 +42,7 @@
             <li class="service">
                 <header>
                     <h4><a href="/service/${service.id}">$service.name</a></h4>
-                    #if ($service.hasProvider($user.email))<img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />#end
+                    #if ( $service.hasProvider($user.userId) )<img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />#end
                 </header>
                 <p>$service.description</p>
                 <footer>

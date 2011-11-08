@@ -1,23 +1,23 @@
 $(function() {
-	$("tr.service").delegate('input:checkbox', 'click', function() {
-		if ($(this).is(":checked")) {
+	$("#providers .thumbs-up").bind('click', function() {
+		var $this = $(this),
+			$providers = $("#providers ul"),
+			$service = $("#service");
+		if ($this.hasClass('not')) {
 			$.ajax({
 				type: "POST",
-				url: "/service/" + $(this).attr('id') +"/provider/new",
+				url: "/service/" + $service.data("id") + "/provider/new",
 			}).success(function(data) {
-				$("#my-services > table > tbody").append("<tr><td>" + data.service.name + "</td></tr>");
-			}).error(function(data) {
-				alert('não foi possível adicioná-lo como provedor do serviço')
+				$this.removeClass('not');
+				$providers.prepend(data.html);
 			});
 		} else {
 			$.ajax({
 				type: "POST",
-				url: "/service/" + $(this).attr('id') + "/provider/delete",
+				url: "/service/" + $service.data("id") + "/provider/delete",
 			}).success(function(data) {
-				// get <tr data-id="test"> and remove it!
-				//$("#my-services > table > tbody").remove();
-			}).error(function(data) {
-				alert('não foi possível removê-lo como provedor do serviço')
+				$this.addClass('not');
+				$providers.find("#" + $providers.data("user")).remove();
 			});
 		}
 	});
@@ -33,4 +33,5 @@ $(function() {
 			alert('não foi possível contratar o serviço')
 		});
 	});
+
 });

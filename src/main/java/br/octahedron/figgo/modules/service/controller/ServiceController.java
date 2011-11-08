@@ -47,6 +47,7 @@ public class ServiceController extends Controller {
 	private static final String LIST_SERVICE_TPL = BASE_DIR_TPL + "list.vm";
 	private static final String SHOW_SERVICE_TPL = BASE_DIR_TPL + "show.vm";
 	private static final String EDIT_SERVICE_TPL = BASE_DIR_TPL + "edit.vm";
+	private static final String USER_SERVICES_TPL = BASE_DIR_TPL + "user_services.vm";
 	private static final String CONTRACT_DIR_TPL = BASE_DIR_TPL + "contract/";
 	private static final String EDIT_CONTRACT_TPL = CONTRACT_DIR_TPL + "edit.vm";
 	private static final String LIST_CONTRACTS_TPL = CONTRACT_DIR_TPL + "list.vm";
@@ -121,9 +122,12 @@ public class ServiceController extends Controller {
 	
 	@AuthorizationRequired
 	public void postAddProvider() throws ConvertionException {
+		Service service = this.servicesManager.getService((Long) in("id", number(NumberType.LONG)));
+		String userId = this.currentUser();
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		if (inexistentValidator.isValid()) {
-			out("service", this.servicesManager.addProvider((Long) in("id", number(NumberType.LONG)), currentUser()));
+			service.addProvider(this.currentUser());
+			out("html", "<li id=\"" + userId.split("@")[0] +"\">" + userId + "- <a class=\"contract-link\" href=\"/service/" + service.getId() + "/contract/" + userId + "\">contratar</a></li>");
 			jsonSuccess();
 		} else {
 			jsonInvalid();
@@ -150,6 +154,11 @@ public class ServiceController extends Controller {
 		} else {
 			jsonInvalid();
 		}
+	}
+	
+	public void getUserServices() {
+		out("services", this.servicesManager.getUserServices(this.currentUser()));
+		success(USER_SERVICES_TPL);
 	}
 	
 	public void postRequestContract() throws ConvertionException {
