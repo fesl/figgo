@@ -2,7 +2,7 @@
 #parse( "templates/layout_intern.vm" )
 
 #@head()
-    <link type="text/css" href="/css/jquery-ui-1.8.16.custom.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/css/jquery-ui-1.8.16.custom.css" />
 #end
 
 #fullHeaderDomain()
@@ -29,7 +29,7 @@
     <section id="main-intern">
         <h3>Acesso rápido</h3>
         <nav>
-            <ul class="bank-shortcuts">
+            <ul class="two-column-shortcuts">
                 <li><a href="/bank">Minha conta</a></li>
                 <li><a href="/bank/transfer">Trasferência</a></li>
                 <li><a href="/bank/statement">Extrato</a></li>

@@ -28,7 +28,7 @@
     <section id="main-intern">
         <h3>Acesso rápido</h3>
         <nav>
-            <ul class="bank-shortcuts">
+            <ul class="two-column-shortcuts">
                 <li><a href="/bank">Minha conta</a></li>
                 <li><a href="/bank/transfer">Trasferência</a></li>
                 <li><a href="/bank/statement">Extrato</a></li>
