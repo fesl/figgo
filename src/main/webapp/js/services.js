@@ -22,16 +22,14 @@ $(function() {
 		}
 	});
 	
-	$("a.contract-link").click(function(e) {
-		e.preventDefault();
+	$("a.inside-link").bind('click', function(e) {
 		$.ajax({
 			type: "POST",
 			url: $(this).attr('href'),
 		}).success(function(data) {
 			window.location.replace("/services/contracts");
-		}).error(function(data) {
-			alert('não foi possível contratar o serviço')
 		});
+		e.preventDefault();
 	});
 
 });

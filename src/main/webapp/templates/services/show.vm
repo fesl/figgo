@@ -50,7 +50,7 @@
             </h3>
             <ul data-user="$user.userId.split('@')[0]">
             #foreach( $provider in $service.providers )
-                <li id="$provider.split('@')[0]">$provider -  <a class="contract-link" href="/service/$service.id/contract/$provider">contratar</a></li>
+                <li id="$provider.split('@')[0]">$provider - <a class="inside-link" href="/service/$service.id/contract/$provider">contratar</a></li>
             #end
             </ul>
         </section>

@@ -2,36 +2,48 @@
 #set( $currentModule = "SERVICES" )
 #parse( "templates/layout_intern.vm" )
 
+#head()
+
+#fullHeaderDomain()
+
 #@body()
-	<a href="$logout_url">logout</a>
-	
-    <div id="main" class="center">
-		<header>
-    		<h1>Serviços</h1>
-    		<nav id="tabs">
-        		<ul class="inline">
-                    <li><a href="/">Dashboard</a></li>
-                    #foreach( $module in $domain.ModulesEnabled )
-						<li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
-					#end
-        		</ul>
-    		</nav>
-		</header>
-		<div id="content">
-			<div id="single-column">
-        		<form action="/services/contract/$contract.Id/edit" method="post" accept-charset="utf-8">
-					<label for="status">
-                        <select name="status">
-							<option value="PENDING">Pendente</option>
-							<option value="IN_PROGRESS">Em andamento</option>
-							<option value="COMPLETED">Completo</option>
-                        </select>
-                	</label><br />
-            		<input type="submit" value="Atualizar" />
-                </form>
-			</div>
-		</div>
-	</div>
+<div class="left">
+    <section id="about-intern">
+        <h2>$domain.Name</h2>
+        #if( $domain.AvatarKey )
+        <a href="/domain/upload"><img class="avatar" src="/serve/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+        #else
+        <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
+        #end
+        <ul class="links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            #foreach( $module in $domain.ModulesEnabled )
+                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+            #end
+        </ul>
+    </section>
+</div>
+<div class="left">
+    <section id="main-intern">
+        <h2>Status de contrato</h2>
+        <form action="/services/contract/$contract.Id/edit" method="post" accept-charset="utf-8">
+            <fieldset>
+                <legend>Como está o seu serviço?</legend>
+                <p>$contract.service.name</p>
+                <div>
+                    <label for="status">Status</label>
+                    <select name="status">
+                        <option value="PENDING" #if($contract.status == "PENDING")selected#end>Pendente</option>
+                        <option value="IN_PROGRESS" #if($contract.status == "IN_PROGRESS")selected#end>Em andamento</option>
+                        <option value="COMPLETED" #if($contract.status == "COMPLETED")selected#end>Completo</option>
+                    </select>
+                </div>
+            </fieldset>
+            <input type="submit" value="Atualizar" />
+        </form>
+    </section>
+</div>
 #end
-	
+    
 #scripts()

@@ -185,12 +185,36 @@ public class ServiceManager {
 	public void removeService(Long id) {
 		this.serviceDAO.delete(id);
 	}
+	
 	/**
 	 * @param currentUser
 	 * @return 
 	 */
 	public Collection<ServiceContract> getContracts(String userId) {
 		return this.serviceContractDAO.getContracts(userId);
+	}
+	
+	/**
+	 * @param currentUser
+	 * @return 
+	 */
+	public Collection<ServiceContract> getProviderContracts(String userId) {
+		return this.serviceContractDAO.getProviderContracts(userId);
+	}
+	
+	/**
+	 * @param currentUser
+	 * @return 
+	 */
+	public Collection<ServiceContract> getContractorContracts(String userId) {
+		return this.serviceContractDAO.getContractorContracts(userId);
+	}
+	/**
+	 * @param in
+	 * @return
+	 */
+	public ServiceContract getServiceContract(Long id) {
+		return this.serviceContractDAO.get(id);
 	}
 
 }

@@ -88,9 +88,9 @@
                 </div>
                 <div id="shortcuts" class="right">
                     <ul class="inline">
-                        <li><a href="">Meu extrato</a></li>
+                        <li><a href="/bank">Meu extrato</a></li>
                         <li></li>
-                        <li><a href="">Meus serviços</a></li>
+                        <li><a href="/services/mine">Meus serviços</a></li>
                     </ul>
                 </div>
             </div>    

@@ -28,7 +28,7 @@
     <section id="main-intern">
         <h3>Categorias</h3>
         <nav>
-            <ul class="bank-shortcuts">
+            <ul class="two-column-shortcuts">
             #foreach( $category in $categories )
                 <li><a href="/services/$category">$category</a></li>
             #end
@@ -37,21 +37,24 @@
 
         <hr />
         
-        <ul class="unstyled">
-            #foreach( $service in $services )
-            <li class="service">
-                <header>
-                    <h4><a href="/service/${service.id}">$service.name</a></h4>
-                    #if ( $service.hasProvider($user.userId) )<img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />#end
-                </header>
-                <p>$service.description</p>
-                <footer>
-                    $service.amount
-                    <span class="contract"><a href="/service/${service.id}">Contratar</a></span>
-                </footer>
-            </li>
-            #end
-        </ul>
+        <section>
+            <h3>Serviços</h3>
+            <ul class="unstyled">
+                #foreach( $service in $services )
+                <li class="service">
+                    <header>
+                        <h4><a href="/service/${service.id}">$service.name</a></h4>
+                        #if ( $service.hasProvider($user.userId) )<img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />#end
+                    </header>
+                    <p>$service.description</p>
+                    <footer>
+                        $service.amount
+                        <span class="contract"><a href="/service/${service.id}">Contratar</a></span>
+                    </footer>
+                </li>
+                #end
+            </ul>
+        </section>
     </section>
 </div>
 #end

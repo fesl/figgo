@@ -18,13 +18,14 @@
  */
 package br.octahedron.figgo.modules.service.controller;
 
+import static br.octahedron.cotopaxi.controller.Converter.Builder.number;
+
 import java.math.BigDecimal;
 
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.controller.ConvertionException;
-import static br.octahedron.cotopaxi.controller.Converter.Builder.*;
 import br.octahedron.cotopaxi.controller.converter.NumberConverter.NumberType;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
@@ -47,10 +48,11 @@ public class ServiceController extends Controller {
 	private static final String LIST_SERVICE_TPL = BASE_DIR_TPL + "list.vm";
 	private static final String SHOW_SERVICE_TPL = BASE_DIR_TPL + "show.vm";
 	private static final String EDIT_SERVICE_TPL = BASE_DIR_TPL + "edit.vm";
-	private static final String USER_SERVICES_TPL = BASE_DIR_TPL + "user_services.vm";
+	private static final String USER_SERVICES_TPL = BASE_DIR_TPL + "user.vm";
 	private static final String CONTRACT_DIR_TPL = BASE_DIR_TPL + "contract/";
 	private static final String EDIT_CONTRACT_TPL = CONTRACT_DIR_TPL + "edit.vm";
 	private static final String LIST_CONTRACTS_TPL = CONTRACT_DIR_TPL + "list.vm";
+	
 	private static final String BASE_URL = "/services";
 	private static final String SHOW_CONTRACTS_URL = BASE_URL + "/contracts";
 	
@@ -161,20 +163,21 @@ public class ServiceController extends Controller {
 		success(USER_SERVICES_TPL);
 	}
 	
+	public void getShowContracts() {
+		out("providerContracts", this.servicesManager.getProviderContracts(this.currentUser()));
+		out("contractorContracts", this.servicesManager.getContractorContracts(this.currentUser()));
+		success(LIST_CONTRACTS_TPL);
+	}
+	
 	public void postRequestContract() throws ConvertionException {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		Validator providerValidator = ServiceValidators.getProviderValidator();
 		if (inexistentValidator.isValid() && providerValidator.isValid()) {
-			this.servicesManager.requestContract((Long) in("id", number(NumberType.LONG)), currentUser(), in("provider"));
+			this.servicesManager.requestContract((Long) in("id", number(NumberType.LONG)), this.currentUser(), in("provider"));
 			jsonSuccess();
 		} else {
 			jsonInvalid();
 		}
-	}
-	
-	public void getShowContracts() {
-		out("contracts", this.servicesManager.getContracts(currentUser()));
-		success(LIST_CONTRACTS_TPL);
 	}
 	
 	public void getShowHistory() {
@@ -185,7 +188,7 @@ public class ServiceController extends Controller {
 	public void getEditContract() throws ConvertionException {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		if (inexistentValidator.isValid()) {
-			this.servicesManager.updateContractStatus((Long) in("id", number(NumberType.LONG)), ServiceContractStatus.valueOf(in("status")));
+			out("contract", this.servicesManager.getServiceContract((Long) in("id", number(NumberType.LONG))));
 			success(EDIT_CONTRACT_TPL);
 		} else {
 			invalid(EDIT_CONTRACT_TPL);
@@ -201,5 +204,10 @@ public class ServiceController extends Controller {
 		} else {
 			jsonInvalid();
 		}
+	}
+	
+	public void postPayContract() throws ConvertionException {
+		// todo validator
+		this.servicesManager.makePayment((Long) in("id", number(NumberType.LONG)));
 	}
 }

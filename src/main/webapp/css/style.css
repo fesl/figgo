@@ -553,6 +553,14 @@ ul.unstyled {
   ul.unstyled li {
     list-style: none; }
 
+ul.two-column-shortcuts {
+  overflow: hidden; }
+  ul.two-column-shortcuts li {
+    width: 50%;
+    display: inline-block;
+    float: left;
+    margin-bottom: 5px; }
+
 .hidden {
   display: none; }
 
@@ -663,14 +671,6 @@ table {
     border-bottom: 1px solid #cccccc; }
   table td {
     border: 1px solid #dddddd; }
-
-ul.bank-shortcuts {
-  overflow: hidden; }
-  ul.bank-shortcuts li {
-    width: 50%;
-    display: inline-block;
-    float: left;
-    margin-bottom: 5px; }
 
 table td.balance {
   text-align: right; }
