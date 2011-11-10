@@ -1,0 +1,45 @@
+#set( $title = "Figgo - ${domain.DomainName} - Configurações do domínio" )
+#parse( "templates/layout_intern.vm" )
+
+#head()
+
+#fullHeaderDomain()
+
+#@body()
+<div class="left">
+    <section id="about-intern">
+        <h2>$domain.name</h2>
+        #if( $domain.AvatarKey )
+        <a href="/domain/upload"><img class="avatar" src="/serve/$domain.AvatarKey" alt="Avatar do domínio" /></a>
+        #else
+        <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
+        #end
+        <ul class="links">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Sobre</a></li>
+            #foreach( $module in $domain.ModulesEnabled )
+                <li><a href="/$module.toLowerCase()">$module</a></li>
+            #end
+        </ul>
+    </section>
+</div>
+<div class="left">
+    <section id="main-intern">
+        <h2>Configuração do módulo $name</h2>
+        <form action="/domain/module/$name" method="post" accept-charset="utf-8">
+            <fieldset>
+				<legend>Defina as propriedades do coletivo</legend>
+                #foreach( $property in $module.PropertiesKeys )
+                <div>
+                    <label for="$property">$property</label>
+                    <input type="text" name="__$property" value="$!{module.getPropertyValue($property)}" />
+                </div>
+                #end
+            </fieldset>
+            <input type="submit" value="Salvar" />
+        </form>
+    </section>
+</div>
+#end
+
+#scripts()

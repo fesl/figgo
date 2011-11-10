@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules.configuration.controller;
 
-import static br.octahedron.figgo.modules.configuration.controller.validation.DomainValidator.*;
+import static br.octahedron.figgo.modules.configuration.controller.validation.DomainValidator.getDomainValidator;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
@@ -39,7 +39,8 @@ public class ConfigurationController extends Controller {
 	protected static final String BASE_DIR_TPL = "domain/";
 	private static final String EDIT_DOMAIN_TPL = BASE_DIR_TPL + "edit.vm";
 	private static final String MODULE_CONFIG_TPL = BASE_DIR_TPL + "module/config.vm";
-	private static final String BASE_URL = "/";
+	private static final String BASE_URL = "/domain";
+	private static final String EDIT_DOMAIN_URL = "/edit";
 
 	@Inject
 	private ConfigurationManager configurationManager;
@@ -89,6 +90,27 @@ public class ConfigurationController extends Controller {
 	 */
 	@AuthorizationRequired
 	public void postModuleDomain() {
-		// TODO to be done
+		// TODO validate
+		Module module = Module.valueOf(in("module").toUpperCase());
+		for (String key: this.input().keySet()) {
+			if (key.startsWith("__")) {
+				this.configurationManager.setModuleProperty(module, key.substring(2), in(key));
+			}
+		}
+		redirect(EDIT_DOMAIN_URL);
+	}
+	
+	@AuthorizationRequired
+	public void postEnableModuleDomain() {
+		// TODO validate
+		this.configurationManager.enableModule(Module.valueOf(in("module").toUpperCase()));
+		jsonSuccess();
+	}
+	
+	@AuthorizationRequired
+	public void postDisableModuleDomain() {
+		// TODO validate
+		this.configurationManager.disableModule(Module.valueOf(in("module").toUpperCase()));
+		jsonSuccess();
 	}
 }
