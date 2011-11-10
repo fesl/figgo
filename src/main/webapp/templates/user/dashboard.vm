@@ -26,11 +26,11 @@
     <section id="domains">
         <h3>Coletivos associados</h3>
         <ul class="unstyled">
-        #foreach( $domain in $domains )
-        <li class="organization">
-            <img src="/serve/$domain.avatarKey" alt="Avatar do $domain.name"/>
-            <a href="http://$domain.$applicationDomain">$domain.name</a>
-        </li>
+            #foreach( $domain in $domains )
+            <li class="organization">
+                <img src="/serve/$domain.avatarKey" alt="Avatar do $domain.name"/>
+                <a href="http://$domain.$applicationDomain">$domain.name</a>
+            </li>
         #end
         </ul>
     </section>

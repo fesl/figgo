@@ -62,7 +62,7 @@
                 <legend>$module</legend>
                 <div>
                     <label for="$module">Ativado?</label>
-                    <input type="checkbox" id="$module" name="$module" #if( $modules.isModuleEnabled($module) )checked#end/> #if( $modules.isModuleEnabled($module) )<a href="/domain/module/$module.toLowerCase()">Configurar</a>#end
+                    <input type="checkbox" id="$module" name="$module" data-url="/domain/module/$module.toLowerCase()/" #if( $modules.isModuleEnabled($module) )checked#end/> #if( $modules.isModuleEnabled($module) )<a href="/domain/module/$module.toLowerCase()">Configurar</a>#end
                 </div>
             </fieldset>
         </form>
@@ -71,4 +71,6 @@
 </div>
 #end
 
-#scripts()
+#@scripts()
+    <script defer src="/js/domain.js"></script>
+#end

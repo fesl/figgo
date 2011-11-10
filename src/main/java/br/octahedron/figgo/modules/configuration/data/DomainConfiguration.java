@@ -165,9 +165,8 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	/**
 	 * @return a {@link Set} of all enabled modules for this domain.
 	 */
-	@SuppressWarnings("unchecked")
 	public Set<String> getModulesEnabled() {
-		return (Set<String>) this.modulesEnabled.clone();
+		return this.modulesEnabled;
 	}
 
 	/**
