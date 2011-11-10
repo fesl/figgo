@@ -61,7 +61,7 @@ public class DomainResponseInterceptor extends TemplateInterceptor {
 		try {
 			// TODO review
 			response.addOutput("applicationBaseURL", getProperty(APPLICATION_BASE_URL));
-			response.addOutput("applicationDomain", getProperty("AUTHORIZATION_DOMAIN"));
+			response.addOutput("applicationDomain", getProperty("APPLICATION_DOMAIN"));
 			String subdomain = this.subDomain();
 			if (!subdomain.equals("www")) {
 				this.namespaceManager.changeToNamespace(subdomain);
