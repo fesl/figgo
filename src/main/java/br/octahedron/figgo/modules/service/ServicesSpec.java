@@ -24,7 +24,7 @@ import java.util.Set;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.DomainModuleSpec;
-import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfiguration;
+import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
 
 /**
  * @author Vítor Avelino
@@ -42,7 +42,7 @@ public class ServicesSpec implements DomainModuleSpec {
 	}
 
 	@Override
-	public DomainSpecificModuleConfiguration getDomainSpecificModuleConfiguration() {
+	public ModuleConfiguration getDomainSpecificModuleConfiguration() {
 		return null;
 	}
 

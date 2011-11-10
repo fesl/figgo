@@ -34,7 +34,7 @@ import javax.jdo.annotations.PrimaryKey;
  * @author Danilo Penna Queiroz
  */
 @PersistenceCapable
-public class DomainSpecificModuleConfiguration implements Serializable {
+public class ModuleConfiguration implements Serializable {
 
 	private static final long serialVersionUID = -2814532770225964507L;
 
@@ -48,7 +48,7 @@ public class DomainSpecificModuleConfiguration implements Serializable {
 	@Persistent(serialized = "true", defaultFetchGroup = "true")
 	private Map<String, String> values = new HashMap<String, String>();
 
-	public DomainSpecificModuleConfiguration(String moduleName) {
+	public ModuleConfiguration(String moduleName) {
 		this.moduleName = moduleName;
 	}
 
@@ -63,42 +63,30 @@ public class DomainSpecificModuleConfiguration implements Serializable {
 		this.properties.put(property.getKey(), property);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.straight.configuration.ModuleConfigurationInfoService#getModuleName()
+	/**
+	 * @return the moduleName
 	 */
 	public String getModuleName() {
 		return this.moduleName;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.octahedron.straight.configuration.ModuleConfigurationInfoService#existsProperty(java.lang
-	 * .String)
+	/**
+	 * @return <code>true</code> if the module has an property with the given propertyKey,
+	 *         <code>false</code> otherwise.
 	 */
 	public boolean existsProperty(String propertyKey) {
 		return this.properties.containsKey(propertyKey);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getPropertiesKeys()
+	/**
+	 * @return a set with all configuration keys.
 	 */
 	public Set<String> getPropertiesKeys() {
 		return this.properties.keySet();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getPropertyValue
-	 * (java.lang.String)
+	/**
+	 * @return The property's value or the default property's value.
 	 */
 	public String getPropertyValue(String propertyKey) {
 		if (this.values.containsKey(propertyKey)) {
@@ -108,23 +96,16 @@ public class DomainSpecificModuleConfiguration implements Serializable {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getPropertyDefaultValue
-	 * (java.lang.String)
+	/**
+	 * @return the default value for a given property
 	 */
 	public String getPropertyDefaultValue(String propertyKey) {
 		return this.properties.get(propertyKey).getDefaultValue();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.octahedron.straight.configuration.data.ModuleConfigurationInfoService#getPropertyRegex
-	 * (java.lang.String)
+	/**
+	 * @return the property's regex. This regex defines the acceptable formats for values. It should
+	 *         be used to validade the values.
 	 */
 	public String getPropertyRegex(String propertyKey) {
 		return this.properties.get(propertyKey).getRegex();
@@ -163,8 +144,8 @@ public class DomainSpecificModuleConfiguration implements Serializable {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof DomainSpecificModuleConfiguration) {
-			DomainSpecificModuleConfiguration other = (DomainSpecificModuleConfiguration) obj;
+		if (obj instanceof ModuleConfiguration) {
+			ModuleConfiguration other = (ModuleConfiguration) obj;
 			return this.moduleName.equals(other.getModuleName());
 		} else {
 			return false;
@@ -178,7 +159,7 @@ public class DomainSpecificModuleConfiguration implements Serializable {
 	 */
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
-		DomainSpecificModuleConfiguration clone = new DomainSpecificModuleConfiguration(this.moduleName);
+		ModuleConfiguration clone = new ModuleConfiguration(this.moduleName);
 		clone.properties = this.properties;
 		clone.values = this.values;
 		return clone;

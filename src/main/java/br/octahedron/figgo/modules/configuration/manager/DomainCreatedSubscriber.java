@@ -36,9 +36,9 @@ import br.octahedron.util.Log;
  * @author Danilo Queiroz
  */
 @InterestedEvent(events = DomainCreatedEvent.class)
-public class CreateDomainConfigurationSubscriber extends AbstractNamespaceSubscriber {
+public class DomainCreatedSubscriber extends AbstractNamespaceSubscriber {
 
-	private static final Log log = new Log(CreateDomainConfigurationSubscriber.class);
+	private static final Log log = new Log(DomainCreatedSubscriber.class);
 
 	@Inject
 	private ConfigurationManager configurationManager;

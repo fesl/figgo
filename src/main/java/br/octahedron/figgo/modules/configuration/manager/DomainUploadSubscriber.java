@@ -32,8 +32,6 @@ import br.octahedron.figgo.modules.upload.controller.DomainUploadEvent;
 @InterestedEvent(events = { DomainUploadEvent.class })
 public class DomainUploadSubscriber extends AbstractNamespaceSubscriber {
 
-	private static final long serialVersionUID = -5493253101510358283L;
-
 	@Inject
 	private ConfigurationManager configurationManager;
 

@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules;
 
-import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfiguration;
+import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
 
 /**
  * @author danilo
@@ -34,11 +34,11 @@ public interface DomainModuleSpec extends ApplicationDomainModuleSpec {
 	public boolean hasDomainSpecificConfiguration();
 
 	/**
-	 * @return The {@link DomainSpecificModuleConfiguration} for this module, if, and only if, the
+	 * @return The {@link ModuleConfiguration} for this module, if, and only if, the
 	 *         {@link ModuleSpec#hasDomainSpecificConfiguration()} returns <code>true</code>. If the
 	 *         {@link ModuleSpec#hasDomainSpecificConfiguration()} returns <code>false</code> it
 	 *         returns null.
 	 */
-	public DomainSpecificModuleConfiguration getDomainSpecificModuleConfiguration();
+	public ModuleConfiguration getDomainSpecificModuleConfiguration();
 	
 }

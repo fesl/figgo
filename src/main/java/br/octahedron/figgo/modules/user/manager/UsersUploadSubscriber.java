@@ -32,8 +32,6 @@ import br.octahedron.figgo.modules.upload.controller.UserUploadEvent;
 @InterestedEvent(events = { UserUploadEvent.class })
 public class UsersUploadSubscriber implements Subscriber {
 
-	private static final long serialVersionUID = -5493253101510358283L;
-	
 	@Inject
 	private UserManager usersManager;
 
