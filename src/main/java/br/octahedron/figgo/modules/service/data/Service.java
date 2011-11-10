@@ -23,7 +23,9 @@ import java.math.BigDecimal;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.Order;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -38,7 +40,8 @@ public class Service implements Serializable {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Long id;
+	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
+	private String id;
 	@Persistent
 	private String name;
 	@Persistent
@@ -49,6 +52,9 @@ public class Service implements Serializable {
 	private String category;
 	@Persistent
 	private Set<String> providers;
+	@Persistent(mappedBy = "service")
+	@Order(extensions = @Extension(vendorName = "datanucleus", key = "list-ordering", value = "date desc"))
+	private Set<ServiceContract> contracts;
 
 	public Service(String name, BigDecimal amount, String category, String description) {
 		this.name = name;
@@ -65,12 +71,12 @@ public class Service implements Serializable {
 	public void removeProvider(String userId) {
 		this.providers.remove(userId);
 	}
-	
+
 	public boolean hasProvider(String userId) {
 		return this.providers.contains(userId);
 	}
-	
-	public Long getId() {
+
+	public String getId() {
 		return this.id;
 	}
 
@@ -94,7 +100,7 @@ public class Service implements Serializable {
 	public String getCategory() {
 		return this.category;
 	}
-	
+
 	/**
 	 * @param category
 	 *            the category to set
@@ -102,7 +108,7 @@ public class Service implements Serializable {
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
+
 	/**
 	 * @return the value
 	 */
@@ -126,6 +132,13 @@ public class Service implements Serializable {
 	}
 
 	/**
+	 * @return the contracts
+	 */
+	public Set<ServiceContract> getContracts() {
+		return contracts;
+	}
+
+	/**
 	 * @param description
 	 *            the description to set
 	 */
@@ -135,11 +148,45 @@ public class Service implements Serializable {
 
 	/**
 	 * @param name
-	 * 			the name to set
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
-		
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return this.getId().hashCode();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Service) {
+			return this.getId().equals(((Service) obj).getId());
+		} else {
+			return false;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return String.format("%s (%s)", this.getName(), this.getId());
 	}
 
 }

@@ -22,6 +22,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -38,12 +39,11 @@ public class ServiceContract implements Serializable {
 	public enum ServiceContractStatus {
 		PENDING, IN_PROGRESS, COMPLETED;
 	}
-	
+
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Long id;
-	@Persistent
-	private Long serviceId;
+	@Extension(vendorName = "datanucleus", key = "gae.encoded-pk", value = "true")
+	private String id;
 	@Persistent
 	private String contractor;
 	@Persistent
@@ -51,29 +51,28 @@ public class ServiceContract implements Serializable {
 	@Persistent
 	private BigDecimal amount;
 	@Persistent
-	private ServiceContractStatus status;
+	private Service service;
 	@Persistent
-	private Boolean paid;
+	private ServiceContractStatus status = ServiceContractStatus.PENDING;
 	@Persistent
-	private Date date;
-	
-	public ServiceContract(Long serviceId, String contractor, String provider, BigDecimal amount) {
-		this.serviceId = serviceId;
+	private Boolean paid = false;
+	@Persistent
+	private Date date = new Date();
+
+	public ServiceContract(Service service, String contractor, String provider) {
+		this.service = service;
 		this.contractor = contractor;
 		this.provider = provider;
-		this.amount = amount;
-		this.status = ServiceContractStatus.PENDING;
-		this.paid = false;
-		this.date = new Date();
+		this.amount = service.getAmount();
 	}
-	
+
 	/**
 	 * @return the id
 	 */
-	public Long getId() {
+	public String getId() {
 		return id;
 	}
-	
+
 	/**
 	 * @return the status
 	 */
@@ -82,7 +81,8 @@ public class ServiceContract implements Serializable {
 	}
 
 	/**
-	 * @param status the status to set
+	 * @param status
+	 *            the status to set
 	 */
 	public void setStatus(ServiceContractStatus status) {
 		this.status = status;
@@ -94,12 +94,13 @@ public class ServiceContract implements Serializable {
 	public Boolean isPaid() {
 		return paid;
 	}
-	
+
 	/**
-	 * @param paid the paid to set
+	 * @param paid
+	 *            the paid to set
 	 */
-	public void setPaid(Boolean paid) {
-		this.paid = paid;
+	public void markAsPaid() {
+		this.paid = true;
 	}
 
 	/**
@@ -126,10 +127,10 @@ public class ServiceContract implements Serializable {
 	/**
 	 * @return the service name
 	 */
-	public Long getServiceId() {
-		return this.serviceId;
+	public Service getService() {
+		return this.service;
 	}
-	
+
 	/**
 	 * @return the date
 	 */
@@ -138,7 +139,7 @@ public class ServiceContract implements Serializable {
 	}
 
 	public String toString() {
-		return "[" + id + ", " + serviceId + ", " + contractor + ", " + provider + "]";
+		return "[" + id + ", " + service.getName() + ", " + contractor + ", " + provider + "]";
 	}
 
 }

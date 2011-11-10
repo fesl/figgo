@@ -49,4 +49,21 @@ public class ServiceDAO extends GenericDAO<Service> {
 		return (Collection<Service>) query.execute(userId);
 	}
 
+	/**
+	 * Gets a service by name. If there's more then one service with same name, it returns the
+	 * first, if there's no service with the given name, returns null.
+	 * 
+	 * @param serviceName The service's name
+	 * 
+	 * @return The first service found with the given name, or <code>null</code> if theres no service with the given name
+	 * 
+	 */
+	@SuppressWarnings("unchecked")
+	public Service getServiceByName(String serviceName) {
+		Query query = this.datastoreFacade.createQueryForClass(Service.class);
+		query.setFilter("name == :serviceName");
+		Collection<Service> results = (Collection<Service>) query.execute(serviceName);
+		return (results.size() > 0) ? results.iterator().next() : null;
+	}
+
 }

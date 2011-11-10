@@ -42,89 +42,98 @@ public class ServiceContractDAOTest {
 
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 	private final ServiceContractDAO serviceContractDAO = new ServiceContractDAO();
+	private final ServiceDAO serviceDAO = new ServiceDAO();
+	
+	private Service service1 = new Service("test1", new BigDecimal(10), "Test", "some service");
+	private Service service2 = new Service("test2", new BigDecimal(10), "Test", "some service");
+	private Service service3 = new Service("test3", new BigDecimal(10), "Test", "some service");
+	private Service service4 = new Service("test4", new BigDecimal(10), "Test", "some service");
 	
 	@Before
 	public void setUp() throws InstantiationException {
 		this.helper.setUp();
 	}
 	
+	private void createServices() {
+		this.serviceDAO.save(service1);
+		this.serviceDAO.save(service2);
+		this.serviceDAO.save(service3);
+		this.serviceDAO.save(service4);
+	}
+	
 	private void createServiceContracts() {
-		this.serviceContractDAO.save(new ServiceContract(new Long(1), "Pessoa1", "Pessoa2", new BigDecimal(100)));
-		this.serviceContractDAO.save(new ServiceContract(new Long(2), "Pessoa2", "Pessoa3", new BigDecimal(50)));
-		this.serviceContractDAO.save(new ServiceContract(new Long(3), "Pessoa3", "Pessoa1", new BigDecimal(10)));
-		this.serviceContractDAO.save(new ServiceContract(new Long(4), "Pessoa3", "Pessoa2", new BigDecimal(35)));
-		this.serviceContractDAO.save(new ServiceContract(new Long(5), "Pessoa1", "Pessoa3", new BigDecimal(80)));
+		this.serviceContractDAO.save(new ServiceContract(this.serviceDAO.get(service1.getId()), "Pessoa1", "Pessoa2"));
+		this.serviceContractDAO.save(new ServiceContract(this.serviceDAO.get(service2.getId()), "Pessoa2", "Pessoa3"));
+		this.serviceContractDAO.save(new ServiceContract(this.serviceDAO.get(service3.getId()), "Pessoa3", "Pessoa1"));
+		this.serviceContractDAO.save(new ServiceContract(this.serviceDAO.get(service4.getId()), "Pessoa3", "Pessoa2"));
 	}
 	
 	private void createHistoryServiceContracts() {
-		ServiceContract serviceContract1 = new ServiceContract(new Long(1), "Pessoa1", "Pessoa2", new BigDecimal(100));
+		ServiceContract serviceContract1 = new ServiceContract(this.serviceDAO.get(service1.getId()), "Pessoa1", "Pessoa2");
 		serviceContract1.setStatus(ServiceContractStatus.COMPLETED);
 		this.serviceContractDAO.save(serviceContract1);
-		ServiceContract serviceContract2 = new ServiceContract(new Long(4), "Pessoa2", "Pessoa3", new BigDecimal(50));
+		ServiceContract serviceContract2 = new ServiceContract(this.serviceDAO.get(service4.getId()), "Pessoa2", "Pessoa3");
 		serviceContract2.setStatus(ServiceContractStatus.COMPLETED);
 		this.serviceContractDAO.save(serviceContract2);
-		ServiceContract serviceContract3 = new ServiceContract(new Long(6), "Pessoa3", "Pessoa2", new BigDecimal(35));
-		serviceContract3.setStatus(ServiceContractStatus.COMPLETED);
-		this.serviceContractDAO.save(serviceContract3);
 	}
 	
 	@Test
 	public void getProviderContracts() {
+		this.createServices();
 		this.createServiceContracts();
 		Collection<ServiceContract> contracts = this.serviceContractDAO.getProviderContracts("Pessoa1");
 		Iterator<ServiceContract> iterator = contracts.iterator();
 		assertEquals(1, contracts.size());
-		assertEquals(new Long(3), iterator.next().getServiceId());
+		assertEquals(service3, iterator.next().getService());
 		
 		contracts = this.serviceContractDAO.getProviderContracts("Pessoa2");
 		iterator = contracts.iterator();
 		assertEquals(2, contracts.size());
-		assertEquals(new Long(4), iterator.next().getServiceId());
-		assertEquals(new Long(1), iterator.next().getServiceId());
+		assertEquals(service4, iterator.next().getService());
+		assertEquals(service1, iterator.next().getService());
 	}
 	
 	@Test
 	public void getContractorContracts() {
+		this.createServices();
 		this.createServiceContracts();
 		Collection<ServiceContract> contracts = this.serviceContractDAO.getContractorContracts("Pessoa1");
 		Iterator<ServiceContract> iterator = contracts.iterator();
-		assertEquals(2, contracts.size());
-		assertEquals(new Long(5), iterator.next().getServiceId());
-		assertEquals(new Long(1), iterator.next().getServiceId());
+		assertEquals(1, contracts.size());
+		assertEquals(service1, iterator.next().getService());
 		
 		contracts = this.serviceContractDAO.getContractorContracts("Pessoa2");
 		iterator = contracts.iterator();
 		assertEquals(1, contracts.size());
-		assertEquals(new Long(2), iterator.next().getServiceId());
+		assertEquals(service2, iterator.next().getService());
 	}
 	
 	@Test
 	public void getContracts() {
+		this.createServices();
 		this.createServiceContracts();
 		Collection<ServiceContract> contracts = this.serviceContractDAO.getContracts("Pessoa1");
 		Iterator<ServiceContract> iterator = contracts.iterator();
-		assertEquals(3, contracts.size());
-		assertEquals(new Long(5), iterator.next().getServiceId());
-		assertEquals(new Long(3), iterator.next().getServiceId());
-		assertEquals(new Long(1), iterator.next().getServiceId());
+		assertEquals(2, contracts.size());
+		assertEquals(service1, iterator.next().getService());
+		assertEquals(service3, iterator.next().getService());
 		
 		contracts = this.serviceContractDAO.getContracts("Pessoa3");
 		iterator = contracts.iterator();
-		assertEquals(4, contracts.size());
-		assertEquals(new Long(5), iterator.next().getServiceId());
-		assertEquals(new Long(4), iterator.next().getServiceId());
-		assertEquals(new Long(3), iterator.next().getServiceId());
-		assertEquals(new Long(2), iterator.next().getServiceId());
+		assertEquals(3, contracts.size());
+		assertEquals(service2, iterator.next().getService());
+		assertEquals(service3, iterator.next().getService());
+		assertEquals(service4, iterator.next().getService());
 	}
 	
 	@Test
 	public void getHistory() {
+		this.createServices();
 		this.createHistoryServiceContracts();
 		Collection<ServiceContract> contracts = this.serviceContractDAO.getHistory("Pessoa2");
 		Iterator<ServiceContract> iterator = contracts.iterator();
-		assertEquals(2, contracts.size());
-		assertEquals(new Long(6), iterator.next().getServiceId());
-		assertEquals(new Long(1), iterator.next().getServiceId());
+		assertEquals(1, contracts.size());
+		assertEquals(service1, iterator.next().getService());
 	}
 	
 }
