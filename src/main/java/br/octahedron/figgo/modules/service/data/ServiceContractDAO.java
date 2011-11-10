@@ -95,7 +95,7 @@ public class ServiceContractDAO extends GenericDAO<ServiceContract> {
 
 	private class ServiceContractComparator implements Comparator<ServiceContract> {
 		public int compare(ServiceContract o1, ServiceContract o2) {
-			return (int) (o2.getId() - o1.getId());
+			return (int) (o1.getId().compareTo(o2.getId()));
 		}
 	}
 
