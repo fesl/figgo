@@ -23,10 +23,10 @@ import br.octahedron.cotopaxi.datastore.jdo.GenericDAO;
 /**
  * @author Danilo Queiroz
  */
-public class ModuleConfigurationDAO extends GenericDAO<DomainSpecificModuleConfiguration> {
+public class ModuleConfigurationDAO extends GenericDAO<ModuleConfiguration> {
 
 	public ModuleConfigurationDAO() {
-		super(DomainSpecificModuleConfiguration.class);
+		super(ModuleConfiguration.class);
 	}
 
 	/*
@@ -35,9 +35,9 @@ public class ModuleConfigurationDAO extends GenericDAO<DomainSpecificModuleConfi
 	 * @see br.octahedron.commons.database.GenericDAO#get(java.lang.Object)
 	 */
 	@Override
-	public DomainSpecificModuleConfiguration get(Object key) {
+	public ModuleConfiguration get(Object key) {
 		try {
-			return (DomainSpecificModuleConfiguration) super.get(key).clone();
+			return (ModuleConfiguration) super.get(key).clone();
 		} catch (CloneNotSupportedException e) {
 			throw new RuntimeException(e);
 		}

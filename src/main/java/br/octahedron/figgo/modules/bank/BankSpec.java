@@ -25,7 +25,7 @@ import java.util.Set;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
-import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfiguration;
+import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
 import br.octahedron.figgo.modules.configuration.data.ModuleProperty;
 
 /**
@@ -44,8 +44,8 @@ public class BankSpec implements DomainModuleSpec {
 	}
 
 	@Override
-	public DomainSpecificModuleConfiguration getDomainSpecificModuleConfiguration() {
-		DomainSpecificModuleConfiguration bankConfig = new DomainSpecificModuleConfiguration(Module.BANK.name());
+	public ModuleConfiguration getDomainSpecificModuleConfiguration() {
+		ModuleConfiguration bankConfig = new ModuleConfiguration(Module.BANK.name());
 		bankConfig.addProperty(new ModuleProperty("name", "Banco", "[A-Za-z0-9 _-]{5,}", "O nome do banco."));
 		bankConfig.addProperty(new ModuleProperty("currency", "Dinheiro", "", "O nome da moeda do banco."));
 		bankConfig.addProperty(new ModuleProperty("currencyAbreviation", "$", "", "A abreviação para a moeda do banco."));

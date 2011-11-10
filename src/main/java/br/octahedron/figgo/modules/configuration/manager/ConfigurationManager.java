@@ -32,8 +32,7 @@ import br.octahedron.figgo.modules.ModuleSpec.Type;
 import br.octahedron.figgo.modules.configuration.ModulesInfoService;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
 import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
-import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfiguration;
-import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfigurationView;
+import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
 import br.octahedron.figgo.modules.configuration.data.ModuleConfigurationDAO;
 import br.octahedron.figgo.modules.configuration.data.ModuleProperty;
 import br.octahedron.util.Log;
@@ -201,7 +200,7 @@ public class ConfigurationManager {
 	 *         enabled for the current domain. If module isn't enabled, it returns <code>null</code>
 	 *         .
 	 */
-	public DomainSpecificModuleConfiguration getModuleConfiguration(Module module) {
+	public ModuleConfiguration getModuleConfiguration(Module module) {
 		if (module.getModuleSpec().getModuleType() == Type.DOMAIN) {
 			DomainModuleSpec spec = (DomainModuleSpec) module.getModuleSpec();
 			DomainConfiguration domainConfig = this.getDomainConfiguration();
@@ -236,7 +235,7 @@ public class ConfigurationManager {
 	public void setModuleProperty(Module module, String propertyKey, String propertyValue) {
 		DomainConfiguration domainConf = this.getDomainConfiguration();
 		if (domainConf.isModuleEnabled(module.name())) {
-			DomainSpecificModuleConfiguration moduleConf = this.moduleDAO.get(module.name());
+			ModuleConfiguration moduleConf = this.moduleDAO.get(module.name());
 			if (moduleConf.existsProperty(propertyKey)) {
 				String regex = moduleConf.getPropertyRegex(propertyKey);
 				if (!regex.isEmpty()) {
@@ -265,7 +264,7 @@ public class ConfigurationManager {
 	public void restoreModuleProperties(Module module) {
 		DomainConfiguration domain = this.getDomainConfiguration();
 		if (domain.isModuleEnabled(module.name())) {
-			DomainSpecificModuleConfiguration moduleConf = this.moduleDAO.get(module.name());
+			ModuleConfiguration moduleConf = this.moduleDAO.get(module.name());
 			moduleConf.restoreDefaults();
 		} else {
 			throw new DataDoesNotExistsException("The module " + module.name() + " isn't enabled.");

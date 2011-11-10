@@ -40,7 +40,7 @@ import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
 import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
-import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfiguration;
+import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
 import br.octahedron.figgo.modules.configuration.data.ModuleConfigurationDAO;
 
 /**
@@ -188,7 +188,7 @@ public class ConfigurationManagerTest {
 		replay(this.domainDAO, this.moduleDAO);
 		try {
 			// test
-			DomainSpecificModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
+			ModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
 			assertNotNull(moduleInfo);
 		} finally {
 			// check mocks
@@ -239,14 +239,14 @@ public class ConfigurationManagerTest {
 		this.domain.enableModule("BANK");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
-		DomainSpecificModuleConfiguration moduleConf = ((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration();
+		ModuleConfiguration moduleConf = ((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration();
 		this.moduleDAO.save(moduleConf);
 		expect(this.moduleDAO.get("BANK")).andReturn(moduleConf).anyTimes();
 
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
 		// test
-		DomainSpecificModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
+		ModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
 		assertEquals("Banco", moduleInfo.getPropertyValue("name"));
 		this.configurationManager.setModuleProperty(Module.BANK, "name", "Octa Banco");
 		moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
@@ -261,7 +261,7 @@ public class ConfigurationManagerTest {
 		this.domain.enableModule("BANK");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
-		DomainSpecificModuleConfiguration moduleConf = ((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration();
+		ModuleConfiguration moduleConf = ((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration();
 		expect(this.moduleDAO.get("BANK")).andReturn(moduleConf).anyTimes();
 
 		try {
@@ -281,14 +281,14 @@ public class ConfigurationManagerTest {
 		this.domain.enableModule("BANK");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
-		DomainSpecificModuleConfiguration moduleConf = ((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration();
+		ModuleConfiguration moduleConf = ((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration();
 		expect(this.moduleDAO.get("BANK")).andReturn(moduleConf).anyTimes();
 
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
 		try {
 			// test
-			DomainSpecificModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
+			ModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
 			assertEquals("Banco", moduleInfo.getPropertyValue("name"));
 			this.configurationManager.setModuleProperty(Module.BANK, "name", "b");
 			fail();
@@ -304,7 +304,7 @@ public class ConfigurationManagerTest {
 		this.domain.enableModule("BANK");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
-		DomainSpecificModuleConfiguration moduleConf = ((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration();
+		ModuleConfiguration moduleConf = ((DomainModuleSpec)Module.getModuleSpec(Module.BANK)).getDomainSpecificModuleConfiguration();
 		this.moduleDAO.save(moduleConf);
 		expect(this.moduleDAO.get("BANK")).andReturn(moduleConf).anyTimes();
 
@@ -312,7 +312,7 @@ public class ConfigurationManagerTest {
 		replay(this.domainDAO, this.moduleDAO);
 		// test
 		this.configurationManager.setModuleProperty(Module.BANK, "name", "Octa Banco");
-		DomainSpecificModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
+		ModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
 		assertEquals("Octa Banco", moduleInfo.getPropertyValue("name"));
 		this.configurationManager.restoreModuleProperties(Module.BANK);
 		moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);

@@ -23,7 +23,7 @@ import java.util.Set;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.ApplicationDomainModuleSpec;
-import br.octahedron.figgo.modules.configuration.manager.CreateDomainConfigurationSubscriber;
+import br.octahedron.figgo.modules.configuration.manager.DomainCreatedSubscriber;
 import br.octahedron.figgo.modules.configuration.manager.DomainChangedSubscriber;
 import br.octahedron.figgo.modules.configuration.manager.DomainUploadSubscriber;
 
@@ -47,7 +47,7 @@ public class ConfigurationSpec implements ApplicationDomainModuleSpec {
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
 		Set<Class<? extends Subscriber>> subscribers = new HashSet<Class<? extends Subscriber>>();
-		subscribers.add(CreateDomainConfigurationSubscriber.class);
+		subscribers.add(DomainCreatedSubscriber.class);
 		subscribers.add(DomainUploadSubscriber.class);
 		subscribers.add(DomainChangedSubscriber.class);
 		return subscribers;
