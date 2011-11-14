@@ -18,46 +18,51 @@
  */
 package br.octahedron.commons.util;
 
-import java.math.BigDecimal;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * @author Vítor Avelino
- * 
+ * @author vitoravelino
+ *
  */
-public class Formatter {
+public class DateUtil {
 
-	private static final NumberFormat numberFormatter;
-	private static final DateFormat dateFormatter = new SimpleDateFormat("dd/MM/yy HH:mm:ss");
-	private static final DateFormat dateStatementFormatter = new SimpleDateFormat("dd/MM/yy");
-
+	private static Map<String, SimpleDateFormat> formatters = new HashMap<String, SimpleDateFormat>();
+	public static String LONG = "dd/MM/yy HH:mm:ss";
+	public static String SHORT = "dd/MM/yy";
+	
 	static {
-		DecimalFormatSymbols symbols = new DecimalFormatSymbols(new Locale("pt", "BR"));
-		symbols.setDecimalSeparator(',');
-		symbols.setGroupingSeparator('.');
-		numberFormatter = new DecimalFormat("#,##0.00", symbols);
-		dateFormatter.setTimeZone(TimeZone.getTimeZone("GMT-3"));
+		formatters.put(LONG, new SimpleDateFormat(LONG));
+		formatters.put(SHORT, new SimpleDateFormat(SHORT));
 	}
-
-	public static String format(BigDecimal value) {
-		return numberFormatter.format(value);
-	}
-
+	
 	public static String format(Date date) {
-		return dateFormatter.format(date);
+		return format(date, LONG);
+	}
+	
+	public static String format(Date date, String pattern) {
+		DateFormat formatter = formatters.get(pattern);
+		if (formatter == null) {
+			formatter = formatters.put(pattern, new SimpleDateFormat(pattern));
+		}
+		return formatter.format(date);
 	}
 	
 	public static Date parse(String date) {
+		return parse(date, LONG);
+	}
+	
+	public static Date parse(String date, String pattern) {
 		try {
-			return dateStatementFormatter.parse(date);
+			DateFormat formatter = formatters.get(pattern);
+			if (formatter == null) {
+				formatter = formatters.put(pattern, new SimpleDateFormat(pattern));
+			}
+			return formatter.parse(date);
 		} catch (ParseException e) {
 			throw new RuntimeException(e);
 		}

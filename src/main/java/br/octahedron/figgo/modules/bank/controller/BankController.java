@@ -21,7 +21,7 @@ package br.octahedron.figgo.modules.bank.controller;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import br.octahedron.commons.util.Formatter;
+import br.octahedron.commons.util.DateUtil;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
@@ -115,7 +115,7 @@ public class BankController extends Controller {
 	public void postStatementBank() {
 		Validator dateValidator = BankValidators.getDateValidator();
 		if (dateValidator.isValid()) {
-			this.out("transactions", this.accountManager.getTransactions(currentUser(), Formatter.parse(in("startDate")), Formatter.parse(in("endDate"))));
+			this.out("transactions", this.accountManager.getTransactions(currentUser(), this.parseDate(in("startDate")), this.parseDate(in("endDate"))));
 			jsonSuccess();
 		} else {
 			jsonInvalid();
@@ -142,13 +142,17 @@ public class BankController extends Controller {
 	public void postStatsBank() {
 		Validator dateValidator = BankValidators.getDateValidator();
 		if (dateValidator.isValid()) {
-			Date startDate = Formatter.parse(in("startDate"));
-			Date endDate = Formatter.parse(in("endDate"));
+			Date startDate = this.parseDate(in("startDate"));
+			Date endDate = this.parseDate(in("endDate"));
 			this.out("circulation", this.accountManager.getAmountTransactions(startDate, endDate));
 			this.out("creditAmount", this.accountManager.getAmountCredit(startDate, endDate));
 			jsonSuccess();
 		} else {
 			jsonInvalid();
 		}
+	}
+	
+	private Date parseDate(String date) {
+		return DateUtil.parse(date, DateUtil.SHORT);
 	}
 }

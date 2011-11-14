@@ -24,7 +24,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Logger;
 
-import br.octahedron.commons.util.Formatter;
 import br.octahedron.figgo.modules.bank.data.BankAccount;
 import br.octahedron.figgo.modules.bank.data.BankAccountDAO;
 import br.octahedron.figgo.modules.bank.data.BankTransaction;
@@ -169,7 +168,7 @@ public class AccountManager {
 	 * Returns a {@link Date} with the first day of the current month.
 	 */
 	private Date getFirstDateOfCurrentMonth() {
-		return Formatter.parse("01/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR));
+		return br.octahedron.commons.util.DateUtil.parse("01/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR), br.octahedron.commons.util.DateUtil.SHORT);
 	}
 
 	/**
