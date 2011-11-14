@@ -36,7 +36,6 @@ import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfig
 import br.octahedron.figgo.modules.configuration.data.DomainSpecificModuleConfigurationView;
 import br.octahedron.figgo.modules.configuration.data.ModuleConfigurationDAO;
 import br.octahedron.figgo.modules.configuration.data.ModuleProperty;
-import br.octahedron.util.Log;
 
 /**
  * This entity is responsible by manager all configurations for a domain, and the modules enabled
@@ -188,12 +187,10 @@ public class ConfigurationManager {
 	/**
 	 * Disables the given module. If the given module isn't enabled, nothing happens.
 	 */
-	public void disableModule(Module module) {
-		Log log = new Log(ConfigurationManager.class);
-		log.warning("@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + module.name());
-		log.warning("1 > " + this.getDomainConfiguration().getModulesEnabled());
-		this.getDomainConfiguration().disableModule(module.name());
-		log.warning("2 > " + this.getDomainConfiguration().getModulesEnabled());
+	public void disableModule(String moduleName) {
+		DomainConfiguration configuration = this.getDomainConfiguration();
+		configuration.disableModule(moduleName);
+		this.domainDAO.save(configuration);
 	}
 
 	/**

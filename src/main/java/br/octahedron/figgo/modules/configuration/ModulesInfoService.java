@@ -21,6 +21,7 @@ package br.octahedron.figgo.modules.configuration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.ModuleSpec.Type;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
@@ -61,5 +62,12 @@ public class ModulesInfoService {
 	 */
 	public boolean isModuleEnabled(String moduleName) {
 		return this.domainConfiguration.isModuleEnabled(moduleName);
+	}
+	
+	public boolean hasDomainSpecificConfiguration(String moduleName) {
+		if (Module.getModuleSpec(moduleName) instanceof DomainModuleSpec) {
+			return ((DomainModuleSpec) Module.getModuleSpec(moduleName)).hasDomainSpecificConfiguration(); 
+		}
+		return false;
 	}
 }

@@ -167,7 +167,7 @@ public class ConfigurationManagerTest {
 		DomainConfiguration domainConfig = this.configurationManager.getDomainConfiguration();
 		assertEquals(1, domainConfig.getModulesEnabled().size());
 		assertTrue(domainConfig.isModuleEnabled(Module.BANK.name()));
-		this.configurationManager.disableModule(Module.BANK);
+		this.configurationManager.disableModule(Module.BANK.name());
 		domainConfig = this.configurationManager.getDomainConfiguration();
 		assertEquals(0, domainConfig.getModulesEnabled().size());
 		assertFalse(domainConfig.isModuleEnabled(Module.BANK.name()));

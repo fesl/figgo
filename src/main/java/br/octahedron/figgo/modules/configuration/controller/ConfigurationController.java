@@ -110,7 +110,7 @@ public class ConfigurationController extends Controller {
 	@AuthorizationRequired
 	public void postDisableModuleDomain() {
 		// TODO validate
-		this.configurationManager.disableModule(Module.valueOf(in("module").toUpperCase()));
+		this.configurationManager.disableModule(in("module").toUpperCase());
 		jsonSuccess();
 	}
 }
