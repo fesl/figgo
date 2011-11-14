@@ -38,6 +38,7 @@
         
         <section>
             <h3>Disponíveis</h3>
+            #if ( $services.size() > 0 )
             <ul class="unstyled">
                 #foreach( $service in $services )
                 <li class="service">
@@ -53,6 +54,9 @@
                 </li>
                 #end
             </ul>
+            #else
+            <p>Você não oferece nenhum serviço até o momento.</p>
+            #end
         </section>
     </section>
 </div>

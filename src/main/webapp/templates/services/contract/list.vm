@@ -38,11 +38,12 @@
         
         <section>
             <h3>Contratos prestados</h3>
+            #if ( $providerContracts.size() > 0 )
             <ul class="unstyled">
                 #foreach( $contract in $providerContracts )
                 <li class="service">
                     <header>
-                        <a href="/service/$contract.serviceId"><h4>$contract.service.name</h4></a>
+                        <a href="/service/$contract.service.id"><h4>$contract.service.name</h4></a>
                     </header>
                     <dl>
                         <dt>Contratante</dt>
@@ -57,15 +58,19 @@
                 </li>
                 #end
             </ul>
+            #else
+            <p>Nenhum serviço prestado até o momento.</p>
+            #end
         </section>
 
         <section>
             <h3>Contratos contratados</h3>
+            #if ( $contractorContracts.size() > 0 )
             <ul class="unstyled">
                 #foreach( $contract in $contractorContracts )
                 <li class="service">
                     <header>
-                        <a href="/service/$contract.serviceId"><h4>$contract.service.name</h4></a>
+                        <a href="/service/$contract.service.id"><h4>$contract.service.name</h4></a>
                     </header>
                     <dl>
                         <dt>Prestador</dt>
@@ -80,6 +85,9 @@
                 </li>
                 #end
             </ul>
+            #else
+            <p>Nenhum serviço contratado até o momento.</p>
+            #end
         </section>
     </section>
 </div>
