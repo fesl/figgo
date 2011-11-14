@@ -39,8 +39,9 @@ public class ConfigurationController extends Controller {
 	protected static final String BASE_DIR_TPL = "domain/";
 	private static final String EDIT_DOMAIN_TPL = BASE_DIR_TPL + "edit.vm";
 	private static final String MODULE_CONFIG_TPL = BASE_DIR_TPL + "module/config.vm";
+	private static final String ROOT_URL = "/";
 	private static final String BASE_URL = "/domain";
-	private static final String EDIT_DOMAIN_URL = "/edit";
+	private static final String EDIT_DOMAIN_URL = BASE_URL + "/edit";
 
 	@Inject
 	private ConfigurationManager configurationManager;
@@ -68,7 +69,7 @@ public class ConfigurationController extends Controller {
 	public void postUpdateDomain() {
 		if (getDomainValidator().isValid()) {
 			this.configurationManager.updateDomainConfiguration(in("name"), in("url"), in("maillist"), in("description"));
-			redirect(BASE_URL);
+			redirect(ROOT_URL);
 		} else {
 			echo();
 			invalid(EDIT_DOMAIN_TPL);
