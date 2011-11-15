@@ -29,7 +29,6 @@ import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.modules.bank.controller.validation.BankValidators;
-import br.octahedron.figgo.modules.bank.data.SystemAccount;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
 import br.octahedron.figgo.modules.bank.manager.AccountManager;
 
@@ -126,7 +125,7 @@ public class BankController extends Controller {
 	 * Gets some important information about the bank
 	 */
 	public void getStatsBank() {
-		BigDecimal balance = this.accountManager.getBalance(SystemAccount.ID);
+		BigDecimal balance = this.accountManager.getBalance(this.subDomain());
 		BigDecimal ballast = this.accountManager.getBallast();
 		this.out("balance", balance);
 		this.out("ballast", ballast);
