@@ -2,7 +2,7 @@
 #parse( "templates/layout_intern.vm" )
 
 #@head()
-    <link rel="stylesheet" href="/css/jquery-ui-1.8.13.custom.css" />
+    <link rel="stylesheet" href="/css/jquery-ui-1.8.16.custom.css" />
 #end
 
 #fullHeaderDomain()
@@ -40,7 +40,7 @@
         <hr />
 
         <h3>Admin</h3>
-        <span>Saldo do banco: M$ $formatter.format($balance)</span>
+        <span>Saldo do banco: M$ $currencyFormatter.format($balance)</span>
 
         <form action="/bank/share" method="post">
             <fieldset>
@@ -99,5 +99,6 @@
 #end
     
 #@scripts()
-    <script type="text/javascript" src="/js/libs/jquery-ui-1.8.13.custom.min.js"></script>
+    <script defer src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
+    <script defer src="/js/bank.js"></script>
 #end
