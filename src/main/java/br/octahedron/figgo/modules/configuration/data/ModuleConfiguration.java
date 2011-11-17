@@ -151,17 +151,4 @@ public class ModuleConfiguration implements Serializable {
 			return false;
 		}
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#clone()
-	 */
-	@Override
-	protected Object clone() throws CloneNotSupportedException {
-		ModuleConfiguration clone = new ModuleConfiguration(this.moduleName);
-		clone.properties = this.properties;
-		clone.values = this.values;
-		return clone;
-	}
 }

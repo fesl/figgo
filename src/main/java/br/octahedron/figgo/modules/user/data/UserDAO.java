@@ -46,8 +46,8 @@ public class UserDAO extends GenericDAO<User> {
 	 * @return
 	 */
 	public Collection<User> getUsersStartingWith(String term) {
-		Collection<User> searchResultName = this.datastoreFacade.startsWithQuery(User.class, term.toLowerCase(), NAME_ATTRIBUTE);
-		Collection<User> searchResultEmail = this.datastoreFacade.startsWithQuery(User.class, term.toLowerCase(), EMAIL_ATTRIBUTE);
+		Collection<User> searchResultName = this.getAllStartsWith(NAME_ATTRIBUTE, term.toLowerCase());
+		Collection<User> searchResultEmail = this.getAllStartsWith(EMAIL_ATTRIBUTE, term.toLowerCase());
 		SortedSet<User> result = new TreeSet<User>();
 		result.addAll(searchResultEmail);
 		result.addAll(searchResultName);

@@ -18,15 +18,11 @@
  */
 package br.octahedron.figgo.modules.service.controller;
 
-import static br.octahedron.cotopaxi.controller.Converter.Builder.number;
-
-import java.math.BigDecimal;
-
+import static br.octahedron.cotopaxi.controller.Converter.Builder.*;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.controller.ConvertionException;
-import br.octahedron.cotopaxi.controller.converter.NumberConverter.NumberType;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
@@ -90,7 +86,7 @@ public class ServiceController extends Controller {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		Validator valueValidator = ServiceValidators.getValueValidator();
 		if (inexistentValidator.isValid() && valueValidator.isValid()) {
-			this.servicesManager.createService(in("name"), (BigDecimal) in("value", number(NumberType.BIG_DECIMAL)), in("category"),
+			this.servicesManager.createService(in("name"), in("value", bigDecimalNumber()), in("category"),
 					in("description"));
 			redirect(BASE_URL);
 		} else {
@@ -115,7 +111,7 @@ public class ServiceController extends Controller {
 		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
 		Validator valueValidator = ServiceValidators.getValueValidator();
 		if (inexistentValidator.isValid() && valueValidator.isValid()) {
-			this.servicesManager.updateService(in("id"), in("name"), (BigDecimal) in("value", number(NumberType.BIG_DECIMAL)), in("category"),
+			this.servicesManager.updateService(in("id"), in("name"), in("value", bigDecimalNumber()), in("category"),
 					in("description"));
 			redirect(BASE_URL);
 		} else {

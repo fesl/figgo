@@ -21,7 +21,7 @@ package br.octahedron.figgo.modules.user.controller;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.interceptor.TemplateInterceptor;
-import br.octahedron.cotopaxi.view.response.RenderableResponse;
+import br.octahedron.cotopaxi.view.response.TemplateResponse;
 import br.octahedron.figgo.modules.user.manager.UserManager;
 
 /**
@@ -55,7 +55,7 @@ public class UserResponseInterceptor extends TemplateInterceptor {
 	 * @see br.octahedron.cotopaxi.interceptor.TemplateInterceptor#preRender(br.octahedron.cotopaxi.view.response.RenderableResponse)
 	 */
 	@Override
-	public void preRender(RenderableResponse response) {
+	public void preRender(TemplateResponse response) {
 		try {
 			this.namespaceManager.changeToGlobalNamespace();
 			String currentUserId =  this.currentUser();

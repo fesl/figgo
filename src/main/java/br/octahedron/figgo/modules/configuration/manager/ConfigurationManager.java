@@ -43,6 +43,8 @@ import br.octahedron.figgo.modules.configuration.data.ModuleProperty;
  * This class assumes that it's working on the domain namespace, so it deals with only the current
  * one domain.
  * 
+ * TODO refactor this class
+ * 
  * @author Danilo Queiroz
  */
 public class ConfigurationManager {
@@ -195,7 +197,6 @@ public class ConfigurationManager {
 	/**
 	 * @return The {@link DomainSpecificModuleConfigurationView} for the given module, if module is
 	 *         enabled for the current domain. If module isn't enabled, it returns <code>null</code>
-	 *         .
 	 */
 	public ModuleConfiguration getModuleConfiguration(Module module) {
 		if (module.getModuleSpec().getModuleType() == Type.DOMAIN) {
@@ -203,9 +204,9 @@ public class ConfigurationManager {
 			DomainConfiguration domainConfig = this.getDomainConfiguration();
 			if (domainConfig.isModuleEnabled(module.name()) && spec.hasDomainSpecificConfiguration()) {
 				return this.moduleDAO.get(module.name());
-			} 
+			}
 		}
-		
+
 		throw new DataDoesNotExistsException("The module " + module.name() + " isn't enabled or isn't configurable.");
 	}
 

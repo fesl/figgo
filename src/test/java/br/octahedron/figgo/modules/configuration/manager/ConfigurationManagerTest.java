@@ -161,6 +161,7 @@ public class ConfigurationManagerTest {
 		this.domain.enableModule("BANK");
 		expect(this.domainDAO.count()).andReturn(1).anyTimes();
 		expect(this.domainDAO.getAll()).andReturn(this.result).anyTimes();
+		this.domainDAO.save(this.domain);
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
 		// test

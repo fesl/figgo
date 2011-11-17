@@ -21,7 +21,7 @@ package br.octahedron.figgo;
 import br.octahedron.commons.util.CurrencyFormatter;
 import br.octahedron.cotopaxi.CotopaxiProperty;
 import br.octahedron.cotopaxi.interceptor.TemplateInterceptor;
-import br.octahedron.cotopaxi.view.response.RenderableResponse;
+import br.octahedron.cotopaxi.view.response.TemplateResponse;
 
 /**
  * A {@link ResponseInterceptor} that adds the properties related to i18n
@@ -41,7 +41,7 @@ public class I18nResponseInterceptor extends TemplateInterceptor {
 	 * @see br.octahedron.cotopaxi.interceptor.TemplateInterceptor#preRender(br.octahedron.cotopaxi.view.response.RenderableResponse)
 	 */
 	@Override
-	public void preRender(RenderableResponse response) {
+	public void preRender(TemplateResponse response) {
 		response.addOutput("currencyFormatter", currencyFormatter);
 		// response.addOutput("dictionary", dictionary);
 	}

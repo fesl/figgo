@@ -36,10 +36,6 @@ public class ModuleConfigurationDAO extends GenericDAO<ModuleConfiguration> {
 	 */
 	@Override
 	public ModuleConfiguration get(Object key) {
-		try {
-			return (ModuleConfiguration) super.get(key).clone();
-		} catch (CloneNotSupportedException e) {
-			throw new RuntimeException(e);
-		}
+		return (ModuleConfiguration) super.get(key);
 	}
 }

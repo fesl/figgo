@@ -18,11 +18,12 @@
  */
 package br.octahedron.figgo.modules.configuration.controller;
 
-import static br.octahedron.cotopaxi.CotopaxiProperty.*;
+import static br.octahedron.cotopaxi.CotopaxiProperty.APPLICATION_BASE_URL;
+import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.interceptor.TemplateInterceptor;
-import br.octahedron.cotopaxi.view.response.RenderableResponse;
+import br.octahedron.cotopaxi.view.response.TemplateResponse;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
 
@@ -57,7 +58,7 @@ public class DomainResponseInterceptor extends TemplateInterceptor {
 	 * @see br.octahedron.cotopaxi.interceptor.TemplateInterceptor#preRender(br.octahedron.cotopaxi.view.response.RenderableResponse)
 	 */
 	@Override
-	public void preRender(RenderableResponse response) {
+	public void preRender(TemplateResponse response) {
 		try {
 			// TODO review
 			response.addOutput("applicationBaseURL", getProperty(APPLICATION_BASE_URL));

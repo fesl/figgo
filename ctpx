@@ -172,7 +172,7 @@ clean_maven() {
 build_maven() {
 	# Execute maven package
 	echo -ne "Building Project...\t"
-	mvn compile war:inplace &> ${MVN_OUT}
+	mvn package war:inplace &> ${MVN_OUT}
 	if [ $? -eq 0 ]
 	then
 		echo "OK"
