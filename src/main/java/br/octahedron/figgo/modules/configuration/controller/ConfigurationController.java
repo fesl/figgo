@@ -93,7 +93,7 @@ public class ConfigurationController extends Controller {
 	public void postModuleDomain() {
 		// TODO validate
 		Module module = Module.valueOf(in("module").toUpperCase());
-		for (String key: this.input().keySet()) {
+		for (String key: this.input()) {
 			if (key.startsWith("__")) {
 				this.configurationManager.setModuleProperty(module, key.substring(2), in(key));
 			}

@@ -18,32 +18,32 @@
  */
 package br.octahedron.figgo;
 
-import br.octahedron.commons.util.CurrencyFormatter;
-import br.octahedron.cotopaxi.CotopaxiProperty;
-import br.octahedron.cotopaxi.interceptor.TemplateInterceptor;
-import br.octahedron.cotopaxi.view.response.TemplateResponse;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.util.Locale;
+
+import br.octahedron.cotopaxi.i18n.I18NTemplateInterceptor;
 
 /**
  * A {@link ResponseInterceptor} that adds the properties related to i18n
  * 
  * @author Vítor Avelino
  */
-public class I18nResponseInterceptor extends TemplateInterceptor {
-	
-	private CurrencyFormatter currencyFormatter;
-	
-	public I18nResponseInterceptor() {
-		super();
-		this.currencyFormatter = new CurrencyFormatter(CotopaxiProperty.getProperty("LOCALE"));
-	}
+public class FiggoI18nResponseInterceptor extends I18NTemplateInterceptor {
 	
 	/* (non-Javadoc)
-	 * @see br.octahedron.cotopaxi.interceptor.TemplateInterceptor#preRender(br.octahedron.cotopaxi.view.response.RenderableResponse)
+	 * @see br.octahedron.cotopaxi.i18n.I18NTemplateInterceptor#numberFormat(java.util.Locale)
 	 */
 	@Override
-	public void preRender(TemplateResponse response) {
-		response.addOutput("currencyFormatter", currencyFormatter);
-		// response.addOutput("dictionary", dictionary);
+	public NumberFormat numberFormat(Locale lc) {
+		return createNumberFormat(lc);
 	}
-
+	
+	private static NumberFormat createNumberFormat(Locale lc) {
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols(lc);
+		symbols.setDecimalSeparator(',');
+		symbols.setGroupingSeparator('.');
+		return new DecimalFormat("#,##0.00", symbols);
+	}
 }
