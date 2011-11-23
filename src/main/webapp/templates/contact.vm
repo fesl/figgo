@@ -1,0 +1,57 @@
+#set( $title = "Figgo - Contato" )
+#parse( "templates/layout.vm" )
+
+#@body()
+<div id="info-form" class="left">
+    <section>
+        <header>
+            <h1>Fale conosco!</h1>
+        </header>
+        <p>Olá!</p>
+        <p>O Figgo é uma plataforma para gestão e apoio a núcleos culturais que visa melhorar e solucionar problemas do dia-a-dia.</p>
+        <p>Ainda estamos em fase <span class="label important">alpha</span> e por isso poderão ocorrer alguns problemas durante o uso. Não hesite em nos dar seu <em>feedback</em>, ele é importante para nós.</p>
+        <p>Sinta-se à vontade para compartilhar conosco sua opinião.</p>
+    </section>
+</div>
+<div class="left">
+    #if ( $notice )
+    <p>$i18n.get($notice)</p>
+    #end
+    <form action="/contact" method="post" accept-charset="utf-8">
+        <fieldset>
+            <legend>Contato</legend>
+            <div>
+                <label for="name">Nome</label>
+                <input type="text" id="name" name="name" value="$!{name}" autofocus required />
+                #if ( $invalid.name )
+                <span>$invalid.name</span>
+                #end
+            </div>
+            <div>
+                <label for="from">Email</label>
+                <input type="email" id="from" name="from" value="$!{from}" required />
+                #if ( $invalid.from )
+                <span>$invalid.from</span>
+                #end
+            </div>
+            <div>
+                <label for="subject">Assunto</label>
+                <input type="text" id="subject" name="subject" value="$!{subject}" required />
+                #if ( $invalid.subject )
+                <span>$invalid.subject</span>
+                #end
+            </div>
+            <div>
+                <label for="message">Mensagem</label>
+                <textarea id="message" name="message" required>$!{description}</textarea>
+                #if ( $invalid.message )
+                <span>$invalid.message</span>
+                #end
+            </div>
+        </fieldset>
+        <input type="submit" value="Falar!" />
+    </form>
+</div>
+#end
+
+#scripts()

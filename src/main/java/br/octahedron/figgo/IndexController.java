@@ -19,11 +19,14 @@
 package br.octahedron.figgo;
 
 import static br.octahedron.cotopaxi.CotopaxiProperty.*;
+import static br.octahedron.cotopaxi.validation.Rule.Builder.required;
+import br.octahedron.commons.util.Mailer;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
 
@@ -34,6 +37,8 @@ import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
 public class IndexController extends Controller {
 
 	private static final String INDEX_TPL = "index.vm";
+	private static final String CONTACT_TPL = "contact.vm";
+	private static final String ABOUT_TPL = "about.vm";
 	private static final String DOMAIN_INDEX_TPL = "domain/index.vm";
 	private static final String DOMAIN_PUBLIC_INDEX_TPL = "domain/public_index.vm";
 
@@ -101,4 +106,44 @@ public class IndexController extends Controller {
 	public void getLogin() {
 		redirect("/");
 	}
+
+	public void getAbout() {
+		success(ABOUT_TPL);
+	}
+	
+	public void getContact() {
+		success(CONTACT_TPL);
+	}
+	
+	public void postContact() {
+		Validator validator = ContactValidator.getValidator();
+		if (validator.isValid()) {
+			Mailer.send(in("name"), in("from"), in("subject"), in("message"));
+			this.out("notice", "MESSAGE_SENT");
+			this.success(CONTACT_TPL);
+		} else {
+			this.echo();
+			this.invalid(CONTACT_TPL);
+		}
+	}
+	
+	/**
+	 * @author vitoravelino
+	 */
+	private static class ContactValidator {
+		
+		private static Validator validator;
+		
+		protected static synchronized Validator getValidator() {
+			if (validator == null) {
+				validator = new Validator();
+				validator.add("name", required("REQUIRED_NAME"));
+				validator.add("from", required("REQUIRED_EMAIL"));
+				validator.add("subject", required("REQUIRED_SUBJECT"));
+				validator.add("message", required("REQUIRED_MESSAGE_TYPE"));
+			}
+			return validator;
+		}
+	}
+
 }
