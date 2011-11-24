@@ -18,9 +18,12 @@
  */
 package br.octahedron.figgo.modules.user.data;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import javax.jdo.Query;
 
 import br.octahedron.cotopaxi.datastore.jdo.GenericDAO;
 
@@ -52,5 +55,19 @@ public class UserDAO extends GenericDAO<User> {
 		result.addAll(searchResultEmail);
 		result.addAll(searchResultName);
 		return result;
+	}
+	
+	
+	/**
+	 * Retrivies a collection of {@link User} which has its names in <code>usersId</code>.
+	 * 
+	 * @param usersId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<User> getUsersIn(String[] usersId) {
+		Query query = this.createQuery();
+		query.setFilter("userId.contains(:usersId)");
+		return (Collection<User>) query.execute(Arrays.asList(usersId));
 	}
 }

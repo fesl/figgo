@@ -20,10 +20,12 @@ package br.octahedron.figgo.modules.user.controller;
 
 import static br.octahedron.cotopaxi.CotopaxiProperty.APPLICATION_BASE_URL;
 import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.strArray;
 import static br.octahedron.figgo.modules.user.controller.validation.UserValidators.getUserValidator;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired.AuthenticationLevel;
 import br.octahedron.cotopaxi.controller.Controller;
+import br.octahedron.cotopaxi.controller.ConvertionException;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
@@ -129,7 +131,16 @@ public class UserController extends Controller {
 	 * AJAX function to search user 
 	 */
 	public void getSearchUser() {
-		out("result", userManager.getUsersStartingWith(in("term")));
+		this.out("result", userManager.getUsersStartingWith(in("term")));
+		jsonSuccess();
+	}
+	
+	/**
+	 * AJAX function to search users
+	 * @throws ConvertionException 
+	 */
+	public void getSearchUsers() throws ConvertionException {
+		this.out("result", userManager.getUsersIn(in("users", strArray(","))));
 		jsonSuccess();
 	}
 	

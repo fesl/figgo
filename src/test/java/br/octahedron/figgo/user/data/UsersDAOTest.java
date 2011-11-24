@@ -19,6 +19,7 @@
 package br.octahedron.figgo.user.data;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 
@@ -78,5 +79,20 @@ public class UsersDAOTest {
 		result = this.userDAO.getUsersStartingWith("lal");
 		assertEquals(2, result.size());
 		assertEquals("[[Lalala user2@example.com], [User lalala@example.com]]", result.toString());
+	}
+	
+	@Test
+	public void getUsersIn() {
+		this.createUsers();
+		Collection<User> result = this.userDAO.getUsersIn(new String[] {"test2@example.com", "lalala@example.com"});
+		assertEquals(result.size(), 2);
+		assertEquals("[[Name2 test2@example.com], [User lalala@example.com]]", result.toString());
+		
+		result = this.userDAO.getUsersIn(new String[] {"user2@example.com"});
+		assertEquals(result.size(), 1);
+		assertEquals("[[Lalala user2@example.com]]", result.toString());
+		
+		result = this.userDAO.getUsersIn(new String[] {"nonexist@example.com"});
+		assertTrue(result.isEmpty());
 	}
 }

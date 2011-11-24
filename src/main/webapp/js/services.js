@@ -22,7 +22,8 @@ $(function() {
 		}
 	});
 	
-	$("a.inside-link").bind('click', function(e) {
+	var $providers = $("#providers > ul");
+	$providers.delegate('a', 'click', function(e) {
 		$.ajax({
 			type: "POST",
 			url: $(this).attr('href'),
@@ -31,5 +32,22 @@ $(function() {
 		});
 		e.preventDefault();
 	});
+	
+	var users = $providers.find('li').map(function() { return this.dataset['user'] }).get();
+	$.get('/users/search/', {'users': users.join(",")}, function(data) {
+		var i, currentLi,
+			usersLength = data.result.length,
+			users = data.result;
+		for (i = 0; i < usersLength; i += 1) {
+			currentLi = $providers.find("li[data-user='"+users[i].userId+"']")[0]
+			currentLi.childNodes[0].textContent = users[i].name;
+		}
+		document.getElementById("loader").remove();
+		$providers.fadeIn();
+	}).error(function(data) {
+		console.log("não foi possível carregar dados dos usuários");
+	});
+
+
 
 });

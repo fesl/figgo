@@ -747,6 +747,8 @@ table.roles tbody tr:hover {
 
 #providers .thumbs-up {
   cursor: pointer; }
+#providers > ul {
+  display: none; }
 
 .thumbs-up {
   width: 16px;

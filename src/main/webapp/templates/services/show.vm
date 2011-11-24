@@ -31,7 +31,7 @@
             <small>$!{service.category}</small>
             <p>$!{service.description}</p>
             <footer>
-                    Valor: $!{service.amount}
+                    Valor: $numberFormat.format($service.amount)
             </footer>
             <div id="operations">
                 // if admin
@@ -48,9 +48,10 @@
                 <img class="thumbs-up not" src="/img/thumbs-up.png" title="Não faço!" alt="Não faço!" />
                 #end
             </h3>
-            <ul data-user="$user.userId.split('@')[0]">
+            <img id="loader" src="/img/ajax-loader.gif" />
+            <ul data-user="$user.userId">
             #foreach( $provider in $service.providers )
-                <li id="$provider.split('@')[0]">$provider - <a class="inside-link" href="/service/$service.id/contract/$provider">contratar</a></li>
+                <li data-user="$provider"><span>$provider</span> <a href="/service/$service.id/contract/$provider">contratar</a></li>
             #end
             </ul>
         </section>
@@ -58,15 +59,6 @@
 </div>
 #end
 
-#@body()
-        <div id="content">
-            <div id="single-column">
-                
-            </div>
-        </div>
-    </div>
-#end
-    
 #@scripts()
     <script src="/js/services.js"></script>
 #end

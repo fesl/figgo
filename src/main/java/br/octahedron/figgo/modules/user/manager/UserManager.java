@@ -99,4 +99,14 @@ public class UserManager {
 	public Collection<User> getUsersStartingWith(String term) {
 		return this.userDAO.getUsersStartingWith(term);
 	}
+	
+	/**
+	 * Retrivies a collection of {@link User} which has its names in <code>usersId</code>.
+	 * 
+	 * @param term
+	 * @return
+	 */
+	public Collection<User> getUsersIn(String[] usersId) {
+		return this.userDAO.getUsersIn(usersId);
+	}
 }
