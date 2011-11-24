@@ -49,10 +49,10 @@
                         <dt>Contratante</dt>
                         <dd>$contract.contractor</dd>
                         <dt>Status</dt>
-                        <dd>$contract.status</dd>
+                        <dd>$i18n.get($contract.status)</dd>
                     </dl>
                     <footer>
-                        $contract.amount
+                        $numberFormat.format($contract.amount)
                         <span class="contract"><a href="/services/contract/$contract.id/edit">Editar</a></span>
                     </footer>
                 </li>
@@ -76,10 +76,10 @@
                         <dt>Prestador</dt>
                         <dd>$contract.provider</dd>
                         <dt>Status</dt>
-                        <dd>$contract.status</dd>
+                        <dd>$i18n.get($contract.status)</dd>
                     </dl>
                     <footer>
-                        $contract.amount
+                        $numberFormat.format($contract.amount)
                         <span class="contract"><a class="inside-link" href="/services/contract/$contract.id/pay">Pagar</a></span>
                     </footer>
                 </li>
@@ -93,15 +93,6 @@
 </div>
 #end
 
-#@body()
-        <div id="content">
-            <div id="single-column">
-                
-            </div>
-        </div>
-    </div>
-#end
-    
 #@scripts()
     <script src="/js/services.js"></script>
 #end

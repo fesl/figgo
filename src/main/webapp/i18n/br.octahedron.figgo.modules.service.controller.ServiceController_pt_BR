@@ -1,2 +1,4 @@
 # Validators
-MESSAGE_SENT=Mensagem enviada com sucesso!
+PENDING=Pendente
+IN_PROGRESS=Em andamento
+COMPLETED=Completo

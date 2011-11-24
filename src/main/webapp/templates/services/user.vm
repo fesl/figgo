@@ -48,7 +48,7 @@
                     </header>
                     <p>$service.description</p>
                     <footer>
-                        $service.amount
+                        $numberFormat.format($service.amount)
                         <span class="contract"><a href="/service/${service.id}">Contratar</a></span>
                     </footer>
                 </li>
@@ -62,15 +62,6 @@
 </div>
 #end
 
-#@body()
-        <div id="content">
-            <div id="single-column">
-                
-            </div>
-        </div>
-    </div>
-#end
-    
 #@scripts()
     <script src="/js/services.js"></script>
 #end
