@@ -1,5 +1,5 @@
 #set( $title = "Figgo - $!{domain.Name} - Banco - Extrato" )
-#parse( "templates/layout_intern.vm" )
+#parse( "templates/intern.vm" )
 
 #@head()
     <link rel="stylesheet" href="/css/jquery-ui-1.8.16.custom.css" />
@@ -20,7 +20,7 @@
             <li><a href="#">Home</a></li>
             <li><a href="#">Sobre</a></li>
             #foreach( $module in $domain.ModulesEnabled )
-                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$i18n.get($module)</a></li>
             #end
         </ul>
     </section>
@@ -47,14 +47,14 @@
                     <label for="startDate">Início</label>
                     <input type="text" id="startDate" name="startDate" />
                     #if ($invalid.startDate)
-                    <span>$invalid.startDate</span>
+                    <span>$i18n.get($invalid.startDate)</span>
                     #end
                 </div>
                 <div>
                     <label for="endDate">Fim</label>
                     <input type="text" id="endDate" name="endDate" />
                     #if ($invalid.endDate)
-                    <span>$invalid.endDate</span>
+                    <span>$i18n.get($invalid.endDate)</span>
                     #end
                 </div>
             </fieldset>
@@ -74,7 +74,7 @@
                 </thead>
                 <tfoot>
                     <td colspan="3" class="balance">SALDO</td>
-                    <td class=#if( $balance >= 0 )"blue"#else"red"#end>M$ $formatter. format($balance)</td>
+                    <td class=#if( $balance >= 0 )"blue"#else"red"#end>M$ $numberFormat.format($balance)</td>
                 </tfoot>
                 <tbody>
                 </tbody>

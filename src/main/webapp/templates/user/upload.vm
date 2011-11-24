@@ -1,5 +1,5 @@
 #set( $title = "Figgo - Upload avatar" )
-#parse( "templates/layout_intern.vm" )
+#parse( "templates/intern.vm" )
 
 #head()
 

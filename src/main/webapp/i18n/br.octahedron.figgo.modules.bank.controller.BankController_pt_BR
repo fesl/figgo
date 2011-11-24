@@ -1,0 +1,7 @@
+# Validators
+REQUIRED_TRANSASCTION_USERID=Usuário: não pode ficar vazio
+REQUIRED_TRANSACTION_AMOUT=Valor: não pode ficar vazio
+REQUIRED_TRANSACTION_TYPE=Tipo: não pode ficar vazio
+
+INVALID_TRANSACTION_DESTINATION=Usuário: não existe
+INVALID_AMOUNT=Valor: deve ser maior que 0 (zero)

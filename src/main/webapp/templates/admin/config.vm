@@ -1,5 +1,5 @@
 #set( $title = "Figgo - Configuração inicial" )
-#parse( "templates/layout_intern.vm" )
+#parse( "templates/intern.vm" )
 
 #head()
 
@@ -22,23 +22,23 @@
             <legend>Configuração Route53</legend>
             <div>
                 <label for="accessKey">Access Key ID</label>
-                <input type="text" id="accessKey" name="accessKey" value="$!{accessKey}" />
+                <input type="text" id="accessKey" name="accessKey" value="$!{accessKey}" required autofocus />
                 #if ($invalid.accessKey)
-                <span>$invalid.accessKey</span>
+                <span>$i18n.get($invalid.accessKey)</span>
                 #end
             </div>
             <div>
                 <label for="keySecret">Access Key Secret</label>
-                <input type="text" id="keySecret" name="keySecret" value="$!{keySecret}" />
+                <input type="text" id="keySecret" name="keySecret" value="$!{keySecret}" required />
                 #if ($invalid.keySecret)
-                <span>$invalid.keySecret</span>
+                <span>$i18n.get($invalid.keySecret)</span>
                 #end
             </div>
             <div>
                 <label for="zone">Zone ID</label>
-                <input type="text" id="zone" name="zone" value="$!{zone}" />
+                <input type="text" id="zone" name="zone" value="$!{zone}" required />
                 #if ($invalid.zone)
-                <span>$invalid.zone</span>
+                <span>$i18n.get($invalid.zone)</span>
                 #end
             </div>
         </fieldset>

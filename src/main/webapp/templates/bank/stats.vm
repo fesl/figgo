@@ -1,5 +1,5 @@
 #set( $title = "Figgo - $!{domain.Name} - Banco - Extrato" )
-#parse( "templates/layout_intern.vm" )
+#parse( "templates/intern.vm" )
 
 #@head()
     <link rel="stylesheet" href="/css/jquery-ui-1.8.16.custom.css" />
@@ -20,7 +20,7 @@
             <li><a href="#">Home</a></li>
             <li><a href="#">Sobre</a></li>
             #foreach( $module in $domain.ModulesEnabled )
-                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$i18n.get($module)</a></li>
             #end
         </ul>
     </section>
@@ -43,16 +43,16 @@
             <div class="left">
                 <h3>Informações atuais do banco</h3>
                 <ul class="unstyled">
-                    <li>Saldo: $currencyFormatter.format($balance)</li>
-                    <li>Lastro: $currencyFormatter.format($ballast)</li>
-                    <li>Em circulação: $currencyFormatter.format($inCirculation)</li>
+                    <li>Saldo: $numberFormat.format($balance)</li>
+                    <li>Lastro: $numberFormat.format($ballast)</li>
+                    <li>Em circulação: $numberFormat.format($inCirculation)</li>
                 </ul>
             </div>
             <div class="left">
                 <h3>Informações do banco no mês atual</h3>
                 <ul class="unstyled">
-                    <li>Movimentação: $currencyFormatter.format($monthCirculation)</li>
-                    <li>Retorno: $currencyFormatter.format($creditAmount)</li>
+                    <li>Movimentação: $numberFormat.format($monthCirculation)</li>
+                    <li>Retorno: $numberFormat.format($creditAmount)</li>
                 </ul>
             </div>
         </section>

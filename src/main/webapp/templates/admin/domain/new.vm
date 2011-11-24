@@ -1,5 +1,5 @@
 #set( $title = "Figgo - Novo domínio" )
-#parse( "templates/layout_intern.vm" )
+#parse( "templates/intern.vm" )
 
 #head()
 
@@ -20,16 +20,16 @@
             <legend>Criação de núcleo</legend>
             <div>
                 <label for="name">Domínio</label>
-                <input type="text" id="name" name="name" value="$!{name}" /> .figgo.com.br
+                <input type="text" id="name" name="name" value="$!{name}" required autofocus/> .figgo.com.br
                 #if ( $invalid.name )
-                    <span>$invalid.name</span>
+                <span>$i18n.get($invalid.name)</span>
                 #end
             </div>
             <div>
                 <label for="userId">Administrador</label>
-                <input type="text" id="userId" name="userId" value="$!{userId}" />
+                <input type="email" id="userId" name="userId" value="$!{userId}" placeholder="e.g.: test@example.com" required />
                 #if ( $invalid.userId )
-                    <span>$invalid.userId</span>
+                <span>$i18n.get($invalid.userId)</span>
                 #end
             </div>
         </fieldset>

@@ -32,7 +32,7 @@ public class DomainValidator {
 	public static Validator getDomainValidator() {
 		if ( domainValidator == null) {
 			domainValidator = new Validator();
-			domainValidator.add("name", required("FIELD_REQUIRED"), minLength(5, "MINIMUM_LENGTH"));
+			domainValidator.add("name", required("REQUIRED_DOMAIN_NAME"), minLength(5, "MINIMUM_LENGTH_DOMAIN_NAME"));
 			// TODO validate url if exists
 			// TODO validate maillist if exists
 			// TODO validate desc (avoid html tags)

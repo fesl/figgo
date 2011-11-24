@@ -43,5 +43,13 @@ public class AmountRule extends AbstractRule {
 		BigDecimal amount = new BigDecimal(input);
 		return amount.compareTo(ZERO) > 0;
 	}
+	
+	/* (non-Javadoc)
+	 * @see br.octahedron.cotopaxi.validation.rule.AbstractRule#getMessage()
+	 */
+	@Override
+	public String getMessage() {
+		return "INVALID_AMOUNT";
+	}
 
 }

@@ -1,5 +1,5 @@
 #set( $title = "Figgo - $!{domain.Name} - Banco - Transações" )
-#parse( "templates/layout_intern.vm" )
+#parse( "templates/intern.vm" )
 
 #@head()
     <link rel="stylesheet" href="/css/jquery-ui-1.8.16.custom.css" />
@@ -20,7 +20,7 @@
             <li><a href="#">Home</a></li>
             <li><a href="#">Sobre</a></li>
             #foreach( $module in $domain.ModulesEnabled )
-                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$module</a></li>
+                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$i18n.get($module)</a></li>
             #end
         </ul>
     </section>
@@ -47,16 +47,16 @@
                 <legend>Faça uma transferência</legend>
                 <div>
                     <label for="userId">Usuário</label>
-                    <input type="text" name="userId" class="autocomplete" />
+                    <input type="text" name="userId" class="autocomplete" required />
                     #if ($invalid.userId)
-                    <span>$invalid.userId</span>
+                    <span>$i18n.get($invalid.userId)</span>
                     #end
                 </div>
                 <div>
                     <label for="amount">Valor</label>
-                    <input type="text" name="amount" />
+                    <input type="text" name="amount" required />
                     #if ($invalid.amount)
-                    <span>$invalid.amount</span>
+                    <span>$i18n.get($invalid.amount)</span>
                     #end
                 </div>
                 <div>
@@ -66,7 +66,7 @@
                         <option value="TRANSFER">Transferência</option>
                     </select>
                     #if ($invalid.type)
-                    <span>$invalid.type</span>
+                    <span>$i18n.get($invalid.type)</span>
                     #end
                 </div>
                 <div>
@@ -82,4 +82,5 @@
     
 #@scripts()
     <script defer src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
+    <script defer src="/js/bank.js"></script>
 #end

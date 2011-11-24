@@ -1,5 +1,5 @@
 #set( $title = "Figgo - ${domain.DomainName} - Configurações do domínio" )
-#parse( "templates/layout_intern.vm" )
+#parse( "templates/intern.vm" )
 
 #head()
 
@@ -18,7 +18,7 @@
             <li><a href="#">Home</a></li>
             <li><a href="#">Sobre</a></li>
             #foreach( $module in $domain.ModulesEnabled )
-                <li><a href="/$module.toLowerCase()">$module</a></li>
+                <li><a href="/$module.toLowerCase()">$i18n.get($module)</a></li>
             #end
         </ul>
     </section>
@@ -31,7 +31,7 @@
 				<legend>Defina as propriedades do coletivo</legend>
                 #foreach( $property in $module.PropertiesKeys )
                 <div>
-                    <label for="$property">$property</label>
+                    <label for="$property">$i18n.get($property)</label>
                     <input type="text" name="__$property" value="$!{module.getPropertyValue($property)}" />
                 </div>
                 #end

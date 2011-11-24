@@ -17,9 +17,9 @@
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
     <link rel="stylesheet" href="/css/style.css">
       
-    <script defer src="/js/libs/modernizr.min.js"></script>
+    <script src="/js/libs/modernizr.min.js"></script>
     <!--[if (gte IE 6) & (lte IE 8)]>
-        <script defer src="/js/libs/selectivizr.js"></script>
+        <script src="/js/libs/selectivizr.js"></script>
     <![endif]-->
 </head>
 

@@ -1,5 +1,5 @@
 #set( $title = "Figgo - ${domain.DomainName} - Configurações do domínio" )
-#parse( "templates/layout_intern.vm" )
+#parse( "templates/intern.vm" )
 
 #head()
 
@@ -18,7 +18,7 @@
             <li><a href="#">Home</a></li>
             <li><a href="#">Sobre</a></li>
             #foreach( $module in $domain.ModulesEnabled )
-                <li><a href="/$module.toLowerCase()">$module</a></li>
+                <li><a href="/$module.toLowerCase()">$i18n.get($module)</a></li>
             #end
         </ul>
     </section>
@@ -33,19 +33,25 @@
                 <legend>Dados gerais</legend>
                 <div>
                     <label for="name">Nome</label>
-                    <input type="text" id="name" name="name" value="$!{name}" />
+                    <input type="text" id="name" name="name" value="$!{name}" required autofocus />
                     #if ($invalid.name)
-                    <span>$invalid.name</span>
+                    <span>$i18n.get($invalid.name)</span>
                     #end
                 </div>
                 <div>   
                     <label for="url">Site</label>
-                    <input type="text" id="url" name="url" value="$!{url}"/>
+                    <input type="text" id="url" name="url" value="$!{url}" required />
+                    #if ($invalid.url)
+                    <span>$i18n.get($invalid.url)</span>
+                    #end
                 </div>
                 <div>
                 <div>
                     <label for="maillist">Lista de discussão</label>
-                    <input type="text" id="maillist" name="maillist" value="$!{maillist}"/>
+                    <input type="text" id="maillist" name="maillist" value="$!{maillist}" required />
+                    #if ($invalid.maillist)
+                    <span>$i18n.get($invalid.maillist)</span>
+                    #end
                 </div>
                 <div>
                     <label for="description">Descrição</label>
@@ -55,11 +61,10 @@
             </fieldset>
         </form>
         <h3>Módulos</h3>
-        
         #foreach( $module in $modules.getExistentModules() )
         <form action="/domain/edit" method="post">
             <fieldset>
-                <legend>$module</legend>
+                <legend>$i18n.get($module)</legend>
                 <div>
                     <label for="$module">Ativado?</label>
                     <input type="checkbox" id="$module" name="$module" data-url="/domain/module/$module.toLowerCase()/" #if( $modules.isModuleEnabled($module) )checked#end /> 

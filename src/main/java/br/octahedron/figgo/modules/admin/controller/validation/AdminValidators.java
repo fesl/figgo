@@ -35,9 +35,9 @@ public class AdminValidators {
 	public static synchronized Validator getDomainValidator() {
 		if (domainValidator == null) {
 			domainValidator = new Validator();
-			domainValidator.add("name", required(), new InexistentDomainRule());
+			domainValidator.add("name", required("REQUIRED_DOMAIN_ID"), new InexistentDomainRule());
 			// TODO validate email for userId
-			domainValidator.add("userId", required());
+			domainValidator.add("userId", required("REQUIRED_ADMIN_EMAIL"));
 		}
 		return domainValidator;
 	}
@@ -48,9 +48,9 @@ public class AdminValidators {
 	public static synchronized Validator getConfigValidator() {
 		if (configValidator == null) {
 			configValidator = new Validator();
-			configValidator.add("accessKey", required("FIELD_REQUIRED"));
-			configValidator.add("keySecret", required("FIELD_REQUIRED"));
-			configValidator.add("zone", required("FIELD_REQUIRED"));
+			configValidator.add("accessKey", required("REQUIRED_ACCESS_KEY"));
+			configValidator.add("keySecret", required("REQUIRED_KEY_SECRET"));
+			configValidator.add("zone", required("REQUIRED_ZONE"));
 		}
 		return configValidator;
 	}

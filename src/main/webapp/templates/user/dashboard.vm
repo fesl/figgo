@@ -1,5 +1,5 @@
 #set( $title = "Figgo - Dashboard" )
-#parse( "templates/layout_intern.vm" )
+#parse( "templates/intern.vm" )
 
 #head()
 

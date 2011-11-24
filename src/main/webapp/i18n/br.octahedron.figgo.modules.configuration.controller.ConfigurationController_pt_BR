@@ -1,0 +1,12 @@
+# Validators
+REQUIRED_DOMAIN_NAME=Nome: não pode ficar vazio
+REQUIRED_DOMAIN_URL=URL: não pode ficar vazia
+REQUIRED_DOMAIN_MAILLIST=Lista de discussão: não pode ficar vazia
+MINIMUM_LENGTH_DOMAIN_NAME=Nome: é muito curto (mínimo: 5 (cinco) caracteres)
+
+# Module configuration properties
+name=Nome
+currencyAbreviation=Símbolo
+currency=Dinheiro
+bank=Banco
+services=Serviços

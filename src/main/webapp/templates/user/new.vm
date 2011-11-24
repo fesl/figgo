@@ -1,5 +1,5 @@
 #set( $title = "Figgo - Início" )
-#parse( "templates/layout_intern.vm" )
+#parse( "templates/intern.vm" )
 
 #head()
 
@@ -25,14 +25,14 @@
                 <label for="name">Nome</label>
                 <input type="text" id="name" name="name" value="$!{name}" autofocus required />
                 #if ( $invalid.name )
-                <span>$invalid.name</span>
+                <span>$i18n.get($invalid.name)</span>
                 #end
             </div>
             <div>
                 <label for="phoneNumber">Telefone</label>
-                <input type="text" id="phoneNumber" name="phoneNumber" value="$!{phoneNumber}" pattern="^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$" placeholder="e.g.: 83 9999 9999"required />
+                <input type="text" id="phoneNumber" name="phoneNumber" value="$!{phoneNumber}" pattern="^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$" placeholder="e.g.: 83 9999 9999" required />
                 #if ( $invalid.phoneNumber )
-                <span>$invalid.phoneNumber</span>
+                <span>$i18n.get($invalid.phoneNumber)</span>
                 #end
             </div>
             <div>

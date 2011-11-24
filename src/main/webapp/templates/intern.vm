@@ -1,4 +1,5 @@
 #set( $jqueryVersion = "1.6.4" )
+
 <!doctype html>
 <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en"> <![endif]-->
 <!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en"> <![endif]-->
@@ -12,13 +13,14 @@
     <meta name="author" content="Octahedron LTDA">
     <meta name="robots" content="noindex" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
 #macro( head )    
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
     <link rel="stylesheet" href="/css/style.css">
     $!bodyContent
-    <script defer src="/js/libs/modernizr.min.js"></script>
+    <script src="/js/libs/modernizr.min.js"></script>
     <!--[if (gte IE 6) & (lte IE 8)]>
-    	<script defer src="/js/libs/selectivizr.js"></script>
+    	<script src="/js/libs/selectivizr.js"></script>
     <![endif]-->
 </head>
 <body>
