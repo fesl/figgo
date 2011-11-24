@@ -1,6 +1,10 @@
 #set( $title = "Figgo - Contato" )
 #parse( "templates/layout.vm" )
 
+#head()
+
+#simpleHeader()
+
 #@body()
 <div id="info-form" class="left">
     <section>
