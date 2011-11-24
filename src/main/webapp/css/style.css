@@ -762,16 +762,17 @@ ul li.service {
   position: relative;
   margin-top: 10px;
   padding: 12px;
+  display: none;
   background-color: #f3f3f3;
   border: 1px solid #e4e4e4;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   border-radius: 10px; }
-  ul li.service:first-child {
-    margin-top: 0; }
   ul li.service h4 {
     padding: 0;
     margin: 0; }
+  ul li.service:first-child {
+    margin-top: 0; }
   ul li.service:hover .contract {
     display: inline; }
 

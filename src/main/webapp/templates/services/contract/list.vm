@@ -39,6 +39,7 @@
         <section>
             <h3>Contratos prestados</h3>
             #if ( $providerContracts.size() > 0 )
+            <img class="loader" src="/img/ajax-loader.gif" />
             <ul class="unstyled">
                 #foreach( $contract in $providerContracts )
                 <li class="service">
@@ -47,9 +48,9 @@
                     </header>
                     <dl>
                         <dt>Contratante</dt>
-                        <dd>$contract.contractor</dd>
+                        <dd class="provider" data-user="$contract.contractor">$contract.contractor</dd>
                         <dt>Status</dt>
-                        <dd>$i18n.get($contract.status)</dd>
+                        <dd>$i18n.get($contract.status.name())</dd>
                     </dl>
                     <footer>
                         $numberFormat.format($contract.amount)
@@ -66,6 +67,7 @@
         <section>
             <h3>Contratos contratados</h3>
             #if ( $contractorContracts.size() > 0 )
+            <img class="loader" src="/img/ajax-loader.gif" />
             <ul class="unstyled">
                 #foreach( $contract in $contractorContracts )
                 <li class="service">
@@ -74,9 +76,9 @@
                     </header>
                     <dl>
                         <dt>Prestador</dt>
-                        <dd>$contract.provider</dd>
+                        <dd class="provider" data-user="$contract.provider">$contract.provider</dd>
                         <dt>Status</dt>
-                        <dd>$i18n.get($contract.status)</dd>
+                        <dd>$i18n.get($contract.status.name())</dd>
                     </dl>
                     <footer>
                         $numberFormat.format($contract.amount)

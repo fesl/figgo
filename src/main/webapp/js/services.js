@@ -34,20 +34,38 @@ $(function() {
 	});
 	
 	var users = $providers.find('li').map(function() { return this.dataset['user'] }).get();
-	$.get('/users/search/', {'users': users.join(",")}, function(data) {
-		var i, currentLi,
-			usersLength = data.result.length,
-			users = data.result;
-		for (i = 0; i < usersLength; i += 1) {
-			currentLi = $providers.find("li[data-user='"+users[i].userId+"']")[0]
-			currentLi.childNodes[0].textContent = users[i].name;
-		}
-		document.getElementById("loader").remove();
-		$providers.fadeIn();
-	}).error(function(data) {
-		console.log("não foi possível carregar dados dos usuários");
-	});
+	if (users.length) {
+		$.get('/users/search/', {'users': users.join(",")}, function(data) {
+			var i, currentLi,
+				usersLength = data.result.length,
+				users = data.result;
+			for (i = 0; i < usersLength; i += 1) {
+				currentLi = $providers.find("li[data-user='"+users[i].userId+"']")[0]
+				currentLi.childNodes[0].textContent = users[i].name;
+			}
+			document.getElementById("loader").remove();
+			$providers.fadeIn();
+		}).error(function(data) {
+			console.log("não foi possível carregar dados dos usuários");
+		});
+	}
 
-
+	$providers = $("dd.provider");
+	users = $providers.map(function() { return this.textContent }).get();
+	if (users.length) {
+		$.get('/users/search/', {'users': users.join(",")}, function(data) {
+			var i, $currentDd,
+				usersLength = data.result.length,
+				users = data.result;
+			for (i = 0; i < usersLength; i += 1) {
+				$currentDd = $providers.filter("dd[data-user='"+users[i].userId+"']")
+				$currentDd.text(users[i].name);
+			}
+			$(".loader").remove();
+			$("li.service").fadeIn();
+		}).error(function(data) {
+			console.log("não foi possível carregar dados dos usuários");
+		});
+	}
 
 });
