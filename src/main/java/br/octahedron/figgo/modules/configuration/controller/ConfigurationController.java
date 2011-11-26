@@ -19,9 +19,11 @@
 package br.octahedron.figgo.modules.configuration.controller;
 
 import static br.octahedron.figgo.modules.configuration.controller.validation.DomainValidator.getDomainValidator;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.*;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
+import br.octahedron.cotopaxi.controller.ConvertionException;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.Module;
@@ -50,6 +52,15 @@ public class ConfigurationController extends Controller {
 		this.configurationManager = configurationManager;
 	}
 
+	/**
+	 * Get domains informations
+	 * @throws ConvertionException 
+	 */
+	public void getDomainsInfo() throws ConvertionException {
+		this.out("result", this.configurationManager.getDomainsConfiguration(in("domains", strArray(","))));
+		jsonSuccess();
+	}
+	
 	/**
 	 * Get edit domain page
 	 */

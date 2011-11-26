@@ -18,12 +18,17 @@
  */
 package br.octahedron.figgo.modules.configuration.data;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
 import br.octahedron.cotopaxi.datastore.jdo.GenericDAO;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.util.Log;
 
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
@@ -35,10 +40,10 @@ public class DomainConfigurationDAO extends GenericDAO<DomainConfiguration> {
 
 	public static final String NAMESPACE_KEY = "namespace_memcache_key";
 	private final MemcacheService memcacheService = MemcacheServiceFactory.getMemcacheService();
-	
+
 	@Inject
 	private NamespaceManager namespaceManager;
-	
+
 	public DomainConfigurationDAO() {
 		super(DomainConfiguration.class);
 	}
@@ -73,5 +78,27 @@ public class DomainConfigurationDAO extends GenericDAO<DomainConfiguration> {
 			}
 		}
 		return domainsConfiguration;
+	}
+
+	/**
+	 * @param domains
+	 * @return
+	 */
+	public Collection<DomainConfiguration> getDomainsConfigurations(String[] domains) {
+		List<DomainConfiguration> result = new LinkedList<DomainConfiguration>();
+		Iterator<DomainConfiguration> domainConfiguration;
+		new Log(DomainConfigurationDAO.class).warning("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + this.namespaceManager);
+		for (String domain : domains) {
+			try {
+				this.namespaceManager.changeToNamespace(domain);
+				domainConfiguration = this.getAll().iterator();
+				if (domainConfiguration.hasNext()) {
+					result.add(domainConfiguration.next());
+				}
+			} finally {
+				this.namespaceManager.changeToPreviousNamespace();
+			}
+		}
+		return result;
 	}
 }

@@ -51,7 +51,8 @@ public class ConfigurationManager {
 
 	@Inject
 	private EventBus eventBus;
-	private DomainConfigurationDAO domainDAO = new DomainConfigurationDAO();
+	@Inject
+	private DomainConfigurationDAO domainDAO;
 	private ModuleConfigurationDAO moduleDAO = new ModuleConfigurationDAO();
 
 	/**
@@ -68,7 +69,7 @@ public class ConfigurationManager {
 	 * @param domainDAO
 	 *            The {@link DomainConfigurationDAO} to be set
 	 */
-	protected void setDomainConfigurationDAO(DomainConfigurationDAO domainDAO) {
+	public void setDomainConfigurationDAO(DomainConfigurationDAO domainDAO) {
 		this.domainDAO = domainDAO;
 	}
 
@@ -274,6 +275,16 @@ public class ConfigurationManager {
 	 */
 	protected Set<DomainConfiguration> getDomainsConfiguration() {
 		return this.domainDAO.getDomainsConfiguration();
+	}
+
+	/**
+	 * Returns all {@link DomainConfiguration} based on <code>domains</code> array along the application.
+	 * 
+	 * @param domains
+	 * @return
+	 */
+	public Collection<DomainConfiguration> getDomainsConfiguration(String[] domains) {
+		return this.domainDAO.getDomainsConfigurations(domains);
 	}
 
 }

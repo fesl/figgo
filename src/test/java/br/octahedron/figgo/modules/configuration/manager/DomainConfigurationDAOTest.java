@@ -20,6 +20,7 @@ package br.octahedron.figgo.modules.configuration.manager;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -61,7 +62,7 @@ public class DomainConfigurationDAOTest {
 	}
 
 	@Test
-	public void getDomains() {
+	public void getAllDomains() {
 		this.createDomains();
 		Set<DomainConfiguration> domainsConfiguration = this.domainConfigurationDAO.getDomainsConfiguration();
 		Iterator<DomainConfiguration> iterator = domainsConfiguration.iterator();
@@ -77,5 +78,23 @@ public class DomainConfigurationDAOTest {
 		assertEquals("alua", iterator.next().getDomainName());
 		assertEquals("mundo", iterator.next().getDomainName());
 		assertEquals("octa", iterator.next().getDomainName());
+	}
+	
+	@Test
+	public void getDomainsConfiguration() {
+		this.createDomains();
+		Collection<DomainConfiguration> result = this.domainConfigurationDAO.getDomainsConfigurations(new String[] {"alua", "mundo"});
+		Iterator<DomainConfiguration> iterator = result.iterator();
+		assertEquals(2, result.size());
+		assertEquals("alua", iterator.next().getDomainName());
+		assertEquals("mundo", iterator.next().getDomainName());
+		
+		result = this.domainConfigurationDAO.getDomainsConfigurations(new String[] {"alua", "asdasdasdo"});
+		iterator = result.iterator();
+		assertEquals(1, result.size());
+		assertEquals("alua", iterator.next().getDomainName());
+		
+		result = this.domainConfigurationDAO.getDomainsConfigurations(new String[] {"muahah"});
+		assertEquals(0, result.size());
 	}
 }

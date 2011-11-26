@@ -25,14 +25,19 @@
 
     <section id="domains">
         <h3>Coletivos associados</h3>
+        <img id="loader" src="/img/ajax-loader.gif" />
+        #if( $domains.size() > 0 )
         <ul class="unstyled">
             #foreach( $domain in $domains )
-            <li class="organization">
-                <img src="/serve/$domain.avatarKey" alt="Avatar do $domain.name"/>
-                <a href="http://$domain.$applicationDomain">$domain.name</a>
+            <li class="organization" data-domain="$domain">
+                <img src="/serve/$domain.avatarKey" alt="Avatar" />
+                <a href="http://$domain.$applicationDomain"></a>
             </li>
         #end
         </ul>
+        #else
+        <p>Nenhum coletivo associado.</p>
+        #end
     </section>
 </div>
 
@@ -59,4 +64,6 @@
 </div>
 #end
 
-#scripts()
+#@scripts()
+    <script defer src="/js/user.js" />
+#end

@@ -794,7 +794,8 @@ ul li.service {
 
 #domains .organization {
   margin-bottom: 12px;
-  overflow: hidden; }
+  overflow: hidden;
+  display: none; }
   #domains .organization img {
     width: 32px;
     height: 32px;
