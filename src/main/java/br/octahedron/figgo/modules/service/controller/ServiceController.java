@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules.service.controller;
 
-import static br.octahedron.cotopaxi.controller.Converter.Builder.*;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.bigDecimalNumber;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
@@ -61,152 +61,149 @@ public class ServiceController extends Controller {
 
 	@AuthorizationRequired
 	public void getListServices() {
-		out("services", this.servicesManager.getServices());
-		success(LIST_SERVICE_TPL);
+		this.out("services", this.servicesManager.getServices());
+		this.success(LIST_SERVICE_TPL);
 	}
 
 	@AuthorizationRequired
 	public void getShowService() throws ConvertionException {
-		Service service = this.servicesManager.getService(in("id"));
+		Service service = this.servicesManager.getService(this.in("id"));
 		if (service != null) {
-			out("service", service);
-			success(SHOW_SERVICE_TPL);
+			this.out("service", service);
+			this.success(SHOW_SERVICE_TPL);
 		} else {
-			notFound();
+			this.notFound();
 		}
 	}
 
 	@AuthorizationRequired
 	public void getNewService() {
-		success(NEW_SERVICE_TPL);
+		this.success(NEW_SERVICE_TPL);
 	}
 
 	@AuthorizationRequired
 	public void postNewService() throws ConvertionException {
-		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
-		Validator valueValidator = ServiceValidators.getValueValidator();
-		if (inexistentValidator.isValid() && valueValidator.isValid()) {
-			this.servicesManager.createService(in("name"), in("value", bigDecimalNumber()), in("category"),
-					in("description"));
-			redirect(BASE_URL);
+		Validator validator = ServiceValidators.getServiceValidator();
+		if (validator.isValid()) {
+			this.servicesManager.createService(this.in("name"), this.in("amount", bigDecimalNumber()), this.in("category"), this.in("description"));
+			this.redirect(BASE_URL);
 		} else {
-			echo();
-			invalid(NEW_SERVICE_TPL);
+			this.echo();
+			this.invalid(NEW_SERVICE_TPL);
 		}
 	}
 
 	@AuthorizationRequired
 	public void getEditService() throws ConvertionException {
-		Service service = this.servicesManager.getService(in("id"));
-		out("id", service.getId());
-		out("name", service.getName());
-		out("value", service.getAmount());
-		out("category", service.getCategory());
-		out("description", service.getDescription());
-		success(EDIT_SERVICE_TPL);
+		Service service = this.servicesManager.getService(this.in("id"));
+		this.out("id", service.getId());
+		this.out("name", service.getName());
+		this.out("value", service.getAmount());
+		this.out("category", service.getCategory());
+		this.out("description", service.getDescription());
+		this.success(EDIT_SERVICE_TPL);
 	}
 
 	@AuthorizationRequired
 	public void postEditService() throws ConvertionException {
-		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
-		Validator valueValidator = ServiceValidators.getValueValidator();
-		if (inexistentValidator.isValid() && valueValidator.isValid()) {
-			this.servicesManager.updateService(in("id"), in("name"), in("value", bigDecimalNumber()), in("category"),
-					in("description"));
-			redirect(BASE_URL);
+		Validator validator = ServiceValidators.getServiceValidator();
+		if (validator.isValid()) {
+			this.servicesManager.updateService(this.in("id"), this.in("name"), this.in("amount", bigDecimalNumber()), this.in("category"),
+					this.in("description"));
+			this.redirect(BASE_URL);
 		} else {
-			echo();
-			invalid(EDIT_SERVICE_TPL);
+			this.echo();
+			this.invalid(EDIT_SERVICE_TPL);
 		}
 	}
 
 	@AuthorizationRequired
 	public void postAddProvider() throws ConvertionException {
-		Service service = this.servicesManager.getService(in("id"));
+		Service service = this.servicesManager.getService(this.in("id"));
 		String userId = this.currentUser();
-		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
-		if (inexistentValidator.isValid()) {
+		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
+		if (existentServiceValidator.isValid()) {
 			service.addProvider(this.currentUser());
-			out("html", "<li id=\"" + userId.split("@")[0] + "\">" + userId + "- <a class=\"contract-link\" href=\"/service/" + service.getId()
+			this.out("html", "<li id=\"" + userId.split("@")[0] + "\">" + userId + "- <a class=\"contract-link\" href=\"/service/" + service.getId()
 					+ "/contract/" + userId + "\">contratar</a></li>");
-			jsonSuccess();
+			this.jsonSuccess();
 		} else {
-			jsonInvalid();
+			this.jsonInvalid();
 		}
 	}
 
 	@AuthorizationRequired
 	public void postRemoveProvider() throws ConvertionException {
-		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
-		if (inexistentValidator.isValid()) {
-			out("service", this.servicesManager.removeProvider(in("id"), currentUser()));
-			jsonSuccess();
+		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
+		if (existentServiceValidator.isValid()) {
+			this.out("service", this.servicesManager.removeProvider(this.in("id"), this.currentUser()));
+			this.jsonSuccess();
 		} else {
-			jsonInvalid();
+			this.jsonInvalid();
 		}
 	}
 
 	@AuthorizationRequired
 	public void postRemoveService() throws ConvertionException {
-		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
-		if (inexistentValidator.isValid()) {
-			this.servicesManager.removeService(in("id"));
-			jsonSuccess();
+		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
+		if (existentServiceValidator.isValid()) {
+			this.servicesManager.removeService(this.in("id"));
+			this.jsonSuccess();
 		} else {
-			jsonInvalid();
+			this.jsonInvalid();
 		}
 	}
 
 	public void getUserServices() {
-		out("services", this.servicesManager.getUserServices(this.currentUser()));
-		success(USER_SERVICES_TPL);
+		this.out("services", this.servicesManager.getUserServices(this.currentUser()));
+		this.success(USER_SERVICES_TPL);
 	}
 
 	public void getShowContracts() {
-		out("providerContracts", this.servicesManager.getProviderContracts(this.currentUser()));
-		out("contractorContracts", this.servicesManager.getContractorContracts(this.currentUser()));
-		success(LIST_CONTRACTS_TPL);
+		this.out("providerContracts", this.servicesManager.getProviderContracts(this.currentUser()));
+		this.out("contractorContracts", this.servicesManager.getContractorContracts(this.currentUser()));
+		this.success(LIST_CONTRACTS_TPL);
 	}
 
 	public void postRequestContract() throws ConvertionException {
-		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
+		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
 		Validator providerValidator = ServiceValidators.getProviderValidator();
-		if (inexistentValidator.isValid() && providerValidator.isValid()) {
-			this.servicesManager.requestContract(in("id"), this.currentUser(), in("provider"));
-			jsonSuccess();
+		if (existentServiceValidator.isValid() && providerValidator.isValid()) {
+			this.servicesManager.requestContract(this.in("id"), this.currentUser(), this.in("provider"));
+			this.jsonSuccess();
 		} else {
-			jsonInvalid();
+			this.jsonInvalid();
 		}
 	}
 
 	public void getShowHistory() {
-		out("contracts", this.servicesManager.getContractsHistory(currentUser()));
-		success(LIST_CONTRACTS_TPL);
+		this.out("contracts", this.servicesManager.getContractsHistory(this.currentUser()));
+		this.success(LIST_CONTRACTS_TPL);
 	}
 
 	public void getEditContract() throws ConvertionException {
-		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
-		if (inexistentValidator.isValid()) {
-			out("contract", this.servicesManager.getServiceContract(in("id")));
-			success(EDIT_CONTRACT_TPL);
+		Validator contractsValidator = ServiceValidators.getExistentContractValidator();
+		if (contractsValidator.isValid()) {
+			this.out("contract", this.servicesManager.getServiceContract(this.in("id")));
+			this.success(EDIT_CONTRACT_TPL);
 		} else {
-			invalid(EDIT_CONTRACT_TPL);
+			this.invalid(EDIT_CONTRACT_TPL);
 		}
 	}
 
 	public void postUpdateContract() throws ConvertionException {
-		Validator inexistentValidator = ServiceValidators.getInexistentValidator();
-		Validator providerValidator = ServiceValidators.getProviderValidator();
-		if (inexistentValidator.isValid() && providerValidator.isValid()) {
-			this.servicesManager.updateContractStatus(in("id"), ServiceContractStatus.valueOf(in("status")));
-			redirect(SHOW_CONTRACTS_URL);
+		Validator existentContractValidator = ServiceValidators.getExistentContractValidator();
+		Validator existentContractStatusValidator = ServiceValidators.getExistentContractValidator();
+		if (existentContractValidator.isValid() && existentContractStatusValidator.isValid()) {
+			this.servicesManager.updateContractStatus(this.in("id"), ServiceContractStatus.valueOf(this.in("status")));
+			this.redirect(SHOW_CONTRACTS_URL);
 		} else {
-			jsonInvalid();
+			this.jsonInvalid();
 		}
 	}
 
 	public void postPayContract() throws ConvertionException {
 		// TODO validator
-		this.servicesManager.makePayment(in("id"));
+		this.servicesManager.makePayment(this.in("id"));
 	}
 }

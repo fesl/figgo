@@ -18,7 +18,9 @@
  */
 package br.octahedron.figgo.modules.service.controller.validation;
 
+import static br.octahedron.cotopaxi.validation.Rule.Builder.required;
 import br.octahedron.cotopaxi.validation.Validator;
+import br.octahedron.figgo.modules.bank.controller.validation.AmountRule;
 
 /**
  * @author vitoravelino
@@ -27,38 +29,63 @@ import br.octahedron.cotopaxi.validation.Validator;
  */
 public class ServiceValidators {
 
-	private static Validator inexistentValidator;
-	private static Validator valueValidator;
+	private static Validator serviceValidator;
+	private static Validator existentContractStatusValidator;
 	private static Validator providerValidator;
+	private static Validator existentContractValidator;
+	private static Validator existentServiceValidator;
 	
 	/**
 	 * @return
 	 */
-	public static synchronized Validator getInexistentValidator() {
-		if (inexistentValidator == null) {
-			inexistentValidator = new Validator();
+	public static synchronized Validator getServiceValidator() {
+		if (serviceValidator == null) {
+			serviceValidator = new Validator();
+			serviceValidator.add("name", required("REQUIRED_SERVICE_NAME"));
+			serviceValidator.add("amount", required("REQUIRED_SERVICE_AMOUNT"), new AmountRule());
+			serviceValidator.add("category", required("REQUIRED_SERVICE_CATEGORY"));
 		}
-		return inexistentValidator;
+		return serviceValidator;
+	}
+
+	public static synchronized Validator getExistentServiceValidator() {
+		if (existentServiceValidator == null) {
+			existentServiceValidator = new Validator();
+			existentServiceValidator.add("id", required("REQUIRED_SERVICE_ID"), new ExistentServiceRule());
+		}
+		return existentServiceValidator;
 	}
 
 	/**
 	 * @return
 	 */
-	public static synchronized Validator getValueValidator() {
-		if (valueValidator == null) {
-			valueValidator = new Validator();
+	public static synchronized Validator getExistentContractValidator() {
+		if (existentContractValidator == null) {
+			existentContractValidator = new Validator();
+			existentContractValidator.add("id", required("REQUIRED_CONTRACT_ID"), new ExistentContractRule());
 		}
-		return valueValidator;
+		return existentContractValidator;
+	}
+	
+	
+	public static synchronized Validator getExistentContractStatusValidator() {
+		if (existentContractStatusValidator == null) {
+			existentContractStatusValidator = new Validator();
+			existentContractStatusValidator.add("status", required("REQUIRED_CONTRACT_STATUS"), new ExistentContractStatusRule());
+		}
+		return existentContractStatusValidator;
 	}
 
 	/**
 	 * @return
 	 */
-	public static synchronized Validator getProviderValidator() {
+	public static Validator getProviderValidator() {
 		if (providerValidator == null) {
 			providerValidator = new Validator();
+			providerValidator.add("provider", required("REQUIRED_CONTRACT_PROVIDER"), new ExistentContractProviderRule());
 		}
 		return providerValidator;
 	}
+
 
 }

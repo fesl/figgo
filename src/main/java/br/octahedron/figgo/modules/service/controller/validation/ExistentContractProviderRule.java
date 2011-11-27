@@ -18,33 +18,30 @@
  */
 package br.octahedron.figgo.modules.service.controller.validation;
 
-import br.octahedron.cotopaxi.inject.Inject;
-import br.octahedron.cotopaxi.validation.rule.AbstractRule;
-import br.octahedron.figgo.modules.service.manager.ServiceManager;
+import br.octahedron.cotopaxi.validation.Rule;
 
 /**
- * @author Vítor Avelino
+ * @author vitoravelino
  *
  */
-public class InexistentServiceRule extends AbstractRule {
+public class ExistentContractProviderRule implements Rule {
 
-	public InexistentServiceRule(String message) {
-		super(message);
-	}
-
-	@Inject
-	private ServiceManager serviceManager;
-	
-	public void setServiceManager(ServiceManager serviceManager) {
-		this.serviceManager = serviceManager;
-	}
-	
 	/* (non-Javadoc)
-	 * @see br.octahedron.cotopaxi.validation.ValidationRule#isValid(java.lang.String)
+	 * @see br.octahedron.cotopaxi.validation.Rule#getMessage()
+	 */
+	@Override
+	public String getMessage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/* (non-Javadoc)
+	 * @see br.octahedron.cotopaxi.validation.Rule#isValid(java.lang.String)
 	 */
 	@Override
 	public boolean isValid(String input) {
-		return !serviceManager.existsService(input);
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
