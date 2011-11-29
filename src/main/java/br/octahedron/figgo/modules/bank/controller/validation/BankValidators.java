@@ -51,7 +51,7 @@ public class BankValidators {
 	public static synchronized Validator getDestinationValidator() {
 		if (destinationValidator == null) {
 			destinationValidator = new Validator();
-			destinationValidator.add("userId", new DestinationRule());
+//			destinationValidator.add("userId", new DestinationRule());
 		}
 		return destinationValidator;
 	}
