@@ -215,4 +215,13 @@ public class ServiceManager {
 	public ServiceContract getServiceContract(String contractId) {
 		return this.serviceContractDAO.get(contractId);
 	}
+	
+	/**
+	 * Checks if exists a contract with the given id
+	 * @param contractId the contract's id
+	 * @return <code>true</code> if exists, <code>false</code> otherwise.
+	 */
+	public boolean existsServiceContract(String contractId) {
+		return this.serviceContractDAO.exists(contractId);
+	}
 }

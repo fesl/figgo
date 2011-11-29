@@ -18,11 +18,10 @@
  */
 package br.octahedron.figgo.modules.service.controller;
 
-import static br.octahedron.cotopaxi.controller.Converter.Builder.bigDecimalNumber;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.*;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
-import br.octahedron.cotopaxi.controller.ConvertionException;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
@@ -66,7 +65,7 @@ public class ServiceController extends Controller {
 	}
 
 	@AuthorizationRequired
-	public void getShowService() throws ConvertionException {
+	public void getShowService() {
 		Service service = this.servicesManager.getService(this.in("id"));
 		if (service != null) {
 			this.out("service", service);
@@ -82,10 +81,10 @@ public class ServiceController extends Controller {
 	}
 
 	@AuthorizationRequired
-	public void postNewService() throws ConvertionException {
+	public void postNewService() {
 		Validator validator = ServiceValidators.getServiceValidator();
 		if (validator.isValid()) {
-			this.servicesManager.createService(this.in("name"), this.in("amount", bigDecimalNumber()), this.in("category"), this.in("description"));
+			this.servicesManager.createService(this.in("name", safeString()), this.in("amount", bigDecimalNumber()), this.in("category", safeString()), this.in("description", safeString()));
 			this.redirect(BASE_URL);
 		} else {
 			this.echo();
@@ -94,7 +93,7 @@ public class ServiceController extends Controller {
 	}
 
 	@AuthorizationRequired
-	public void getEditService() throws ConvertionException {
+	public void getEditService() {
 		Service service = this.servicesManager.getService(this.in("id"));
 		this.out("id", service.getId());
 		this.out("name", service.getName());
@@ -105,11 +104,10 @@ public class ServiceController extends Controller {
 	}
 
 	@AuthorizationRequired
-	public void postEditService() throws ConvertionException {
+	public void postEditService() {
 		Validator validator = ServiceValidators.getServiceValidator();
 		if (validator.isValid()) {
-			this.servicesManager.updateService(this.in("id"), this.in("name"), this.in("amount", bigDecimalNumber()), this.in("category"),
-					this.in("description"));
+			this.servicesManager.updateService(this.in("id"), this.in("name", safeString()), this.in("amount", bigDecimalNumber()), this.in("category", safeString()), this.in("description", safeString()));
 			this.redirect(BASE_URL);
 		} else {
 			this.echo();
@@ -118,14 +116,14 @@ public class ServiceController extends Controller {
 	}
 
 	@AuthorizationRequired
-	public void postAddProvider() throws ConvertionException {
+	public void postAddProvider() {
 		Service service = this.servicesManager.getService(this.in("id"));
 		String userId = this.currentUser();
 		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
 		if (existentServiceValidator.isValid()) {
 			service.addProvider(this.currentUser());
 			this.out("html", "<li id=\"" + userId.split("@")[0] + "\">" + userId + "- <a class=\"contract-link\" href=\"/service/" + service.getId()
-					+ "/contract/" + userId + "\">contratar</a></li>");
+					+ "/contract/" + userId + "\">contratar</a></li>"); // TODO change it!
 			this.jsonSuccess();
 		} else {
 			this.jsonInvalid();
@@ -133,7 +131,7 @@ public class ServiceController extends Controller {
 	}
 
 	@AuthorizationRequired
-	public void postRemoveProvider() throws ConvertionException {
+	public void postRemoveProvider() {
 		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
 		if (existentServiceValidator.isValid()) {
 			this.out("service", this.servicesManager.removeProvider(this.in("id"), this.currentUser()));
@@ -144,7 +142,7 @@ public class ServiceController extends Controller {
 	}
 
 	@AuthorizationRequired
-	public void postRemoveService() throws ConvertionException {
+	public void postRemoveService() {
 		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
 		if (existentServiceValidator.isValid()) {
 			this.servicesManager.removeService(this.in("id"));
@@ -165,7 +163,7 @@ public class ServiceController extends Controller {
 		this.success(LIST_CONTRACTS_TPL);
 	}
 
-	public void postRequestContract() throws ConvertionException {
+	public void postRequestContract() {
 		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
 		Validator providerValidator = ServiceValidators.getProviderValidator();
 		if (existentServiceValidator.isValid() && providerValidator.isValid()) {
@@ -181,17 +179,17 @@ public class ServiceController extends Controller {
 		this.success(LIST_CONTRACTS_TPL);
 	}
 
-	public void getEditContract() throws ConvertionException {
+	public void getEditContract() {
 		Validator contractsValidator = ServiceValidators.getExistentContractValidator();
 		if (contractsValidator.isValid()) {
 			this.out("contract", this.servicesManager.getServiceContract(this.in("id")));
-			this.success(EDIT_CONTRACT_TPL);
+			success(EDIT_CONTRACT_TPL);
 		} else {
 			this.invalid(EDIT_CONTRACT_TPL);
 		}
 	}
 
-	public void postUpdateContract() throws ConvertionException {
+	public void postUpdateContract() {
 		Validator existentContractValidator = ServiceValidators.getExistentContractValidator();
 		Validator existentContractStatusValidator = ServiceValidators.getExistentContractValidator();
 		if (existentContractValidator.isValid() && existentContractStatusValidator.isValid()) {
@@ -202,8 +200,13 @@ public class ServiceController extends Controller {
 		}
 	}
 
-	public void postPayContract() throws ConvertionException {
-		// TODO validator
-		this.servicesManager.makePayment(this.in("id"));
+	public void postPayContract() {
+		Validator contractsValidator = ServiceValidators.getExistentContractValidator();
+		if (contractsValidator.isValid()) {
+			this.servicesManager.makePayment(this.in("id"));
+			this.jsonSuccess();
+		} else {
+			this.jsonInvalid();
+		}
 	}
 }

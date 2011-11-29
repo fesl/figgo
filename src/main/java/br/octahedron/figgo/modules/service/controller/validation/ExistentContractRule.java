@@ -18,30 +18,48 @@
  */
 package br.octahedron.figgo.modules.service.controller.validation;
 
+import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.cotopaxi.inject.SelfInjectable;
 import br.octahedron.cotopaxi.validation.Rule;
+import br.octahedron.figgo.modules.service.manager.ServiceManager;
 
 /**
+ * 
+ * A rule that checks if exists a contract with the given id.
+ * 
  * @author vitoravelino
- *
  */
-public class ExistentContractRule implements Rule {
+public class ExistentContractRule extends SelfInjectable implements Rule {
 
-	/* (non-Javadoc)
+	@Inject
+	private ServiceManager serviceManager;
+
+	/**
+	 * @param serviceManager
+	 *            the serviceManager to set
+	 */
+	public void setServiceManager(ServiceManager serviceManager) {
+		this.serviceManager = serviceManager;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.cotopaxi.validation.Rule#getMessage()
 	 */
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
-		return null;
+		return "NOT_EXISTENT_CONTRACT";
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see br.octahedron.cotopaxi.validation.Rule#isValid(java.lang.String)
 	 */
 	@Override
-	public boolean isValid(String input) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean isValid(String contractId) {
+		return this.serviceManager.existsServiceContract(contractId);
 	}
 
 }

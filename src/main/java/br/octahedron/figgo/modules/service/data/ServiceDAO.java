@@ -29,7 +29,7 @@ import br.octahedron.figgo.modules.user.data.User;
  * @author Erick Moreno
  */
 public class ServiceDAO extends GenericDAO<Service> {
-
+	
 	public ServiceDAO() {
 		super(Service.class);
 	}
@@ -65,5 +65,4 @@ public class ServiceDAO extends GenericDAO<Service> {
 		Collection<Service> results = (Collection<Service>) query.execute(serviceName);
 		return (results.size() > 0) ? results.iterator().next() : null;
 	}
-
 }
