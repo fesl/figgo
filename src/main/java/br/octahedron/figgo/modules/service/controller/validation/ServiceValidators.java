@@ -18,14 +18,21 @@
  */
 package br.octahedron.figgo.modules.service.controller.validation;
 
+import static br.octahedron.cotopaxi.controller.Converter.Builder.bigDecimalNumber;
+import static br.octahedron.cotopaxi.validation.Rule.Builder.greaterThan;
+import static br.octahedron.cotopaxi.validation.Rule.Builder.minLength;
 import static br.octahedron.cotopaxi.validation.Rule.Builder.required;
+import static br.octahedron.cotopaxi.validation.Rule.Builder.type;
+
+import java.math.BigDecimal;
+
 import br.octahedron.cotopaxi.validation.Validator;
-import br.octahedron.figgo.modules.bank.controller.validation.AmountRule;
+import br.octahedron.figgo.modules.service.controller.ServiceController;
 
 /**
+ * Validators for {@link ServiceController}
+ * 
  * @author vitoravelino
- *
- *	TODO missing validators implementation
  */
 public class ServiceValidators {
 
@@ -34,16 +41,17 @@ public class ServiceValidators {
 	private static Validator providerValidator;
 	private static Validator existentContractValidator;
 	private static Validator existentServiceValidator;
-	
+
 	/**
 	 * @return
 	 */
 	public static synchronized Validator getServiceValidator() {
 		if (serviceValidator == null) {
 			serviceValidator = new Validator();
-			serviceValidator.add("name", required("REQUIRED_SERVICE_NAME"));
-			serviceValidator.add("amount", required("REQUIRED_SERVICE_AMOUNT"), new AmountRule());
-			serviceValidator.add("category", required("REQUIRED_SERVICE_CATEGORY"));
+			serviceValidator.add("name", required("REQUIRED_SERVICE_NAME"), minLength(4, "INVALID_SERVICE_NAME"));
+			serviceValidator.add("amount", required("REQUIRED_SERVICE_AMOUNT"), type(bigDecimalNumber()),
+					greaterThan(bigDecimalNumber(), new BigDecimal(0)));
+			serviceValidator.add("category", required("REQUIRED_SERVICE_CATEGORY"), minLength(4, "INVALID_SERVICE_CATEGORY"));
 		}
 		return serviceValidator;
 	}
@@ -51,7 +59,7 @@ public class ServiceValidators {
 	public static synchronized Validator getExistentServiceValidator() {
 		if (existentServiceValidator == null) {
 			existentServiceValidator = new Validator();
-			existentServiceValidator.add("id", required("REQUIRED_SERVICE_ID"), new ExistentServiceRule());
+			existentServiceValidator.add("id", new ExistentServiceRule());
 		}
 		return existentServiceValidator;
 	}
@@ -62,12 +70,11 @@ public class ServiceValidators {
 	public static synchronized Validator getExistentContractValidator() {
 		if (existentContractValidator == null) {
 			existentContractValidator = new Validator();
-			existentContractValidator.add("id", required("REQUIRED_CONTRACT_ID"), new ExistentContractRule());
+			existentContractValidator.add("id", new ExistentContractRule());
 		}
 		return existentContractValidator;
 	}
-	
-	
+
 	public static synchronized Validator getExistentContractStatusValidator() {
 		if (existentContractStatusValidator == null) {
 			existentContractStatusValidator = new Validator();
@@ -77,7 +84,7 @@ public class ServiceValidators {
 	}
 
 	/**
-	 * @return
+	 * Gets a validator for provider field.
 	 */
 	public static Validator getProviderValidator() {
 		if (providerValidator == null) {
@@ -86,6 +93,4 @@ public class ServiceValidators {
 		}
 		return providerValidator;
 	}
-
-
 }

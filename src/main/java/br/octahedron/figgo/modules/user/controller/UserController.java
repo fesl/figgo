@@ -25,7 +25,6 @@ import static br.octahedron.figgo.modules.user.controller.validation.UserValidat
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired.AuthenticationLevel;
 import br.octahedron.cotopaxi.controller.Controller;
-import br.octahedron.cotopaxi.controller.ConvertionException;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
@@ -137,9 +136,9 @@ public class UserController extends Controller {
 	
 	/**
 	 * AJAX function to search users
-	 * @throws ConvertionException 
 	 */
-	public void getSearchUsers() throws ConvertionException {
+	public void getSearchUsers() {
+		// TODO validate
 		this.out("result", userManager.getUsersIn(in("users", strArray(","))));
 		jsonSuccess();
 	}
