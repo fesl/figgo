@@ -62,7 +62,7 @@ public class BankValidators {
 	public static synchronized Validator getAmountValidator() {
 		if (valueValidator == null) {
 			valueValidator = new Validator();
-			valueValidator.add("amount", new AmountRule());
+//			valueValidator.add("amount", new AmountRule());
 		}
 		return valueValidator;
 	}
