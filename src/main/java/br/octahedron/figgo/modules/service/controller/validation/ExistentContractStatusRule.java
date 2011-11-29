@@ -19,6 +19,7 @@
 package br.octahedron.figgo.modules.service.controller.validation;
 
 import br.octahedron.cotopaxi.validation.Rule;
+import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
 
 /**
  * @author vitoravelino
@@ -31,8 +32,7 @@ public class ExistentContractStatusRule implements Rule {
 	 */
 	@Override
 	public String getMessage() {
-		// TODO Auto-generated method stub
-		return null;
+		return "NON_EXISTENT_CONTRACT_STATUS";
 	}
 
 	/* (non-Javadoc)
@@ -40,8 +40,12 @@ public class ExistentContractStatusRule implements Rule {
 	 */
 	@Override
 	public boolean isValid(String input) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			ServiceContractStatus.valueOf(input);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }

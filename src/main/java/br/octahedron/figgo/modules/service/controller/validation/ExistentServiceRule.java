@@ -22,7 +22,6 @@ import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.inject.SelfInjectable;
 import br.octahedron.cotopaxi.validation.Rule;
 import br.octahedron.figgo.modules.service.manager.ServiceManager;
-import br.octahedron.util.Log;
 
 /**
  * A rule that checks if exists a service with the given id.
@@ -43,7 +42,7 @@ public class ExistentServiceRule extends SelfInjectable implements Rule {
 	 */
 	@Override
 	public String getMessage() {
-		return "SERVICE_NOT_EXISTS";
+		return "NON_EXISTENT_SERVICE";
 	}
 
 	/* (non-Javadoc)
@@ -51,7 +50,6 @@ public class ExistentServiceRule extends SelfInjectable implements Rule {
 	 */
 	@Override
 	public boolean isValid(String input) {
-		new Log().warning("@@@@@@@@@@@@@@@@@@@@@ " + input);
 		return serviceManager.existsService(input);
 	}
 
