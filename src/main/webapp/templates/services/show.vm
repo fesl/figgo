@@ -50,7 +50,7 @@
             </h3>
             <img class="loader" src="/img/ajax-loader.gif" />
             #if( $service.providers.size() > 0 )
-            <ul data-user="$user.userId">
+            <ul class="contracts" data-user="$user.userId">
             #foreach( $provider in $service.providers )
                 <li data-user="$provider"><span>$provider</span> <a href="/service/$service.id/contract/$provider">contratar</a></li>
             #end

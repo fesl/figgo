@@ -98,7 +98,7 @@ public class ServiceController extends Controller {
 		Service service = this.servicesManager.getService(this.in("id"));
 		this.out("id", service.getId());
 		this.out("name", service.getName());
-		this.out("value", service.getAmount());
+		this.out("amount", service.getAmount());
 		this.out("category", service.getCategory());
 		this.out("description", service.getDescription());
 		this.success(EDIT_SERVICE_TPL);
@@ -124,8 +124,8 @@ public class ServiceController extends Controller {
 		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
 		if (existentServiceValidator.isValid()) {
 			service.addProvider(this.currentUser());
-			this.out("html", "<li id=\"" + userId.split("@")[0] + "\">" + userId + "- <a class=\"contract-link\" href=\"/service/" + service.getId()
-					+ "/contract/" + userId + "\">contratar</a></li>");
+			this.out("userId", userId);
+			this.out("serviceId", this.in("in"));
 			this.jsonSuccess();
 		} else {
 			this.jsonInvalid();

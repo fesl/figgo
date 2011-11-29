@@ -1,29 +1,30 @@
 $(function() {
 	$("#providers .thumbs-up").bind('click', function() {
 		var $this = $(this),
-			$providers = $("#providers ul"),
+			$providers = $("#providers > ul"),
 			$service = $("#service");
 		if ($this.hasClass('not')) {
 			$.ajax({
 				type: "POST",
-				url: "/service/" + $service.data("id") + "/provider/new",
+				url: "/service/" + $service[0].dataset['id'] + "/provider/new",
 			}).success(function(data) {
 				$this.removeClass('not');
-				$providers.prepend(data.html);
+				$providers.prepend('<li data-user="' + data.userId + '"><a class="contract-link" href="/service/' + data.serviceId
+					+ '"/contract/"' + data.userId + '">contratar</a></li>');
 			});
 		} else {
 			$.ajax({
 				type: "POST",
-				url: "/service/" + $service.data("id") + "/provider/delete",
+				url: "/service/" + $service[0].dataset['id'] + "/provider/delete",
 			}).success(function(data) {
 				$this.addClass('not');
-				$providers.find("#" + $providers.data("user")).remove();
+				$providers.find("li[data-user='" + $providers.data("user") + "']").remove();
 			});
 		}
 	});
 	
-	var $providers = $("#providers > ul");
-	$providers.delegate('a', 'click', function(e) {
+	$("#providers > ul").delegate('a', 'click', function(e) {
+		var $providers = $("#providers > ul");
 		$.ajax({
 			type: "POST",
 			url: $(this).attr('href'),
@@ -33,8 +34,9 @@ $(function() {
 		e.preventDefault();
 	});
 	
-	var users = $providers.find('li').map(function() { return this.dataset['user'] }).get();
+	var users = $("#providers > ul").find('li').map(function() { return this.dataset['user'] }).get();
 	if (users.length) {
+		var $providers = $("#providers > ul");
 		$.get('/users/search/', {'users': users.join(",")}, function(data) {
 			var i, currentLi,
 				usersLength = data.result.length,
@@ -43,16 +45,16 @@ $(function() {
 				currentLi = $providers.find("li[data-user='"+users[i].userId+"']")[0]
 				currentLi.childNodes[0].textContent = users[i].name;
 			}
-			document.getElementById("loader").remove();
+			$(".loader").remove();
 			$providers.fadeIn();
 		}).error(function(data) {
 			console.log("não foi possível carregar dados dos usuários");
 		});
 	}
 
-	$providers = $("dd.provider");
-	users = $providers.map(function() { return this.textContent }).get();
+	users = $("dd.provider").map(function() { return this.textContent }).get();
 	if (users.length) {
+		var $providers = $("dd.provider");
 		$.get('/users/search/', {'users': users.join(",")}, function(data) {
 			var i, $currentDd,
 				usersLength = data.result.length,
@@ -62,7 +64,7 @@ $(function() {
 				$currentDd.text(users[i].name);
 			}
 			$(".loader").remove();
-			$("li.service").fadeIn();
+			$providers.closest('ul').fadeIn();
 		}).error(function(data) {
 			console.log("não foi possível carregar dados dos usuários");
 		});
