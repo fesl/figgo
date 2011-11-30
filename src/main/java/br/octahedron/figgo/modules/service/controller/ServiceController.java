@@ -18,17 +18,21 @@
  */
 package br.octahedron.figgo.modules.service.controller;
 
-import static br.octahedron.cotopaxi.controller.Converter.Builder.*;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.bigDecimalNumber;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.safeString;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
+import br.octahedron.figgo.FiggoException;
 import br.octahedron.figgo.modules.service.controller.validation.ServiceValidators;
 import br.octahedron.figgo.modules.service.data.Service;
 import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
 import br.octahedron.figgo.modules.service.manager.ServiceManager;
+import br.octahedron.figgo.modules.service.manager.exception.OnlyProviderException;
+import br.octahedron.figgo.modules.service.manager.exception.ProviderDoesNotExistException;
 
 /**
  * @author Vítor Avelino
@@ -164,10 +168,14 @@ public class ServiceController extends Controller {
 
 	public void postRequestContract() {
 		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
-		Validator providerValidator = ServiceValidators.getProviderValidator();
-		if (existentServiceValidator.isValid() && providerValidator.isValid()) {
-			this.servicesManager.requestContract(this.in("id"), this.currentUser(), this.in("provider"));
-			this.jsonSuccess();
+		if (existentServiceValidator.isValid()) {
+			try {
+				this.servicesManager.requestContract(this.in("id"), this.currentUser(), this.in("provider"));
+				this.jsonSuccess();
+			} catch (ProviderDoesNotExistException e) {
+				this.out("exception", e.getMessage());
+				this.jsonInvalid();
+			}
 		} else {
 			this.jsonInvalid();
 		}
@@ -192,8 +200,13 @@ public class ServiceController extends Controller {
 		Validator existentContractValidator = ServiceValidators.getExistentContractValidator();
 		Validator existentContractStatusValidator = ServiceValidators.getExistentContractValidator();
 		if (existentContractValidator.isValid() && existentContractStatusValidator.isValid()) {
-			this.servicesManager.updateContractStatus(this.in("id"), ServiceContractStatus.valueOf(this.in("status")));
-			this.redirect(SHOW_CONTRACTS_URL);
+			try {
+				this.servicesManager.updateContractStatus(this.in("id"), ServiceContractStatus.valueOf(this.in("status")), this.currentUser());
+				this.redirect(SHOW_CONTRACTS_URL);
+			} catch (OnlyProviderException e) {
+				this.out("warning", e.getMessage());
+				this.jsonInvalid();
+			}
 		} else {
 			this.jsonInvalid();
 		}
@@ -202,8 +215,13 @@ public class ServiceController extends Controller {
 	public void postPayContract() {
 		Validator contractsValidator = ServiceValidators.getExistentContractValidator();
 		if (contractsValidator.isValid()) {
-			this.servicesManager.makePayment(this.in("id"));
-			this.jsonSuccess();
+			try {
+				this.servicesManager.makePayment(this.in("id"), this.currentUser());
+				this.jsonSuccess();
+			} catch (FiggoException e) {
+				this.out("exception", e.getMessage());
+				this.jsonInvalid();
+			}
 		} else {
 			this.jsonInvalid();
 		}
