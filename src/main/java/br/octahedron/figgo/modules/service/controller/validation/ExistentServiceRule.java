@@ -42,7 +42,7 @@ public class ExistentServiceRule extends SelfInjectable implements Rule {
 	 */
 	@Override
 	public String getMessage() {
-		return "SERVICE_NOT_EXISTS";
+		return "NON_EXISTENT_SERVICE";
 	}
 
 	/* (non-Javadoc)

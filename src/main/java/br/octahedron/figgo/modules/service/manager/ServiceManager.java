@@ -82,12 +82,12 @@ public class ServiceManager {
 	}
 
 	/**
-	 * Checks if exists a {@link Service} with the given name.
+	 * Checks if exists a {@link Service} with the given id.
 	 * 
 	 * @return <code>true</code> if exists, <code>false</code> otherwise.
 	 */
-	public boolean existsService(String name) {
-		return this.serviceDAO.getServiceByName(name) != null;
+	public boolean existsService(String id) {
+		return this.serviceDAO.exists(id);
 	}
 
 	/**

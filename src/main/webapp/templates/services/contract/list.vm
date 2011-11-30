@@ -40,7 +40,7 @@
             <h3>Contratos prestados</h3>
             #if ( $providerContracts.size() > 0 )
             <img class="loader" src="/img/ajax-loader.gif" />
-            <ul class="unstyled">
+            <ul class="unstyled contracts">
                 #foreach( $contract in $providerContracts )
                 <li class="service">
                     <header>
@@ -68,7 +68,7 @@
             <h3>Contratos contratados</h3>
             #if ( $contractorContracts.size() > 0 )
             <img class="loader" src="/img/ajax-loader.gif" />
-            <ul class="unstyled">
+            <ul class="unstyled contracts">
                 #foreach( $contract in $contractorContracts )
                 <li class="service">
                     <header>

@@ -50,7 +50,7 @@ public class ServiceValidators {
 			serviceValidator = new Validator();
 			serviceValidator.add("name", required("REQUIRED_SERVICE_NAME"), minLength(4, "INVALID_SERVICE_NAME"));
 			serviceValidator.add("amount", required("REQUIRED_SERVICE_AMOUNT"), type(bigDecimalNumber()),
-					greaterThan(bigDecimalNumber(), new BigDecimal(0)));
+					greaterThan(bigDecimalNumber(), new BigDecimal(0), "INVALID_SERVICE_AMOUNT"));
 			serviceValidator.add("category", required("REQUIRED_SERVICE_CATEGORY"), minLength(4, "INVALID_SERVICE_CATEGORY"));
 		}
 		return serviceValidator;

@@ -38,8 +38,8 @@
                     #end
                 </div>
                 <div>
-                <label for="value">Valor</label>
-                    <input type="text" name="value" value="$!{value}" />
+                <label for="amount">Valor</label>
+                    <input type="text" name="amount" value="$!{amount}" />
                     #if ( $invalid.value )
                         <span>$invalid.value</span>
                     #end

@@ -48,15 +48,15 @@
                 <img class="thumbs-up not" src="/img/thumbs-up.png" title="Não faço!" alt="Não faço!" />
                 #end
             </h3>
-            <img class="loader" src="/img/ajax-loader.gif" />
-            #if( $service.providers.size() > 0 )
-            <ul data-user="$user.userId">
+            <ul class="contracts" data-username="$user.name" data-userid="$user.userId">
             #foreach( $provider in $service.providers )
                 <li data-user="$provider"><span>$provider</span> <a href="/service/$service.id/contract/$provider">contratar</a></li>
             #end
             </ul>
+            #if( $service.providers.size() > 0 )
+            <img class="loader" src="/img/ajax-loader.gif" />
             #else
-            <p>Nenhum prestador deste serviço até o momento.</p>
+            <p class="notice">Nenhum prestador deste serviço até o momento.</p>
             #end
         </section>
     </section>
