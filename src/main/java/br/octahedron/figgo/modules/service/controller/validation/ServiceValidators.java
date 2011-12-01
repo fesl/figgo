@@ -56,6 +56,7 @@ public class ServiceValidators {
 	}
 
 	public static synchronized Validator getExistentServiceValidator() {
+		// TODO remove it. This should be checked by the manager
 		if (existentServiceValidator == null) {
 			existentServiceValidator = new Validator();
 			existentServiceValidator.add("id", new ExistentServiceRule());
@@ -67,6 +68,7 @@ public class ServiceValidators {
 	 * @return
 	 */
 	public static synchronized Validator getExistentContractValidator() {
+		// TODO remove it. This should be checked by the manager
 		if (existentContractValidator == null) {
 			existentContractValidator = new Validator();
 			existentContractValidator.add("id", new ExistentContractRule());

@@ -18,51 +18,63 @@
  */
 package br.octahedron.figgo.modules.bank.controller.validation;
 
-import static br.octahedron.cotopaxi.validation.Rule.Builder.*;
+import static br.octahedron.commons.util.DateUtil.SHORT;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.bigDecimalNumber;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.date;
+import static br.octahedron.cotopaxi.validation.Input.Builder.attribute;
+import static br.octahedron.cotopaxi.validation.Rule.Builder.greaterThan;
+import static br.octahedron.cotopaxi.validation.Rule.Builder.regex;
+import static br.octahedron.cotopaxi.validation.Rule.Builder.required;
+import static br.octahedron.cotopaxi.validation.Rule.Builder.type;
+
+import java.math.BigDecimal;
+
 import br.octahedron.cotopaxi.validation.Validator;
 
 /**
  * @author Vítor Avelino
- *
  */
 public class BankValidators {
-	
-	private static Validator destinationValidator;
+
 	private static Validator valueValidator;
 	private static Validator requiredValidator;
 	private static Validator dateValidator;
-	
+
 	/**
 	 * A validator for transfers that checks the required fields
 	 */
-	public static synchronized Validator getRequiredValidator() {
+	public static synchronized Validator getTransferValidator() {
 		if (requiredValidator == null) {
 			requiredValidator = new Validator();
-			requiredValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"));
-			requiredValidator.add("amount", required("REQUIRED_TRANSACTION_AMOUT"));
-			requiredValidator.add("type", required("REQUIRED_TRANSACTION_TYPE"));
+			requiredValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"),
+					regex("([a-zA-ZáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûÃÕãõçÇ] *){2,}", "INVALID_USERID"));
+			requiredValidator.add("amount", required("REQUIRED_TRANSACTION_AMOUT"), type(bigDecimalNumber()));
+			requiredValidator.add("type", required("REQUIRED_TRANSACTION_TYPE"), new ExistentTransferTypeRule());
 		}
 		return requiredValidator;
 	}
 	
 	/**
-	 * A validator that check if the destination account exists and has authorization at the specified domain
+	 * A validator for ballast that checks the required fields
 	 */
-	public static synchronized Validator getDestinationValidator() {
-		if (destinationValidator == null) {
-			destinationValidator = new Validator();
-//			destinationValidator.add("userId", new DestinationRule());
+	public static synchronized Validator getBallastValidator() {
+		if (requiredValidator == null) {
+			requiredValidator = new Validator();
+			requiredValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"),
+					regex("([a-zA-ZáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûÃÕãõçÇ] *){2,}", "INVALID_USERID"));
+			requiredValidator.add("amount", required("REQUIRED_TRANSACTION_AMOUT"), type(bigDecimalNumber()));
 		}
-		return destinationValidator;
+		return requiredValidator;
 	}
-	
+
 	/**
-	 * A validator that check if the transfer's amount is positive 
+	 * A validator that check if the transfer's amount is positive
 	 */
 	public static synchronized Validator getAmountValidator() {
 		if (valueValidator == null) {
 			valueValidator = new Validator();
-//			valueValidator.add("amount", new AmountRule());
+			valueValidator.add("amount", type("NOT_VALID_VALUE", bigDecimalNumber()),
+					greaterThan(bigDecimalNumber(), new BigDecimal(0), "NOT_VALID_VALUE"));
 		}
 		return valueValidator;
 	}
@@ -70,12 +82,13 @@ public class BankValidators {
 	/**
 	 * A validator that check if start date is less than end date
 	 */
-	// TODO implement it ASAP!
 	public static Validator getDateValidator() {
 		if (dateValidator == null) {
 			dateValidator = new Validator();
+			dateValidator.add("startDate", type("NOT_VALID_DATE", date(SHORT)));
+			dateValidator.add("endDate", type("NOT_VALID_DATE", date(SHORT)), greaterThan(attribute("startDate"),date(SHORT),"NOT_VALID_DATE"));
 		}
 		return dateValidator;
 	}
-	
+
 }

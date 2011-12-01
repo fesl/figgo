@@ -70,9 +70,9 @@ public class BankAdminController extends Controller {
 	 * Transfer from bank account to a user account
 	 */
 	public void postShareBank() {
-		Validator requiredValidator = BankValidators.getRequiredValidator();
-		Validator destinationValidator = BankValidators.getDestinationValidator();
-		if (requiredValidator.isValid() && destinationValidator.isValid()) {
+		Validator requiredValidator = BankValidators.getTransferValidator();
+		Validator amountValidator = BankValidators.getAmountValidator();
+		if (requiredValidator.isValid() && amountValidator.isValid()) {
 			this.accountManager.transact(this.subDomain(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"), TransactionType.valueOf(this.in("type")));
 			this.redirect(ADMIN_URL);
 		} else {
@@ -86,8 +86,7 @@ public class BankAdminController extends Controller {
 	 * Transfer from system account to bank account
 	 */
 	public void postBallastBank() {
-		Validator requiredValidator = BankValidators.getRequiredValidator();
-		// TODO change validation (we dont need the type)
+		Validator requiredValidator = BankValidators.getBallastValidator();
 		Validator comparableValidator = BankValidators.getAmountValidator();
 		if (requiredValidator.isValid() && comparableValidator.isValid()) {
 			this.accountManager.insertBallast(this.subDomain(), new BigDecimal(this.in("amount")), this.in("comment"));

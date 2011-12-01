@@ -18,10 +18,12 @@
  */
 package br.octahedron.figgo.modules.bank.controller;
 
+import static br.octahedron.cotopaxi.controller.Converter.Builder.date;
+import static br.octahedron.commons.util.DateUtil.SHORT;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-import br.octahedron.commons.util.DateUtil;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
@@ -31,10 +33,10 @@ import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.modules.bank.controller.validation.BankValidators;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
 import br.octahedron.figgo.modules.bank.manager.AccountManager;
+import br.octahedron.figgo.modules.bank.manager.DisabledBankAccountException;
 
 /**
  * @author Vítor Avelino
- * 
  */
 @AuthenticationRequired
 @AuthorizationRequired
@@ -75,7 +77,6 @@ public class BankController extends Controller {
 	 * Shows the page for transfers between users
 	 */
 	public void getTransferBank() {
-		// TODO validate value
 		this.out("balance", this.accountManager.getBalance(this.currentUser()));
 		this.out("transactions", this.accountManager.getLastNTransactions(this.currentUser(), 5));
 		this.success(TRANSFER_TPL);
@@ -85,18 +86,20 @@ public class BankController extends Controller {
 	 * Posts a transfer between users
 	 */
 	public void postTransferBank() {
-		// TODO validate value
-		Validator requiredValidator = BankValidators.getRequiredValidator();
-		Validator destinationValidator = BankValidators.getDestinationValidator();
-
-		if (requiredValidator.isValid() && destinationValidator.isValid()) {
-			this.accountManager.transact(this.currentUser(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"),
-					TransactionType.valueOf(this.in("type")));
-			this.redirect(BASE_URL);
-		} else {
-			this.out("balance", this.accountManager.getBalance(this.currentUser()));
-			this.echo();
-			this.invalid(TRANSFER_TPL);
+		Validator input = BankValidators.getTransferValidator();
+		Validator amountValidator = BankValidators.getAmountValidator();
+		try {
+			if (input.isValid() && amountValidator.isValid()) {
+				this.accountManager.transact(this.currentUser(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"),
+						TransactionType.valueOf(this.in("type")));
+				this.redirect(BASE_URL);
+			} else {
+				this.out("balance", this.accountManager.getBalance(this.currentUser()));
+				this.echo();
+				this.invalid(TRANSFER_TPL);
+			}
+		} catch (DisabledBankAccountException ex) {
+			// TODO invalid account
 		}
 	}
 
@@ -114,7 +117,8 @@ public class BankController extends Controller {
 	public void postStatementBank() {
 		Validator dateValidator = BankValidators.getDateValidator();
 		if (dateValidator.isValid()) {
-			this.out("transactions", this.accountManager.getTransactions(currentUser(), this.parseDate(in("startDate")), this.parseDate(in("endDate"))));
+			this.out("transactions",
+					this.accountManager.getTransactions(this.currentUser(), this.in("startDate", date(SHORT)), this.in("endDate", date(SHORT))));
 			jsonSuccess();
 		} else {
 			jsonInvalid();
@@ -136,22 +140,18 @@ public class BankController extends Controller {
 	}
 
 	/**
-	 * Posts parameters to get bank's statis information
+	 * Posts parameters to get bank's static information
 	 */
 	public void postStatsBank() {
 		Validator dateValidator = BankValidators.getDateValidator();
 		if (dateValidator.isValid()) {
-			Date startDate = this.parseDate(in("startDate"));
-			Date endDate = this.parseDate(in("endDate"));
+			Date startDate = this.in("startDate", date(SHORT));
+			Date endDate = this.in("endDate", date(SHORT));
 			this.out("circulation", this.accountManager.getAmountTransactions(startDate, endDate));
 			this.out("creditAmount", this.accountManager.getAmountCredit(startDate, endDate));
 			jsonSuccess();
 		} else {
 			jsonInvalid();
 		}
-	}
-	
-	private Date parseDate(String date) {
-		return DateUtil.parse(date, DateUtil.SHORT);
 	}
 }

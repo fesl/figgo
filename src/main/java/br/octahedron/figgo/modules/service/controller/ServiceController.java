@@ -55,8 +55,7 @@ public class ServiceController extends Controller {
 
 	private static final String BASE_URL = "/services";
 	private static final String SHOW_CONTRACTS_URL = BASE_URL + "/contracts";
-	
-	
+
 	private ControllerI18nHelper i18n = new ControllerI18nHelper(this);
 	@Inject
 	private ServiceManager servicesManager;
@@ -91,7 +90,8 @@ public class ServiceController extends Controller {
 	public void postNewService() {
 		Validator validator = ServiceValidators.getServiceValidator();
 		if (validator.isValid()) {
-			this.servicesManager.createService(this.in("name", safeString()), this.in("amount", bigDecimalNumber()), this.in("category", safeString()), this.in("description", safeString()));
+			this.servicesManager.createService(this.in("name", safeString()), this.in("amount", bigDecimalNumber()),
+					this.in("category", safeString()), this.in("description", safeString()));
 			this.redirect(BASE_URL);
 		} else {
 			this.echo();
@@ -114,7 +114,8 @@ public class ServiceController extends Controller {
 	public void postEditService() {
 		Validator validator = ServiceValidators.getServiceValidator();
 		if (validator.isValid()) {
-			this.servicesManager.updateService(this.in("id"), this.in("name", safeString()), this.in("amount", bigDecimalNumber()), this.in("category", safeString()), this.in("description", safeString()));
+			this.servicesManager.updateService(this.in("id"), this.in("name", safeString()), this.in("amount", bigDecimalNumber()),
+					this.in("category", safeString()), this.in("description", safeString()));
 			this.redirect(BASE_URL);
 		} else {
 			this.echo();
@@ -201,7 +202,7 @@ public class ServiceController extends Controller {
 
 	public void postUpdateContract() {
 		Validator existentContractValidator = ServiceValidators.getExistentContractValidator();
-		Validator existentContractStatusValidator = ServiceValidators.getExistentContractValidator();
+		Validator existentContractStatusValidator = ServiceValidators.getExistentContractStatusValidator();
 		if (existentContractValidator.isValid() && existentContractStatusValidator.isValid()) {
 			try {
 				this.servicesManager.updateContractStatus(this.in("id"), ServiceContractStatus.valueOf(this.in("status")), this.currentUser());
