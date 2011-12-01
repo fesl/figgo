@@ -65,4 +65,15 @@ public class ServiceDAO extends GenericDAO<Service> {
 		Collection<Service> results = (Collection<Service>) query.execute(serviceName);
 		return (results.size() > 0) ? results.iterator().next() : null;
 	}
+
+	/**
+	 * @param category
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<Service> getServicesByCategory(String category) {
+		Query query = this.datastoreFacade.createQueryForClass(Service.class);
+		query.setFilter("categoryId == :categoryId");
+		return (Collection<Service>) query.execute(category);
+	}
 }

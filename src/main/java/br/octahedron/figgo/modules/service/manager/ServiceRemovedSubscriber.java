@@ -16,43 +16,35 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.configuration.manager;
+package br.octahedron.figgo.modules.service.manager;
 
 import br.octahedron.cotopaxi.eventbus.AbstractNamespaceSubscriber;
 import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.inject.Inject;
-import br.octahedron.figgo.modules.upload.controller.DomainUploadEvent;
 
 /**
- * @author Vítor Avelino
- * 
+ * @author vitoravelino
+ *
  */
-@InterestedEvent(events = { DomainUploadEvent.class })
-public class DomainUploadSubscriber extends AbstractNamespaceSubscriber {
+@InterestedEvent(events = { ServiceRemovedEvent.class })
+public class ServiceRemovedSubscriber extends AbstractNamespaceSubscriber {
 
 	@Inject
-	private ConfigurationManager configurationManager;
-
-	/**
-	 * @param configurationManager
-	 *            the configurationManager to set
-	 */
-	public void setConfigurationManager(ConfigurationManager configurationManager) {
-		this.configurationManager = configurationManager;
+	private ServiceManager serviceManager;
+	
+	public void setServiceManager(ServiceManager serviceManager) {
+		this.serviceManager = serviceManager;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.octahedron.commons.eventbus.AbstractNamespaceSubscriber#processEvent(br.octahedron.commons
-	 * .eventbus.Event)
+	
+	/* (non-Javadoc)
+	 * @see br.octahedron.cotopaxi.eventbus.AbstractNamespaceSubscriber#processEvent(br.octahedron.cotopaxi.eventbus.Event)
 	 */
 	@Override
-	public void processEvent(Event event) {
-		DomainUploadEvent uploadEvent = (DomainUploadEvent) event;
-		this.configurationManager.updateAvatarKey(uploadEvent.getBlobKey());
+	protected void processEvent(Event e) {
+		ServiceRemovedEvent event = (ServiceRemovedEvent) e;
+		String categoryId = event.getService().getCategoryId();
+		this.serviceManager.cleanCategory(categoryId);
 	}
 
 }

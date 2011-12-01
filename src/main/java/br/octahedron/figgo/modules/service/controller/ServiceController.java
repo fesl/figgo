@@ -67,6 +67,7 @@ public class ServiceController extends Controller {
 	@AuthorizationRequired
 	public void getListServices() {
 		this.out("services", this.servicesManager.getServices());
+		this.out("categories", this.servicesManager.getServiceCategories());
 		this.success(LIST_SERVICE_TPL);
 	}
 
@@ -229,5 +230,12 @@ public class ServiceController extends Controller {
 		} else {
 			this.jsonInvalid();
 		}
+	}
+	
+	public void getServiceByCategory() {
+		this.out("categories", this.servicesManager.getServiceCategories());
+		this.out("currentCategory", this.in("category", safeString()));
+		this.out("services", this.servicesManager.getServicesByCategory(this.in("category", safeString())));
+		this.success(LIST_SERVICE_TPL);
 	}
 }

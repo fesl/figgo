@@ -30,6 +30,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import br.octahedron.commons.util.TextNormalizer;
+
 /**
  * @author Erick Moreno
  */
@@ -51,6 +53,8 @@ public class Service implements Serializable {
 	@Persistent
 	private String category;
 	@Persistent
+	private String categoryId;
+	@Persistent
 	private Set<String> providers;
 	@Persistent(mappedBy = "service")
 	@Order(extensions = @Extension(vendorName = "datanucleus", key = "list-ordering", value = "date desc"))
@@ -59,7 +63,7 @@ public class Service implements Serializable {
 	public Service(String name, BigDecimal amount, String category, String description) {
 		this.name = name;
 		this.amount = amount;
-		this.category = category;
+		this.setCategory(category);
 		this.description = description;
 		this.providers = new TreeSet<String>();
 	}
@@ -102,10 +106,18 @@ public class Service implements Serializable {
 	}
 
 	/**
+	 * @return the category
+	 */
+	public String getCategoryId() {
+		return this.categoryId;
+	}
+
+	/**
 	 * @param category
 	 *            the category to set
 	 */
 	public void setCategory(String category) {
+		this.categoryId = TextNormalizer.normalize(category);
 		this.category = category;
 	}
 

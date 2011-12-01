@@ -18,13 +18,15 @@
  */
 package br.octahedron.figgo.modules.service;
 
-import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
+import br.octahedron.figgo.modules.service.manager.ServiceCreatedSubscriber;
+import br.octahedron.figgo.modules.service.manager.ServiceUpdatedSubscriber;
 
 /**
  * @author Vítor Avelino
@@ -48,12 +50,15 @@ public class ServicesSpec implements DomainModuleSpec {
 
 	@Override
 	public boolean hasSubscribers() {
-		return false;
+		return true;
 	}
 
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
-		return Collections.emptySet();
+		Set<Class<? extends Subscriber>> subscribers = new LinkedHashSet<Class<? extends Subscriber>>();
+		subscribers.add(ServiceCreatedSubscriber.class);
+		subscribers.add(ServiceUpdatedSubscriber.class);
+		return subscribers;
 	}
 
 	/* (non-Javadoc)
