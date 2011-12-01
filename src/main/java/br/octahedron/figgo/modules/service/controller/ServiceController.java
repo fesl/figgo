@@ -30,6 +30,7 @@ import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.FiggoException;
 import br.octahedron.figgo.modules.service.controller.validation.ServiceValidators;
 import br.octahedron.figgo.modules.service.data.Service;
+import br.octahedron.figgo.modules.service.data.ServiceContract;
 import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
 import br.octahedron.figgo.modules.service.manager.InexistentServiceProviderException;
 import br.octahedron.figgo.modules.service.manager.OnlyServiceProviderException;
@@ -198,7 +199,9 @@ public class ServiceController extends Controller {
 
 	public void getEditContract() {
 		try {
-			this.out("contract", this.servicesManager.getServiceContract(this.in("id")));
+			ServiceContract serviceContract = this.servicesManager.getServiceContract(this.in("id"));
+			this.out("contract", serviceContract);
+			this.out("status", serviceContract.getStatus());
 			this.success(EDIT_CONTRACT_TPL);
 		} catch (ServiceContractNotFound e) {
 			this.notFound();
@@ -212,8 +215,9 @@ public class ServiceController extends Controller {
 				this.servicesManager.updateContractStatus(this.in("id"), ServiceContractStatus.valueOf(this.in("status")), this.currentUser());
 				this.redirect(SHOW_CONTRACTS_URL);
 			} catch (OnlyServiceProviderException e) {
-				this.out("warning", i18n.get(this.locales(), e.getMessage()));
-				this.jsonInvalid();
+				this.echo();
+				this.out("exception", i18n.get(this.locales(), e.getMessage()));
+				this.invalid(EDIT_CONTRACT_TPL);
 			} catch (ServiceContractNotFound e) {
 				this.notFound();
 			}
@@ -222,15 +226,18 @@ public class ServiceController extends Controller {
 		}
 	}
 
+	// FIXME use json
 	public void postPayContract() {
 		try {
 			this.servicesManager.makePayment(this.in("id"), this.currentUser());
-			this.jsonSuccess();
+			this.redirect(SHOW_CONTRACTS_URL);
 		} catch (ServiceContractNotFound e) {
 			this.notFound();
 		} catch (FiggoException e) {
 			this.out("exception", i18n.get(this.locales(), e.getMessage()));
-			this.jsonInvalid();
+			this.out("providerContracts", this.servicesManager.getProviderContracts(this.currentUser()));
+			this.out("contractorContracts", this.servicesManager.getContractorContracts(this.currentUser()));
+			this.invalid(LIST_CONTRACTS_TPL);
 		}
 	}
 

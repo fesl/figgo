@@ -34,9 +34,9 @@
                 <div>
                     <label for="status">Status</label>
                     <select name="status">
-                        <option value="PENDING" #if($contract.status == "PENDING")selected#end>Pendente</option>
-                        <option value="IN_PROGRESS" #if($contract.status == "IN_PROGRESS")selected#end>Em andamento</option>
-                        <option value="COMPLETED" #if($contract.status == "COMPLETED")selected#end>Completo</option>
+                        <option value="PENDING" #if($status == "PENDING")selected#end>Pendente</option>
+                        <option value="IN_PROGRESS" #if($status == "IN_PROGRESS")selected#end>Em andamento</option>
+                        <option value="COMPLETED" #if($status == "COMPLETED")selected#end>Completo</option>
                     </select>
                 </div>
             </fieldset>

@@ -26,6 +26,9 @@
 </div>
 <div class="left">
     <section id="main-intern">
+        #if ( $exception )
+            <p class="exception">$exception</p>
+        #end
         <h3>Meus serviços</h3>
         <nav>
             <ul class="two-column-shortcuts">
@@ -82,7 +85,7 @@
                     </dl>
                     <footer>
                         $numberFormat.format($contract.amount)
-                        <span class="contract"><a class="inside-link" href="/services/contract/$contract.id/pay">Pagar</a></span>
+                        <span class="contract"><a class="inside-link" data-type="url" data-confirm="Você tem certeza que deseja pagar?" href="/services/contract/$contract.id/pay">Pagar</a></span>
                     </footer>
                 </li>
                 #end
