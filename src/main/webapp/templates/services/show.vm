@@ -36,7 +36,7 @@
             <div id="operations">
                 // if admin
                 <a href="/service/$service.id/edit">editar</a>
-                <a href="/service/$service.id/delete">remover</a>
+                <a data-type="url" data-confirm="Você tem certeza que deseja remover esse serviço?" href="/service/$service.id/delete">remover</a>
             </div>
         </section>
         <section id="providers">

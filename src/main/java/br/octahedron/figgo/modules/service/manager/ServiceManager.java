@@ -87,7 +87,7 @@ public class ServiceManager {
 	 */
 	public Service getService(String serviceId) throws ServiceNotFoundException {
 		Service service = this.serviceDAO.get(serviceId);
-		if (service == null) {
+		if (service != null) {
 			return service;
 		} else {
 			throw new ServiceNotFoundException();

@@ -162,7 +162,7 @@ public class ServiceController extends Controller {
 	public void postRemoveService() {
 		try {
 			this.servicesManager.removeService(this.in("id"));
-			this.jsonSuccess();
+			this.redirect(BASE_URL);
 		} catch (ServiceNotFoundException e) {
 			this.notFound();
 		}
@@ -205,7 +205,7 @@ public class ServiceController extends Controller {
 		}
 	}
 
-	public void postUpdateContract() {
+	public void postEditContract() {
 		Validator existentContractStatusValidator = ServiceValidators.getExistentContractStatusValidator();
 		if (existentContractStatusValidator.isValid()) {
 			try {
