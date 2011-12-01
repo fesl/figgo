@@ -24,10 +24,12 @@ import java.util.Collection;
 import br.octahedron.cotopaxi.eventbus.EventBus;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.service.data.Service;
+import br.octahedron.figgo.modules.service.data.ServiceCategory;
+import br.octahedron.figgo.modules.service.data.ServiceCategoryDAO;
 import br.octahedron.figgo.modules.service.data.ServiceContract;
+import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
 import br.octahedron.figgo.modules.service.data.ServiceContractDAO;
 import br.octahedron.figgo.modules.service.data.ServiceDAO;
-import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
 import br.octahedron.figgo.modules.service.manager.exception.ContractUncompletedException;
 import br.octahedron.figgo.modules.service.manager.exception.OnlyContractorException;
 import br.octahedron.figgo.modules.service.manager.exception.OnlyProviderException;
@@ -43,6 +45,7 @@ import br.octahedron.figgo.modules.user.data.User;
 public class ServiceManager {
 
 	private final ServiceDAO serviceDAO = new ServiceDAO();
+	private final ServiceCategoryDAO serviceCategoryDAO = new ServiceCategoryDAO();
 	private final ServiceContractDAO serviceContractDAO = new ServiceContractDAO();
 	
 	@Inject
@@ -59,6 +62,7 @@ public class ServiceManager {
 	public Service createService(String name, BigDecimal value, String category, String description) {
 		Service service = new Service(name, value, category, description);
 		this.serviceDAO.save(service);
+		this.eventBus.publish(new ServiceCreatedEvent(service.getCategoryId(), service.getCategory()));
 		return service;
 	}
 
@@ -67,10 +71,12 @@ public class ServiceManager {
 	 */
 	public Service updateService(String serviceId, String name, BigDecimal value, String category, String description) {
 		Service service = this.serviceDAO.get(serviceId);
+		String oldCategoryId = service.getCategoryId();
 		service.setName(name);
 		service.setAmount(value);
 		service.setDescription(description);
 		service.setCategory(category);
+		this.eventBus.publish(new ServiceUpdatedEvent(service, oldCategoryId));
 		// This object will be updated to the DB by JDO persistence manager
 		return service;
 	}
@@ -219,7 +225,9 @@ public class ServiceManager {
 	 * @return
 	 */
 	public void removeService(String serviceId) {
-		this.serviceDAO.delete(serviceId);
+		Service service = this.serviceDAO.get(serviceId);
+		this.serviceDAO.delete(service);
+		this.eventBus.publish(new ServiceRemovedEvent(service));
 	}
 	
 	/**
@@ -262,4 +270,41 @@ public class ServiceManager {
 	public boolean existsServiceContract(String contractId) {
 		return this.serviceContractDAO.exists(contractId);
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Collection<ServiceCategory> getServiceCategories() {
+		return this.serviceCategoryDAO.getAll();
+	}
+	
+	/**
+	 * @param categoryId
+	 * @param categoryName
+	 */
+	public void createServiceCategory(String categoryId, String categoryName) {
+		if (!serviceCategoryDAO.exists(categoryId)) {
+			ServiceCategory serviceCategory = new ServiceCategory(categoryId, categoryName);
+			this.serviceCategoryDAO.save(serviceCategory);
+		}
+	}
+	
+	/**
+	 * @param category
+	 */
+	public void cleanCategory(String category) {
+		Collection<Service> services = this.serviceDAO.getServicesByCategory(category);
+		if (services.isEmpty()) {
+			this.serviceCategoryDAO.delete(category);
+		}
+	}
+	/**
+	 * @param in
+	 * @return
+	 */
+	public Collection<Service> getServicesByCategory(String category) {
+		return this.serviceDAO.getServicesByCategory(category);
+	}
+	
 }

@@ -39,9 +39,9 @@
                 </div>
                 <div>
                 <label for="value">Valor</label>
-                    <input type="text" name="value" value="$!{value}" />
-                    #if ( $invalid.value )
-                        <span>$invalid.value</span>
+                    <input type="text" name="amount" value="$!{amount}" />
+                    #if ( $invalid.amount )
+                        <span>$invalid.amount</span>
                     #end
                 </div>
                 <div>

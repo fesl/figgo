@@ -22,6 +22,7 @@ import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.cotopaxi.inject.SelfInjectable;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
 import br.octahedron.figgo.modules.service.data.ServiceContract;
 import br.octahedron.figgo.modules.service.manager.ServiceContractPaidEvent;
@@ -31,10 +32,14 @@ import br.octahedron.figgo.modules.service.manager.ServiceContractPaidEvent;
  *
  */
 @InterestedEvent(events = { ServiceContractPaidEvent.class })
-public class ContractPaidSubscriber implements Subscriber {
+public class ContractPaidSubscriber extends SelfInjectable implements Subscriber {
 
 	@Inject
 	private AccountManager accountManager;
+	
+	public void setAccountManager(AccountManager accountManager) {
+		this.accountManager = accountManager;
+	}
 	
 	/* (non-Javadoc)
 	 * @see br.octahedron.cotopaxi.eventbus.Subscriber#eventPublished(br.octahedron.cotopaxi.eventbus.Event)

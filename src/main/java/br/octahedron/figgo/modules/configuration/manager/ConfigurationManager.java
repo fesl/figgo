@@ -90,7 +90,9 @@ public class ConfigurationManager {
 	 *            Blob key generated when uploaded avatar
 	 */
 	public void updateAvatarKey(String avatarKey) {
-		this.getDomainConfiguration().setAvatarKey(avatarKey);
+		DomainConfiguration domainConfiguration = this.getDomainConfiguration();
+		domainConfiguration.setAvatarKey(avatarKey);
+		this.domainDAO.save(domainConfiguration);		
 	}
 
 	/**

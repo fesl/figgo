@@ -30,7 +30,7 @@
         <nav>
             <ul class="two-column-shortcuts">
             #foreach( $category in $categories )
-                <li><a href="/services/$category">$category</a></li>
+                <li><a href="/services/$category.id" #if( $category.id == $currentCategory)class="selected"#end>$category.name</a></li>
             #end
             </ul>
         </nav>
