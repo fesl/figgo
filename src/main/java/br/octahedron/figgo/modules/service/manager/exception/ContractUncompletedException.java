@@ -28,8 +28,8 @@ public class ContractUncompletedException extends FiggoException {
 
 	private static final long serialVersionUID = -7265079213678153069L;
 
-	public ContractUncompletedException(String message) {
-		super(message);
+	public ContractUncompletedException() {
+		super("CONTRACT_UNCOMPLETED");
 	}
 
 }

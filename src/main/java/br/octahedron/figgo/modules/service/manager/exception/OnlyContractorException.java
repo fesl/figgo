@@ -28,8 +28,8 @@ public class OnlyContractorException extends FiggoException {
 
 	private static final long serialVersionUID = 1695834561438357964L;
 
-	public OnlyContractorException(String message) {
-		super(message);
+	public OnlyContractorException() {
+		super("ONLY_CONTRACTOR");
 	}
 
 }

@@ -28,8 +28,8 @@ public class OnlyProviderException extends FiggoException {
 
 	private static final long serialVersionUID = -4643909906614987620L;
 
-	public OnlyProviderException(String message) {
-		super(message);
+	public OnlyProviderException() {
+		super("ONLY_PROVIDER");
 	}
 
 }

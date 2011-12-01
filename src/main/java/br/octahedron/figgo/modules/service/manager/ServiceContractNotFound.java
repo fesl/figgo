@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.service.manager.exception;
+package br.octahedron.figgo.modules.service.manager;
 
 import br.octahedron.figgo.FiggoException;
 
@@ -24,12 +24,12 @@ import br.octahedron.figgo.FiggoException;
  * @author vitoravelino
  *
  */
-public class ProviderDoesNotExistException extends FiggoException {
+public class ServiceContractNotFound extends FiggoException {
 
-	private static final long serialVersionUID = -6381170128447140670L;
+	private static final long serialVersionUID = -8836544871765882456L;
 
-	public ProviderDoesNotExistException() {
-		super("NON_EXISTENT_CONTRACT_PROVIDER");
+	public ServiceContractNotFound() {
+		super("SERVICE_CONTRACT_NOT_FOUND");
 	}
-	
+
 }

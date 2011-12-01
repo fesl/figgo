@@ -31,7 +31,9 @@ import br.octahedron.figgo.FiggoException;
 import br.octahedron.figgo.modules.service.controller.validation.ServiceValidators;
 import br.octahedron.figgo.modules.service.data.Service;
 import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
+import br.octahedron.figgo.modules.service.manager.ServiceContractNotFound;
 import br.octahedron.figgo.modules.service.manager.ServiceManager;
+import br.octahedron.figgo.modules.service.manager.ServiceNotFoundException;
 import br.octahedron.figgo.modules.service.manager.exception.OnlyProviderException;
 import br.octahedron.figgo.modules.service.manager.exception.ProviderDoesNotExistException;
 
@@ -57,6 +59,7 @@ public class ServiceController extends Controller {
 	private static final String SHOW_CONTRACTS_URL = BASE_URL + "/contracts";
 
 	private ControllerI18nHelper i18n = new ControllerI18nHelper(this);
+
 	@Inject
 	private ServiceManager servicesManager;
 
@@ -73,11 +76,11 @@ public class ServiceController extends Controller {
 
 	@AuthorizationRequired
 	public void getShowService() {
-		Service service = this.servicesManager.getService(this.in("id"));
-		if (service != null) {
+		try {
+			Service service = this.servicesManager.getService(this.in("id"));
 			this.out("service", service);
 			this.success(SHOW_SERVICE_TPL);
-		} else {
+		} catch (ServiceNotFoundException e) {
 			this.notFound();
 		}
 	}
@@ -102,22 +105,30 @@ public class ServiceController extends Controller {
 
 	@AuthorizationRequired
 	public void getEditService() {
-		Service service = this.servicesManager.getService(this.in("id"));
-		this.out("id", service.getId());
-		this.out("name", service.getName());
-		this.out("amount", service.getAmount());
-		this.out("category", service.getCategory());
-		this.out("description", service.getDescription());
-		this.success(EDIT_SERVICE_TPL);
+		try {
+			Service service = this.servicesManager.getService(this.in("id"));
+			this.out("id", service.getId());
+			this.out("name", service.getName());
+			this.out("amount", service.getAmount());
+			this.out("category", service.getCategory());
+			this.out("description", service.getDescription());
+			this.success(EDIT_SERVICE_TPL);
+		} catch (ServiceNotFoundException e) {
+			this.notFound();
+		}
 	}
 
 	@AuthorizationRequired
 	public void postEditService() {
 		Validator validator = ServiceValidators.getServiceValidator();
 		if (validator.isValid()) {
-			this.servicesManager.updateService(this.in("id"), this.in("name", safeString()), this.in("amount", bigDecimalNumber()),
-					this.in("category", safeString()), this.in("description", safeString()));
-			this.redirect(BASE_URL);
+			try {
+				this.servicesManager.updateService(this.in("id"), this.in("name", safeString()), this.in("amount", bigDecimalNumber()),
+						this.in("category", safeString()), this.in("description", safeString()));
+				this.redirect(BASE_URL);
+			} catch (ServiceNotFoundException e) {
+				this.notFound();
+			}
 		} else {
 			this.echo();
 			this.invalid(EDIT_SERVICE_TPL);
@@ -126,37 +137,34 @@ public class ServiceController extends Controller {
 
 	@AuthorizationRequired
 	public void postAddProvider() {
-		Service service = this.servicesManager.getService(this.in("id"));
-		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
-		if (existentServiceValidator.isValid()) {
+		try {
+			Service service = this.servicesManager.getService(this.in("id"));
 			service.addProvider(this.currentUser());
 			this.out("userId", this.currentUser());
 			this.out("serviceId", this.in("id"));
 			this.jsonSuccess();
-		} else {
-			this.jsonInvalid();
+		} catch (ServiceNotFoundException e) {
+			this.notFound();
 		}
 	}
 
 	@AuthorizationRequired
 	public void postRemoveProvider() {
-		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
-		if (existentServiceValidator.isValid()) {
+		try {
 			this.out("service", this.servicesManager.removeProvider(this.in("id"), this.currentUser()));
 			this.jsonSuccess();
-		} else {
-			this.jsonInvalid();
+		} catch (ServiceNotFoundException e) {
+			this.notFound();
 		}
 	}
 
 	@AuthorizationRequired
 	public void postRemoveService() {
-		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
-		if (existentServiceValidator.isValid()) {
+		try {
 			this.servicesManager.removeService(this.in("id"));
 			this.jsonSuccess();
-		} else {
-			this.jsonInvalid();
+		} catch (ServiceNotFoundException e) {
+			this.notFound();
 		}
 	}
 
@@ -172,17 +180,14 @@ public class ServiceController extends Controller {
 	}
 
 	public void postRequestContract() {
-		Validator existentServiceValidator = ServiceValidators.getExistentServiceValidator();
-		if (existentServiceValidator.isValid()) {
-			try {
-				this.servicesManager.requestContract(this.in("id"), this.currentUser(), this.in("provider"));
-				this.jsonSuccess();
-			} catch (ProviderDoesNotExistException e) {
-				this.out("exception", i18n.get(this.locales(), e.getMessage()));
-				this.jsonInvalid();
-			}
-		} else {
+		try {
+			this.servicesManager.requestContract(this.in("id"), this.currentUser(), this.in("provider"));
+			this.jsonSuccess();
+		} catch (ProviderDoesNotExistException e) {
+			this.out("exception", i18n.get(this.locales(), e.getMessage()));
 			this.jsonInvalid();
+		} catch (ServiceNotFoundException e) {
+			this.notFound();
 		}
 	}
 
@@ -192,25 +197,25 @@ public class ServiceController extends Controller {
 	}
 
 	public void getEditContract() {
-		Validator contractsValidator = ServiceValidators.getExistentContractValidator();
-		if (contractsValidator.isValid()) {
+		try {
 			this.out("contract", this.servicesManager.getServiceContract(this.in("id")));
-			success(EDIT_CONTRACT_TPL);
-		} else {
-			this.invalid(EDIT_CONTRACT_TPL);
+			this.success(EDIT_CONTRACT_TPL);
+		} catch (ServiceContractNotFound e) {
+			this.notFound();
 		}
 	}
 
 	public void postUpdateContract() {
-		Validator existentContractValidator = ServiceValidators.getExistentContractValidator();
 		Validator existentContractStatusValidator = ServiceValidators.getExistentContractStatusValidator();
-		if (existentContractValidator.isValid() && existentContractStatusValidator.isValid()) {
+		if (existentContractStatusValidator.isValid()) {
 			try {
 				this.servicesManager.updateContractStatus(this.in("id"), ServiceContractStatus.valueOf(this.in("status")), this.currentUser());
 				this.redirect(SHOW_CONTRACTS_URL);
 			} catch (OnlyProviderException e) {
 				this.out("warning", i18n.get(this.locales(), e.getMessage()));
 				this.jsonInvalid();
+			} catch (ServiceContractNotFound e) {
+				this.notFound();
 			}
 		} else {
 			this.jsonInvalid();
@@ -218,20 +223,17 @@ public class ServiceController extends Controller {
 	}
 
 	public void postPayContract() {
-		Validator contractsValidator = ServiceValidators.getExistentContractValidator();
-		if (contractsValidator.isValid()) {
-			try {
-				this.servicesManager.makePayment(this.in("id"), this.currentUser());
-				this.jsonSuccess();
-			} catch (FiggoException e) {
-				this.out("exception", i18n.get(this.locales(), e.getMessage()));
-				this.jsonInvalid();
-			}
-		} else {
+		try {
+			this.servicesManager.makePayment(this.in("id"), this.currentUser());
+			this.jsonSuccess();
+		} catch (ServiceContractNotFound e) {
+			this.notFound();
+		} catch (FiggoException e) {
+			this.out("exception", i18n.get(this.locales(), e.getMessage()));
 			this.jsonInvalid();
 		}
 	}
-	
+
 	public void getServiceByCategory() {
 		this.out("categories", this.servicesManager.getServiceCategories());
 		this.out("currentCategory", this.in("category", safeString()));

@@ -38,8 +38,6 @@ public class ServiceValidators {
 
 	private static Validator serviceValidator;
 	private static Validator existentContractStatusValidator;
-	private static Validator existentContractValidator;
-	private static Validator existentServiceValidator;
 
 	/**
 	 * @return
@@ -53,27 +51,6 @@ public class ServiceValidators {
 			serviceValidator.add("category", required("REQUIRED_SERVICE_CATEGORY"), minLength(4, "INVALID_SERVICE_CATEGORY"));
 		}
 		return serviceValidator;
-	}
-
-	public static synchronized Validator getExistentServiceValidator() {
-		// TODO remove it. This should be checked by the manager
-		if (existentServiceValidator == null) {
-			existentServiceValidator = new Validator();
-			existentServiceValidator.add("id", new ExistentServiceRule());
-		}
-		return existentServiceValidator;
-	}
-
-	/**
-	 * @return
-	 */
-	public static synchronized Validator getExistentContractValidator() {
-		// TODO remove it. This should be checked by the manager
-		if (existentContractValidator == null) {
-			existentContractValidator = new Validator();
-			existentContractValidator.add("id", new ExistentContractRule());
-		}
-		return existentContractValidator;
 	}
 
 	public static synchronized Validator getExistentContractStatusValidator() {

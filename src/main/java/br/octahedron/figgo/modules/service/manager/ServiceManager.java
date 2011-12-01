@@ -68,9 +68,10 @@ public class ServiceManager {
 
 	/**
 	 * Updates an service
+	 * @throws ServiceNotFoundException 
 	 */
-	public Service updateService(String serviceId, String name, BigDecimal value, String category, String description) {
-		Service service = this.serviceDAO.get(serviceId);
+	public Service updateService(String serviceId, String name, BigDecimal value, String category, String description) throws ServiceNotFoundException {
+		Service service = this.getService(serviceId);
 		String oldCategoryId = service.getCategoryId();
 		service.setName(name);
 		service.setAmount(value);
@@ -86,9 +87,15 @@ public class ServiceManager {
 	 * 
 	 * @return the {@link Service} with the given id, if exists, or <code>null</code>, if doesn't
 	 *         exists a user with the given id.
+	 * @throws ServiceNotFoundException 
 	 */
-	public Service getService(String serviceId) {
-		return this.serviceDAO.get(serviceId);
+	public Service getService(String serviceId) throws ServiceNotFoundException {
+		Service service = this.serviceDAO.get(serviceId);
+		if (service == null) {
+			return service;
+		} else {
+			throw new ServiceNotFoundException();
+		}
 	}
 
 	/**
@@ -119,9 +126,10 @@ public class ServiceManager {
 	 * @param serviceName
 	 * @param userId
 	 * @return 
+	 * @throws ServiceNotFoundException 
 	 */
-	public Service removeProvider(String serviceId, String userId) {
-		Service service = this.serviceDAO.get(serviceId);
+	public Service removeProvider(String serviceId, String userId) throws ServiceNotFoundException {
+		Service service = this.getService(serviceId);
 		service.removeProvider(userId);
 		return service;
 	}
@@ -156,15 +164,16 @@ public class ServiceManager {
 	 * @param contractor
 	 * @param provider
 	 * @throws ProviderDoesNotExistException 
+	 * @throws ServiceNotFoundException 
 	 */
-	public void requestContract(String serviceId, String contractor, String provider) throws ProviderDoesNotExistException {
-		Service service = this.serviceDAO.get(serviceId);
+	public void requestContract(String serviceId, String contractor, String provider) throws ProviderDoesNotExistException, ServiceNotFoundException {
+		Service service = this.getService(serviceId);
 		if (service.hasProvider(provider)) {
 			ServiceContract serviceContract = new ServiceContract(service, contractor, provider);
 			this.serviceContractDAO.save(serviceContract);
 			this.eventBus.publish(new ServiceContractRequestedEvent(serviceContract));
 		} else {
-			throw new ProviderDoesNotExistException("NON_EXISTENT_CONTRACT_PROVIDER"); 
+			throw new ProviderDoesNotExistException(); 
 		}
 	}
 	
@@ -175,14 +184,15 @@ public class ServiceManager {
 	 * @param status
 	 * @param providerId
 	 * @throws OnlyProviderException 
+	 * @throws ServiceContractNotFound 
 	 */
-	public void updateContractStatus(String contractId, ServiceContractStatus status, String providerId) throws OnlyProviderException {
-		ServiceContract serviceContract = this.serviceContractDAO.get(contractId);
+	public void updateContractStatus(String contractId, ServiceContractStatus status, String providerId) throws OnlyProviderException, ServiceContractNotFound {
+		ServiceContract serviceContract = this.getServiceContract(contractId);
 		if (serviceContract.getProvider().equals(providerId)) {
 			serviceContract.setStatus(status);
 			this.eventBus.publish(new ServiceContractUpdatedEvent(serviceContract));
 		} else {
-			throw new OnlyProviderException("ONLY_PROVIDER");
+			throw new OnlyProviderException();
 		}
 	}
 	
@@ -191,13 +201,14 @@ public class ServiceManager {
 	 * @param contractId
 	 * @throws ContractUncompletedException
 	 * @throws OnlyContractorException 
+	 * @throws ServiceContractNotFound 
 	 */
-	public void makePayment(String contractId, String contractorId) throws ContractUncompletedException, OnlyContractorException {
-		ServiceContract serviceContract = this.serviceContractDAO.get(contractId);
+	public void makePayment(String contractId, String contractorId) throws ContractUncompletedException, OnlyContractorException, ServiceContractNotFound {
+		ServiceContract serviceContract = this.getServiceContract(contractId);
 		if (serviceContract.getStatus() != ServiceContractStatus.COMPLETED) {
-			throw new ContractUncompletedException("CONTRACT_UNCOMPLETED");
+			throw new ContractUncompletedException();
 		} else if (serviceContract.getContractor().equals(contractId)) {
-			throw new OnlyContractorException("ONLY_CONTRACTOR");
+			throw new OnlyContractorException();
 		}
 
 		serviceContract.markAsPaid();
@@ -223,9 +234,10 @@ public class ServiceManager {
 	/**
 	 * @param serviceName
 	 * @return
+	 * @throws ServiceNotFoundException 
 	 */
-	public void removeService(String serviceId) {
-		Service service = this.serviceDAO.get(serviceId);
+	public void removeService(String serviceId) throws ServiceNotFoundException {
+		Service service = this.getService(serviceId);
 		this.serviceDAO.delete(service);
 		this.eventBus.publish(new ServiceRemovedEvent(service));
 	}
@@ -257,9 +269,15 @@ public class ServiceManager {
 	/**
 	 * @param in
 	 * @return
+	 * @throws ServiceContractNotFound 
 	 */
-	public ServiceContract getServiceContract(String contractId) {
-		return this.serviceContractDAO.get(contractId);
+	public ServiceContract getServiceContract(String contractId) throws ServiceContractNotFound {
+		ServiceContract serviceContract = this.serviceContractDAO.get(contractId);
+		if (serviceContract != null) {
+			return serviceContract;
+		} else {
+			throw new ServiceContractNotFound();
+		}
 	}
 	
 	/**
