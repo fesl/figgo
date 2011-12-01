@@ -11,6 +11,10 @@ REQUIRED_CONTRACT_STATUS=Contrato: não pode ficar vazio
 REQUIRED_CONTRACT_PROVIDER=Prestador: não pode ficar vazio
 NON_EXISTENT_CONTRACT=Contrato: não existente
 NON_EXISTENT_CONTRACT_STATUS=Status: não existente
+NON_EXISTENT_CONTRACT_PROVIDER=Prestador: não existente
+CONTRACT_UNCOMPLETED=Contrato: não pode ser pago sem estar completo
+ONLY_PROVIDER=Prestador: você não é um
+ONLY_CONTRACTOR=Contratante: você não é um
 
 # Service status
 PENDING=Pendente

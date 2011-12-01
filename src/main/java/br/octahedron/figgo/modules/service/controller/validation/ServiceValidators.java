@@ -38,7 +38,6 @@ public class ServiceValidators {
 
 	private static Validator serviceValidator;
 	private static Validator existentContractStatusValidator;
-	private static Validator providerValidator;
 	private static Validator existentContractValidator;
 	private static Validator existentServiceValidator;
 
@@ -83,14 +82,4 @@ public class ServiceValidators {
 		return existentContractStatusValidator;
 	}
 
-	/**
-	 * Gets a validator for provider field.
-	 */
-	public static Validator getProviderValidator() {
-		if (providerValidator == null) {
-			providerValidator = new Validator();
-			providerValidator.add("provider", required("REQUIRED_CONTRACT_PROVIDER"), new ExistentContractProviderRule());
-		}
-		return providerValidator;
-	}
 }

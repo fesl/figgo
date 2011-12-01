@@ -28,6 +28,10 @@ import br.octahedron.figgo.modules.service.data.ServiceContract;
 import br.octahedron.figgo.modules.service.data.ServiceContractDAO;
 import br.octahedron.figgo.modules.service.data.ServiceDAO;
 import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
+import br.octahedron.figgo.modules.service.manager.exception.ContractUncompletedException;
+import br.octahedron.figgo.modules.service.manager.exception.OnlyContractorException;
+import br.octahedron.figgo.modules.service.manager.exception.OnlyProviderException;
+import br.octahedron.figgo.modules.service.manager.exception.ProviderDoesNotExistException;
 import br.octahedron.figgo.modules.user.data.User;
 
 /**
@@ -140,31 +144,65 @@ public class ServiceManager {
 	}
 	
 	/**
-	 * creates a new contract TODO
+	 * Creates a new contract of a service between a contractor and a provider.
 	 * 
 	 * @param serviceName
 	 * @param contractor
 	 * @param provider
+	 * @throws ProviderDoesNotExistException 
 	 */
-	public void requestContract(String serviceId, String contractor, String provider) {
+	public void requestContract(String serviceId, String contractor, String provider) throws ProviderDoesNotExistException {
 		Service service = this.serviceDAO.get(serviceId);
-		ServiceContract serviceContract = new ServiceContract(service, contractor, provider);
-		this.serviceContractDAO.save(serviceContract);
-		this.eventBus.publish(new ServiceContractRequestedEvent(serviceContract));
+		if (service.hasProvider(provider)) {
+			ServiceContract serviceContract = new ServiceContract(service, contractor, provider);
+			this.serviceContractDAO.save(serviceContract);
+			this.eventBus.publish(new ServiceContractRequestedEvent(serviceContract));
+		} else {
+			throw new ProviderDoesNotExistException("NON_EXISTENT_CONTRACT_PROVIDER"); 
+		}
 	}
 	
-	public void updateContractStatus(String contractId, ServiceContractStatus status) {
+	/**
+	 * Provider updates the service contract status.
+	 * 
+	 * @param contractId
+	 * @param status
+	 * @param providerId
+	 * @throws OnlyProviderException 
+	 */
+	public void updateContractStatus(String contractId, ServiceContractStatus status, String providerId) throws OnlyProviderException {
 		ServiceContract serviceContract = this.serviceContractDAO.get(contractId);
-		serviceContract.setStatus(status);
-		this.eventBus.publish(new ServiceContractUpdatedEvent(serviceContract));
+		if (serviceContract.getProvider().equals(providerId)) {
+			serviceContract.setStatus(status);
+			this.eventBus.publish(new ServiceContractUpdatedEvent(serviceContract));
+		} else {
+			throw new OnlyProviderException("ONLY_PROVIDER");
+		}
 	}
 	
-	public void makePayment(String contractId) {
+	/**
+	 * 
+	 * @param contractId
+	 * @throws ContractUncompletedException
+	 * @throws OnlyContractorException 
+	 */
+	public void makePayment(String contractId, String contractorId) throws ContractUncompletedException, OnlyContractorException {
 		ServiceContract serviceContract = this.serviceContractDAO.get(contractId);
+		if (serviceContract.getStatus() != ServiceContractStatus.COMPLETED) {
+			throw new ContractUncompletedException("CONTRACT_UNCOMPLETED");
+		} else if (serviceContract.getContractor().equals(contractId)) {
+			throw new OnlyContractorException("ONLY_CONTRACTOR");
+		}
+
 		serviceContract.markAsPaid();
 		this.eventBus.publish(new ServiceContractPaidEvent(serviceContract));
 	}
 	
+	/**
+	 * 
+	 * @param userId
+	 * @return
+	 */
 	public Collection<ServiceContract> getContractsHistory(String userId) {
 		return this.serviceContractDAO.getHistory(userId);
 	}

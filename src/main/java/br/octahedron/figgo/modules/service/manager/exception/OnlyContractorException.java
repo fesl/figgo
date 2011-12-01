@@ -16,32 +16,20 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.service.controller.validation;
+package br.octahedron.figgo.modules.service.manager.exception;
 
-import br.octahedron.cotopaxi.validation.Rule;
+import br.octahedron.figgo.FiggoException;
 
 /**
  * @author vitoravelino
  *
  */
-public class ExistentContractProviderRule implements Rule {
+public class OnlyContractorException extends FiggoException {
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.cotopaxi.validation.Rule#getMessage()
-	 */
-	@Override
-	public String getMessage() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	private static final long serialVersionUID = 1695834561438357964L;
 
-	/* (non-Javadoc)
-	 * @see br.octahedron.cotopaxi.validation.Rule#isValid(java.lang.String)
-	 */
-	@Override
-	public boolean isValid(String input) {
-		// TODO Auto-generated method stub
-		return false;
+	public OnlyContractorException(String message) {
+		super(message);
 	}
 
 }
