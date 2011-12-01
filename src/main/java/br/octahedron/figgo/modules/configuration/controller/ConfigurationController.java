@@ -77,7 +77,7 @@ public class ConfigurationController extends Controller {
 	 * Process the edit domain form
 	 */
 	@AuthorizationRequired
-	public void postUpdateDomain() {
+	public void postEditDomain() {
 		if (getDomainValidator().isValid()) {
 			this.configurationManager.updateDomainConfiguration(in("name"), in("url"), in("maillist"), in("description"));
 			redirect(ROOT_URL);

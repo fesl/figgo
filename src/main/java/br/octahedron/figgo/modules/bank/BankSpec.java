@@ -70,6 +70,8 @@ public class BankSpec implements DomainModuleSpec {
 		actions.add(new ActionSpec("TransferBank"));
 		actions.add(new ActionSpec("StatementBank"));
 		actions.add(new ActionSpec("TransactionsBank"));
+		actions.add(new ActionSpec("StatsBank"));
+		
 		actions.add(new ActionSpec("AdminBank", true));
 		actions.add(new ActionSpec("ShareBank", true));
 		actions.add(new ActionSpec("BallastBank", true));

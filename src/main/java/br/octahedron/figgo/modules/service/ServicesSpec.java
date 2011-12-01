@@ -72,6 +72,14 @@ public class ServicesSpec implements DomainModuleSpec {
 		actions.add(new ActionSpec("ShowService"));
 		actions.add(new ActionSpec("AddProvider"));
 		actions.add(new ActionSpec("RemoveProvider"));
+		actions.add(new ActionSpec("UserServices"));
+
+		actions.add(new ActionSpec("ShowContracts"));
+		actions.add(new ActionSpec("ShowHistory"));
+		actions.add(new ActionSpec("EditContract"));
+		actions.add(new ActionSpec("PayContract"));
+		actions.add(new ActionSpec("RequestContract"));
+		actions.add(new ActionSpec("ServicesByCategory"));
 		
 		actions.add(new ActionSpec("NewService", true));
 		actions.add(new ActionSpec("EditService", true));
