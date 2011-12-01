@@ -24,6 +24,7 @@ import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
+import br.octahedron.cotopaxi.i18n.ControllerI18nHelper;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.FiggoException;
@@ -54,7 +55,9 @@ public class ServiceController extends Controller {
 
 	private static final String BASE_URL = "/services";
 	private static final String SHOW_CONTRACTS_URL = BASE_URL + "/contracts";
-
+	
+	
+	private ControllerI18nHelper i18n = new ControllerI18nHelper(this);
 	@Inject
 	private ServiceManager servicesManager;
 
@@ -174,7 +177,7 @@ public class ServiceController extends Controller {
 				this.servicesManager.requestContract(this.in("id"), this.currentUser(), this.in("provider"));
 				this.jsonSuccess();
 			} catch (ProviderDoesNotExistException e) {
-				this.out("exception", e.getMessage());
+				this.out("exception", i18n.get(this.locales(), e.getMessage()));
 				this.jsonInvalid();
 			}
 		} else {
@@ -205,7 +208,7 @@ public class ServiceController extends Controller {
 				this.servicesManager.updateContractStatus(this.in("id"), ServiceContractStatus.valueOf(this.in("status")), this.currentUser());
 				this.redirect(SHOW_CONTRACTS_URL);
 			} catch (OnlyProviderException e) {
-				this.out("warning", e.getMessage());
+				this.out("warning", i18n.get(this.locales(), e.getMessage()));
 				this.jsonInvalid();
 			}
 		} else {
@@ -220,7 +223,7 @@ public class ServiceController extends Controller {
 				this.servicesManager.makePayment(this.in("id"), this.currentUser());
 				this.jsonSuccess();
 			} catch (FiggoException e) {
-				this.out("exception", e.getMessage());
+				this.out("exception", i18n.get(this.locales(), e.getMessage()));
 				this.jsonInvalid();
 			}
 		} else {
