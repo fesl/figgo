@@ -31,11 +31,11 @@ import br.octahedron.figgo.FiggoException;
 import br.octahedron.figgo.modules.service.controller.validation.ServiceValidators;
 import br.octahedron.figgo.modules.service.data.Service;
 import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
+import br.octahedron.figgo.modules.service.manager.InexistentServiceProviderException;
+import br.octahedron.figgo.modules.service.manager.OnlyServiceProviderException;
 import br.octahedron.figgo.modules.service.manager.ServiceContractNotFound;
 import br.octahedron.figgo.modules.service.manager.ServiceManager;
 import br.octahedron.figgo.modules.service.manager.ServiceNotFoundException;
-import br.octahedron.figgo.modules.service.manager.exception.OnlyProviderException;
-import br.octahedron.figgo.modules.service.manager.exception.ProviderDoesNotExistException;
 
 /**
  * @author Vítor Avelino
@@ -183,7 +183,7 @@ public class ServiceController extends Controller {
 		try {
 			this.servicesManager.requestContract(this.in("id"), this.currentUser(), this.in("provider"));
 			this.jsonSuccess();
-		} catch (ProviderDoesNotExistException e) {
+		} catch (InexistentServiceProviderException e) {
 			this.out("exception", i18n.get(this.locales(), e.getMessage()));
 			this.jsonInvalid();
 		} catch (ServiceNotFoundException e) {
@@ -211,7 +211,7 @@ public class ServiceController extends Controller {
 			try {
 				this.servicesManager.updateContractStatus(this.in("id"), ServiceContractStatus.valueOf(this.in("status")), this.currentUser());
 				this.redirect(SHOW_CONTRACTS_URL);
-			} catch (OnlyProviderException e) {
+			} catch (OnlyServiceProviderException e) {
 				this.out("warning", i18n.get(this.locales(), e.getMessage()));
 				this.jsonInvalid();
 			} catch (ServiceContractNotFound e) {
@@ -234,10 +234,15 @@ public class ServiceController extends Controller {
 		}
 	}
 
-	public void getServiceByCategory() {
-		this.out("categories", this.servicesManager.getServiceCategories());
-		this.out("currentCategory", this.in("category", safeString()));
-		this.out("services", this.servicesManager.getServicesByCategory(this.in("category", safeString())));
-		this.success(LIST_SERVICE_TPL);
+	public void getServicesByCategory() {
+		String category = this.in("category", safeString());
+		if (this.servicesManager.existsServiceCategory(category)) {
+			this.out("services", this.servicesManager.getServicesByCategory(category));
+			this.out("categories", this.servicesManager.getServiceCategories());
+			this.out("currentCategory", category);
+			this.success(LIST_SERVICE_TPL);
+		} else {
+			this.notFound();
+		}
 	}
 }

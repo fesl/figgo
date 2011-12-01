@@ -30,10 +30,6 @@ import br.octahedron.figgo.modules.service.data.ServiceContract;
 import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
 import br.octahedron.figgo.modules.service.data.ServiceContractDAO;
 import br.octahedron.figgo.modules.service.data.ServiceDAO;
-import br.octahedron.figgo.modules.service.manager.exception.ContractUncompletedException;
-import br.octahedron.figgo.modules.service.manager.exception.OnlyContractorException;
-import br.octahedron.figgo.modules.service.manager.exception.OnlyProviderException;
-import br.octahedron.figgo.modules.service.manager.exception.ProviderDoesNotExistException;
 import br.octahedron.figgo.modules.user.data.User;
 
 /**
@@ -163,17 +159,17 @@ public class ServiceManager {
 	 * @param serviceName
 	 * @param contractor
 	 * @param provider
-	 * @throws ProviderDoesNotExistException 
+	 * @throws InexistentServiceProviderException 
 	 * @throws ServiceNotFoundException 
 	 */
-	public void requestContract(String serviceId, String contractor, String provider) throws ProviderDoesNotExistException, ServiceNotFoundException {
+	public void requestContract(String serviceId, String contractor, String provider) throws InexistentServiceProviderException, ServiceNotFoundException {
 		Service service = this.getService(serviceId);
 		if (service.hasProvider(provider)) {
 			ServiceContract serviceContract = new ServiceContract(service, contractor, provider);
 			this.serviceContractDAO.save(serviceContract);
 			this.eventBus.publish(new ServiceContractRequestedEvent(serviceContract));
 		} else {
-			throw new ProviderDoesNotExistException(); 
+			throw new InexistentServiceProviderException(); 
 		}
 	}
 	
@@ -183,32 +179,32 @@ public class ServiceManager {
 	 * @param contractId
 	 * @param status
 	 * @param providerId
-	 * @throws OnlyProviderException 
+	 * @throws OnlyServiceProviderException 
 	 * @throws ServiceContractNotFound 
 	 */
-	public void updateContractStatus(String contractId, ServiceContractStatus status, String providerId) throws OnlyProviderException, ServiceContractNotFound {
+	public void updateContractStatus(String contractId, ServiceContractStatus status, String providerId) throws OnlyServiceProviderException, ServiceContractNotFound {
 		ServiceContract serviceContract = this.getServiceContract(contractId);
 		if (serviceContract.getProvider().equals(providerId)) {
 			serviceContract.setStatus(status);
 			this.eventBus.publish(new ServiceContractUpdatedEvent(serviceContract));
 		} else {
-			throw new OnlyProviderException();
+			throw new OnlyServiceProviderException();
 		}
 	}
 	
 	/**
 	 * 
 	 * @param contractId
-	 * @throws ContractUncompletedException
-	 * @throws OnlyContractorException 
+	 * @throws UncompletedServiceContractException
+	 * @throws OnlyServiceContractorException 
 	 * @throws ServiceContractNotFound 
 	 */
-	public void makePayment(String contractId, String contractorId) throws ContractUncompletedException, OnlyContractorException, ServiceContractNotFound {
+	public void makePayment(String contractId, String contractorId) throws UncompletedServiceContractException, OnlyServiceContractorException, ServiceContractNotFound {
 		ServiceContract serviceContract = this.getServiceContract(contractId);
 		if (serviceContract.getStatus() != ServiceContractStatus.COMPLETED) {
-			throw new ContractUncompletedException();
-		} else if (serviceContract.getContractor().equals(contractId)) {
-			throw new OnlyContractorException();
+			throw new UncompletedServiceContractException();
+		} else if (!serviceContract.getContractor().equals(contractId)) {
+			throw new OnlyServiceContractorException();
 		}
 
 		serviceContract.markAsPaid();
@@ -317,12 +313,21 @@ public class ServiceManager {
 			this.serviceCategoryDAO.delete(category);
 		}
 	}
+	
 	/**
 	 * @param in
 	 * @return
 	 */
 	public Collection<Service> getServicesByCategory(String category) {
 		return this.serviceDAO.getServicesByCategory(category);
+	}
+	
+	/**
+	 * @param category
+	 * @return
+	 */
+	public boolean existsServiceCategory(String category) {
+		return this.serviceCategoryDAO.exists(category);
 	}
 	
 }
