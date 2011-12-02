@@ -34,9 +34,12 @@
                     Valor: $numberFormat.format($service.amount)
             </footer>
             <div id="operations">
-                // if admin
-                <a href="/service/$service.id/edit">editar</a>
-                <a data-type="url" data-confirm="Você tem certeza que deseja remover esse serviço?" href="/service/$service.id/delete">remover</a>
+                #if ($auth.EditService)
+                <a href="/service/$service.id/edit">Editar</a>
+                #end
+                #if ($auth.RemoveService)
+                <a data-type="url" data-confirm="Você tem certeza que deseja remover esse serviço?" href="/service/$service.id/delete">Remover</a>
+                #end
             </div>
         </section>
         <section id="providers">
