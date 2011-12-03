@@ -1,8 +1,10 @@
 a
-	text-decoration: none
-
-a, a:hover, a:visited
 	color: #c4ae30
+	text-decoration: none
+	&:visited
+		color: #c4ae30
+	&:hover
+		color: #d5c256
 
 .left
 	float: left
@@ -36,3 +38,6 @@ ul.two-column-shortcuts
 
 .hidden
 	display: none
+
+h3 > small a
+	float: right

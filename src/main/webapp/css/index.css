@@ -369,10 +369,12 @@ td {
   h2, h3 {
     page-break-after: avoid; } }
 a {
+  color: #c4ae30;
   text-decoration: none; }
-
-a, a:hover, a:visited {
-  color: #c4ae30; }
+  a:visited {
+    color: #c4ae30; }
+  a:hover {
+    color: #d5c256; }
 
 .left {
   float: left; }
@@ -406,6 +408,9 @@ ul.two-column-shortcuts {
 
 .hidden {
   display: none; }
+
+h3 > small a {
+  float: right; }
 
 html, body {
   background: #9a8f19; }
