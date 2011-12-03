@@ -6,28 +6,20 @@
 #fullHeaderDomain()
 
 #@body()
+#domainSidebar()
+
 <div class="left">
-    <section id="about-intern">
-        <h2>$domain.Name</h2>
-        #if( $domain.AvatarKey )
-        <a href="/domain/upload"><img class="avatar" src="/serve/$domain.AvatarKey" alt="Avatar do domínio" /></a>
-        #else
-        <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
+    <section id="main-intern">
+        <h3>Usuários no domínio</h3>
+        #if ( $auth.ListRoles )
+        <nav>
+            <a href="/roles">Gerenciar papéis e permissões</a>
+        </nav>
+
+        <hr />
         #end
-        <ul class="links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Sobre</a></li>
-            #foreach( $module in $domain.ModulesEnabled )
-                <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$i18n.get($module)</a></li>
-            #end
-        </ul>
-    </section>
-</div>
-<div class="left">
-   <section id="main-intern">
-        <h2>Usuários no domínio</h2>
         <section id="active">
-            <h3>Ativos</h3>
+            <h4>Ativos</h4>
             <table>
                 <thead>
                     <tr>
@@ -49,7 +41,7 @@
         </section>
 
         <section id="pending">
-            <h3>Pendentes</h3>
+            <h4>Pendentes</h4>
             <table class="simple">
                 <thead>
                     <tr>

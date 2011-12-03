@@ -6,27 +6,11 @@
 #fullHeaderDomain()
 
 #@body()
-<div class="left">
-    <section id="about-intern">
-        <h2>$domain.name</h2>
-        #if( $domain.AvatarKey )
-        <a href="/domain/upload"><img class="avatar" src="/serve/$domain.AvatarKey" alt="Avatar do domínio" /></a>
-        #else
-        <a href="/domain/upload"><img class="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do domínio" /></a>
-        #end
-        <ul class="links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Sobre</a></li>
-            #foreach( $module in $domain.ModulesEnabled )
-                <li><a href="/$module.toLowerCase()">$i18n.get($module)</a></li>
-            #end
-        </ul>
-    </section>
-</div>
+#domainSidebar()
 
 <div class="left">
     <section id="main-intern">
-        <h2>Configurações do domínio</h2>
+        <h3>Configurações do domínio</h3>
         <p><span class="label important">Atenção!</span> As operações de cada formulário são feitas individualmente.</p>
         <form action="/domain/edit" method="post">
             <fieldset>
