@@ -19,9 +19,10 @@
                 <div>
                     <label for="status">Status</label>
                     <select name="status">
-                        <option value="PENDING" #if($status == "PENDING")selected#end>Pendente</option>
+                        <option value="PENDING" #if($status == "PENDING")selected#end>Aguardando confirmação</option>
                         <option value="IN_PROGRESS" #if($status == "IN_PROGRESS")selected#end>Em andamento</option>
-                        <option value="COMPLETED" #if($status == "COMPLETED")selected#end>Completo</option>
+                        <option value="COMPLETED" #if($status == "COMPLETED")selected#end>Concluído</option>
+                        <option value="CANCELED" #if($status == "CANCELED")selected#end>Cancelado</option>
                     </select>
                 </div>
             </fieldset>
