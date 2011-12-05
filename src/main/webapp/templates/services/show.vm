@@ -36,7 +36,7 @@
                 <img class="thumbs-up not" src="/img/thumbs-up.png" title="Não faço!" alt="Não faço!" />
                 #end
             </h3>
-            <ul class="contracts" data-username="$user.name" data-userid="$user.userId">
+            <ul class="contracts unstyled" data-username="$user.name" data-userid="$user.userId">
             #foreach( $provider in $service.providers )
                 <li data-user="$provider"><span>$provider</span> <a href="/service/$service.id/contract/$provider">contratar</a></li>
             #end
