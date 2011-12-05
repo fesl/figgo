@@ -8,19 +8,25 @@
 #@body()
 <div class="left">
     <section id="about-intern">
-        <h2>$user.Name</h2>
-        #if( $user.AvatarKey )
-        <a href="/user/upload"><img id="avatar" src="/serve/$user.AvatarKey" alt="Avatar" /></a>
+        <h2>$user.name</h2>
+        #if( $user.avatarKey )
+        <a href="/user/upload"><img id="avatar" src="/serve/$user.avatarKey" alt="Avatar" /></a>
         #else
         <a href="/user/upload"><img id="avatar" src="http://lorempixum.com/180/180/" alt="Avatar" /></a>
         #end
         <ul class="unstyled">
-            <li>$user.UserId</li>
-            <li>$user.PhoneNumber</li>
+            <li>$user.userId</li>
+            <li>$user.phoneNumber</li>
         </ul>
-        <p>$user.Description</p>
+        #if ($user.description)
+        <p>$user.description</p>
+        #end
     </section>
 
+    <hr />
+    
+    <a href="/user/edit">Preferências</a>
+    
     <hr />
 
     <section id="domains">
