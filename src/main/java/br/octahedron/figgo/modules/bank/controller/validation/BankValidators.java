@@ -47,7 +47,7 @@ public class BankValidators {
 		if (requiredValidator == null) {
 			requiredValidator = new Validator();
 			requiredValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"),
-					regex("([a-zA-ZáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûÃÕãõçÇ] *){2,}", "INVALID_USERID"));
+					regex("[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}", "INVALID_USERID"));
 			requiredValidator.add("amount", required("REQUIRED_TRANSACTION_AMOUT"), type(bigDecimalNumber()));
 			requiredValidator.add("type", required("REQUIRED_TRANSACTION_TYPE"), new ExistentTransferTypeRule());
 		}
