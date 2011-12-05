@@ -18,16 +18,19 @@
  */
 package br.octahedron.figgo.modules.configuration.controller;
 
+import static br.octahedron.cotopaxi.controller.Converter.Builder.strArray;
 import static br.octahedron.figgo.modules.configuration.controller.ConfigurationController.BASE_DIR_TPL;
+import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
+import br.octahedron.cotopaxi.controller.ConvertionException;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
 
 /**
  * @author Danilo Queiroz - daniloqueiroz@octahedron.com.br
  */
+@AuthenticationRequired
 public class ListDomainsController extends Controller {
-
 
 	private static final String LIST_TPL = BASE_DIR_TPL + "list.vm";
 	
@@ -39,7 +42,18 @@ public class ListDomainsController extends Controller {
 	}
 
 	public void getListDomain() {
-		out("domains", this.configurationManager.getDomainConfiguration());
-		success(LIST_TPL);
+		this.out("domains", this.configurationManager.getDomainsConfiguration());
+		this.success(LIST_TPL);
 	}
+	
+	/**
+	 * Get domains informations
+	 * TODO DOCUMENTAR
+	 * @throws ConvertionException 
+	 */
+	public void getDomainsInfo() throws ConvertionException {
+		this.out("result", this.configurationManager.getDomainsConfiguration(in("domains", strArray(","))));
+		this.jsonSuccess();
+	}
+	
 }

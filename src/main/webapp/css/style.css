@@ -679,7 +679,8 @@ table {
   table th {
     border-bottom: 1px solid #cccccc; }
   table td {
-    border: 1px solid #dddddd; }
+    border: 1px solid #dddddd;
+    vertical-align: middle; }
 
 table td.balance {
   text-align: right; }
