@@ -5,4 +5,4 @@ REQUIRED_TRANSACTION_TYPE=Tipo: não pode ficar vazio
 
 INVALID_TRANSACTION_DESTINATION=Usuário: não existe
 INVALID_AMOUNT=Valor: deve ser maior que 0 (zero)
-INVALID_USERID=Usuário: inválido
+INVALID_USERID=Usuário: inválido (formato de email)
