@@ -769,6 +769,8 @@ table.roles tbody tr:hover {
 
 ul.contracts {
   display: none; }
+  ul.contracts li {
+    list-style: none; }
 
 ul > li.service {
   position: relative;
