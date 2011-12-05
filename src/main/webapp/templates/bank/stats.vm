@@ -19,6 +19,12 @@
                 <li><a href="/bank/transfer">Trasferência</a></li>
                 <li><a href="/bank/statement">Extrato</a></li>
                 <li><a href="/bank/stats">Estatísticas</a></li>
+                #if ( $auth.BallastBank )
+                <li><a href="/bank/ballast">Inserção de lastro</a></li>
+                #end
+                #if ( $auth.ShareBank )
+                <li><a href="/bank/share">Transferência do banco</a></li>
+                #end
             </ul>
         </nav>
 

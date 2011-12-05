@@ -19,15 +19,21 @@
                 <li><a href="/bank/transfer">Trasferência</a></li>
                 <li><a href="/bank/statement">Extrato</a></li>
                 <li><a href="/bank/stats">Estatísticas</a></li>
+                #if ( $auth.BallastBank )
+                <li><a href="/bank/ballast">Inserção de lastro</a></li>
+                #end
+                #if ( $auth.ShareBank )
+                <li><a href="/bank/share">Transferência do banco</a></li>
+                #end
             </ul>
         </nav>
 
         <hr />
 
         <h3>Admin</h3>
-        <span>Saldo do banco: M$ $currencyFormatter.format($balance)</span>
+        <span>Saldo do banco: M$ $numberFormat.format($balance)</span>
 
-        <form action="/bank/share" method="post">
+        <form action="/bank/share" method="post" accept-charset="utf-8">
             <fieldset>
                 <legend>Transferir do banco</legend>
                 <div>
@@ -62,23 +68,6 @@
             <input type="submit" value="Transferir" />
         </form>
 
-        <form action="/bank/ballast" method="post">
-            <fieldset>
-                <legend>Inserir lastro</legend>
-                <div>
-                    <label for="amount">Valor</label>
-                    <input type="text" name="amount" />
-                    #if ($invalid.amount)
-                    <span>$i18n.get($invalid.amount)</span>
-                    #end
-                </div>
-                <div>
-                    <label for="comment">Comentário (opcional)</label>
-                    <textarea name="comment"></textarea>
-                </div>
-            </fieldset>
-            <input type="submit" value="Inserir" />
-        </form>
     </section>
 </div>
 #end

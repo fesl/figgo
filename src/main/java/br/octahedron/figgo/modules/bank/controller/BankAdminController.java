@@ -44,9 +44,11 @@ public class BankAdminController extends Controller {
 	 */
 
 	private static final String BASE_DIR_TPL = "bank/";
-	private static final String ADMIN_TPL = BASE_DIR_TPL + "admin.vm";
+	private static final String BALLAST_TPL = BASE_DIR_TPL + "ballast.vm";
+	private static final String SHARE_TPL = BASE_DIR_TPL + "share.vm";
 	private static final String BASE_URL = "/bank";
-	private static final String ADMIN_URL = BASE_URL + "/admin";
+	private static final String BALLAST_URL = BASE_URL + "/ballast";
+	private static final String SHARE_URL = BASE_URL + "/share";
 
 	@Inject
 	private AccountManager accountManager;
@@ -59,11 +61,19 @@ public class BankAdminController extends Controller {
 	}
 
 	/**
-	 * Gets the bank admin interface
+	 * Gets the bank share interface
 	 */
-	public void getAdminBank() {
+	public void getShareBank() {
 		this.out("balance", this.accountManager.getBalance(this.subDomain()));
-		this.success(ADMIN_TPL);
+		this.success(SHARE_TPL);
+	}
+	
+	/**
+	 * Gets the bank ballast interface
+	 */
+	public void getBallastBank() {
+		this.out("balance", this.accountManager.getBalance(this.subDomain()));
+		this.success(BALLAST_TPL);
 	}
 
 	/**
@@ -74,11 +84,11 @@ public class BankAdminController extends Controller {
 		Validator amountValidator = BankValidators.getAmountValidator();
 		if (requiredValidator.isValid() && amountValidator.isValid()) {
 			this.accountManager.transact(this.subDomain(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"), TransactionType.valueOf(this.in("type")));
-			this.redirect(ADMIN_URL);
+			this.redirect(SHARE_URL);
 		} else {
 			this.echo();
 			this.out("balance", this.accountManager.getBalance(this.subDomain()));
-			this.invalid(ADMIN_TPL);
+			this.invalid(SHARE_TPL);
 		}
 	}
 
@@ -90,11 +100,11 @@ public class BankAdminController extends Controller {
 		Validator comparableValidator = BankValidators.getAmountValidator();
 		if (requiredValidator.isValid() && comparableValidator.isValid()) {
 			this.accountManager.insertBallast(this.subDomain(), new BigDecimal(this.in("amount")), this.in("comment"));
-			this.redirect(ADMIN_URL);
+			this.redirect(BALLAST_URL);
 		} else {
 			this.echo();
 			this.out("balance", this.accountManager.getBalance(this.subDomain()));
-			this.invalid(ADMIN_TPL);
+			this.invalid(BALLAST_TPL);
 		}
 	}
 }
