@@ -57,6 +57,7 @@ public class ConfigurationSpec implements ApplicationDomainModuleSpec {
 	public Set<ActionSpec> getModuleActions() {
 		Set<ActionSpec> actions = new HashSet<ActionSpec>();
 		
+		actions.add(new ActionSpec("DomainUpload", true));
 		actions.add(new ActionSpec("EditDomain", true));
 		actions.add(new ActionSpec("ModuleDomain", true));
 		actions.add(new ActionSpec("EnableModuleDomain", true));
