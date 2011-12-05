@@ -58,14 +58,13 @@ $(function() {
                                   "<td>" + data.transactions[i].comment + "</td></tr>");
                 }
             } else {
-                $tbody.append("<tr><td colspan=\"4\">N&atilde;o houve transa&ccedil;&otilde;es nesse per&iacute;odo.</td></tr>");
+                $tbody.append("<tr><td colspan=\"4\">Não houve transações nesse período.</td></tr>");
             }
             $transactionsSection.show();
-            $transactionsSection.find('h3').html("Transa&ccedil;&otilde;es entre " + startDate + " e " + endDate);
+            $transactionsSection.find('h3').text("Transações entre " + startDate + " e " + endDate);
             // TODO set balance
         }).error(function(data) {
-            console.log('N&atilde;o foi poss&iacute;vel buscar extrato');
-            console.log(data);
+            console.log('Não foi possível recuperar extrato', data);
         });
         e.preventDefault();
     });
@@ -80,12 +79,12 @@ $(function() {
             url: "/bank/stats",
             data: {startDate: $startDate.val(), endDate: $endDate.val()}
         }).success(function(data) {
-            $dynamicStats.find("h3").text("Informa&ccedil;&otilde;es no intervalo de " + $startDate.val() + " a " + $endDate.val());
+            $dynamicStats.find("h3").text("Informações no intervalo de " + $startDate.val() + " a " + $endDate.val());
             $("#circulation").text(data.circulation);
             $("#amount").text(data.creditAmount);
             $dynamicStats.show();
         }).error(function(data) {
-            console.log('N&atilde;o foi poss&iacute;vel recuperar stats do banco');
+            console.log('Não foi possível recuperar stats do banco', data);
         });
         e.preventDefault();
     });
