@@ -37,7 +37,7 @@ public class ServiceContract implements Serializable {
 	private static final long serialVersionUID = -3731664858017404625L;
 
 	public enum ServiceContractStatus {
-		PENDING, IN_PROGRESS, COMPLETED;
+		PENDING, IN_PROGRESS, COMPLETED, CANCELED;
 	}
 
 	@PrimaryKey
