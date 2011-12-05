@@ -20,21 +20,19 @@ String.prototype.trim = function () {
 }
 
 String.prototype.stripAccents = function() {
-    var str = this;
-    var from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç", 
+    var str = this,
+        from = "ÃÀÁÄÂÈÉËÊÌÍÏÎÒÓÖÔÙÚÜÛãàáäâèéëêìíïîòóöôùúüûÑñÇç", 
         to   = "AAAAAEEEEIIIIOOOOUUUUaaaaaeeeeiiiioooouuuunncc",
         mapping = {},
-        stringLength = from.length,
+        fromLength = from.length,
+        strLength = str.length,
+        ret = [],
         i;
-        
-    for (i = 0; i < stringLength; i += 1) {
+
+    for (i = 0; i < fromLength; i += 1) {
         mapping[from.charAt(i)] = to.charAt(i);
     }
     
-    var ret = [],
-        strLength = str.length,
-        i;
-
     for (i = 0; i < strLength; i += 1) {
         var c = str.charAt(i)
         if (mapping.hasOwnProperty(str.charAt(i))) {
