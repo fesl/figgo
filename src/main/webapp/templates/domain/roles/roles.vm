@@ -38,7 +38,7 @@
             #foreach( $activity in $activities )
                 #set( $activityTemp = $activity )
                 <tr>
-                    <td>$activity</td>
+                    <td>$i18n.get($activity)</td>
                 #foreach( $role in $roles )
                     <td><input id="${role.name}${activity}" data-role="${role.name}" data-activity="${activity}" type="checkbox" #if( $role.containsActivity($activity) ) checked #end /></td>
                 #end

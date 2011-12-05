@@ -17,6 +17,7 @@ ONLY_PROVIDER=Prestador: você não é um
 ONLY_CONTRACTOR=Contratante: você não é um
 
 # Service status
-PENDING=Pendente
+PENDING=Aguardando confirmação
 IN_PROGRESS=Em andamento
-COMPLETED=Completo
+COMPLETED=Concluído
+CANCELED=Cancelado

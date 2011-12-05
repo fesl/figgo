@@ -25,7 +25,7 @@
         <hr />
         
         <section>
-            <h3>Contratos prestados</h3>
+            <h3>Serviços prestados</h3>
             #if ( $providerContracts.size() > 0 )
             <img class="loader" src="/img/ajax-loader.gif" />
             <ul class="unstyled contracts">
@@ -53,7 +53,7 @@
         </section>
 
         <section>
-            <h3>Contratos contratados</h3>
+            <h3>Serviços contratados</h3>
             #if ( $contractorContracts.size() > 0 )
             <img class="loader" src="/img/ajax-loader.gif" />
             <ul class="unstyled contracts">

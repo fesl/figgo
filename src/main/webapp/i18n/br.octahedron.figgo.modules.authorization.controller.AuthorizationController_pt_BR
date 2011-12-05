@@ -1,0 +1,27 @@
+# Roles
+ADMINS=Administrador
+USERS=Usuário
+
+# Activities
+TransferBank=Realizar trasferências
+IndexBank=Acessar banco
+StatsBank=Visualizar estatísticas do banco
+StatementBank=Visualizar extratos
+BallastBank=Inserção de lastro
+ShareBank=Realizar transferências direto do banco
+
+ShowContracts=Visualizar serviços prestados
+RequestContract=Requisitar serviço
+RemoveProvider=Remover prestação de serviço
+ShowHistory=Visualizar históricos de serviços
+EditContract=Editar contrato
+PayContract=Pagar serviço prestado
+UserServices=Visualizar meus serviços
+AddProvider=Adicionar-se como prestador de um serviço
+
+NewService=Criar serviço
+EditService=Editar serviço
+ShowService=Visualizar serviço
+RemoveService=Remover serviços
+ListServices=Visualizar serviços
+ServicesByCategory=Visualizar serviços por categoria

@@ -10,7 +10,7 @@
 
 <div class="left">
     <section id="main-intern">
-        <h3>Configuração do módulo $name</h3>
+        <h3>Configuração do módulo $i18n.get($name)</h3>
         <form action="/domain/module/$name" method="post" accept-charset="utf-8">
             <fieldset>
 				<legend>Defina as propriedades do coletivo</legend>
