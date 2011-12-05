@@ -30,7 +30,7 @@
 		<div id="actions" class="left">
 			<a href="/login" class="btn">Login</a>
 			<span>ou</span>
-			<a href="/user/new" class="btn">Criar conta</a>
+			<a href="/users/new" class="btn">Criar conta</a>
             <p>É necessário uma <a href="https://accounts.google.com/">conta Google</a> para utilizar o sistema.</p>
 		</div>
 	</div>

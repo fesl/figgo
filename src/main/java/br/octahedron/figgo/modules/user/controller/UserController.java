@@ -40,6 +40,7 @@ public class UserController extends Controller {
 	static final String DASHBOARD_TPL = BASE_DIR_TPL + "dashboard.vm";
 	static final String NEW_USER_TPL = BASE_DIR_TPL + "new.vm";
 	static final String EDIT_USER_TPL = BASE_DIR_TPL + "edit.vm";
+	static final String EDIT_USER_URL = "/users/edit";
 	
 	@Inject
 	private UserManager userManager;
@@ -70,7 +71,7 @@ public class UserController extends Controller {
 			out("email", userEmail);
 			success(NEW_USER_TPL);
 		} else {
-			redirect("/edit");
+			redirect(EDIT_USER_URL);
 		}
 	}
 	
