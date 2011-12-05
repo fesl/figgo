@@ -252,4 +252,9 @@ public class ServiceController extends Controller {
 			this.notFound();
 		}
 	}
+	
+	public void getSearchCategory() {
+		this.out("result", servicesManager.getCategoriesStartingWith(in("term")));
+		jsonSuccess();
+	}
 }

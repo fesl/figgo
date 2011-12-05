@@ -1,4 +1,42 @@
 $(function() {
+	var $searchCategoryInput = $(".autocomplete");
+    if ($searchCategoryInput.length) {
+        var cache = {},
+            lastXhr;
+        $searchCategoryInput.autocomplete({
+            minLength: 2,
+            source: function( request, response ) {
+                        var term = request.term;
+                        if ( term in cache ) {
+                            response(  
+                                    $.map( cache[term].result, function( item ) {
+                                        return {
+                                            label: item.name,
+                                            value: item.name
+                                        };
+                                    })
+                            );
+                            return;
+                        }
+        
+                        lastXhr = $.getJSON( "/services/category/search/" + term.normalize(), 
+                            function( data, status, xhr ) {
+                            cache[ term ] = data;
+                            if ( xhr === lastXhr ) {
+                                response( 
+                                    $.map( data.result, function( item ) {
+                                        return {
+                                            label: item.name,
+                                            value: item.name
+                                        };
+                                    })
+                                );
+                            }}
+                        );
+                    }
+        });
+    }
+
 	$("#providers .thumbs-up").bind('click', function() {
 		var $this = $(this),
 			$providers = $("#providers > ul"),
@@ -11,7 +49,7 @@ $(function() {
 			}).success(function(data) {
 				$this.removeClass('not');
 				$providers.prepend('<li data-user="' + data.userId + '">' + $providers[0].dataset['username'] + ' <a class="contract-link" href="/service/' + data.serviceId
-					+ '"/contract/"' + data.userId + '">contratar</a></li>');
+					+ '/contract/' + data.userId + '">contratar</a></li>');
 				$notice.hide();
 				$providers.fadeIn();
 			});

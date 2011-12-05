@@ -2,7 +2,9 @@
 #set( $currentModule = "SERVICES" )
 #parse( "templates/intern.vm" )
 
-#head()
+#@head()
+    <link rel="stylesheet" href="/css/jquery-ui-1.8.16.custom.css" />
+#end
 
 #fullHeaderDomain()
 
@@ -31,7 +33,7 @@
                 </div>
                 <div>
                     <label for="category">Categoria</label>
-                    <input id="category" type="text" name="category" value="$!{category}" />
+                    <input id="category" class="autocomplete" type="text" name="category" value="$!{category}" />
                 </div>
                 <div>
                     <label for="description">Descrição</label>
@@ -44,4 +46,7 @@
 </div>
 #end
     
-#scripts()
+#@scripts()
+    <script src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
+    <script src="/js/services.js"></script>
+#end

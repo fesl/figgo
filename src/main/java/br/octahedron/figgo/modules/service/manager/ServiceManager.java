@@ -330,4 +330,12 @@ public class ServiceManager {
 		return this.serviceCategoryDAO.exists(category);
 	}
 	
+	/**
+	 * @param in
+	 * @return
+	 */
+	public Collection<ServiceCategory> getCategoriesStartingWith(String term) {
+		return this.serviceCategoryDAO.getAllStartsWith("id", term);
+	}
+	
 }
