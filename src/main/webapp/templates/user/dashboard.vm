@@ -10,9 +10,9 @@
     <section id="about-intern">
         <h2>$user.Name</h2>
         #if( $user.AvatarKey )
-        <a href="/user/upload"><img id="avatar" src="/serve/$user.AvatarKey" alt="Avatar do usuário" /></a>
+        <a href="/user/upload"><img id="avatar" src="/serve/$user.AvatarKey" alt="Avatar" /></a>
         #else
-        <a href="/user/upload"><img id="avatar" src="http://lorempixum.com/180/180/" alt="Avatar do usuário" /></a>
+        <a href="/user/upload"><img id="avatar" src="http://lorempixum.com/180/180/" alt="Avatar" /></a>
         #end
         <ul class="unstyled">
             <li>$user.UserId</li>
@@ -30,7 +30,7 @@
         <ul class="unstyled">
             #foreach( $domain in $domains )
             <li class="organization" data-domain="$domain">
-                <img src="/serve/$domain.avatarKey" alt="Avatar" />
+                <img alt="Avatar" />
                 <a href="http://$domain.$applicationDomain"></a>
             </li>
         #end
