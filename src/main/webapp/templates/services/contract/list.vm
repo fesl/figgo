@@ -39,6 +39,10 @@
                         <dd class="provider" data-user="$contract.contractor">$contract.contractor</dd>
                         <dt>Status</dt>
                         <dd>$i18n.get($contract.status.name())</dd>
+                        #if ( $contract.status.name() == "COMPLETED" )
+                        <dt>Pago?</dt>
+                        <dd>$i18n.get($contract.paid.toString())</dd>
+                        #end
                     </dl>
                     <footer>
                         $numberFormat.format($contract.amount)
@@ -67,6 +71,10 @@
                         <dd class="provider" data-user="$contract.provider">$contract.provider</dd>
                         <dt>Status</dt>
                         <dd>$i18n.get($contract.status.name())</dd>
+                        #if ( $contract.status.name() == "COMPLETED" )
+                        <dt>Pago?</dt>
+                        <dd>$i18n.get($contract.paid.toString())</dd>
+                        #end
                     </dl>
                     <footer>
                         $numberFormat.format($contract.amount)

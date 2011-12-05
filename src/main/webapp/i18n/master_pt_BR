@@ -1,2 +1,4 @@
 BANK=Banco
 SERVICES=Serviços
+true=Sim
+false=Não
