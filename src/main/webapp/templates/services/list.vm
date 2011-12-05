@@ -32,7 +32,7 @@
                         <h4><a href="/service/${service.id}">$service.name</a></h4>
                         #if ( $service.hasProvider($user.userId) )<img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />#end
                     </header>
-                    <p>$service.description</p>
+                    <p>$service.shortDescription()</p>
                     <footer>
                         $numberFormat.format($service.amount)
                         <span class="contract"><a href="/service/${service.id}">Contratar</a></span>

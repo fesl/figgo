@@ -142,6 +142,16 @@ public class Service implements Serializable {
 	public String getDescription() {
 		return this.description;
 	}
+	
+	/**
+	 * @return the description limited to 100 chars
+	 */
+	public String getShortDescription() {
+		if (this.description.length() > 100) {
+			return this.description.substring(0, 100) + "...";
+		}
+		return this.description;
+	}
 
 	/**
 	 * @return the contracts
