@@ -24,6 +24,7 @@ import static br.octahedron.commons.util.DateUtil.SHORT;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import br.octahedron.cotopaxi.CotopaxiProperty;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
@@ -34,6 +35,7 @@ import br.octahedron.figgo.modules.bank.controller.validation.BankValidators;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
 import br.octahedron.figgo.modules.bank.manager.AccountManager;
 import br.octahedron.figgo.modules.bank.manager.DisabledBankAccountException;
+import br.octahedron.figgo.modules.bank.manager.InsufficientBalanceException;
 
 /**
  * @author Vítor Avelino
@@ -46,6 +48,7 @@ public class BankController extends Controller {
 	/*
 	 * TODO public bank pages should be in other controller
 	 */
+	private static final String INVALID = CotopaxiProperty.getProperty(CotopaxiProperty.INVALID_PROPERTY);
 
 	private static final String BASE_DIR_TPL = "bank/";
 	private static final String INDEX_TPL = BASE_DIR_TPL + "index.vm";
@@ -65,21 +68,39 @@ public class BankController extends Controller {
 	}
 
 	/**
+	 * @param ex
+	 */
+	private void handleDisabledAccount(String accountID, String template) {
+		this.out(INVALID, "ACCOUNT_INVALID");
+		this.out("INVALID_ACCOUNT_ID", accountID);
+		this.echo();
+		this.invalid(template);
+	}
+
+	/**
 	 * Shows the initial bank page for a user
 	 */
 	public void getIndexBank() {
-		this.out("balance", this.accountManager.getBalance(this.currentUser()));
-		this.out("transactions", this.accountManager.getLastNTransactions(this.currentUser(), 5));
-		this.success(INDEX_TPL);
+		try {
+			this.out("balance", this.accountManager.getBalance(this.currentUser()));
+			this.out("transactions", this.accountManager.getLastNTransactions(this.currentUser(), 5));
+			this.success(INDEX_TPL);
+		} catch (DisabledBankAccountException ex) {
+			this.handleDisabledAccount(ex.getMessage(), INDEX_TPL);
+		}
 	}
 
 	/**
 	 * Shows the page for transfers between users
 	 */
 	public void getTransferBank() {
-		this.out("balance", this.accountManager.getBalance(this.currentUser()));
-		this.out("transactions", this.accountManager.getLastNTransactions(this.currentUser(), 5));
-		this.success(TRANSFER_TPL);
+		try {
+			this.out("balance", this.accountManager.getBalance(this.currentUser()));
+			this.out("transactions", this.accountManager.getLastNTransactions(this.currentUser(), 5));
+			this.success(TRANSFER_TPL);
+		} catch (DisabledBankAccountException ex) {
+			this.handleDisabledAccount(ex.getMessage(), TRANSFER_TPL);
+		}
 	}
 
 	/**
@@ -99,7 +120,11 @@ public class BankController extends Controller {
 				this.invalid(TRANSFER_TPL);
 			}
 		} catch (DisabledBankAccountException ex) {
-			// TODO invalid account
+			this.handleDisabledAccount(ex.getMessage(), TRANSFER_TPL);
+		} catch (InsufficientBalanceException e) {
+			this.out(INVALID, "INSUFFICIENT_FUNDS");
+			this.echo();
+			this.invalid(TRANSFER_TPL);
 		}
 	}
 
@@ -107,8 +132,12 @@ public class BankController extends Controller {
 	 * Gets the current user current balance
 	 */
 	public void getStatementBank() {
-		this.out("balance", this.accountManager.getBalance(this.currentUser()));
-		this.success(STATEMENT_TPL);
+		try {
+			this.out("balance", this.accountManager.getBalance(this.currentUser()));
+			this.success(STATEMENT_TPL);
+		} catch (DisabledBankAccountException ex) {
+			this.handleDisabledAccount(ex.getMessage(), STATEMENT_TPL);
+		}
 	}
 
 	/**
@@ -127,8 +156,12 @@ public class BankController extends Controller {
 
 	/**
 	 * Gets some important information about the bank
+	 * 
+	 * @throws DisabledBankAccountException
+	 *             If the bank account is disabled - This kind of account can't be disabled, if this
+	 *             occurs, indicates an DEFECT
 	 */
-	public void getStatsBank() {
+	public void getStatsBank() throws DisabledBankAccountException {
 		BigDecimal balance = this.accountManager.getBalance(this.subDomain());
 		BigDecimal ballast = this.accountManager.getBallast();
 		this.out("balance", balance);
