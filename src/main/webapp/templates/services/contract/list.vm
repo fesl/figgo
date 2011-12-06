@@ -34,10 +34,10 @@
         <div id="opened" class="pill-container">
             <section>
                 <h4>Prestados</h3>
-                #if ( $providerContracts.size() > 0 )
+                #if ( $providedOpenedContracts.size() > 0 )
                 <img class="loader" src="/img/ajax-loader.gif" />
                 <ul class="unstyled contracts">
-                    #foreach( $contract in $providerContracts )
+                    #foreach( $contract in $providedOpenedContracts )
                     <li class="service">
                         <header>
                             <a href="/service/$contract.service.id"><h4>$contract.service.name</h4></a>
@@ -60,16 +60,16 @@
                     #end
                 </ul>
                 #else
-                <p>Nenhum serviço prestado até o momento.</p>
+                <p>Nenhum serviço prestado em aberto até o momento.</p>
                 #end
             </section>
 
             <section>
                 <h4>Contratados</h3>
-                #if ( $contractorContracts.size() > 0 )
+                #if ( $hiredOpenedContracts.size() > 0 )
                 <img class="loader" src="/img/ajax-loader.gif" />
                 <ul class="unstyled contracts">
-                    #foreach( $contract in $contractorContracts )
+                    #foreach( $contract in $hiredOpenedContracts )
                     <li class="service">
                         <header>
                             <a href="/service/$contract.service.id"><h4>$contract.service.name</h4></a>
@@ -92,16 +92,16 @@
                     #end
                 </ul>
                 #else
-                <p>Nenhum serviço contratado até o momento.</p>
+                <p>Nenhum serviço contratado em aberto até o momento.</p>
                 #end
             </section>
         </div> <!-- #opened -->
 
         <div id="provided" class="pill-container">
             <section>
-                #if ( $providerContracts.size() > 0 )
+                #if ( $providedContracts.size() > 0 )
                 <ul class="unstyled contracts">
-                    #foreach( $contract in $providerContracts )
+                    #foreach( $contract in $providedContracts )
                     <li class="service">
                         <header>
                             <a href="/service/$contract.service.id"><h4>$contract.service.name</h4></a>
@@ -111,10 +111,8 @@
                             <dd class="provider" data-user="$contract.contractor">$contract.contractor</dd>
                             <dt>Status</dt>
                             <dd>$i18n.get($contract.status.name())</dd>
-                            #if ( $contract.status.name() == "COMPLETED" )
                             <dt>Pago?</dt>
                             <dd>$i18n.get($contract.paid.toString())</dd>
-                            #end
                         </dl>
                         <footer>
                             $numberFormat.format($contract.amount)
@@ -124,16 +122,16 @@
                     #end
                 </ul>
                 #else
-                <p>Nenhum serviço prestado até o momento.</p>
+                <p>Nenhum serviço prestado concluído até o momento.</p>
                 #end
             </section>
-        </div>
+        </div> <!-- #provided -->
 
         <div id="hired" class="pill-container">
             <section>
-                #if ( $providerContracts.size() > 0 )
+                #if ( $hiredContracts.size() > 0 )
                 <ul class="unstyled contracts">
-                    #foreach( $contract in $providerContracts )
+                    #foreach( $contract in $hiredContracts )
                     <li class="service">
                         <header>
                             <a href="/service/$contract.service.id"><h4>$contract.service.name</h4></a>
@@ -143,10 +141,8 @@
                             <dd class="provider" data-user="$contract.contractor">$contract.contractor</dd>
                             <dt>Status</dt>
                             <dd>$i18n.get($contract.status.name())</dd>
-                            #if ( $contract.status.name() == "COMPLETED" )
                             <dt>Pago?</dt>
                             <dd>$i18n.get($contract.paid.toString())</dd>
-                            #end
                         </dl>
                         <footer>
                             $numberFormat.format($contract.amount)
@@ -156,10 +152,10 @@
                     #end
                 </ul>
                 #else
-                <p>Nenhum serviço prestado até o momento.</p>
+                <p>Nenhum serviço contratado concluído até o momento.</p>
                 #end
             </section>
-        </div>
+        </div> <!-- #hired -->
     </section>
 </div>
 #end
