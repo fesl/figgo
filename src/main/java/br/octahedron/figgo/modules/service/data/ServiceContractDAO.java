@@ -19,9 +19,6 @@
 package br.octahedron.figgo.modules.service.data;
 
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.TreeSet;
 
 import javax.jdo.Query;
 
@@ -39,81 +36,55 @@ public class ServiceContractDAO extends GenericDAO<ServiceContract> {
 	}
 
 	/**
-	 * @param accountId
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	public Collection<ServiceContract> getHistory(String userId) {
-		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
-		query.setFilter("provider == :accountId && status == :status");
-		query.setOrdering("id desc");
-		return (Collection<ServiceContract>) query.execute(userId, ServiceContractStatus.COMPLETED);
-		
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Collection<ServiceContract> getProviderContracts(String accountId) {
-		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
-		query.setFilter("provider == :accountId");
-		query.setOrdering("id desc");
-		return (Collection<ServiceContract>) query.execute(accountId);
-	}
-	
-	@SuppressWarnings("unchecked")
-	public Collection<ServiceContract> getContractorContracts(String accountId) {
-		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
-		query.setFilter("contractor == :accountId");
-		query.setOrdering("id desc");
-		return (Collection<ServiceContract>) query.execute(accountId);
-	}
-
-	/**
-	 * Merges two service contracts list ordering service contracts by id (higher to lower)
-	 * 
-	 * @param count
-	 * 
-	 * @return a list with service contracts from the two lists, ordered by id.
-	 */
-	private Collection<ServiceContract> mergeServiceContracts(Collection<ServiceContract> providerContracts, Collection<ServiceContract> contractorContracts,
-			long count) {
-		TreeSet<ServiceContract> result = new TreeSet<ServiceContract>(new ServiceContractComparator());
-		result.addAll(providerContracts);
-		result.addAll(contractorContracts);
-
-		if (count == Long.MIN_VALUE) {
-			return result;
-		} else {
-			TreeSet<ServiceContract> other = new TreeSet<ServiceContract>(new ServiceContractComparator());
-			Iterator<ServiceContract> itr = result.iterator();
-			while (itr.hasNext() && count != 0) {
-				other.add(itr.next());
-				count--;
-			}
-			return other;
-		}
-	}
-
-	private class ServiceContractComparator implements Comparator<ServiceContract> {
-		public int compare(ServiceContract o1, ServiceContract o2) {
-			return (int) (o1.getId().compareTo(o2.getId()));
-		}
-	}
-
-	/**
+	 * TODO
 	 * @param userId
-	 * @return 
 	 * @return
 	 */
-	public Collection<ServiceContract> getContracts(String userId) {
-		Collection<ServiceContract> providerContracts = this.getProviderContracts(userId);
-		Collection<ServiceContract> contractorContracts = this.getContractorContracts(userId);
-		return this.mergeServiceContracts(providerContracts, contractorContracts, Long.MIN_VALUE);
+	@SuppressWarnings("unchecked")
+	public Collection<ServiceContract> getOpenedProvidedContracts(String userId) {
+		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
+		query.setFilter("provider == :userId && paid == :paid");
+		query.setOrdering("id desc");
+		return (Collection<ServiceContract>) query.execute(userId, false);
 	}
 	
-	public Collection<ServiceContract> getContracts(String userId, long count) {
-		Collection<ServiceContract> providerContracts = this.getProviderContracts(userId);
-		Collection<ServiceContract> contractorContracts = this.getContractorContracts(userId);
-		return this.mergeServiceContracts(providerContracts, contractorContracts, count);
+	/**
+	 * TODO
+	 * @param userId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<ServiceContract> getOpenedHiredContracts(String userId) {
+		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
+		query.setFilter("contractor == :userId && paid == :paid");
+		query.setOrdering("id desc");
+		return (Collection<ServiceContract>) query.execute(userId, false);
+	}
+	
+	/**
+	 * TODO
+	 * @param userId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<ServiceContract> getProvidedContracts(String userId) {
+		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
+		query.setFilter("provider == :userId && status == :status && paid == true");
+		query.setOrdering("id desc");
+		return (Collection<ServiceContract>) query.execute(userId, ServiceContractStatus.COMPLETED, true);
+	}
+	
+	/**
+	 * TODO
+	 * @param userId
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<ServiceContract> getHiredContracts(String userId) {
+		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
+		query.setFilter("contractor == :userId && status == :status && paid == :paid");
+		query.setOrdering("id desc");
+		return (Collection<ServiceContract>) query.execute(userId, ServiceContractStatus.COMPLETED, true);
 	}
 
 }

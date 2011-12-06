@@ -188,21 +188,13 @@ public class ServiceController extends Controller {
 	}
 
 	/**
-	 * Shows all contracts for current user
+	 * Shows all contracts (opened, hired and provided) for current user
 	 */
 	public void getShowContracts() {
-		this.out("providerOpenedContracts", this.servicesManager.getProviderContracts(this.currentUser()));
-		this.out("contractorOpenedContracts", this.servicesManager.getContractorContracts(this.currentUser()));
-		this.out("contractorContracts", this.servicesManager.getContractorContracts(this.currentUser()));
-		this.out("providerOpenedContracts", this.servicesManager.getProviderContracts(this.currentUser()));
-		this.success(LIST_CONTRACTS_TPL);
-	}
-
-	/**
-	 * Shows current user's contracts history
-	 */
-	public void getShowHistory() {
-		this.out("contracts", this.servicesManager.getContractsHistory(this.currentUser()));
+		this.out("providerOpenedContracts", this.servicesManager.getOpenedProvidedContracts(this.currentUser()));
+		this.out("contractorOpenedContracts", this.servicesManager.getOpenedHiredContracts(this.currentUser()));
+		this.out("contractorContracts", this.servicesManager.getHiredContracts(this.currentUser()));
+		this.out("providerOpenedContracts", this.servicesManager.getProvidedContracts(this.currentUser()));
 		this.success(LIST_CONTRACTS_TPL);
 	}
 
@@ -276,8 +268,8 @@ public class ServiceController extends Controller {
 			this.notFound();
 		} catch (FiggoException e) {
 			this.out("exception", i18n.get(this.locales(), e.getMessage()));
-			this.out("providerContracts", this.servicesManager.getProviderContracts(this.currentUser()));
-			this.out("contractorContracts", this.servicesManager.getContractorContracts(this.currentUser()));
+			this.out("providerContracts", this.servicesManager.getProvidedContracts(this.currentUser()));
+			this.out("contractorContracts", this.servicesManager.getHiredContracts(this.currentUser()));
 			this.invalid(LIST_CONTRACTS_TPL);
 		}
 	}
