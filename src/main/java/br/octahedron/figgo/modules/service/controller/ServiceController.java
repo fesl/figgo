@@ -175,8 +175,10 @@ public class ServiceController extends Controller {
 	}
 
 	public void getShowContracts() {
-		this.out("providerContracts", this.servicesManager.getProviderContracts(this.currentUser()));
+		this.out("providerOpenedContracts", this.servicesManager.getProviderContracts(this.currentUser()));
+		this.out("contractorOpenedContracts", this.servicesManager.getContractorContracts(this.currentUser()));
 		this.out("contractorContracts", this.servicesManager.getContractorContracts(this.currentUser()));
+		this.out("providerOpenedContracts", this.servicesManager.getProviderContracts(this.currentUser()));
 		this.success(LIST_CONTRACTS_TPL);
 	}
 

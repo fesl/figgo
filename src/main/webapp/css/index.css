@@ -406,6 +406,16 @@ ul.two-column-shortcuts {
     float: left;
     margin-bottom: 5px; }
 
+ul.pills > li {
+  padding: 0 8px;
+  text-align: center;
+  border-right: 1px solid #c1c1c1; }
+  ul.pills > li:last-child {
+    border-right: none; }
+  ul.pills > li.active > a {
+    color: #444444;
+    font-weight: bold; }
+
 .hidden {
   display: none; }
 

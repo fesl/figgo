@@ -111,4 +111,18 @@ $(function() {
 		});
 	}
 
+	// pills on /services/contracts
+	var $pills = $("#services-type");
+	$pills.delegate('a', 'click', function(e) {
+		var $this = $(this),
+			$currentLi = $pills.find(".active"),
+			$nextLi = $this.parent();
+			$nextDiv = $(this.dataset['div']);
+		$currentLi.removeClass("active");
+		$nextLi.addClass("active");
+		$('.pill-container').hide();
+		$nextDiv.show();
+		e.preventDefault();
+	});
+
 });

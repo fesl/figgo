@@ -29,6 +29,7 @@ $(function() {
 		}
 	});
 	
+	// used on /roles
 	$("a.delete").click(function(e) {
 		var $this = $(this);
 		if (confirm($this.data('confirm'))) {
@@ -39,12 +40,14 @@ $(function() {
 		e.preventDefault(); 
 	});
 
+	// used on /roles
 	$("#add-role").click(function(e) {
 		$("#new-role").show()
 		$(this).hide();
 		e.preventDefault(); 
 	});
 
+	// used on /roles
 	$("input[type=checkbox]").change(function(e) {
 		var $this = $(this);
 		if (this.checked) {
@@ -53,20 +56,15 @@ $(function() {
 				url: "/roles/" + $this.data("role") + "/activity/add",
 				dataType: 'json',
 				data: {activity: $this.data('activity')}
-			}).success(function(data) {
-				console.log("adicionou!")
 			}).error(function(data) {
 				$this[0].checked = false;
-				alert('não foi possível adicionar role do usuário')
+				alert('Não foi possível adicionar atividade ao papel')
 			});
 		} else {
 			$.post("/roles/" + $this.data("role") + "/activity/" + $this.data("activity") + "/remove")
-			.success(function(data) {
-				console.log("removeu!")
-			})
 			.error(function(data) {
 				this.checked = true;
-				alert('não foi possível adicionar role do usuário')
+				console.log('Não foi possível remover atividade ao papel')
 			});
 		}
 	});
