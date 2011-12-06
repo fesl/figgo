@@ -97,7 +97,7 @@ public class BankAdminController extends Controller {
 	 */
 	public void postShareBank() throws DisabledBankAccountException {
 		try {
-			Validator requiredValidator = BankValidators.getTransferValidator();
+			Validator requiredValidator = BankValidators.getShareValidator();
 			Validator amountValidator = BankValidators.getAmountValidator();
 			if (requiredValidator.isValid() && amountValidator.isValid()) {
 				this.accountManager.transact(this.subDomain(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"),

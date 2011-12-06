@@ -57,7 +57,26 @@ public class BankValidators {
 		if (requiredValidator == null) {
 			requiredValidator = new Validator();
 			requiredValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"),
-					regex("[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}", "INVALID_USERID"), notEquals(currentUser(), string()));
+					regex("[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}", "INVALID_USERID"), notEquals(currentUser(), string(), "REQUIRED_DIFFERENT_DESTINATION"));
+			requiredValidator.add("type", required("REQUIRED_TRANSACTION_TYPE"), new ExistentTransferTypeRule());
+		}
+		return requiredValidator;
+	}
+	
+	/**
+	 * A validator for share transfers that checks the required fields
+	 * 
+	 * For transfer it checks:
+	 * 
+	 * userId - required, valid user id
+	 * 
+	 * type - required, {@link ExistentTransferTypeRule}
+	 */
+	public static synchronized Validator getShareValidator() {
+		if (requiredValidator == null) {
+			requiredValidator = new Validator();
+			requiredValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"),
+					regex("[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}", "INVALID_USERID"));
 			requiredValidator.add("type", required("REQUIRED_TRANSACTION_TYPE"), new ExistentTransferTypeRule());
 		}
 		return requiredValidator;
