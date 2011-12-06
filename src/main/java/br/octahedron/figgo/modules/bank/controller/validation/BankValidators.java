@@ -41,7 +41,7 @@ import br.octahedron.cotopaxi.validation.Validator;
 public class BankValidators {
 
 	private static Validator valueValidator;
-	private static Validator requiredValidator;
+	private static Validator transferValidator;
 	private static Validator shareValidator;
 	private static Validator dateValidator;
 
@@ -55,13 +55,13 @@ public class BankValidators {
 	 * type - required, {@link ExistentTransferTypeRule}
 	 */
 	public static synchronized Validator getTransferValidator() {
-		if (requiredValidator == null) {
-			requiredValidator = new Validator();
-			requiredValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"),
+		if (transferValidator == null) {
+			transferValidator = new Validator();
+			transferValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"),
 					regex("[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}", "INVALID_USERID"), notEquals(currentUser(), string(), "REQUIRED_DIFFERENT_DESTINATION"));
-			requiredValidator.add("type", required("REQUIRED_TRANSACTION_TYPE"), new ExistentTransferTypeRule());
+			transferValidator.add("type", required("REQUIRED_TRANSACTION_TYPE"), new ExistentTransferTypeRule());
 		}
-		return requiredValidator;
+		return transferValidator;
 	}
 	
 	/**
@@ -74,13 +74,13 @@ public class BankValidators {
 	 * type - required, {@link ExistentTransferTypeRule}
 	 */
 	public static synchronized Validator getShareValidator() {
-		if (requiredValidator == null) {
-			requiredValidator = new Validator();
-			requiredValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"),
+		if (shareValidator == null) {
+			shareValidator = new Validator();
+			shareValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"),
 					regex("[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}", "INVALID_USERID"));
-			requiredValidator.add("type", required("REQUIRED_TRANSACTION_TYPE"), new ExistentTransferTypeRule());
+			shareValidator.add("type", required("REQUIRED_TRANSACTION_TYPE"), new ExistentTransferTypeRule());
 		}
-		return requiredValidator;
+		return shareValidator;
 	}
 
 	/**
