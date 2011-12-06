@@ -33,7 +33,7 @@ import br.octahedron.figgo.modules.service.data.Service;
 import br.octahedron.figgo.modules.service.data.ServiceContract;
 import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
 import br.octahedron.figgo.modules.service.manager.InexistentServiceProviderException;
-import br.octahedron.figgo.modules.service.manager.OnlyServiceProviderException;
+import br.octahedron.figgo.modules.service.manager.NotServiceProviderException;
 import br.octahedron.figgo.modules.service.manager.ServiceContractNotFound;
 import br.octahedron.figgo.modules.service.manager.ServiceManager;
 import br.octahedron.figgo.modules.service.manager.ServiceNotFoundException;
@@ -68,6 +68,9 @@ public class ServiceController extends Controller {
 		this.servicesManager = serviceManager;
 	}
 
+	/**
+	 * Lists available services and categories
+	 */
 	@AuthorizationRequired
 	public void getListServices() {
 		this.out("services", this.servicesManager.getServices());
@@ -75,6 +78,11 @@ public class ServiceController extends Controller {
 		this.success(LIST_SERVICE_TPL);
 	}
 
+	/**
+	 * Shows service details
+	 * 
+	 * Receives the service id as <code>id</code>
+	 */
 	@AuthorizationRequired
 	public void getShowService() {
 		try {
@@ -86,11 +94,20 @@ public class ServiceController extends Controller {
 		}
 	}
 
+	/**
+	 * Show the form page for a new service
+	 */
 	@AuthorizationRequired
 	public void getNewService() {
 		this.success(NEW_SERVICE_TPL);
 	}
 
+	/**
+	 * Process the new service form
+	 * 
+	 * Receives <code>name</code>, <code>amount</code>, <code>category</code> and
+	 * <code>description</code>
+	 */
 	@AuthorizationRequired
 	public void postNewService() {
 		Validator validator = ServiceValidators.getServiceValidator();
@@ -104,6 +121,11 @@ public class ServiceController extends Controller {
 		}
 	}
 
+	/**
+	 * Show the form to edit an service
+	 * 
+	 * Receives the service id as <code>id</code>
+	 */
 	@AuthorizationRequired
 	public void getEditService() {
 		try {
@@ -119,6 +141,12 @@ public class ServiceController extends Controller {
 		}
 	}
 
+	/**
+	 * Process the service edit form
+	 * 
+	 * Receives <code>name</code>, <code>amount</code>, <code>category</code> and
+	 * <code>description</code>
+	 */
 	@AuthorizationRequired
 	public void postEditService() {
 		Validator validator = ServiceValidators.getServiceValidator();
@@ -136,29 +164,11 @@ public class ServiceController extends Controller {
 		}
 	}
 
-	@AuthorizationRequired
-	public void postAddProvider() {
-		try {
-			Service service = this.servicesManager.getService(this.in("id"));
-			service.addProvider(this.currentUser());
-			this.out("userId", this.currentUser());
-			this.out("serviceId", this.in("id"));
-			this.jsonSuccess();
-		} catch (ServiceNotFoundException e) {
-			this.notFound();
-		}
-	}
-
-	@AuthorizationRequired
-	public void postRemoveProvider() {
-		try {
-			this.out("service", this.servicesManager.removeProvider(this.in("id"), this.currentUser()));
-			this.jsonSuccess();
-		} catch (ServiceNotFoundException e) {
-			this.notFound();
-		}
-	}
-
+	/**
+	 * Removes a Service
+	 * 
+	 * Receives the service id as <code>id</code>
+	 */
 	@AuthorizationRequired
 	public void postRemoveService() {
 		try {
@@ -169,11 +179,17 @@ public class ServiceController extends Controller {
 		}
 	}
 
+	/**
+	 * Gets all services provided by current user
+	 */
 	public void getUserServices() {
 		this.out("services", this.servicesManager.getUserServices(this.currentUser()));
 		this.success(USER_SERVICES_TPL);
 	}
 
+	/**
+	 * Shows all contracts for current user
+	 */
 	public void getShowContracts() {
 		this.out("providerOpenedContracts", this.servicesManager.getProviderContracts(this.currentUser()));
 		this.out("contractorOpenedContracts", this.servicesManager.getContractorContracts(this.currentUser()));
@@ -182,23 +198,19 @@ public class ServiceController extends Controller {
 		this.success(LIST_CONTRACTS_TPL);
 	}
 
-	public void postRequestContract() {
-		try {
-			this.servicesManager.requestContract(this.in("id"), this.currentUser(), this.in("provider"));
-			this.jsonSuccess();
-		} catch (InexistentServiceProviderException e) {
-			this.out("exception", i18n.get(this.locales(), e.getMessage()));
-			this.jsonInvalid();
-		} catch (ServiceNotFoundException e) {
-			this.notFound();
-		}
-	}
-
+	/**
+	 * Shows current user's contracts history
+	 */
 	public void getShowHistory() {
 		this.out("contracts", this.servicesManager.getContractsHistory(this.currentUser()));
 		this.success(LIST_CONTRACTS_TPL);
 	}
 
+	/**
+	 * Shows the form tho edit a contract
+	 * 
+	 * Receives the contract id as <code>id</code>
+	 */
 	public void getEditContract() {
 		try {
 			ServiceContract serviceContract = this.servicesManager.getServiceContract(this.in("id"));
@@ -210,13 +222,18 @@ public class ServiceController extends Controller {
 		}
 	}
 
+	/**
+	 * Process the edit contract form.
+	 * 
+	 * Receives the <code>id</code>, <code>status</code>.
+	 */
 	public void postEditContract() {
 		Validator existentContractStatusValidator = ServiceValidators.getExistentContractStatusValidator();
 		if (existentContractStatusValidator.isValid()) {
 			try {
 				this.servicesManager.updateContractStatus(this.in("id"), ServiceContractStatus.valueOf(this.in("status")), this.currentUser());
 				this.redirect(SHOW_CONTRACTS_URL);
-			} catch (OnlyServiceProviderException e) {
+			} catch (NotServiceProviderException e) {
 				this.echo();
 				this.out("exception", i18n.get(this.locales(), e.getMessage()));
 				this.invalid(EDIT_CONTRACT_TPL);
@@ -228,8 +245,30 @@ public class ServiceController extends Controller {
 		}
 	}
 
-	// FIXME use json
+	/**
+	 * List all services for a given category.
+	 * 
+	 * Receives the <code>category</code>
+	 */
+	public void getServicesByCategory() {
+		String category = this.in("category", safeString());
+		if (this.servicesManager.existsServiceCategory(category)) {
+			this.out("services", this.servicesManager.getServicesByCategory(category));
+			this.out("categories", this.servicesManager.getServiceCategories());
+			this.out("currentCategory", category);
+			this.success(LIST_SERVICE_TPL);
+		} else {
+			this.notFound();
+		}
+	}
+
+	/**
+	 * Posts the payment for a contract
+	 * 
+	 * Receives the contract id as <code>id</code>
+	 */
 	public void postPayContract() {
+		// FIXME use json
 		try {
 			this.servicesManager.makePayment(this.in("id"), this.currentUser());
 			this.redirect(SHOW_CONTRACTS_URL);
@@ -243,18 +282,75 @@ public class ServiceController extends Controller {
 		}
 	}
 
-	public void getServicesByCategory() {
-		String category = this.in("category", safeString());
-		if (this.servicesManager.existsServiceCategory(category)) {
-			this.out("services", this.servicesManager.getServicesByCategory(category));
-			this.out("categories", this.servicesManager.getServiceCategories());
-			this.out("currentCategory", category);
-			this.success(LIST_SERVICE_TPL);
-		} else {
+	/**
+	 * JSON method
+	 * 
+	 * Adds a new provider to a service.
+	 * 
+	 * Receives the service id as <code>id</code> and gets the current user to add as provider.
+	 */
+	@AuthorizationRequired
+	public void postAddProvider() {
+		try {
+			Service service = this.servicesManager.getService(this.in("id"));
+			service.addProvider(this.currentUser());
+			this.out("userId", this.currentUser());
+			this.out("serviceId", this.in("id"));
+			this.jsonSuccess();
+		} catch (ServiceNotFoundException e) {
 			this.notFound();
 		}
 	}
-	
+
+	/**
+	 * JSON method
+	 * 
+	 * Removes a provider.
+	 * 
+	 * Receives the service id as <code>id</code> and gets the current user to remove as provider.
+	 * 
+	 */
+	@AuthorizationRequired
+	public void postRemoveProvider() {
+		try {
+			this.out("service", this.servicesManager.removeProvider(this.in("id"), this.currentUser()));
+			this.jsonSuccess();
+		} catch (ServiceNotFoundException e) {
+			this.notFound();
+		}
+	}
+
+	/**
+	 * JSON method
+	 * 
+	 * Requests a service from a provides.
+	 * 
+	 * Receives the service id as <code>id</code> and the service provider as <code>provider</code>
+	 */
+	public void postRequestContract() {
+		try {
+			Validator contractValidator = ServiceValidators.getContractValidator();
+			if (contractValidator.isValid()) {
+				this.servicesManager.requestContract(this.in("id"), this.currentUser(), this.in("provider"));
+				this.jsonSuccess();
+			} else {
+				this.jsonInvalid();
+			}
+		} catch (InexistentServiceProviderException e) {
+			this.out("exception", i18n.get(this.locales(), e.getMessage()));
+			this.jsonInvalid();
+		} catch (ServiceNotFoundException e) {
+			this.notFound();
+		}
+	}
+
+	/**
+	 * JSON method
+	 * 
+	 * List categories starting with the given prefix.
+	 * 
+	 * Receives the category prefix as <code>term</code>
+	 */
 	public void getSearchCategory() {
 		this.out("result", servicesManager.getCategoriesStartingWith(in("term")));
 		jsonSuccess();

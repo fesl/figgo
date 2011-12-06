@@ -21,14 +21,16 @@ package br.octahedron.figgo.modules.service.manager;
 import br.octahedron.figgo.FiggoException;
 
 /**
+ * Indicates that the user trying to edit a contract isn't the service provider.
+ * 
  * @author vitoravelino
- *
+ * 
  */
-public class OnlyServiceProviderException extends FiggoException {
+public class NotServiceProviderException extends FiggoException {
 
 	private static final long serialVersionUID = -4643909906614987620L;
 
-	public OnlyServiceProviderException() {
+	public NotServiceProviderException() {
 		super("ONLY_PROVIDER");
 	}
 

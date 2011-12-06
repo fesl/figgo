@@ -179,21 +179,21 @@ public class ServiceManager {
 	 * @param contractId
 	 * @param status
 	 * @param providerId
-	 * @throws OnlyServiceProviderException 
+	 * @throws NotServiceProviderException 
 	 * @throws ServiceContractNotFound 
 	 */
-	public void updateContractStatus(String contractId, ServiceContractStatus status, String providerId) throws OnlyServiceProviderException, ServiceContractNotFound {
+	public void updateContractStatus(String contractId, ServiceContractStatus status, String providerId) throws NotServiceProviderException, ServiceContractNotFound {
 		ServiceContract serviceContract = this.getServiceContract(contractId);
 		if (serviceContract.getProvider().equals(providerId)) {
 			serviceContract.setStatus(status);
 			this.eventBus.publish(new ServiceContractUpdatedEvent(serviceContract));
 		} else {
-			throw new OnlyServiceProviderException();
+			throw new NotServiceProviderException();
 		}
 	}
 	
 	/**
-	 * 
+	 * TODO ?????
 	 * @param contractId
 	 * @throws UncompletedServiceContractException
 	 * @throws OnlyServiceContractorException 

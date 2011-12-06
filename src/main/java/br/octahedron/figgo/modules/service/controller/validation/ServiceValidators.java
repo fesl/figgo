@@ -19,8 +19,11 @@
 package br.octahedron.figgo.modules.service.controller.validation;
 
 import static br.octahedron.cotopaxi.controller.Converter.Builder.bigDecimalNumber;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.string;
+import static br.octahedron.cotopaxi.validation.Input.Builder.currentUser;
 import static br.octahedron.cotopaxi.validation.Rule.Builder.greaterThan;
 import static br.octahedron.cotopaxi.validation.Rule.Builder.minLength;
+import static br.octahedron.cotopaxi.validation.Rule.Builder.notEquals;
 import static br.octahedron.cotopaxi.validation.Rule.Builder.required;
 import static br.octahedron.cotopaxi.validation.Rule.Builder.type;
 
@@ -38,6 +41,7 @@ public class ServiceValidators {
 
 	private static Validator serviceValidator;
 	private static Validator existentContractStatusValidator;
+	private static Validator contractValidator;
 
 	/**
 	 * @return
@@ -59,6 +63,17 @@ public class ServiceValidators {
 			existentContractStatusValidator.add("status", required("REQUIRED_CONTRACT_STATUS"), new ExistentContractStatusRule());
 		}
 		return existentContractStatusValidator;
+	}
+
+	/**
+	 * @return
+	 */
+	public static Validator getContractValidator() {
+		if(contractValidator == null) {
+			contractValidator = new Validator();
+			contractValidator.add("provider", required(), notEquals(currentUser(), string(),"INVALID_PROVIDER"));
+		}
+		return contractValidator;
 	}
 
 }

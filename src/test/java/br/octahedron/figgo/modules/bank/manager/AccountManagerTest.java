@@ -64,7 +64,7 @@ public class AccountManagerTest {
 	}
 
 	@Test
-	public void getValidAccount() {
+	public void getValidAccount() throws DisabledBankAccountException {
 		BankAccount account = createMock(BankAccount.class);
 
 		String origin = "Conta1";
@@ -78,7 +78,7 @@ public class AccountManagerTest {
 	}
 
 	@Test(expected = DisabledBankAccountException.class)
-	public void getValidAccountDisabled() {
+	public void getValidAccountDisabled() throws DisabledBankAccountException {
 		String origin = "Conta1";
 		BankAccount account = createMock(BankAccount.class);
 		try {
@@ -93,7 +93,7 @@ public class AccountManagerTest {
 	}
 
 	@Test
-	public void getCreateValidAccount() {
+	public void getCreateValidAccount() throws DisabledBankAccountException {
 		String origin = "Conta1";
 		BankAccount account = new BankAccount(origin);
 		expect(this.accountDAO.get(origin)).andReturn(null);
@@ -106,7 +106,7 @@ public class AccountManagerTest {
 	}
 	
 	@Test
-	public void transactInixestentAccount1() {
+	public void transactInixestentAccount1() throws InsufficientBalanceException, DisabledBankAccountException {
 		String origin = "Conta1";
 		String dest = "Conta2";
 		BankAccount originAccount = createMock(BankAccount.class);
@@ -128,7 +128,7 @@ public class AccountManagerTest {
 	}
 	
 	@Test(expected=InsufficientBalanceException.class)
-	public void transactInixestentAccount2() {
+	public void transactInixestentAccount2() throws InsufficientBalanceException, DisabledBankAccountException {
 		String origin = "Conta1";
 		String dest = "Conta2";
 		BankAccount originAccount = new BankAccount(origin);
@@ -149,7 +149,7 @@ public class AccountManagerTest {
 	}
 
 	@Test
-	public void doSimpleTransaction() {
+	public void doSimpleTransaction() throws InsufficientBalanceException, DisabledBankAccountException {
 		String originId = "Conta1";
 		String destId = "Conta2";
 
@@ -171,7 +171,7 @@ public class AccountManagerTest {
 	}
 
 	@Test(expected = InsufficientBalanceException.class)
-	public void doSimpleInsufficientTransaction() {
+	public void doSimpleInsufficientTransaction() throws InsufficientBalanceException, DisabledBankAccountException {
 		String originId = "Conta1";
 		String destId = "Conta2";
 		BankAccount origin = createMock(BankAccount.class);
@@ -193,7 +193,7 @@ public class AccountManagerTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void getBalanceInicialValue() {
+	public void getBalanceInicialValue() throws DisabledBankAccountException {
 		String accID = "teste";
 		BankAccount account = new BankAccount(accID);
 		account.setEnabled(true);
@@ -206,7 +206,7 @@ public class AccountManagerTest {
 	}
 
 	@Test
-	public void getBalanceSomeTransactions() {
+	public void getBalanceSomeTransactions() throws DisabledBankAccountException {
 		String accID = "teste";
 		String accID2 = "teste2";
 		Long transID1 = new Long(3);
