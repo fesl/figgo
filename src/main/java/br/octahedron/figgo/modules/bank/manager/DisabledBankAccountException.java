@@ -22,7 +22,7 @@ package br.octahedron.figgo.modules.bank.manager;
  * @author vitoravelino
  * 
  */
-public class DisabledBankAccountException extends RuntimeException {
+public class DisabledBankAccountException extends Exception {
 
 	private static final long serialVersionUID = -5051652215856349667L;
 

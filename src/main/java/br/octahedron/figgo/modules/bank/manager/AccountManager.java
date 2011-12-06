@@ -70,15 +70,24 @@ public class AccountManager {
 
 	/**
 	 * Transfers a amount from the system account to a given domain account
+	 * 
+	 * @throws InsufficientBalanceException
+	 *             If the origin account hasn't sufficient funds
+	 * @throws DisabledBankAccountException
+	 *             If some of the given accounts are disabled
 	 */
-	public void insertBallast(String domainAccount, BigDecimal amount, String comment) {
+	public void insertBallast(String domainAccount, BigDecimal amount, String comment) throws InsufficientBalanceException,
+			DisabledBankAccountException {
 		this.transact(SystemAccount.ID, domainAccount, amount, comment, TransactionType.BALLAST);
 	}
 
 	/**
 	 * Gets a account's balance
+	 * 
+	 * @throws DisabledBankAccountException
+	 *             If the given account is disabled
 	 */
-	public BigDecimal getBalance(String accountId) {
+	public BigDecimal getBalance(String accountId) throws DisabledBankAccountException {
 		return this.getBalance(this.getValidAccount(accountId));
 	}
 
@@ -91,8 +100,14 @@ public class AccountManager {
 
 	/**
 	 * Makes a transfer between to accounts.
+	 * 
+	 * @throws InsufficientBalanceException
+	 *             If the origin account hasn't sufficient funds
+	 * @throws DisabledBankAccountException
+	 *             If some of the given accounts are disabled
 	 */
-	public void transact(String accountOrigId, String accountDestId, BigDecimal value, String comment, TransactionType type) {
+	public void transact(String accountOrigId, String accountDestId, BigDecimal value, String comment, TransactionType type)
+			throws InsufficientBalanceException, DisabledBankAccountException {
 		BankTransaction transaction = this.createTransaction(accountOrigId, accountDestId, value, comment, type);
 		BankAccount accountOrig = this.getValidAccount(accountOrigId);
 		// don't need to store the destination account. The method is called only to ensure that the
@@ -168,7 +183,9 @@ public class AccountManager {
 	 * Returns a {@link Date} with the first day of the current month.
 	 */
 	private Date getFirstDateOfCurrentMonth() {
-		return br.octahedron.commons.util.DateUtil.parse("01/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR), br.octahedron.commons.util.DateUtil.SHORT);
+		return br.octahedron.commons.util.DateUtil.parse(
+				"01/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR),
+				br.octahedron.commons.util.DateUtil.SHORT);
 	}
 
 	/**
@@ -187,17 +204,20 @@ public class AccountManager {
 	}
 
 	/**
-	 * Gets a valid account. If there's no {@link BankAccount} for thr given account id, it creates
+	 * Gets a valid account. If there's no {@link BankAccount} for the given account id, it creates
 	 * the account.
+	 * 
+	 * @throws DisabledBankAccountException
+	 *             If the given account is disabled
 	 */
-	protected BankAccount getValidAccount(String accountId) {
+	protected BankAccount getValidAccount(String accountId) throws DisabledBankAccountException {
 		BankAccount account = this.accountDAO.get(accountId);
 		if (account == null) {
 			this.createAccount(accountId);
 			return this.getValidAccount(accountId);
 		} else if (!account.isEnabled()) {
 			logger.info("'" + accountId + "' account is disabled.");
-			throw new DisabledBankAccountException("'" + accountId + "' account is disabled.");
+			throw new DisabledBankAccountException(accountId);
 		} else {
 			return account;
 		}

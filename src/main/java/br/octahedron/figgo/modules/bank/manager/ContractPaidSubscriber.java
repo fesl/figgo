@@ -29,26 +29,38 @@ import br.octahedron.figgo.modules.service.manager.ServiceContractPaidEvent;
 
 /**
  * @author vitoravelino
- *
+ * 
  */
 @InterestedEvent(events = { ServiceContractPaidEvent.class })
 public class ContractPaidSubscriber extends SelfInjectable implements Subscriber {
 
 	@Inject
 	private AccountManager accountManager;
-	
+
 	public void setAccountManager(AccountManager accountManager) {
 		this.accountManager = accountManager;
 	}
-	
-	/* (non-Javadoc)
-	 * @see br.octahedron.cotopaxi.eventbus.Subscriber#eventPublished(br.octahedron.cotopaxi.eventbus.Event)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.octahedron.cotopaxi.eventbus.Subscriber#eventPublished(br.octahedron.cotopaxi.eventbus
+	 * .Event)
 	 */
 	@Override
 	public void eventPublished(Event event) {
-		ServiceContractPaidEvent paidEvent = (ServiceContractPaidEvent) event;
-		ServiceContract serviceContract = paidEvent.getServiceContract();
-		this.accountManager.transact(serviceContract.getContractor(), serviceContract.getProvider(), serviceContract.getAmount(), "TBD", TransactionType.TRANSFER);
+		try {
+			ServiceContractPaidEvent paidEvent = (ServiceContractPaidEvent) event;
+			ServiceContract serviceContract = paidEvent.getServiceContract();
+			// TODO
+			this.accountManager.transact(serviceContract.getContractor(), serviceContract.getProvider(), serviceContract.getAmount(), "",
+					TransactionType.PAYMENT);
+		} catch (Exception e) {
+			// TODO ROLLBACK PAYMENT
+			// FIRE EVENT TO ROLL BACK PAYMENT, SENDING THE CAUSE.
+			// TODO notifies the origin account owner 
+		}
 	}
 
 }

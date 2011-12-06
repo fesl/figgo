@@ -22,7 +22,7 @@ package br.octahedron.figgo.modules.bank.manager;
  * @author Vítor Avelino
  * 
  */
-public class InsufficientBalanceException extends RuntimeException {
+public class InsufficientBalanceException extends Exception {
 
 	private static final long serialVersionUID = -4742603411538216323L;
 
