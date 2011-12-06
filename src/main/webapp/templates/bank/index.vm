@@ -34,7 +34,7 @@
             <thead>
                 <tr>
                     <th>Data</th>
-                    <th>Destino</th>
+                    <th>Origem/Destino</th>
                     <th>Comentário</th>
                     <th>Valor</th>
                 </tr>
@@ -47,10 +47,16 @@
             #if( $transactions.size() > 0 )
                 #foreach( $transaction in $transactions )
                 <tr>
-                    <td>$numberFormat.format($transaction.Date)</td>
+                    <td>$dateFormat.format($transaction.Date)</td>
+                    #if( $transaction.AccountDest == $user.userId )
+                    <td>$transaction.AccountOrig</td>
+                    <td>$!{transaction.Comment}</td>
+                    <td class="blue">$numberFormat.format($transaction.Amount)</td>
+                    #else
                     <td>$transaction.AccountDest</td>
-                    <td>$transaction.Comment</td>
-                    <td class=#if( $transaction.AccountDest == $user.Email )"blue">#else"red">-#end$numberFormat.format($transaction.Amount)</td>
+                    <td>$!{transaction.Comment}</td>
+                    <td class="red">-$numberFormat.format($transaction.Amount)</td>
+                    #end
                 </tr>
                 #end
             #else
