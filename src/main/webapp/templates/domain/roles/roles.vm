@@ -36,7 +36,6 @@
             </thead>
             <tbody>
             #foreach( $activity in $activities )
-                #set( $activityTemp = $activity )
                 <tr>
                     <td>$i18n.get($activity)</td>
                 #foreach( $role in $roles )

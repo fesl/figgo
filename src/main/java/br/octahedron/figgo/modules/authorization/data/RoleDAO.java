@@ -46,7 +46,7 @@ public class RoleDAO extends GenericDAO<Role> {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Role> getUserRoles(String domain, String username) {
-		Query query = this.datastoreFacade.createQueryForClass(Role.class);
+		Query query = this.createQuery();
 		query.setFilter("domain == :domain && users == :username");
 		return (List<Role>) query.execute(domain, username);
 	}
@@ -61,7 +61,7 @@ public class RoleDAO extends GenericDAO<Role> {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Role> getUserRoles(String username) {
-		Query query = this.datastoreFacade.createQueryForClass(Role.class);
+		Query query = this.createQuery();
 		query.setFilter("users == :username");
 		return (List<Role>) query.execute(username);
 	}
@@ -76,7 +76,7 @@ public class RoleDAO extends GenericDAO<Role> {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Role> getAll(String domain) {
-		Query query = this.datastoreFacade.createQueryForClass(Role.class);
+		Query query = this.createQuery();
 		query.setFilter("domain == :domain");
 		return (List<Role>) query.execute(domain);
 	}
@@ -88,9 +88,10 @@ public class RoleDAO extends GenericDAO<Role> {
 	 *         activity, <code>false</code> if doesn't exists such role.
 	 */
 	public boolean existsRoleFor(String domain, String username, String activity) {
-		Query query = this.datastoreFacade.createQueryForClass(Role.class);
+		Query query = this.createQuery();
 		query.setFilter("domain == :domainName && users == :username && activities == :activity");
 		query.setResult("count(this)");
 		return ((Integer) query.execute(domain, username, activity)) != 0;
 	}
+	
 }
