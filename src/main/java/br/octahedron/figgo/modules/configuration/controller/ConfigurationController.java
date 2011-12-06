@@ -19,11 +19,13 @@
 package br.octahedron.figgo.modules.configuration.controller;
 
 import static br.octahedron.figgo.modules.configuration.controller.validation.DomainValidator.getDomainValidator;
-import static br.octahedron.cotopaxi.controller.Converter.Builder.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
-import br.octahedron.cotopaxi.controller.ConvertionException;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.Module;
@@ -53,24 +55,15 @@ public class ConfigurationController extends Controller {
 	}
 
 	/**
-	 * Get domains informations
-	 * @throws ConvertionException 
-	 */
-	public void getDomainsInfo() throws ConvertionException {
-		this.out("result", this.configurationManager.getDomainsConfiguration(in("domains", strArray(","))));
-		jsonSuccess();
-	}
-	
-	/**
 	 * Get edit domain page
 	 */
 	@AuthorizationRequired
 	public void getEditDomain() {
 		DomainConfiguration domainConfiguration = this.configurationManager.getDomainConfiguration();
-		out("name", domainConfiguration.getName());
-		out("url", domainConfiguration.getUrl());
-		out("maillist", domainConfiguration.getMailList());
-		success(EDIT_DOMAIN_TPL);
+		this.out("name", domainConfiguration.getName());
+		this.out("url", domainConfiguration.getUrl());
+		this.out("maillist", domainConfiguration.getMailList());
+		this.success(EDIT_DOMAIN_TPL);
 	}
 
 	/**
@@ -79,11 +72,11 @@ public class ConfigurationController extends Controller {
 	@AuthorizationRequired
 	public void postEditDomain() {
 		if (getDomainValidator().isValid()) {
-			this.configurationManager.updateDomainConfiguration(in("name"), in("url"), in("maillist"), in("description"));
-			redirect(ROOT_URL);
+			this.configurationManager.updateDomainConfiguration(this.in("name"), this.in("url"), this.in("maillist"), this.in("description"));
+			this.redirect(ROOT_URL);
 		} else {
-			echo();
-			invalid(EDIT_DOMAIN_TPL);
+			this.echo();
+			this.invalid(EDIT_DOMAIN_TPL);
 		}
 	}
 
@@ -92,9 +85,9 @@ public class ConfigurationController extends Controller {
 	 */
 	@AuthorizationRequired
 	public void getModuleDomain() {
-		out("name", in("module"));
-		out("module", this.configurationManager.getModuleConfiguration(Module.valueOf(in("module").toUpperCase())));
-		success(MODULE_CONFIG_TPL);
+		this.out("name", this.in("module"));
+		this.out("module", this.configurationManager.getModuleConfiguration(Module.valueOf(this.in("module").toUpperCase())));
+		this.success(MODULE_CONFIG_TPL);
 	}
 
 	/**
@@ -103,26 +96,28 @@ public class ConfigurationController extends Controller {
 	@AuthorizationRequired
 	public void postModuleDomain() {
 		// TODO validate
-		Module module = Module.valueOf(in("module").toUpperCase());
-		for (String key: this.input()) {
+		Module module = Module.valueOf(this.in("module").toUpperCase());
+		Map<String, String> properties = new HashMap<String, String>();
+		for (String key : this.input()) {
 			if (key.startsWith("__")) {
-				this.configurationManager.setModuleProperty(module, key.substring(2), in(key));
+				properties.put(key.substring(2), this.in(key));
 			}
 		}
-		redirect(EDIT_DOMAIN_URL);
+		this.configurationManager.setModuleProperties(module, properties);
+		this.redirect(EDIT_DOMAIN_URL);
 	}
-	
+
 	@AuthorizationRequired
 	public void postEnableModuleDomain() {
 		// TODO validate
-		this.configurationManager.enableModule(Module.valueOf(in("module").toUpperCase()));
-		jsonSuccess();
+		this.configurationManager.enableModule(Module.valueOf(this.in("module").toUpperCase()));
+		this.jsonSuccess();
 	}
-	
+
 	@AuthorizationRequired
 	public void postDisableModuleDomain() {
 		// TODO validate
-		this.configurationManager.disableModule(in("module").toUpperCase());
-		jsonSuccess();
+		this.configurationManager.disableModule(this.in("module").toUpperCase());
+		this.jsonSuccess();
 	}
 }

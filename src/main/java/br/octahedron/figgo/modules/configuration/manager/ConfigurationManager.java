@@ -19,8 +19,8 @@
 package br.octahedron.figgo.modules.configuration.manager;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import br.octahedron.cotopaxi.eventbus.EventBus;
 import br.octahedron.cotopaxi.inject.Inject;
@@ -92,7 +92,6 @@ public class ConfigurationManager {
 	public void updateAvatarKey(String avatarKey) {
 		DomainConfiguration domainConfiguration = this.getDomainConfiguration();
 		domainConfiguration.setAvatarKey(avatarKey);
-		this.domainDAO.save(domainConfiguration);		
 	}
 
 	/**
@@ -214,6 +213,8 @@ public class ConfigurationManager {
 	}
 
 	/**
+	 * FIXME Update doc and move part this to setModuleProperties
+	 * 
 	 * Updates an model property's value.
 	 * 
 	 * If the given module hasn't any property if the the given propertyKey an
@@ -231,25 +232,34 @@ public class ConfigurationManager {
 	 * @param propertyValue
 	 *            The new property value
 	 */
-	static final Logger logger = Logger.getLogger(ConfigurationManager.class.getName());
-
-	public void setModuleProperty(Module module, String propertyKey, String propertyValue) {
+	private void setModuleProperty(ModuleConfiguration moduleConf, String propertyKey, String propertyValue) {
+		if (moduleConf.existsProperty(propertyKey)) {
+			String regex = moduleConf.getPropertyRegex(propertyKey);
+			if (!regex.isEmpty()) {
+				if (!propertyValue.matches(regex)) {
+					throw new IllegalArgumentException("The given value for property " + propertyKey + " from module " + moduleConf.getModuleName()
+							+ " isn't valid.");
+				}
+			}
+			moduleConf.setConfigurationValue(propertyKey, propertyValue);
+		} else {
+			throw new IllegalArgumentException("The module " + moduleConf.getModuleName() + "hasn't any property with key " + propertyKey);
+		}
+	}
+	
+	/**
+	 * TODO
+	 * @param module
+	 * @param properties
+	 */
+	public void setModuleProperties(Module module, Map<String, String> properties) {
 		DomainConfiguration domainConf = this.getDomainConfiguration();
 		if (domainConf.isModuleEnabled(module.name())) {
 			ModuleConfiguration moduleConf = this.moduleDAO.get(module.name());
-			if (moduleConf.existsProperty(propertyKey)) {
-				String regex = moduleConf.getPropertyRegex(propertyKey);
-				if (!regex.isEmpty()) {
-					if (!propertyValue.matches(regex)) {
-						throw new IllegalArgumentException("The given value for property " + propertyKey + " from module " + module.name()
-								+ " isn't valid.");
-					}
-				}
-				moduleConf.setConfigurationValue(propertyKey, propertyValue);
-				this.moduleDAO.save(moduleConf);
-			} else {
-				throw new IllegalArgumentException("The module " + module.name() + "hasn't any property with key " + propertyKey);
+			for (String propertyKey : properties.keySet()) {
+				this.setModuleProperty(moduleConf, propertyKey, properties.get(propertyKey));
 			}
+			this.moduleDAO.save(moduleConf);
 		} else {
 			throw new DataDoesNotExistsException("The module " + module.name() + " isn't enabled.");
 		}

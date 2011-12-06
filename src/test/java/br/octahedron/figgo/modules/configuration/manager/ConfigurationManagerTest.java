@@ -29,7 +29,9 @@ import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -247,9 +249,11 @@ public class ConfigurationManagerTest {
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
 		// test
+		Map<String, String> properties = new HashMap<String, String>();
+		properties.put("name", "Octa Banco");
 		ModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
 		assertEquals("Banco", moduleInfo.getPropertyValue("name"));
-		this.configurationManager.setModuleProperty(Module.BANK, "name", "Octa Banco");
+		this.configurationManager.setModuleProperties(Module.BANK, properties);
 		moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
 		assertEquals("Octa Banco", moduleInfo.getPropertyValue("name"));
 		// check mocks
@@ -269,7 +273,9 @@ public class ConfigurationManagerTest {
 			// enable mock
 			replay(this.domainDAO, this.moduleDAO);
 			// test
-			this.configurationManager.setModuleProperty(Module.BANK, "invalid.key", "value");
+			Map<String, String> properties = new HashMap<String, String>();
+			properties.put("invalid.key", "value");
+			this.configurationManager.setModuleProperties(Module.BANK, properties);
 		} finally {
 			// check mocks
 			verify(this.domainDAO, this.moduleDAO);
@@ -289,9 +295,11 @@ public class ConfigurationManagerTest {
 		replay(this.domainDAO, this.moduleDAO);
 		try {
 			// test
+			Map<String, String> properties = new HashMap<String, String>();
+			properties.put("name", "b");
 			ModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
 			assertEquals("Banco", moduleInfo.getPropertyValue("name"));
-			this.configurationManager.setModuleProperty(Module.BANK, "name", "b");
+			this.configurationManager.setModuleProperties(Module.BANK, properties);
 			fail();
 		} finally {
 			// check mocks
@@ -312,7 +320,9 @@ public class ConfigurationManagerTest {
 		// enable mock
 		replay(this.domainDAO, this.moduleDAO);
 		// test
-		this.configurationManager.setModuleProperty(Module.BANK, "name", "Octa Banco");
+		Map<String, String> properties = new HashMap<String, String>();
+		properties.put("name", "Octa Banco");
+		this.configurationManager.setModuleProperties(Module.BANK, properties);
 		ModuleConfiguration moduleInfo = this.configurationManager.getModuleConfiguration(Module.BANK);
 		assertEquals("Octa Banco", moduleInfo.getPropertyValue("name"));
 		this.configurationManager.restoreModuleProperties(Module.BANK);
