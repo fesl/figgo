@@ -120,15 +120,14 @@ public class BankAdminController extends Controller {
 	 * 
 	 * @throws DisabledBankAccountException
 	 *             If the bank account is disabled - This kind of account can't be disabled, if this
-	 *             occurs, indicates an DEFECT
+	 *             occurs, indicates a DEFECT
 	 * @throws InsufficientBalanceException
 	 *             This transfer is from SYSTEM account, this kind of account has infinity funds, if
-	 *             this occurs, indicates an DEFECT
+	 *             this occurs, indicates a DEFECT
 	 */
 	public void postBallastBank() throws InsufficientBalanceException, DisabledBankAccountException {
-		Validator requiredValidator = BankValidators.getBallastValidator();
 		Validator amount = BankValidators.getAmountValidator();
-		if (requiredValidator.isValid() && amount.isValid()) {
+		if (amount.isValid()) {
 			this.accountManager.insertBallast(this.subDomain(), new BigDecimal(this.in("amount")), this.in("comment"));
 			this.redirect(BALLAST_URL);
 		} else {

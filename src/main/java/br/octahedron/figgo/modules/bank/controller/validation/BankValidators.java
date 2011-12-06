@@ -64,22 +64,6 @@ public class BankValidators {
 	}
 
 	/**
-	 * A validator for ballast that checks the required fields
-	 * 
-	 * For ballast it checks:
-	 * 
-	 * userId - required, valid user id
-	 */
-	public static synchronized Validator getBallastValidator() {
-		if (requiredValidator == null) {
-			requiredValidator = new Validator();
-			requiredValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"),
-					regex("([a-zA-ZáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûÃÕãõçÇ] *){2,}", "INVALID_USERID"));
-		}
-		return requiredValidator;
-	}
-
-	/**
 	 * A validator that check if the transfer's amount is positive
 	 * 
 	 * For Amount it checks:
