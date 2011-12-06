@@ -1,4 +1,10 @@
 BANK=Banco
 SERVICES=Serviços
+
 true=Sim
 false=Não
+
+INVALID_AMOUNT=Valor: deve ser maior que 0 (zero)
+
+NOT_VALID_DATE=Data: não é um formato válido (e.g.: dd/MM/yy)
+NOT_VALID_VALUE=Valor: não é um número válido

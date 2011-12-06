@@ -3,7 +3,6 @@ REQUIRED_SERVICE_NAME=Nome: não pode ficar vazio
 REQUIRED_SERVICE_AMOUNT=Valor: não pode ficar vazio
 REQUIRED_SERVICE_CATEGORY=Categoria: não pode ficar vazia
 INVALID_SERVICE_CATEGORY=Categoria: é muito curto (mínimo: 4 (quatro) caracteres)
-INVALID_SERVICE_AMOUNT=Valor: deve ser maior que 0 (zero)
 NON_EXISTENT_SERVICE=Serviço: não existente
 
 # Service contracts
