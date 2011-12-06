@@ -50,8 +50,8 @@ public class ServiceValidators {
 		if (serviceValidator == null) {
 			serviceValidator = new Validator();
 			serviceValidator.add("name", required("REQUIRED_SERVICE_NAME"), minLength(4, "INVALID_SERVICE_NAME"));
-			serviceValidator.add("amount", required("REQUIRED_SERVICE_AMOUNT"), type(bigDecimalNumber()),
-					greaterThan(bigDecimalNumber(), new BigDecimal(0), "INVALID_SERVICE_AMOUNT"));
+			serviceValidator.add("amount", required("REQUIRED_SERVICE_AMOUNT"), type("NOT_VALID_VALUE", bigDecimalNumber()),
+					greaterThan(bigDecimalNumber(), new BigDecimal(0), "INVALID_AMOUNT"));
 			serviceValidator.add("category", required("REQUIRED_SERVICE_CATEGORY"), minLength(4, "INVALID_SERVICE_CATEGORY"));
 		}
 		return serviceValidator;
@@ -71,7 +71,7 @@ public class ServiceValidators {
 	public static Validator getContractValidator() {
 		if(contractValidator == null) {
 			contractValidator = new Validator();
-			contractValidator.add("provider", required(), notEquals(currentUser(), string(),"INVALID_PROVIDER"));
+			contractValidator.add("provider", required("REQUIRED_CONTRACT_PROVIDER"), notEquals(currentUser(), string(), "INVALID_PROVIDER"));
 		}
 		return contractValidator;
 	}

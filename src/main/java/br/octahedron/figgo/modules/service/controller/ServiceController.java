@@ -34,7 +34,7 @@ import br.octahedron.figgo.modules.service.data.ServiceContract;
 import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
 import br.octahedron.figgo.modules.service.manager.InexistentServiceProviderException;
 import br.octahedron.figgo.modules.service.manager.NotServiceProviderException;
-import br.octahedron.figgo.modules.service.manager.ServiceContractNotFound;
+import br.octahedron.figgo.modules.service.manager.ServiceContractNotFoundException;
 import br.octahedron.figgo.modules.service.manager.ServiceManager;
 import br.octahedron.figgo.modules.service.manager.ServiceNotFoundException;
 
@@ -191,10 +191,10 @@ public class ServiceController extends Controller {
 	 * Shows all contracts (opened, hired and provided) for current user
 	 */
 	public void getShowContracts() {
-		this.out("providerOpenedContracts", this.servicesManager.getOpenedProvidedContracts(this.currentUser()));
-		this.out("contractorOpenedContracts", this.servicesManager.getOpenedHiredContracts(this.currentUser()));
-		this.out("contractorContracts", this.servicesManager.getHiredContracts(this.currentUser()));
-		this.out("providerOpenedContracts", this.servicesManager.getProvidedContracts(this.currentUser()));
+		this.out("providedOpenedContracts", this.servicesManager.getOpenedProvidedContracts(this.currentUser()));
+		this.out("hiredOpenedContracts", this.servicesManager.getOpenedHiredContracts(this.currentUser()));
+		this.out("hiredContracts", this.servicesManager.getHiredContracts(this.currentUser()));
+		this.out("providedContracts", this.servicesManager.getProvidedContracts(this.currentUser()));
 		this.success(LIST_CONTRACTS_TPL);
 	}
 
@@ -209,7 +209,7 @@ public class ServiceController extends Controller {
 			this.out("contract", serviceContract);
 			this.out("status", serviceContract.getStatus());
 			this.success(EDIT_CONTRACT_TPL);
-		} catch (ServiceContractNotFound e) {
+		} catch (ServiceContractNotFoundException e) {
 			this.notFound();
 		}
 	}
@@ -229,7 +229,7 @@ public class ServiceController extends Controller {
 				this.echo();
 				this.out("exception", i18n.get(this.locales(), e.getMessage()));
 				this.invalid(EDIT_CONTRACT_TPL);
-			} catch (ServiceContractNotFound e) {
+			} catch (ServiceContractNotFoundException e) {
 				this.notFound();
 			}
 		} else {
@@ -264,7 +264,7 @@ public class ServiceController extends Controller {
 		try {
 			this.servicesManager.makePayment(this.in("id"), this.currentUser());
 			this.redirect(SHOW_CONTRACTS_URL);
-		} catch (ServiceContractNotFound e) {
+		} catch (ServiceContractNotFoundException e) {
 			this.notFound();
 		} catch (FiggoException e) {
 			this.out("exception", i18n.get(this.locales(), e.getMessage()));

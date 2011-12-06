@@ -224,14 +224,14 @@ public class ServiceManager {
 	/**
 	 * @param in
 	 * @return
-	 * @throws ServiceContractNotFound
+	 * @throws ServiceContractNotFoundException
 	 */
-	public ServiceContract getServiceContract(String contractId) throws ServiceContractNotFound {
+	public ServiceContract getServiceContract(String contractId) throws ServiceContractNotFoundException {
 		ServiceContract serviceContract = this.serviceContractDAO.get(contractId);
 		if (serviceContract != null) {
 			return serviceContract;
 		} else {
-			throw new ServiceContractNotFound();
+			throw new ServiceContractNotFoundException();
 		}
 	}
 
@@ -295,10 +295,10 @@ public class ServiceManager {
 	 * @param status
 	 * @param providerId
 	 * @throws NotServiceProviderException
-	 * @throws ServiceContractNotFound
+	 * @throws ServiceContractNotFoundException
 	 */
 	public void updateContractStatus(String contractId, ServiceContractStatus status, String providerId) throws NotServiceProviderException,
-			ServiceContractNotFound {
+			ServiceContractNotFoundException {
 		ServiceContract serviceContract = this.getServiceContract(contractId);
 		if (serviceContract.getProvider().equals(providerId)) {
 			serviceContract.setStatus(status);
@@ -314,10 +314,10 @@ public class ServiceManager {
 	 * @param contractId
 	 * @throws UncompletedServiceContractException
 	 * @throws OnlyServiceContractorException
-	 * @throws ServiceContractNotFound
+	 * @throws ServiceContractNotFoundException
 	 */
 	public void makePayment(String contractId, String contractorId) throws UncompletedServiceContractException, OnlyServiceContractorException,
-			ServiceContractNotFound {
+			ServiceContractNotFoundException {
 		ServiceContract serviceContract = this.getServiceContract(contractId);
 		if (serviceContract.getStatus() != ServiceContractStatus.COMPLETED) {
 			throw new UncompletedServiceContractException();
