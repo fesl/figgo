@@ -42,6 +42,7 @@ public class BankValidators {
 
 	private static Validator valueValidator;
 	private static Validator requiredValidator;
+	private static Validator shareValidator;
 	private static Validator dateValidator;
 
 	/**
@@ -92,8 +93,8 @@ public class BankValidators {
 	public static synchronized Validator getAmountValidator() {
 		if (valueValidator == null) {
 			valueValidator = new Validator();
-			valueValidator.add("amount", required(), type("NOT_VALID_VALUE", bigDecimalNumber()),
-					greaterThan(bigDecimalNumber(), new BigDecimal(0), "NOT_VALID_VALUE"));
+			valueValidator.add("amount", required("REQUIRED_TRANSACTION_AMOUT"), type("NOT_VALID_VALUE", bigDecimalNumber()),
+					greaterThan(bigDecimalNumber(), new BigDecimal(0), "INVALID_AMOUNT"));
 		}
 		return valueValidator;
 	}
@@ -110,8 +111,8 @@ public class BankValidators {
 	public static Validator getDateValidator() {
 		if (dateValidator == null) {
 			dateValidator = new Validator();
-			dateValidator.add("startDate", required(), type("NOT_VALID_DATE", date(SHORT)));
-			dateValidator.add("endDate", required(), type("NOT_VALID_DATE", date(SHORT)), greaterThan(attribute("startDate"), date(SHORT), "NOT_VALID_DATE"));
+			dateValidator.add("startDate", required("REQUIRED_DATE_START"), type("NOT_VALID_DATE", date(SHORT)));
+			dateValidator.add("endDate", required("REQUIRED_END_END"), type("NOT_VALID_DATE", date(SHORT)), greaterThan(attribute("startDate"), date(SHORT), "INVALID_DATE_RANGE"));
 		}
 		return dateValidator;
 	}
