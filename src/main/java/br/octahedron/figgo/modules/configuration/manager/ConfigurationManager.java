@@ -275,7 +275,7 @@ public class ConfigurationManager {
 	/**
 	 * @return all {@link DomainConfiguration} based on namespaces created along the application.
 	 */
-	protected Set<DomainConfiguration> getDomainsConfiguration() {
+	public Set<DomainConfiguration> getDomainsConfiguration() {
 		return this.domainDAO.getDomainsConfiguration();
 	}
 
