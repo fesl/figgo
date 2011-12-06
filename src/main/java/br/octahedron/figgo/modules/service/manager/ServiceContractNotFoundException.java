@@ -24,11 +24,11 @@ import br.octahedron.figgo.FiggoException;
  * @author vitoravelino
  *
  */
-public class ServiceContractNotFound extends FiggoException {
+public class ServiceContractNotFoundException extends FiggoException {
 
 	private static final long serialVersionUID = -8836544871765882456L;
 
-	public ServiceContractNotFound() {
+	public ServiceContractNotFoundException() {
 		super("SERVICE_CONTRACT_NOT_FOUND");
 	}
 
