@@ -19,6 +19,7 @@
 package br.octahedron.figgo.modules.configuration.data;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -47,9 +48,27 @@ public class ModuleConfiguration implements Serializable {
 
 	@Persistent(serialized = "true", defaultFetchGroup = "true")
 	private Map<String, String> values = new HashMap<String, String>();
+	
+	@Persistent
+	private Date timestamp;
 
 	public ModuleConfiguration(String moduleName) {
 		this.moduleName = moduleName;
+		this.timestamp = new Date();
+	}
+	
+	/**
+	 * @param timestamp the timestamp to set
+	 */
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+	
+	/**
+	 * @return the timestamp
+	 */
+	public Date getTimestamp() {
+		return this.timestamp;
 	}
 
 	/**

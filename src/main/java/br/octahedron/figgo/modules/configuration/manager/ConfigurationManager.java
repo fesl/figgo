@@ -19,6 +19,7 @@
 package br.octahedron.figgo.modules.configuration.manager;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
@@ -259,6 +260,7 @@ public class ConfigurationManager {
 			for (String propertyKey : properties.keySet()) {
 				this.setModuleProperty(moduleConf, propertyKey, properties.get(propertyKey));
 			}
+			moduleConf.setTimestamp(new Date());
 			this.moduleDAO.save(moduleConf);
 		} else {
 			throw new DataDoesNotExistsException("The module " + module.name() + " isn't enabled.");
