@@ -28,7 +28,6 @@ import java.util.TreeSet;
 import br.octahedron.cotopaxi.datastore.jdo.GenericDAO;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
-import br.octahedron.util.Log;
 
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;
@@ -87,7 +86,6 @@ public class DomainConfigurationDAO extends GenericDAO<DomainConfiguration> {
 	public Collection<DomainConfiguration> getDomainsConfigurations(String[] domains) {
 		List<DomainConfiguration> result = new LinkedList<DomainConfiguration>();
 		Iterator<DomainConfiguration> domainConfiguration;
-		new Log(DomainConfigurationDAO.class).warning("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + this.namespaceManager);
 		for (String domain : domains) {
 			try {
 				this.namespaceManager.changeToNamespace(domain);

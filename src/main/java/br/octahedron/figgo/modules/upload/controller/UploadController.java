@@ -18,7 +18,10 @@
  */
 package br.octahedron.figgo.modules.upload.controller;
 
+import static br.octahedron.cotopaxi.CotopaxiProperty.APPLICATION_BASE_URL;
+import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
+import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.blobstore.BlobstoreController;
 import br.octahedron.cotopaxi.eventbus.EventBus;
 import br.octahedron.cotopaxi.inject.Inject;
@@ -27,50 +30,57 @@ import com.google.appengine.api.blobstore.BlobKey;
 
 /**
  * @author Vítor Avelino
- *
+ * 
  */
 @AuthenticationRequired
 public class UploadController extends BlobstoreController {
 
 	@Inject
 	private EventBus eventBus;
-	
+
 	public void setEventBus(EventBus eventBus) {
 		this.eventBus = eventBus;
 	}
-	
+
 	public void getServeBlob() {
-		serve(in("key"));
+		this.serve(this.in("key"));
 	}
 
 	public void getUserUpload() {
-		out("uploadUrl", uploadUrl("/user/upload"));
-		success("user/upload.vm");
+		this.out("uploadUrl", this.uploadUrl("/user/upload"));
+		this.success("user/upload.vm");
 	}
 
 	public void postUserUpload() {
-		BlobKey blobKey = blobKey("file");
+		BlobKey blobKey = this.blobKey("file");
 		if (blobKey != null) {
-			this.eventBus.publish(new UserUploadEvent(currentUser(), blobKey.getKeyString()));
-			redirect("/");
+			this.eventBus.publish(new UserUploadEvent(this.currentUser(), blobKey.getKeyString()));
+			this.redirect("/");
 		} else {
-			redirect("/user/upload");
+			this.redirect("/user/upload");
 		}
 	}
 	
+	@AuthorizationRequired
 	public void getDomainUpload() {
-		out("uploadUrl", uploadUrl("/domain/upload"));
-		success("domain/upload.vm");
+		this.out("uploadUrl", this.uploadUrl("/domain/upload"));
+		this.out("subDomain", this.subDomain());
+		this.success("domain/upload.vm");
 	}
 
+	@AuthorizationRequired
 	public void postDomainUpload() {
-		BlobKey blobKey = blobKey("file");
-		if (blobKey != null) {
-			this.eventBus.publish(new DomainUploadEvent(subDomain(), blobKey.getKeyString()));
-			redirect("/");
+		if (!this.serverName().equals(getProperty(APPLICATION_BASE_URL))) {
+			BlobKey blobKey = this.blobKey("file");
+			if (blobKey != null) {
+				this.eventBus.publish(new DomainUploadEvent(this.in("subdomain"), blobKey.getKeyString()));
+				this.redirect(String.format("http://%s.%s", this.in("subdomain"), getProperty("APPLICATION_DOMAIN")));
+			} else {
+				this.redirect("/domain/upload");
+			}
 		} else {
-			redirect("/domain/upload");
+			this.notFound();
 		}
 	}
-	
+
 }
