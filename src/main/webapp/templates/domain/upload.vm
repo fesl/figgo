@@ -14,6 +14,7 @@
         <form action="$uploadUrl" method="post" enctype="multipart/form-data">
             <fieldset>
                 <legend>Selecione um arquivo</legend>
+                <input type="hidden" name="subdomain" value="$subDomain" />
                 <div>
                     <label for="avatar">Arquivo</label>
                     <input type="file" name="file" />

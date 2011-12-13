@@ -22,16 +22,20 @@ import static br.octahedron.figgo.modules.authorization.data.Role.createRoleKey;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.TreeSet;
 
+import br.octahedron.figgo.modules.ApplicationDomainModuleSpec.ActionSpec;
 import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
-import br.octahedron.figgo.modules.ApplicationDomainModuleSpec.ActionSpec;
 import br.octahedron.figgo.modules.ModuleSpec.Type;
+import br.octahedron.figgo.modules.authorization.data.DomainUser;
+import br.octahedron.figgo.modules.authorization.data.DomainUserDAO;
 import br.octahedron.figgo.modules.authorization.data.Role;
 import br.octahedron.figgo.modules.authorization.data.RoleDAO;
 import br.octahedron.util.Log;
@@ -40,7 +44,7 @@ import br.octahedron.util.Log;
  * This entity is responsible to manage authorization issues, such as roles operations
  * (create/delete role, add/remove user, add/remove activity) and check user authorizations.
  * 
- * It's a global module, working in the default namespace.
+ * It's a global module working in the default namespace mostly, except for {@link DomainUserDAO}.
  * 
  * @author Danilo Queiroz
  * @author Vítor Avelino
@@ -51,7 +55,8 @@ public class AuthorizationManager {
 
 	private GoogleAuthorizer googleAuthorizer = new GoogleAuthorizer();
 	private RoleDAO roleDAO = new RoleDAO();
-
+	private DomainUserDAO domainUserDAO = new DomainUserDAO();
+	
 	/**
 	 * Used to inject a mock object on tests.
 	 * 
@@ -61,7 +66,17 @@ public class AuthorizationManager {
 	protected void setRoleDAO(RoleDAO roleDAO) {
 		this.roleDAO = roleDAO;
 	}
-
+	
+	/**
+	 * Used to inject a mock object on tests.
+	 * 
+	 * @param domainUserDAO
+	 *            the domainUserDAO to set
+	 */
+	protected void setDomainUserDAO(DomainUserDAO domainUserDAO) {
+		this.domainUserDAO = domainUserDAO;
+	}
+	
 	/**
 	 * Creates a new role for a given domain if it doesn't exist yet.
 	 * 
@@ -322,13 +337,14 @@ public class AuthorizationManager {
 	 * 
 	 * @param domain
 	 *            domain that the roles belongs to
-	 * @param username
+	 * @param userId
 	 *            username to be removed from role
 	 */
-	public void removeUserFromRoles(String domain, String username) {
-		for (Role role : this.getUserRoles(domain, username)) {
-			role.removeUser(username);
+	public void removeUserFromRoles(String domain, String userId) {
+		for (Role role : this.getUserRoles(domain, userId)) {
+			role.removeUser(userId);
 		}
+		this.removeDomainUser(domain, userId);
 	}
 
 	/**
@@ -363,6 +379,61 @@ public class AuthorizationManager {
 		Role role = this.getRole(domain, roleName);
 		role.updateActivities(activities);
 		this.roleDAO.save(role);
+	}
+	
+	/**
+	 * 
+	 * @param userId
+	 * @param isActive
+	 */
+	public void createDomainUser(String domain, String userId, boolean isActive) {
+		DomainUser domainUser = new DomainUser(userId, domain, isActive);
+		this.domainUserDAO.save(domainUser);
+	}
+
+	/**
+	 * @return
+	 */
+	public Collection<DomainUser> getActiveUsers(String domain) {
+		return this.domainUserDAO.getActiveUsers(domain);
+	}
+
+	/**
+	 * @return
+	 */
+	public Collection<DomainUser> getNonActiveUsers(String domain) {
+		return this.domainUserDAO.getNonActiveUsers(domain);
+	}
+
+	/**
+	 * @param domain
+	 * @param userId
+	 */
+	public void activateDomainUser(String domain, String userId) {
+		DomainUser domainUser = this.domainUserDAO.get(userId);
+		domainUser.markAsActive();
+		this.addUsersToRole(domain, "USERS", userId);
+	}
+
+	/**
+	 * @param userId
+	 */
+	public void removeDomainUser(String domain, String userId) {
+		DomainUser domainUser = this.domainUserDAO.get(userId);
+		domainUser.removeDomain(domain);
+	}
+
+	/**
+	 * @param domain
+	 * @param users
+	 * @return
+	 */
+	public Map<String, Collection<Role>> getUsersRoles(String domain, String[] users) {
+		Map<String, Collection<Role>> result = new HashMap<String, Collection<Role>>();
+		for (String user : users) {
+			result.put(user, this.getUserRoles(domain, user));
+		}
+		return result;
 	}
 
 }

@@ -39,6 +39,8 @@ import org.junit.Test;
 
 import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
+import br.octahedron.figgo.modules.authorization.data.DomainUser;
+import br.octahedron.figgo.modules.authorization.data.DomainUserDAO;
 import br.octahedron.figgo.modules.authorization.data.Role;
 import br.octahedron.figgo.modules.authorization.data.RoleDAO;
 
@@ -51,6 +53,7 @@ import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig
 public class AuthorizationManagerTest {
 
 	private RoleDAO roleDAO;
+	private DomainUserDAO domainUserDAO;
 	private AuthorizationManager authManager;
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalUserServiceTestConfig()).setEnvIsLoggedIn(true);
 
@@ -58,8 +61,10 @@ public class AuthorizationManagerTest {
 	public void setUp() {
 		this.helper.setUp();
 		this.roleDAO = createMock(RoleDAO.class);
+		this.domainUserDAO = createMock(DomainUserDAO.class);
 		this.authManager = new AuthorizationManager();
 		this.authManager.setRoleDAO(this.roleDAO);
+		this.authManager.setDomainUserDAO(this.domainUserDAO);
 	}
 
 	@Test(expected = DataAlreadyExistsException.class)
@@ -194,8 +199,10 @@ public class AuthorizationManagerTest {
 		List<Role> roles = new LinkedList<Role>();
 		roles.add(role);
 		roles.add(role2);
+		DomainUser domainUser = new DomainUser("userId", "domain", true);
 		expect(this.roleDAO.getUserRoles("domain", "user1")).andReturn(roles);
-		replay(this.roleDAO);
+		expect(this.domainUserDAO.get("user1")).andReturn(domainUser);
+		replay(this.domainUserDAO, this.roleDAO);
 		try {
 			// test
 			this.authManager.removeUserFromRoles("domain", "user1");

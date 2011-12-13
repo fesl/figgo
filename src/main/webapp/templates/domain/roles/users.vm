@@ -11,16 +11,27 @@
 <div class="left">
     <section id="main-intern">
         <h3>Usuários no domínio</h3>
-        #if ( $auth.ListRoles )
+        
         <nav>
-            <a href="/roles">Gerenciar papéis e permissões</a>
+            <ul class="two-column-shortcuts">
+                #if ( $auth.ListUsers )
+                <li class="selected"><a href="/users">Listar usuários</a></li>
+                #end
+                #if ( $auth.ListRoles )
+                <li><a href="/roles">Gerenciar papéis e permissões</a></li>
+                #end
+                #if ( $auth.ListUsersAndRoles )
+                <li><a href="/roles/users">Gerenciar usuários e papéis</a></li>
+                #end
+            </ul>
         </nav>
 
         <hr />
-        #end
+
         <section id="active">
             <h4>Ativos</h4>
-            <table>
+            <img class="loader" src="/img/ajax-loader.gif" />
+            <table class="has-users">
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -30,10 +41,10 @@
                 </thead>
                 <tbody>
                 #foreach( $user in $users )
-                    <tr>
-                        <td>$user.Name</td>
-                        <td>$user.UserId</td>
-                        <td>$user.Roles</td>
+                    <tr data-user="$user.userId">
+                        <td>$user.name</td>
+                        <td class="second">$user.userId</td>
+                        <td>$user.roles</td>
                     </tr>
                 #end
                 </tbody>
@@ -42,7 +53,12 @@
 
         <section id="pending">
             <h4>Pendentes</h4>
-            <table class="simple">
+            #if ( $pending.size() > 0 )
+            <img class="loader" src="/img/ajax-loader.gif" />
+            <table class="has-users">
+            #else
+            <table>
+            #end
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -51,11 +67,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                #foreach( $user in $pending )
-                    <tr>
+                #if ( $pending.size() > 0 )
+                    #foreach( $user in $pending )
+                    <tr data-user="$user.userId">
                         <td>$user.Name</td>
                         <td>$user.UserId</td>
-                        <td><button>aceitar</button></td>
+                        <td><a href="/user/request/accept/$user.userId" data-type="url" data-confirm="Desejas realmente aceitar a requisição?">Aceitar</a> - <a href="/user/request/reject/$user.userId" data-type="url" data-confirm="Desejas realmente rejeitar a requisição?">Rejeitar</a></td>
+                    </tr>
+                    #end
+                #else
+                    <tr>
+                        <td colspan="3">Nenhum usuário pendente</td>
                     </tr>
                 #end
                 </tbody>
@@ -65,4 +87,6 @@
 </div>
 #end
 
-#scripts()
+#@scripts()
+    <script src="/js/roles.js"></script>
+#end

@@ -847,6 +847,9 @@ img.notification {
   border-left: 1px solid #dadada;
   border-right: 1px solid #f8f8f8; }
 
+.has-users {
+  display: none; }
+
 /* ============================================
  * iPad in landscape
  * ============================================ */

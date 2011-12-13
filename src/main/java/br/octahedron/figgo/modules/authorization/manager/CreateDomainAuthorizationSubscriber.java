@@ -93,7 +93,12 @@ public class CreateDomainAuthorizationSubscriber implements Subscriber {
 		logger.info("Configuring the admin for domain %s. Admin: %s", domainName, domainAdmin);
 		this.authorizationManager.addUsersToRole(domainName, ADMINS_ROLE_NAME, domainAdmin);
 		this.authorizationManager.addUsersToRole(domainName, USERS_ROLE_NAME, domainAdmin);
-
+		this.createDomainUser(domainName, domainAdmin);
+		
 		PersistenceManagerPool.forceClose();
+	}
+	
+	private void createDomainUser(String domainName, String domainAdmin) {
+		this.authorizationManager.createDomainUser(domainName, domainAdmin, true);
 	}
 }

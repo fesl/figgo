@@ -48,23 +48,57 @@ $(function() {
 	});
 
 	// used on /roles
-	$("input[type=checkbox]").change(function(e) {
+	$("#roles").find("input[type=checkbox]").change(function(e) {
 		var $this = $(this);
 		if (this.checked) {
-			$.ajax({
-				type: "POST",
-				url: "/roles/" + $this.data("role") + "/activity/add",
-				dataType: 'json',
-				data: {activity: $this.data('activity')}
-			}).error(function(data) {
+			$.post("/roles/" + this.dataset["role"] + "/activity/" + this.dataset['activity'] + "/add")
+			.error(function(data) {
 				$this[0].checked = false;
 				alert('Não foi possível adicionar atividade ao papel')
 			});
 		} else {
-			$.post("/roles/" + $this.data("role") + "/activity/" + $this.data("activity") + "/remove")
+			$.post("/roles/" + this.dataset["role"] + "/activity/" + this.dataset["activity"] + "/remove")
 			.error(function(data) {
 				this.checked = true;
 				console.log('Não foi possível remover atividade ao papel')
+			});
+		}
+	});
+
+	// used on /roles
+	// used on /users
+	// used on /roles/users
+	var users = $("table").find('tr').map(function() { return this.dataset['user'] }).get();
+	if (users.length) {
+		var $providers = $("table");
+		$.get('/users/search/', {'users': users.join(",")}, function(data) {
+			var i, currentLi,
+				usersLength = data.result.length,
+				users = data.result;
+			for (i = 0; i < usersLength; i += 1) {
+				currentLi = $providers.find("tr[data-user='"+users[i].userId+"']")[0]
+				currentLi.childNodes[1].textContent = users[i].name;
+			}
+			$(".loader").remove();
+			$providers.fadeIn();
+		}).error(function(data) {
+			console.log("não foi possível carregar dados dos usuários");
+		});
+	}
+
+	$("#roles-users").find("input[type=checkbox]").change(function(e) {
+		var $this = $(this);
+		if (this.checked) {
+			$.post("/roles/" + this.dataset["role"] + "/users/" + this.dataset["user"] + "/add")
+			.error(function(data) {
+				$this[0].checked = false;
+				alert('Não foi possível adicionar role ao usuário');
+			});
+		} else {
+			$.post("/roles/" + this.dataset["role"] + "/users/" + this.dataset["user"] + "/remove")
+			.error(function(data) {
+				$this[0].checked = true;
+				console.log('Não foi possível remover role do usuário')
 			});
 		}
 	});
