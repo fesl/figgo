@@ -31,7 +31,7 @@ import br.octahedron.util.Log;
  */
 public class AuthenticationInterceptor extends AbstractGoogleAuthenticationInterceptor {
 	
-	private static final String NEW_USER_URL = "/user/new";
+	private static final String NEW_USER_URL = "/users/new";
 	
 	@Inject
 	private UserManager usersManager;
