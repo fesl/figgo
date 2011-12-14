@@ -36,6 +36,7 @@
                 </ul>
             </div>
         </div>
+    #if ( $user )
         <div id="header-bottom">
             <div class="wrapper">
                 <div id="avatar-info">
@@ -47,6 +48,7 @@
                 </div>
             </div>    
         </div>
+    #end
     </header>
     <div id="content">
         <div class="wrapper">
@@ -56,9 +58,7 @@
 
     <footer>
         <div class="wrapper">
-            <div class="wrapper">
-                <p><small><strong>Figgo</strong> é licenciado sob <a href="">GPLv3</a> e esta página é licenciada sob <a href="">Creative Commons</a>.</small></p>
-            </div>
+            <p><small><strong>Figgo</strong> é licenciado sob <a href="">GPLv3</a> e esta página é licenciada sob <a href="">Creative Commons</a>.</small></p>
         </div>
     </footer>
 #end

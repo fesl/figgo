@@ -47,6 +47,7 @@ public class DomainUser implements Serializable {
 
 	public DomainUser(String userId, String domain, boolean isActive) {
 		this.userId = userId;
+		this.addDomain(domain);
 		this.isActive = isActive;
 	}
 	

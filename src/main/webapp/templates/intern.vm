@@ -56,7 +56,11 @@
         <div id="header-bottom">
             <div class="wrapper">
                 <div id="avatar-info">
+                    #if ( $user.avatarKey )
+                    <img src="/serve/$user.avatarKey" />
+                    #else
                     <img src="http://lorempixum.com/45/45" />
+                    #end
                     <span>
                         $user.name <br />
                         <a href="${applicationBaseURL}dashboard">Dashboard</a>
@@ -82,7 +86,11 @@
         <div id="header-bottom">
             <div class="wrapper">
                 <div id="avatar-info" class="left">
+                    #if ( $user.avatarKey )
                     <img src="/serve/$user.avatarKey" />
+                    #else
+                    <img src="http://lorempixum.com/45/45" />
+                    #end
                     <span>
                         $user.name <br /> 
                         <a href="${applicationBaseURL}dashboard">Dashboard</a>
