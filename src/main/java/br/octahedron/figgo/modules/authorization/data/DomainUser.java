@@ -45,8 +45,9 @@ public class DomainUser implements Serializable {
 	@Persistent
 	private boolean isActive = false;
 
-	public DomainUser(String userId, String domain, boolean isActive2) {
+	public DomainUser(String userId, String domain, boolean isActive) {
 		this.userId = userId;
+		this.isActive = isActive;
 	}
 	
 	/**
