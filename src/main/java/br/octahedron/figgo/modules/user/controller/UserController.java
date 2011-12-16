@@ -35,7 +35,6 @@ import br.octahedron.figgo.modules.user.manager.UserManager;
 /**
  * @author Danilo Queiroz - daniloqueiroz@octahedron.com.br
  */
-@OnlyForGlobal
 public class UserController extends Controller {
 	
 	static final String BASE_DIR_TPL = "user/";
@@ -66,6 +65,7 @@ public class UserController extends Controller {
 	/**
 	 * Shows new user form
 	 */
+	@OnlyForGlobal
 	@AuthenticationRequired(authenticationLevel=AuthenticationLevel.AUTHENTICATE)
 	public void getNewUser() {
 		String userEmail = this.currentUser();
@@ -80,6 +80,7 @@ public class UserController extends Controller {
 	/**
 	 * Process new user form
 	 */
+	@OnlyForGlobal
 	@AuthenticationRequired(authenticationLevel=AuthenticationLevel.AUTHENTICATE)
 	public void postCreateUser() {
 		Validator validator = getUserValidator();
@@ -97,6 +98,7 @@ public class UserController extends Controller {
 	/**
 	 * Shows user dashboard
 	 */
+	@OnlyForGlobal
 	@AuthenticationRequired
 	public void getDashboardUser() {
 		String userEmail = this.currentUser();
@@ -108,6 +110,7 @@ public class UserController extends Controller {
 	/**
 	 * Shows user edit form
 	 */
+	@OnlyForGlobal
 	@AuthenticationRequired
 	public void getEditUser() {
 		User user = this.userManager.getUser(this.currentUser());
@@ -117,6 +120,7 @@ public class UserController extends Controller {
 		success(EDIT_USER_TPL);
 	}
 	
+	@OnlyForGlobal
 	@AuthenticationRequired
 	public void postUpdateUser() {
 		Validator validator = getUserValidator();
