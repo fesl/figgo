@@ -22,6 +22,9 @@ import static br.octahedron.cotopaxi.CotopaxiProperty.APPLICATION_BASE_URL;
 import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
 import static br.octahedron.cotopaxi.controller.Converter.Builder.strArray;
 import static br.octahedron.figgo.modules.user.controller.validation.UserValidators.getUserValidator;
+
+import java.util.ArrayList;
+
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired.AuthenticationLevel;
 import br.octahedron.cotopaxi.controller.Controller;
@@ -36,37 +39,39 @@ import br.octahedron.figgo.modules.user.manager.UserManager;
  * @author Danilo Queiroz - daniloqueiroz@octahedron.com.br
  */
 public class UserController extends Controller {
-	
+
 	static final String BASE_DIR_TPL = "user/";
 	static final String DASHBOARD_TPL = BASE_DIR_TPL + "dashboard.vm";
 	static final String NEW_USER_TPL = BASE_DIR_TPL + "new.vm";
 	static final String EDIT_USER_TPL = BASE_DIR_TPL + "edit.vm";
 	static final String EDIT_USER_URL = "/users/edit";
-	
+
 	@Inject
 	private UserManager userManager;
 	@Inject
 	private AuthorizationManager authorizationManager;
-	
+
 	/**
-	 * @param userManager the userManager to set
+	 * @param userManager
+	 *            the userManager to set
 	 */
 	public void setUserManager(UserManager userManager) {
 		this.userManager = userManager;
 	}
-	
+
 	/**
-	 * @param authorizationManager the authorizationManager to set
+	 * @param authorizationManager
+	 *            the authorizationManager to set
 	 */
 	public void setAuthorizationManager(AuthorizationManager authorizationManager) {
 		this.authorizationManager = authorizationManager;
 	}
-	
+
 	/**
 	 * Shows new user form
 	 */
 	@OnlyForGlobal
-	@AuthenticationRequired(authenticationLevel=AuthenticationLevel.AUTHENTICATE)
+	@AuthenticationRequired(authenticationLevel = AuthenticationLevel.AUTHENTICATE)
 	public void getNewUser() {
 		String userEmail = this.currentUser();
 		if (!this.userManager.existsUser(userEmail)) {
@@ -76,12 +81,12 @@ public class UserController extends Controller {
 			redirect(EDIT_USER_URL);
 		}
 	}
-	
+
 	/**
 	 * Process new user form
 	 */
 	@OnlyForGlobal
-	@AuthenticationRequired(authenticationLevel=AuthenticationLevel.AUTHENTICATE)
+	@AuthenticationRequired(authenticationLevel = AuthenticationLevel.AUTHENTICATE)
 	public void postCreateUser() {
 		Validator validator = getUserValidator();
 		if (validator.isValid()) {
@@ -93,8 +98,7 @@ public class UserController extends Controller {
 			invalid(NEW_USER_TPL);
 		}
 	}
-	
-	
+
 	/**
 	 * Shows user dashboard
 	 */
@@ -105,7 +109,6 @@ public class UserController extends Controller {
 		out("domains", this.authorizationManager.getActiveUserDomains(userEmail));
 		success(DASHBOARD_TPL);
 	}
-
 
 	/**
 	 * Shows user edit form
@@ -119,7 +122,7 @@ public class UserController extends Controller {
 		out("description", user.getDescription());
 		success(EDIT_USER_TPL);
 	}
-	
+
 	@OnlyForGlobal
 	@AuthenticationRequired
 	public void postUpdateUser() {
@@ -132,22 +135,33 @@ public class UserController extends Controller {
 			invalid(EDIT_USER_TPL);
 		}
 	}
-	
+
 	/**
-	 * AJAX function to search user 
+	 * AJAX function to search user
 	 */
 	public void getSearchUser() {
 		this.out("result", userManager.getUsersStartingWith(in("term")));
 		jsonSuccess();
 	}
-	
+
 	/**
 	 * AJAX function to search users
 	 */
 	public void getSearchUsers() {
 		// TODO validate
-		this.out("result", userManager.getUsersIn(in("users", strArray(","))));
-		jsonSuccess();
+		String[] users = in("users", strArray(","));
+		ArrayList<String> validUsers = new ArrayList<String>();
+		for (String s : users) {
+			if (s != null && !s.isEmpty()) {
+				validUsers.add(s);
+			}
+		}
+		if (!validUsers.isEmpty()) {
+			this.out("result", userManager.getUsersIn(validUsers.toArray(new String[validUsers.size()])));
+			jsonSuccess();
+		} else {
+			jsonInvalid();
+		}
 	}
-	
+
 }
