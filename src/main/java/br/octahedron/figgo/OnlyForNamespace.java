@@ -16,25 +16,10 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.authorization.manager;
-
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+package br.octahedron.figgo;
 
 /**
- * Uses the GAE {@link UserService} to authorize admin users.
+ * @see OnlyForNamespaceControllerInterceptor
  * 
- * @author Danilo Queiroz
+ * @author Danilo Queiroz - dpenna.queiroz@gmail.com
  */
-public class GoogleAuthorizer {
-
-	private UserService users = UserServiceFactory.getUserService();
-
-	/**
-	 * @return <code>true</code> if the current user is the app admin.
-	 */
-	public boolean isApplicationAdmin() {
-		return this.users.isUserLoggedIn() && this.users.isUserAdmin();
-	}
-
-}

@@ -28,6 +28,7 @@ import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespace;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
 import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
@@ -37,7 +38,9 @@ import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
  * 
  */
 @AuthenticationRequired
+@AuthorizationRequired
 @NamespaceRequired
+@OnlyForNamespace
 public class ConfigurationController extends Controller {
 
 	protected static final String BASE_DIR_TPL = "domain/";
@@ -57,7 +60,6 @@ public class ConfigurationController extends Controller {
 	/**
 	 * Get edit domain page
 	 */
-	@AuthorizationRequired
 	public void getEditDomain() {
 		DomainConfiguration domainConfiguration = this.configurationManager.getDomainConfiguration();
 		this.out("name", domainConfiguration.getName());
@@ -69,7 +71,6 @@ public class ConfigurationController extends Controller {
 	/**
 	 * Process the edit domain form
 	 */
-	@AuthorizationRequired
 	public void postEditDomain() {
 		if (getDomainValidator().isValid()) {
 			this.configurationManager.updateDomainConfiguration(this.in("name"), this.in("url"), this.in("maillist"), this.in("description"));
@@ -83,7 +84,6 @@ public class ConfigurationController extends Controller {
 	/**
 	 * Shows edit module form
 	 */
-	@AuthorizationRequired
 	public void getModuleDomain() {
 		this.out("name", this.in("module"));
 		this.out("module", this.configurationManager.getModuleConfiguration(Module.valueOf(this.in("module").toUpperCase())));
@@ -93,7 +93,6 @@ public class ConfigurationController extends Controller {
 	/**
 	 * Process the edit module form
 	 */
-	@AuthorizationRequired
 	public void postModuleDomain() {
 		// TODO validate
 		Module module = Module.valueOf(this.in("module").toUpperCase());
@@ -107,14 +106,12 @@ public class ConfigurationController extends Controller {
 		this.redirect(EDIT_DOMAIN_URL);
 	}
 
-	@AuthorizationRequired
 	public void postEnableModuleDomain() {
 		// TODO validate
 		this.configurationManager.enableModule(Module.valueOf(this.in("module").toUpperCase()));
 		this.jsonSuccess();
 	}
 
-	@AuthorizationRequired
 	public void postDisableModuleDomain() {
 		// TODO validate
 		this.configurationManager.disableModule(this.in("module").toUpperCase());

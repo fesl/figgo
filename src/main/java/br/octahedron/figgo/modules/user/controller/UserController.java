@@ -27,6 +27,7 @@ import br.octahedron.cotopaxi.auth.AuthenticationRequired.AuthenticationLevel;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
+import br.octahedron.figgo.OnlyForGlobalSubdomainControllerInterceptor.OnlyForGlobal;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.figgo.modules.user.data.User;
 import br.octahedron.figgo.modules.user.manager.UserManager;
@@ -34,6 +35,7 @@ import br.octahedron.figgo.modules.user.manager.UserManager;
 /**
  * @author Danilo Queiroz - daniloqueiroz@octahedron.com.br
  */
+@OnlyForGlobal
 public class UserController extends Controller {
 	
 	static final String BASE_DIR_TPL = "user/";

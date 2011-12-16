@@ -25,6 +25,8 @@ import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.ApplicationDomainModuleSpec;
 import br.octahedron.figgo.modules.ModuleSpec;
 import br.octahedron.figgo.modules.authorization.manager.CreateDomainAuthorizationSubscriber;
+import br.octahedron.figgo.modules.authorization.manager.UserActivatedSubscriber;
+import br.octahedron.figgo.modules.authorization.manager.UserRoleRemovedSubscriber;
 
 /**
  * The {@link ModuleSpec} for 
@@ -47,6 +49,8 @@ public class AuthorizationSpec implements ApplicationDomainModuleSpec {
 	public Set<Class<? extends Subscriber>> getSubscribers() {
 		Set<Class<? extends Subscriber>> subscribers = new HashSet<Class<? extends Subscriber>>();
 		subscribers.add(CreateDomainAuthorizationSubscriber.class);
+		subscribers.add(UserActivatedSubscriber.class);
+		subscribers.add(UserRoleRemovedSubscriber.class);
 		return subscribers;
 	}
 

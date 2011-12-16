@@ -156,7 +156,7 @@ reset() {
 clean_maven() {
 	# Execute maven clean
 	echo -ne "Cleaning Project...\t"
-	rm -r ${web_dir}/WEB-INF/{classes,lib} &> ${MVN_OUT}
+	rm -r ${web_dir}/WEB-INF/{classes,lib,appengine-generated} &> ${MVN_OUT}
 	mvn clean &> ${MVN_OUT}
 	if [ $? -eq 0 ]
 	then

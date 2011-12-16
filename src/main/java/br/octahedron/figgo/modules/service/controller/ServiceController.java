@@ -28,6 +28,7 @@ import br.octahedron.cotopaxi.i18n.ControllerI18nHelper;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.FiggoException;
+import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespace;
 import br.octahedron.figgo.modules.service.controller.validation.ServiceValidators;
 import br.octahedron.figgo.modules.service.data.Service;
 import br.octahedron.figgo.modules.service.data.ServiceContract;
@@ -42,6 +43,7 @@ import br.octahedron.figgo.modules.service.manager.ServiceNotFoundException;
  * @author Vítor Avelino
  * 
  */
+@OnlyForNamespace
 @AuthenticationRequired
 @NamespaceRequired
 public class ServiceController extends Controller {

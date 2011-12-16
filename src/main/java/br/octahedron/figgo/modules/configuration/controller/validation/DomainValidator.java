@@ -32,9 +32,9 @@ public class DomainValidator {
 	public static Validator getDomainValidator() {
 		if ( domainValidator == null) {
 			domainValidator = new Validator();
-			domainValidator.add("name", required("REQUIRED_DOMAIN_NAME"), minLength(5, "MINIMUM_LENGTH_DOMAIN_NAME"));
-			domainValidator.add("url", required("REQUIRED_DOMAIN_URL"), regex("^((/[a-zA-Z_0-9]+)*(/\\{[a-zA-Z_0-9]+\\})*(/[a-zA-Z_0-9]+)*)+/?$", "MINIMUM_LENGTH_DOMAIN_NAME"));
-			domainValidator.add("maillist", required("REQUIRED_DOMAIN_MAILLIST"), regex("", "MINIMUM_LENGTH_DOMAIN_NAME"));
+			domainValidator.add("name", required("REQUIRED_DOMAIN_NAME"), minLength(4, "MINIMUM_LENGTH_DOMAIN_NAME"));
+			domainValidator.add("url", regex("https?://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]", "INVALID_URL"));
+			domainValidator.add("maillist", minLength(5, "MINIMUM_LENGTH_DOMAIN_LIST"));
 			// TODO validate desc (avoid html tags)
 		}
 		return domainValidator;

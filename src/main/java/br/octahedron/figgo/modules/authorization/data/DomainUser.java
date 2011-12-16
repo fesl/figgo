@@ -19,8 +19,6 @@
 package br.octahedron.figgo.modules.authorization.data;
 
 import java.io.Serializable;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -33,29 +31,50 @@ import javax.jdo.annotations.PrimaryKey;
 @PersistenceCapable
 public class DomainUser implements Serializable {
 
+	/**
+	 * Creates the {@link DomainUser} primary key
+	 * @return the primary key for the {@link DomainUser} for the given user/domain pair. 
+	 */
+	protected static String createDomainUserKey(String userId, String domain) {
+		return userId + "#" + domain;
+	}
+
 	private static final long serialVersionUID = -1706113967230945694L;
 	
+	@SuppressWarnings("unused")
 	@PrimaryKey
+	@Persistent
+	private String id;
+	
 	@Persistent
 	private String userId;
 	
 	@Persistent
-	private Set<String> domains = new TreeSet<String>();
+	private String domain;
 	
 	@Persistent
 	private boolean isActive = false;
 
-	public DomainUser(String userId, String domain, boolean isActive) {
+	public DomainUser(String userId, String domain, boolean active) {
 		this.userId = userId;
-		this.addDomain(domain);
-		this.isActive = isActive;
+		this.domain = domain;
+		this.isActive = active;
+		this.id = createDomainUserKey(this.userId, this.domain);
 	}
+
 	
 	/**
 	 * @return the userId
 	 */
 	public String getUserId() {
 		return this.userId;
+	}
+	
+	/**
+	 * @return the domain
+	 */
+	public String getDomain() {
+		return domain;
 	}
 	
 	/**
@@ -75,21 +94,4 @@ public class DomainUser implements Serializable {
 	public void markAsActive() {
 		this.isActive = true;
 	}
-
-	/**
-	 * @param domain
-	 */
-	public void addDomain(String domain) {
-		this.domains.add(domain);
-	}
-
-	/**
-	 * @param domain
-	 */
-	public void removeDomain(String domain) {
-		this.domains.remove(domain);
-	}
-	
-	
-
 }

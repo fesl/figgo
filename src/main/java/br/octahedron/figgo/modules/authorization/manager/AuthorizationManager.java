@@ -18,16 +18,15 @@
  */
 package br.octahedron.figgo.modules.authorization.manager;
 
-import static br.octahedron.figgo.modules.authorization.data.Role.createRoleKey;
-
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeSet;
 
+import br.octahedron.cotopaxi.eventbus.EventBus;
+import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.ApplicationDomainModuleSpec.ActionSpec;
 import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
@@ -51,74 +50,47 @@ import br.octahedron.util.Log;
  */
 public class AuthorizationManager {
 	
+	public static final String USERS_ROLE_NAME = "USERS";
+	public static final String ADMINS_ROLE_NAME = "ADMINS";
+
 	private static final Log logger = new Log(AuthorizationManager.class);
 
-	private GoogleAuthorizer googleAuthorizer = new GoogleAuthorizer();
 	private RoleDAO roleDAO = new RoleDAO();
 	private DomainUserDAO domainUserDAO = new DomainUserDAO();
+
+	@Inject
+	private GoogleAuthorizer googleAuthorizer;
+	
+	@Inject
+	private EventBus eventBus;
 	
 	/**
-	 * Used to inject a mock object on tests.
-	 * 
-	 * @param roleDAO
-	 *            the roleDAO to set
+	 * @param googleAuthorizer
+	 *            the googleAuthorizer to set
+	 */
+	public void setGoogleAuthorizer(GoogleAuthorizer googleAuthorizer) {
+		this.googleAuthorizer = googleAuthorizer;
+	}
+	
+	/**
+	 * @param eventBus the eventBus to set
+	 */
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+	}
+	
+	/**
+	 * Used by tests
 	 */
 	protected void setRoleDAO(RoleDAO roleDAO) {
 		this.roleDAO = roleDAO;
 	}
-	
+
 	/**
-	 * Used to inject a mock object on tests.
-	 * 
-	 * @param domainUserDAO
-	 *            the domainUserDAO to set
+	 * Used by tests
 	 */
 	protected void setDomainUserDAO(DomainUserDAO domainUserDAO) {
 		this.domainUserDAO = domainUserDAO;
-	}
-	
-	/**
-	 * Creates a new role for a given domain if it doesn't exist yet.
-	 * 
-	 * @param domain
-	 *            domain that the role will belong to
-	 * @param roleName
-	 *            roleName of the role
-	 * 
-	 * @throws DataAlreadyExistsException
-	 *             if the role already exists
-	 */
-	public void createRole(String domain, String roleName) {
-		if (!this.existsRole(domain, roleName)) {
-			Role role = new Role(domain, roleName);
-			this.roleDAO.save(role);
-		} else {
-			throw new DataAlreadyExistsException("Already exists role " + roleName + " at domain " + domain);
-		}
-	}
-
-	/**
-	 * Creates a new role with some activities associated with for a given domain if it doesn't
-	 * exist yet.
-	 * 
-	 * @param domain
-	 *            domain that the role will belong to
-	 * @param roleName
-	 *            roleName to be added on domain
-	 * @param activities
-	 *            activities to be set on role
-	 * 
-	 * @throws DataAlreadyExistsException
-	 *             if the role already exists
-	 */
-	public void createRole(String domain, String roleName, Collection<String> activities) {
-		if (!this.existsRole(domain, roleName)) {
-			Role role = new Role(domain, roleName);
-			role.addActivities(activities);
-			this.roleDAO.save(role);
-		} else {
-			throw new DataAlreadyExistsException("Already exists role " + roleName + " at domain " + domain);
-		}
 	}
 
 	/**
@@ -132,27 +104,8 @@ public class AuthorizationManager {
 	 * @return <code>true</code> if exists the given role at the given domain, <code>false</code>
 	 *         otherwise.
 	 */
-	public boolean existsRole(String domain, String roleName) {
-		return this.roleDAO.exists(createRoleKey(domain, roleName));
-	}
-
-	/**
-	 * Removes a role if exists for a given domain.
-	 * 
-	 * @param domain
-	 *            domain that the role belongs to
-	 * @param roleName
-	 *            roleName of the role
-	 * 
-	 * @throws DataDoesNotExistsException
-	 *             if theres no role with the given name at the given domain.
-	 */
-	public void removeRole(String domain, String roleName) {
-		if (this.existsRole(domain, roleName)) {
-			this.roleDAO.delete(createRoleKey(domain, roleName));
-		} else {
-			throw new DataDoesNotExistsException("There's no role " + roleName + " at domain " + domain);
-		}
+	protected boolean existsRole(String roleName) {
+		return this.roleDAO.exists(roleName);
 	}
 
 	/**
@@ -168,137 +121,152 @@ public class AuthorizationManager {
 	 * @throws DataDoesNotExistsException
 	 *             if theres no such role
 	 */
-	public Role getRole(String domain, String roleName) {
-		if (this.existsRole(domain, roleName)) {
-			return this.roleDAO.get(createRoleKey(domain, roleName));
+	protected Role getRole(String roleName) {
+		if (this.existsRole(roleName)) {
+			return this.roleDAO.get(roleName);
 		} else {
-			throw new DataDoesNotExistsException("There's no role " + roleName + " at domain " + domain);
+			throw new DataDoesNotExistsException("There's no role " + roleName);
+		}
+	}
+	
+	/**
+	 * Creates a new role for a given domain if it doesn't exist yet.
+	 * 
+	 * @param domain
+	 *            domain that the role will belong to
+	 * @param roleName
+	 *            roleName of the role
+	 * 
+	 * @throws DataAlreadyExistsException
+	 *             if the role already exists
+	 */
+	public void createRole(String roleName) {
+		if (!this.existsRole(roleName)) {
+			Role role = new Role(roleName);
+			this.roleDAO.save(role);
+		} else {
+			throw new DataAlreadyExistsException("Already exists role " + roleName);
+		}
+	}
+
+	/**
+	 * Creates a new role with some activities associated with for a given domain if it doesn't
+	 * exist yet.
+	 * 
+	 * @param roleName
+	 *            roleName to be added on domain
+	 * @param activities
+	 *            activities to be set on role
+	 * 
+	 * @throws DataAlreadyExistsException
+	 *             if the role already exists
+	 */
+	public void createRole(String roleName, Collection<String> activities) {
+		if (!this.existsRole(roleName)) {
+			Role role = new Role(roleName);
+			role.addActivities(activities);
+			this.roleDAO.save(role);
+		} else {
+			throw new DataAlreadyExistsException("Already exists role " + roleName);
+		}
+	}
+
+	/**
+	 * Removes a role if exists for a given domain.
+	 * 
+	 * @param roleName
+	 *            roleName of the role
+	 * 
+	 * @throws DataDoesNotExistsException
+	 *             if theres no role with the given name at the given domain.
+	 */
+	public void removeRole(String roleName) {
+		if (this.existsRole(roleName)) {
+			this.roleDAO.delete(roleName);
+		} else {
+			throw new DataDoesNotExistsException("There's no role " + roleName);
 		}
 	}
 
 	/**
 	 * Adds the given users to a specific role.
 	 * 
-	 * @param domain
-	 *            domain that the role belongs to
 	 * @param roleName
 	 *            roleName to have its users updated
 	 * @param users
 	 *            users to be added on role
 	 */
-	public void addUsersToRole(String domain, String roleName, Collection<String> users) {
-		Role role = this.getRole(domain, roleName);
-		role.addUsers(users);
-	}
-
-	/**
-	 * Adds the given users to a specific role.
-	 * 
-	 * @param domain
-	 *            domain that the role belongs to
-	 * @param roleName
-	 *            roleName to have its users updated
-	 * @param users
-	 *            users to be added on role
-	 */
-	public void addUsersToRole(String domain, String roleName, String... users) {
-		Role role = this.getRole(domain, roleName);
+	public void addUsersToRole(String roleName, String... users) {
+		Role role = this.getRole(roleName);
 		role.addUsers(users);
 	}
 
 	/**
 	 * Adds the given activities to a specific role of a specific domain.
 	 * 
-	 * @param domain
-	 *            domain that the role belongs to
 	 * @param roleName
 	 *            roleName to have its activities updated
 	 * @param activities
 	 *            activities to be added on role
 	 */
-	public void addActivitiesToRole(String domain, String roleName, String... activities) {
-		Role role = this.getRole(domain, roleName);
+	public void addActivitiesToRole(String roleName, String... activities) {
+		Role role = this.getRole(roleName);
 		role.addActivities(activities);
 	}
 
 	/**
-	 * Adds the given activities to a specific role of a specific domain.
-	 * 
-	 * @param domain
-	 *            domain that the role belongs to
-	 * @param roleName
-	 *            roleName to have its activities updated
-	 * @param activities
-	 *            activities to be added on role
-	 */
-	public void addActivitiesToRole(String domain, String roleName, Collection<String> activities) {
-		Role role = this.getRole(domain, roleName);
-		role.addActivities(activities);
-	}
-	
-	/**
 	 * Removes the given activities to a specific role of a specific domain.
 	 * 
-	 * @param domain
-	 *            domain that the role belongs to
 	 * @param roleName
 	 *            roleName to have its activities updated
 	 * @param activities
 	 *            activities to be removed of role
 	 */
-	public void removeActivitiesToRole(String domain, String roleName, String... activities) {
-		Role role = this.getRole(domain, roleName);
-		role.removeActivities(activities);
-	}
-	
-	/**
-	 * Removes the given activities to a specific role of a specific domain.
-	 * 
-	 * @param domain
-	 *            domain that the role belongs to
-	 * @param roleName
-	 *            roleName to have its activities updated
-	 * @param activities
-	 *            activities to be removed of role
-	 */
-	public void removeActivitiesToRole(String domain, String roleName, Collection<String> activities) {
-		Role role = this.getRole(domain, roleName);
+	public void removeActivitiesToRole(String roleName, String... activities) {
+		Role role = this.getRole(roleName);
 		role.removeActivities(activities);
 	}
 
 	/**
 	 * Removes a user from a specific role belonging to a specific domain.
 	 * 
-	 * @param domain
-	 *            domain that the role belongs to
 	 * @param roleName
 	 *            roleName to retrieve role
 	 * @param user
 	 *            user to be removed from role
+	 * @param domain 
 	 */
-	public void removeUserFromRole(String domain, String roleName, String user) {
-		Role role = this.getRole(domain, roleName);
+	public void removeUserFromRole(String roleName, String user, String domain) {
+		Role role = this.getRole(roleName);
 		role.removeUser(user);
+		
+		// background process to check if still has permission at the given domain
+		this.eventBus.publish(new UserRemovedFromRoleEvent(user, domain));
 	}
 
 	/**
-	 * Returns all domains that a user belongs at least to a one role.
+	 * Removes user from roles if associated with, of a specific domain.
 	 * 
-	 * @return a collection of {@link String} representing all the domains that a user has at least
-	 *         one role.
+	 * @param userId
+	 *            username to be removed from role
+	 * @param userId 
 	 */
-	public Collection<String> getUserDomains(String username) {
-		Collection<String> domains = Collections.emptySet();  
-		Collection<Role> roles = this.roleDAO.getUserRoles(username);
-
-		if (!roles.isEmpty()) {
-			domains = new TreeSet<String>();
-			for (Role role : roles) {
-				domains.add(role.getDomain());
-			}
+	public void removeUserFromRoles(String userId, String domain) {
+		for (Role role : this.getUserRoles(userId)) {
+			role.removeUser(userId);
 		}
-		logger.debug("User %s has %d domain", username, domains.size());
-		return domains;
+	
+		// background process to check if still has permission at the given domain
+		this.eventBus.publish(new UserRemovedFromRoleEvent(userId, domain));
+	}
+
+	/**
+	 * Returns all roles of a specific domain.
+	 * 
+	 * @return a collection of {@link Role}
+	 */
+	public Collection<Role> getRoles() {
+		return this.roleDAO.getAll();
 	}
 
 	/**
@@ -309,42 +277,30 @@ public class AuthorizationManager {
 	 * 
 	 * @return a collection of {@link Role} with all roles belonging to user
 	 */
-	public Collection<Role> getUserRoles(String domain, String username) {
-		return this.roleDAO.getUserRoles(domain, username);
+	public Collection<Role> getUserRoles(String username) {
+		return this.roleDAO.getUserRoles(username);
 	}
 
 	/**
-	 * Returns all roles of a specific domain.
-	 * 
-	 * @return a collection of {@link Role}
+	 * @param users
+	 * @return
 	 */
-	public Collection<Role> getRoles(String domain) {
-		return this.roleDAO.getAll(domain);
+	public Map<String, Collection<Role>> getUsersRoles(String[] users) {
+		Map<String, Collection<Role>> result = new HashMap<String, Collection<Role>>();
+		for (String user : users) {
+			result.put(user, this.getUserRoles(user));
+		}
+		return result;
 	}
 
 	/**
 	 * Checks if username belongs to a specific role of a specific domain.
 	 * 
-	 * @return <code>true</code> if the given user is authorized to perform the given activity at
-	 *         the given domain, <code>false</code> otherwise.
+	 * @return <code>true</code> if the given user is authorized to perform the given activity,
+	 *         <code>false</code> otherwise.
 	 */
-	public boolean isAuthorized(String domainName, String username, String activityName) {
-		return this.googleAuthorizer.isApplicationAdmin() || this.roleDAO.existsRoleFor(domainName, username, activityName);
-	}
-
-	/**
-	 * Removes user from roles if associated with, of a specific domain.
-	 * 
-	 * @param domain
-	 *            domain that the roles belongs to
-	 * @param userId
-	 *            username to be removed from role
-	 */
-	public void removeUserFromRoles(String domain, String userId) {
-		for (Role role : this.getUserRoles(domain, userId)) {
-			role.removeUser(userId);
-		}
-		this.removeDomainUser(domain, userId);
+	public boolean isAuthorized(String username, String activityName) {
+		return this.googleAuthorizer.isApplicationAdmin() || this.roleDAO.existsRoleFor(username, activityName);
 	}
 
 	/**
@@ -352,8 +308,9 @@ public class AuthorizationManager {
 	 * 
 	 * @return a collection of {@link String} representing the activities available on the system
 	 */
-	public Collection<String> getAcitivities() {
+	public Collection<String> getActivities() {
 		// FIXME maybe cache?
+		// TODO why not APLICATION_DOMAIN activities too?
 		List<String> activities = new LinkedList<String>();
 		for (Module module : Module.values()) {
 			if (module.getModuleSpec().getModuleType() == Type.DOMAIN) {
@@ -366,24 +323,26 @@ public class AuthorizationManager {
 	}
 
 	/**
-	 * Updates the activities of a specific role of a specific domain.
+	 * Returns all domains that a user belongs at least to a one role.
 	 * 
-	 * @param domain
-	 *            domain that the role belongs to
-	 * @param roleName
-	 *            roleName to have its activities updated
-	 * @param activities
-	 *            activities to be set on role
+	 * @return a collection of {@link String} representing all the domains that a user has at least
+	 *         one role.
 	 */
-	public void updateRoleActivities(String domain, String roleName, Collection<String> activities) {
-		Role role = this.getRole(domain, roleName);
-		role.updateActivities(activities);
-		this.roleDAO.save(role);
+	public Collection<String> getUserDomains(String username) {
+		Collection<DomainUser> domains = this.domainUserDAO.getDomains(username);
+		logger.debug("User %s has %d domain", username, domains.size());
+		Collection<String> domainNames = new ArrayList<String>(domains.size());
+		for (DomainUser d : domains) {
+			domainNames.add(d.getDomain());
+		}
+		return domainNames;
 	}
-	
+
 	/**
+	 * TODO comment
 	 * 
 	 * @param userId
+	 * @param isActive
 	 * @param isActive
 	 */
 	public void createDomainUser(String domain, String userId, boolean isActive) {
@@ -392,6 +351,8 @@ public class AuthorizationManager {
 	}
 
 	/**
+	 * TODO comment
+	 * 
 	 * @return
 	 */
 	public Collection<DomainUser> getActiveUsers(String domain) {
@@ -399,6 +360,8 @@ public class AuthorizationManager {
 	}
 
 	/**
+	 * TODO comment
+	 * 
 	 * @return
 	 */
 	public Collection<DomainUser> getNonActiveUsers(String domain) {
@@ -406,34 +369,25 @@ public class AuthorizationManager {
 	}
 
 	/**
+	 * TODO comment
+	 * 
 	 * @param domain
 	 * @param userId
 	 */
 	public void activateDomainUser(String domain, String userId) {
 		DomainUser domainUser = this.domainUserDAO.get(userId);
 		domainUser.markAsActive();
-		this.addUsersToRole(domain, "USERS", userId);
+		this.eventBus.publish(new UserActivatedEvent(userId, domain));
 	}
 
 	/**
+	 * TODO comment
+	 * 
 	 * @param userId
 	 */
 	public void removeDomainUser(String domain, String userId) {
-		DomainUser domainUser = this.domainUserDAO.get(userId);
-		domainUser.removeDomain(domain);
-	}
-
-	/**
-	 * @param domain
-	 * @param users
-	 * @return
-	 */
-	public Map<String, Collection<Role>> getUsersRoles(String domain, String[] users) {
-		Map<String, Collection<Role>> result = new HashMap<String, Collection<Role>>();
-		for (String user : users) {
-			result.put(user, this.getUserRoles(domain, user));
-		}
-		return result;
+		DomainUser domainUser = this.domainUserDAO.get(userId, domain);
+		this.domainUserDAO.delete(domainUser);
 	}
 
 }

@@ -27,6 +27,10 @@ import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
 
 /**
+ * TODO DOCUMENTAR
+ * 
+ * OPERAÇÕES PARA TODOS NS
+ * 
  * @author Danilo Queiroz - daniloqueiroz@octahedron.com.br
  */
 @AuthenticationRequired

@@ -18,17 +18,16 @@
  */
 package br.octahedron.figgo.modules.authorization.manager;
 
-import static br.octahedron.figgo.modules.authorization.data.Role.createRoleKey;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertNotNull;
 import static junit.framework.Assert.assertTrue;
 import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -37,6 +36,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import br.octahedron.cotopaxi.eventbus.EventBus;
 import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.authorization.data.DomainUser;
@@ -52,35 +52,41 @@ import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig
  */
 public class AuthorizationManagerTest {
 
+	private EventBus eventBus;
 	private RoleDAO roleDAO;
 	private DomainUserDAO domainUserDAO;
 	private AuthorizationManager authManager;
+	private GoogleAuthorizer gAuth;
 	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalUserServiceTestConfig()).setEnvIsLoggedIn(true);
 
 	@Before
 	public void setUp() {
 		this.helper.setUp();
+		this.gAuth = createMock(GoogleAuthorizer.class);
+		this.eventBus = createMock(EventBus.class);
 		this.roleDAO = createMock(RoleDAO.class);
 		this.domainUserDAO = createMock(DomainUserDAO.class);
 		this.authManager = new AuthorizationManager();
 		this.authManager.setRoleDAO(this.roleDAO);
 		this.authManager.setDomainUserDAO(this.domainUserDAO);
+		this.authManager.setEventBus(this.eventBus);
+		this.authManager.setGoogleAuthorizer(gAuth);
 	}
 
 	@Test(expected = DataAlreadyExistsException.class)
 	public void createRoleTest() {
 		// setup mock
-		String key = createRoleKey("domain", "role");
-		expect(this.roleDAO.exists(key)).andReturn(false).times(2);
-		this.roleDAO.save(new Role("domain", "role"));
-		expect(this.roleDAO.exists(key)).andReturn(true).times(2);
+		expect(this.roleDAO.exists("role")).andReturn(false).times(2);
+		this.roleDAO.save(new Role("role"));
+		expect(this.roleDAO.exists("role")).andReturn(true).times(2);
+
 		replay(this.roleDAO);
 		try {
 			// test
-			assertFalse(this.authManager.existsRole("domain", "role"));
-			this.authManager.createRole("domain", "role");
-			assertTrue(this.authManager.existsRole("domain", "role"));
-			this.authManager.createRole("domain", "role");
+			assertFalse(this.authManager.existsRole("role"));
+			this.authManager.createRole("role");
+			assertTrue(this.authManager.existsRole("role"));
+			this.authManager.createRole("role");
 		} finally {
 			// verify
 			verify(this.roleDAO);
@@ -90,15 +96,14 @@ public class AuthorizationManagerTest {
 	@Test(expected = DataDoesNotExistsException.class)
 	public void deleteRoleTest() {
 		// setup mock
-		String key = createRoleKey("domain", "role");
-		expect(this.roleDAO.exists(key)).andReturn(true).times(1);
-		this.roleDAO.delete(key);
-		expect(this.roleDAO.exists(key)).andReturn(false).times(1);
+		expect(this.roleDAO.exists("role")).andReturn(true).times(1);
+		this.roleDAO.delete("role");
+		expect(this.roleDAO.exists("role")).andReturn(false).times(1);
 		replay(this.roleDAO);
 		try {
 			// test
-			this.authManager.removeRole("domain", "role");
-			this.authManager.removeRole("domain", "role");
+			this.authManager.removeRole("role");
+			this.authManager.removeRole("role");
 		} finally {
 			// verify
 			verify(this.roleDAO);
@@ -108,17 +113,16 @@ public class AuthorizationManagerTest {
 	@Test(expected = DataDoesNotExistsException.class)
 	public void getTest() {
 		// setup mock
-		String key = createRoleKey("domain", "role");
-		expect(this.roleDAO.exists(key)).andReturn(true).times(1);
-		expect(this.roleDAO.get(key)).andReturn(new Role("domain", "role")).times(1);
-		expect(this.roleDAO.exists(key)).andReturn(false).times(1);
+		expect(this.roleDAO.exists("role")).andReturn(true).times(1);
+		expect(this.roleDAO.get("role")).andReturn(new Role("role")).times(1);
+		expect(this.roleDAO.exists("role")).andReturn(false).times(1);
 		replay(this.roleDAO);
 		try {
 			// test
-			Role role = this.authManager.getRole("domain", "role");
+			Role role = this.authManager.getRole("role");
 			assertNotNull(role);
-			assertEquals(new Role("domain", "role"), role);
-			this.authManager.getRole("domain", "role");
+			assertEquals(new Role("role"), role);
+			this.authManager.getRole("role");
 		} finally {
 			// verify
 			verify(this.roleDAO);
@@ -128,18 +132,17 @@ public class AuthorizationManagerTest {
 	@Test(expected = DataDoesNotExistsException.class)
 	public void addUserTest() {
 		// setup mock
-		Role role = new Role("domain", "role");
-		String key = createRoleKey("domain", "role");
-		expect(this.roleDAO.exists(key)).andReturn(true).times(1);
-		expect(this.roleDAO.get(key)).andReturn(role).times(1);
-		expect(this.roleDAO.exists(key)).andReturn(false).times(1);
+		Role role = new Role("role");
+		expect(this.roleDAO.exists("role")).andReturn(true).times(1);
+		expect(this.roleDAO.get("role")).andReturn(role).times(1);
+		expect(this.roleDAO.exists("role")).andReturn(false).times(1);
 		replay(this.roleDAO);
 		try {
 			// test
 			assertEquals(0, role.getUsers().size());
-			this.authManager.addUsersToRole("domain", "role", "user1", "user2");
+			this.authManager.addUsersToRole("role", "user1", "user2");
 			assertEquals(2, role.getUsers().size());
-			this.authManager.addUsersToRole("domain", "role", "user1");
+			this.authManager.addUsersToRole("role", "user1");
 		} finally {
 			// verify
 			verify(this.roleDAO);
@@ -149,18 +152,17 @@ public class AuthorizationManagerTest {
 	@Test(expected = DataDoesNotExistsException.class)
 	public void addActivitiesTest() {
 		// setup mock
-		Role role = new Role("domain", "role");
-		String key = createRoleKey("domain", "role");
-		expect(this.roleDAO.exists(key)).andReturn(true).times(1);
-		expect(this.roleDAO.get(key)).andReturn(role).times(1);
-		expect(this.roleDAO.exists(key)).andReturn(false).times(1);
+		Role role = new Role("role");
+		expect(this.roleDAO.exists("role")).andReturn(true).times(1);
+		expect(this.roleDAO.get("role")).andReturn(role).times(1);
+		expect(this.roleDAO.exists("role")).andReturn(false).times(1);
 		replay(this.roleDAO);
 		try {
 			// test
 			assertEquals(0, role.getActivities().size());
-			this.authManager.addActivitiesToRole("domain", "role", "activity1", "activity2");
+			this.authManager.addActivitiesToRole("role", "activity1", "activity2");
 			assertEquals(2, role.getActivities().size());
-			this.authManager.addActivitiesToRole("domain", "role", "activity1");
+			this.authManager.addActivitiesToRole("role", "activity1");
 		} finally {
 			// verify
 			verify(this.roleDAO);
@@ -170,69 +172,46 @@ public class AuthorizationManagerTest {
 	@Test(expected = DataDoesNotExistsException.class)
 	public void removeUserFromRole() {
 		// setup mock
-		Role role = new Role("domain", "role");
+		Role role = new Role("role");
 		role.addUsers("user1", "user2");
-		String key = createRoleKey("domain", "role");
-		expect(this.roleDAO.exists(key)).andReturn(true).times(1);
-		expect(this.roleDAO.get(key)).andReturn(role).times(1);
-		expect(this.roleDAO.exists(key)).andReturn(false).times(1);
-		replay(this.roleDAO);
+		expect(this.roleDAO.exists("role")).andReturn(true).times(1);
+		expect(this.roleDAO.get("role")).andReturn(role).times(1);
+		this.eventBus.publish(eq(new UserRemovedFromRoleEvent("user1", "domain")));
+		expect(this.roleDAO.exists("role")).andReturn(false).times(1);
+		replay(this.roleDAO, this.eventBus);
 		try {
 			// test
 			assertEquals(2, role.getUsers().size());
-			this.authManager.removeUserFromRole("domain", "role", "user1");
+			this.authManager.removeUserFromRole("role", "user1", "domain");
 			assertEquals(1, role.getUsers().size());
-			this.authManager.removeUserFromRole("domain", "role", "user1");
+			this.authManager.removeUserFromRole("role", "user1", "domain");
 		} finally {
 			// verify
-			verify(this.roleDAO);
+			verify(this.roleDAO, this.eventBus);
 		}
 	}
 
 	@Test
 	public void removeUserFromRoles() {
 		// setup mock
-		Role role = new Role("domain", "role");
+		Role role = new Role("role");
 		role.addUsers("user1", "user2");
-		Role role2 = new Role("domain", "role2");
+		Role role2 = new Role("role2");
 		role2.addUsers("user1", "user2");
 		List<Role> roles = new LinkedList<Role>();
 		roles.add(role);
 		roles.add(role2);
-		DomainUser domainUser = new DomainUser("userId", "domain", true);
-		expect(this.roleDAO.getUserRoles("domain", "user1")).andReturn(roles);
-		expect(this.domainUserDAO.get("user1")).andReturn(domainUser);
-		replay(this.domainUserDAO, this.roleDAO);
+		expect(this.roleDAO.getUserRoles("user1")).andReturn(roles);
+		this.eventBus.publish(eq(new UserRemovedFromRoleEvent("user1", "domain")));
+		replay(this.domainUserDAO, this.roleDAO, eventBus);
 		try {
 			// test
-			this.authManager.removeUserFromRoles("domain", "user1");
+			this.authManager.removeUserFromRoles("user1", "domain");
 			assertEquals(1, role.getUsers().size());
 			assertEquals(1, role2.getUsers().size());
 		} finally {
 			// verify
-			verify(this.roleDAO);
-		}
-	}
-
-	@Test
-	public void updateRoleActivities() {
-		// setup mock
-		Role role = new Role("domain", "role");
-		role.addUsers("user1");
-		role.addActivities("activity1", "activity2", "activity3");
-		String key = createRoleKey("domain", "role");
-		expect(this.roleDAO.exists(key)).andReturn(true).times(1);
-		expect(this.roleDAO.get(key)).andReturn(role).times(1);
-		this.roleDAO.save(role);
-		replay(this.roleDAO);
-		try {
-			// test
-			this.authManager.updateRoleActivities("domain", "role", Arrays.asList("activity1"));
-			assertEquals(1, role.getActivities().size());
-			assertEquals("[activity1]", role.getActivities().toString());
-		} finally {
-			// verify
-			verify(this.roleDAO);
+			verify(this.roleDAO, this.domainUserDAO, eventBus);
 		}
 	}
 
@@ -240,43 +219,43 @@ public class AuthorizationManagerTest {
 	@Test
 	public void getUserDomains() {
 		// setup mock
-		List<Role> roles = new LinkedList<Role>();
-		Role role = new Role("domain1", "user");
-		role.addUsers("tester");
-		roles.add(role);
-		role = new Role("domain2", "admin");
-		role.addUsers("tester");
-		roles.add(role);
-		role = new Role("domain2", "user");
-		role.addUsers("tester");
-		roles.add(role);
-		expect(this.roleDAO.getUserRoles("tester")).andReturn(roles);
-		expect(this.roleDAO.getUserRoles("newuser")).andReturn(Collections.EMPTY_LIST);
-		replay(this.roleDAO);
-		// test
-		Collection<String> domains = this.authManager.getUserDomains("tester");
-		assertEquals(2, domains.size());
-		domains = this.authManager.getUserDomains("newuser");
-		assertTrue(domains.isEmpty());
+		List<DomainUser> domains = new LinkedList<DomainUser>();
+		domains.add(new DomainUser("tester","domain1", true));
+		domains.add(new DomainUser("tester","domain2", true));
+		expect(this.domainUserDAO.getDomains("tester")).andReturn(domains);
+		expect(this.domainUserDAO.getDomains("newuser")).andReturn(Collections.EMPTY_LIST);
+		replay(this.domainUserDAO);
+		// test0
+		Collection<String> domains2 = this.authManager.getUserDomains("tester");
+		assertEquals(2, domains2.size());
+		domains2 = this.authManager.getUserDomains("newuser");
+		assertTrue(domains2.isEmpty());
 		// verify
-		verify(this.roleDAO);
+		verify(this.domainUserDAO);
 	}
 
 	@Test
 	public void authorizeTest() {
 		// setup mock
-		expect(this.roleDAO.existsRoleFor("domain1", "reviewer", "commit_code")).andReturn(false);
-		expect(this.roleDAO.existsRoleFor("domain1", "reviewer", "pull_code")).andReturn(true);
-		expect(this.roleDAO.existsRoleFor("domain2", "tester", "commit_code")).andReturn(true);
-		expect(this.roleDAO.existsRoleFor("domain1", "developer", "commit_code")).andReturn(true);
-		replay(this.roleDAO);
+		expect(this.gAuth.isApplicationAdmin()).andReturn(false);
+		expect(this.roleDAO.existsRoleFor("reviewer", "commit_code")).andReturn(false);
+		expect(this.gAuth.isApplicationAdmin()).andReturn(false);
+		expect(this.roleDAO.existsRoleFor("reviewer", "pull_code")).andReturn(true);
+		expect(this.gAuth.isApplicationAdmin()).andReturn(false);
+		expect(this.roleDAO.existsRoleFor("tester", "commit_code")).andReturn(true);
+		expect(this.gAuth.isApplicationAdmin()).andReturn(false);
+		expect(this.roleDAO.existsRoleFor("developer", "commit_code")).andReturn(true);
+		expect(this.gAuth.isApplicationAdmin()).andReturn(true);
+		
+		replay(this.roleDAO, this.gAuth);
 		// test
-		assertFalse(this.authManager.isAuthorized("domain1", "reviewer", "commit_code"));
-		assertTrue(this.authManager.isAuthorized("domain1", "reviewer", "pull_code"));
-		assertTrue(this.authManager.isAuthorized("domain2", "tester", "commit_code"));
-		assertTrue(this.authManager.isAuthorized("domain1", "developer", "commit_code"));
+		assertFalse(this.authManager.isAuthorized("reviewer", "commit_code"));
+		assertTrue(this.authManager.isAuthorized("reviewer", "pull_code"));
+		assertTrue(this.authManager.isAuthorized("tester", "commit_code"));
+		assertTrue(this.authManager.isAuthorized("developer", "commit_code"));
+		assertTrue(this.authManager.isAuthorized("root", "rule_everything"));
 
 		// verify
-		verify(this.roleDAO);
+		verify(this.roleDAO, this.gAuth);
 	}
 }

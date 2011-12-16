@@ -37,25 +37,8 @@ public class RoleDAO extends GenericDAO<Role> {
 	/**
 	 * Returns all roles of a user in a specific domain the whole system.
 	 * 
-	 * @param domain
-	 *            domain that the roles belongs to
 	 * @param username
 	 *            username username of the user
-	 * 
-	 * @return a list of {@link Role} that belongs to user
-	 */
-	@SuppressWarnings("unchecked")
-	public List<Role> getUserRoles(String domain, String username) {
-		Query query = this.createQuery();
-		query.setFilter("domain == :domain && users == :username");
-		return (List<Role>) query.execute(domain, username);
-	}
-
-	/**
-	 * Returns all roles of a user in the whole system.
-	 * 
-	 * @param username
-	 *            username of the user
 	 * 
 	 * @return a list of {@link Role} that belongs to user
 	 */
@@ -67,31 +50,16 @@ public class RoleDAO extends GenericDAO<Role> {
 	}
 
 	/**
-	 * Returns all existent roles of a specific domain.
-	 * 
-	 * @param domain
-	 *            domain that the roles belong to
-	 * 
-	 * @return a list of {@link Role} that belongs to domain
-	 */
-	@SuppressWarnings("unchecked")
-	public List<Role> getAll(String domain) {
-		Query query = this.createQuery();
-		query.setFilter("domain == :domain");
-		return (List<Role>) query.execute(domain);
-	}
-
-	/**
-	 * Checks if exists at least a role that matches the given domain, user and activity.
+	 * Checks if exists at least a role that matches the given user and activity.
 	 *  
 	 * @return <code>true</code> if exists at least one role that match the given domain, user and
 	 *         activity, <code>false</code> if doesn't exists such role.
 	 */
-	public boolean existsRoleFor(String domain, String username, String activity) {
+	public boolean existsRoleFor(String username, String activity) {
 		Query query = this.createQuery();
-		query.setFilter("domain == :domainName && users == :username && activities == :activity");
+		query.setFilter("users == :username && activities == :activity");
 		query.setResult("count(this)");
-		return ((Integer) query.execute(domain, username, activity)) != 0;
+		return ((Integer) query.execute(username, activity)) != 0;
 	}
 	
 }

@@ -18,23 +18,43 @@
  */
 package br.octahedron.figgo.modules.authorization.manager;
 
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import br.octahedron.cotopaxi.eventbus.Event;
 
 /**
- * Uses the GAE {@link UserService} to authorize admin users.
+ * Indicates that an user has been activated in a given domain
  * 
- * @author Danilo Queiroz
+ * @author Danilo Queiroz - dpenna.queiroz@gmail.com
  */
-public class GoogleAuthorizer {
+public class UserActivatedEvent implements Event {
 
-	private UserService users = UserServiceFactory.getUserService();
+	private static final long serialVersionUID = -178797810500703607L;
+	
+	private String userId;
+	private String domain;
 
 	/**
-	 * @return <code>true</code> if the current user is the app admin.
+	 * @param userId
+	 *            The activated user's id
+	 * @param domain
+	 *            The domain
 	 */
-	public boolean isApplicationAdmin() {
-		return this.users.isUserLoggedIn() && this.users.isUserAdmin();
+	public UserActivatedEvent(String userId, String domain) {
+		this.userId = userId;
+		this.domain = domain;
+	}
+
+	/**
+	 * @return the userId
+	 */
+	public String getUserId() {
+		return userId;
+	}
+
+	/**
+	 * @return the domain
+	 */
+	public String getDomain() {
+		return domain;
 	}
 
 }

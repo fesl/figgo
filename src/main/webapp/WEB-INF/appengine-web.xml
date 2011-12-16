@@ -21,15 +21,14 @@
 		<include path="/js/**.js" />
 		<include path="/robots.txt" />
 		<include path="/favicon.ico" />
-		<exclude path="/WEB-INF/**.groovy" />
         <exclude path="/templates/**.vm" />
-		<exclude path="/i18n/**.i18n" />
+		<exclude path="/i18n/**" />
 		<exclude path="/css/**.scss" />
 	</static-files>
 
 	<!-- Resource Files -->
 	<resource-files>
-		<include path="/i18n/**.i18n" />
+		<include path="/i18n/**" />
 		<include path="/templates/**.vm" />
 	</resource-files>
 

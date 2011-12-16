@@ -1,8 +1,8 @@
 # Validators
 REQUIRED_DOMAIN_NAME=Nome: não pode ficar vazio
-REQUIRED_DOMAIN_URL=URL: não pode ficar vazia
-REQUIRED_DOMAIN_MAILLIST=Lista de discussão: não pode ficar vazia
 MINIMUM_LENGTH_DOMAIN_NAME=Nome: é muito curto (mínimo: 5 (cinco) caracteres)
+MINIMUM_LENGTH_DOMAIN_LIST=Lista de discussão: endereço muito curto (mínimo: 5 (cinco) caracteres)s
+INVALID_URL=Endereço invalido
 
 # Module configuration properties
 name=Nome

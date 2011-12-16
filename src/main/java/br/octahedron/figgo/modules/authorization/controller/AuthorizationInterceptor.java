@@ -19,6 +19,7 @@
 package br.octahedron.figgo.modules.authorization.controller;
 
 import br.octahedron.cotopaxi.auth.AbstractAuthorizationInterceptor;
+import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.util.Log;
@@ -34,6 +35,8 @@ public class AuthorizationInterceptor extends AbstractAuthorizationInterceptor {
 	
 	@Inject
 	private AuthorizationManager authorizationManager;
+	@Inject 
+	private NamespaceManager namespaceManager;
 	
 	/**
 	 * @param authorizationManager the authorizationManager to set
@@ -41,19 +44,33 @@ public class AuthorizationInterceptor extends AbstractAuthorizationInterceptor {
 	public void setAuthorizationManager(AuthorizationManager authorizationManager) {
 		this.authorizationManager = authorizationManager;
 	}
+	
+	/**
+	 * @param namespaceManager the namespaceManager to set
+	 */
+	public void setNamespaceManager(NamespaceManager namespaceManager) {
+		this.namespaceManager = namespaceManager;
+	}
 
 	@Override
 	protected void authorizeUser(String actionName, String currentUser, boolean showForbiddenPage) {
-		String user = this.currentUser();
-		String domain = subDomain();
-		if (user!= null && !this.authorizationManager.isAuthorized(domain, user, actionName)) {
-			log.debug("User %s is not authorized to perform action %s on domain %s", user, actionName, domain);
-			if (showForbiddenPage) { 
-				forbidden();
-			}
-		} else {
-			this.authorized();
-			log.debug("User %s is authorized to perform action %s on domain %s", user, actionName, domain);
-		}		
+		try {
+			String user = this.currentUser();
+			String domain = subDomain();
+			this.namespaceManager.changeToNamespace(domain);
+			
+			if (user!= null && !this.authorizationManager.isAuthorized(user, actionName)) {
+				log.debug("User %s is not authorized to perform action %s on domain %s", user, actionName, domain);
+				if (showForbiddenPage) { 
+					forbidden();
+				}
+			} else {
+				this.authorized();
+				log.debug("User %s is authorized to perform action %s on domain %s", user, actionName, domain);
+			}		
+			
+		} finally {
+			this.namespaceManager.changeToPreviousNamespace();
+		}
 	}
 }

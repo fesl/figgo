@@ -36,21 +36,9 @@ import javax.jdo.annotations.PrimaryKey;
 @PersistenceCapable
 public class Role implements Serializable {
 
-	private static final String SEPARATOR = "#";
-
-	public static String createRoleKey(String domain, String name) {
-		return domain + SEPARATOR + name;
-	}
-
 	private static final long serialVersionUID = -7580021620330781535L;
 
 	@PrimaryKey
-	@Persistent
-	private String id;
-
-	@Persistent
-	private String domain;
-
 	@Persistent
 	private String name;
 
@@ -60,35 +48,10 @@ public class Role implements Serializable {
 	@Persistent
 	private Set<String> users = new TreeSet<String>();
 
-	public Role(String domain, String name) {
-		this.domain = domain;
+	public Role(String name) {
 		this.name = name;
-		this.fixId();
 	}
 
-	/**
-	 * Fix the Role ID, it means, check if the id is set and if necessary, sets it.
-	 */
-	private void fixId() {
-		if (this.id == null || this.id.isEmpty()) {
-			this.id = createRoleKey(this.domain, this.name);
-		}
-	}
-
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		this.fixId();
-		return this.id;
-	}
-
-	/**
-	 * @return the domain
-	 */
-	public String getDomain() {
-		return this.domain;
-	}
 
 	/**
 	 * @return the name
@@ -162,7 +125,7 @@ public class Role implements Serializable {
 	 */
 	@Override
 	public int hashCode() {
-		return this.domain.hashCode() & this.name.hashCode();
+		return this.name.hashCode();
 	}
 
 	/*
@@ -174,7 +137,7 @@ public class Role implements Serializable {
 	public boolean equals(Object obj) {
 		if (obj instanceof Role) {
 			Role other = (Role) obj;
-			return this.domain.equals(other.getDomain()) && this.name.equals(other.getName());
+			return this.name.equals(other.getName());
 		} else {
 			return false;
 		}
@@ -185,8 +148,8 @@ public class Role implements Serializable {
 	 */
 	public void updateActivities(Collection<String> activities) {
 		// FIXME maybe another option?
+		this.activities.clear();
 		this.activities.addAll(activities);
-		this.activities.retainAll(activities);
 	}
 
 	/**

@@ -18,11 +18,14 @@
  */
 package br.octahedron.figgo.modules.authorization.controller;
 
+import static br.octahedron.cotopaxi.controller.Converter.Builder.strArray;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
-import static br.octahedron.cotopaxi.controller.Converter.Builder.*;
+import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
+import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespace;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 
 /**
@@ -31,16 +34,14 @@ import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
  */
 @AuthenticationRequired
 @AuthorizationRequired
+@NamespaceRequired
+@OnlyForNamespace
 public class AuthorizationController extends Controller {
 
 	private static final String BASE_DIR_TPL = "domain/roles/";
 	private static final String LIST_ROLES_TPL = BASE_DIR_TPL + "roles.vm";
-	private static final String LIST_USER_TPL = BASE_DIR_TPL + "users.vm";
 	private static final String EDIT_USERS_ROLES_TPL = BASE_DIR_TPL + "users_edit.vm";
-	private static final String NEW_ROLE_TPL = BASE_DIR_TPL + "role_new.vm";
-	private static final String EDIT_ROLE_TPL = BASE_DIR_TPL + "role_edit.vm";
 	private static final String BASE_ROLES_URL = "/roles";
-	private static final String BASE_USERS_URL = "/users";
 
 	@Inject
 	private AuthorizationManager authorizationManager;
@@ -49,29 +50,78 @@ public class AuthorizationController extends Controller {
 		this.authorizationManager = authorizationManager;
 	}
 
+	/**
+	 * Show the roles page with all roles
+	 */
 	public void getListRoles() {
-		this.out("roles", this.authorizationManager.getRoles(this.subDomain()));
-		this.out("activities", this.authorizationManager.getAcitivities());
+		this.out("roles", this.authorizationManager.getRoles());
+		this.out("activities", this.authorizationManager.getActivities());
 		this.success(LIST_ROLES_TPL);
 	}
 
+	/**
+	 * Creates a new role
+	 */
+	public void postNewRole() {
+		this.authorizationManager.createRole(this.in("name"), this.values("activities"));
+		this.redirect(BASE_ROLES_URL);
+	}
+
+	/**
+	 * Removes an role
+	 */
+	public void postRemoveRole() {
+		this.authorizationManager.removeRole(this.in("role"));
+		this.redirect(BASE_ROLES_URL);
+	}
+
+	/**
+	 * Get given users roles.
+	 * 
+	 * <b>AjaxMethod</b>
+	 */
+	public void getUserRoles() {
+		this.out("result", this.authorizationManager.getUsersRoles(this.in("users", strArray(","))));
+		this.jsonSuccess();
+	}
+
+	/**
+	 * Add activity to a role.
+	 * 
+	 * <b>AjaxMethod</b>
+	 */
 	public void postAddRoleActivity() {
-		this.authorizationManager.addActivitiesToRole(this.subDomain(), this.in("role"), this.in("activity"));
+		this.authorizationManager.addActivitiesToRole(this.in("role"), this.in("activity"));
 		this.jsonSuccess();
 	}
 
+	/**
+	 * Remove an activity from a role
+	 * 
+	 * <b>AjaxMethod</b>
+	 */
 	public void postRemoveRoleActivity() {
-		this.authorizationManager.removeActivitiesToRole(this.subDomain(), this.in("role"), this.in("activity"));
+		this.authorizationManager.removeActivitiesToRole(this.in("role"), this.in("activity"));
 		this.jsonSuccess();
 	}
 
+	/**
+	 * Adds an user to a role
+	 * 
+	 * <b>AjaxMethod</b>
+	 */
 	public void postAddUserRole() {
-		this.authorizationManager.addUsersToRole(this.subDomain(), this.in("role"), this.in("user"));
+		this.authorizationManager.addUsersToRole(this.in("role"), this.in("user"));
 		this.jsonSuccess();
 	}
 
+	/**
+	 * Removes a role from an user
+	 * 
+	 * <b>AjaxMethod</b>
+	 */
 	public void postRemoveUserRole() {
-		this.authorizationManager.removeUserFromRole(this.subDomain(), this.in("role"), this.in("user"));
+		this.authorizationManager.removeUserFromRole(this.in("role"), this.in("user"), this.subDomain());
 		this.jsonSuccess();
 	}
 
@@ -79,88 +129,38 @@ public class AuthorizationController extends Controller {
 	 * /roles/user/del
 	 * 
 	 * Remove all roles of user
+	 * 
+	 * <b>AjaxMethod</b>
 	 */
 	public void postRemoveUserRoles() {
-		this.authorizationManager.removeUserFromRoles(this.subDomain(), this.in("user"));
+		this.authorizationManager.removeUserFromRoles(this.in("user"), this.subDomain());
 		this.jsonSuccess();
 	}
-
-	public void getNewRole() {
-		this.out("activities", this.authorizationManager.getAcitivities());
-		this.success(NEW_ROLE_TPL);
-	}
-
-	public void postNewRole() {
-		this.authorizationManager.createRole(this.subDomain(), this.in("name"), this.values("activities"));
-		this.redirect(BASE_ROLES_URL);
-	}
-
-	public void getEditRole() {
-		this.out("activities", this.authorizationManager.getAcitivities());
-		this.out("role", this.authorizationManager.getRole(this.subDomain(), this.in("role")));
-		this.success(EDIT_ROLE_TPL);
-	}
-
-	public void postEditRole() {
-		this.authorizationManager.updateRoleActivities(this.subDomain(), this.in("role"), this.values("activities"));
-		this.redirect(BASE_ROLES_URL);
-	}
-
-	public void postRemoveRole() {
-		this.authorizationManager.removeRole(this.subDomain(), this.in("role"));
-		this.redirect(BASE_ROLES_URL);
-	}
+	
+	// REVIEW change how this works - possible using async/ajax call
+	@Inject
+	private NamespaceManager namespaceManager;
 	
 	/**
-	 *	GET /users
+	 * @param namespaceManager the namespaceManager to set
 	 */
-	public void getListUsers() {
-		// TODO verificar se é subdomínio válido
-		this.out("users", this.authorizationManager.getActiveUsers(this.subDomain()));
-		this.out("pending", this.authorizationManager.getNonActiveUsers(this.subDomain()));
-		this.success(LIST_USER_TPL);
+	public void setNamespaceManager(NamespaceManager namespaceManager) {
+		this.namespaceManager = namespaceManager;
 	}
-	
+
 	/**
-	 *	GET /roles/users
+	 * GET /roles/users
 	 */
 	public void getListUsersAndRoles() {
 		// TODO verificar se é subdomínio válido
-		this.out("roles", this.authorizationManager.getRoles(this.subDomain()));
+		this.out("roles", this.authorizationManager.getRoles());
+		// This called should occurs into global namespace
+		this.namespaceManager.changeToGlobalNamespace();
 		this.out("users", this.authorizationManager.getActiveUsers(this.subDomain()));
+		this.namespaceManager.changeToPreviousNamespace();
 		this.success(EDIT_USERS_ROLES_TPL);
 	}
+
 	
-	/**
-	 * POST /user/request
-	 */
-	public void postRequestUser() {
-		// TODO verificar se é subdomínio válido
-		this.authorizationManager.createDomainUser(this.subDomain(), this.currentUser(), false);
-		this.redirect("/");
-	}
-	
-	/**
-	 * POST /user/request/accept
-	 */
-	public void postAcceptRequestUser() {
-		// TODO verificar se é subdomínio válido
-		this.authorizationManager.activateDomainUser(this.subDomain(), this.in("user"));
-		this.redirect(BASE_USERS_URL);
-	}
-	
-	/**
-	 * POST /user/request/reject
-	 */
-	public void postRejectRequestUser() {
-		// TODO verificar se é subdomínio válido
-		this.authorizationManager.removeDomainUser(this.subDomain(), this.in("user"));
-		this.redirect(BASE_USERS_URL);
-	}
-	
-	public void getUserRoles() {
-		this.out("result", this.authorizationManager.getUsersRoles(this.subDomain(), this.in("users", strArray(","))));
-		this.jsonSuccess();
-	}
-	
+
 }

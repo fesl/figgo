@@ -14,7 +14,7 @@
 <div class="left">
     <section id="main-intern">
         <h2>Novo serviço</h3>
-        <form action="/service/new" method="post" accept-charset="utf-8">
+        <form action="/services/new" method="post" accept-charset="utf-8">
             <fieldset>
                 <legend>Dados do serviço</legend>
                 <div>

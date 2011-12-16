@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.authorization.data;
 
+import static br.octahedron.figgo.modules.authorization.data.DomainUser.createDomainUserKey;
 import java.util.Collection;
 
 import javax.jdo.Query;
@@ -45,7 +46,27 @@ public class DomainUserDAO extends GenericDAO<DomainUser> {
 	@SuppressWarnings("unchecked")
 	private Collection<DomainUser> getUsers(String domain, boolean isActive) {
 		Query query = this.createQuery();
-		query.setFilter("isActive == :isActive && domains == :domain");
+		query.setFilter("isActive == :isActive && domain == :domain");
 		return (Collection<DomainUser>) query.execute(isActive, domain);
+	}
+
+	/**
+	 * @param username
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<DomainUser> getDomains(String username) {
+		Query query = this.createQuery();
+		query.setFilter("userId == :userId");
+		return (Collection<DomainUser>) query.execute(username);
+	}
+
+	/**
+	 * @param domain
+	 * @param userId
+	 * @return
+	 */
+	public DomainUser get(String userId, String domain) {
+		return this.get(createDomainUserKey(userId, domain));
 	}
 }

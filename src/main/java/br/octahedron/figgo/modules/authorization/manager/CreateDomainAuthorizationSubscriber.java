@@ -18,15 +18,18 @@
  */
 package br.octahedron.figgo.modules.authorization.manager;
 
+import static br.octahedron.figgo.modules.authorization.manager.AuthorizationManager.ADMINS_ROLE_NAME;
+import static br.octahedron.figgo.modules.authorization.manager.AuthorizationManager.USERS_ROLE_NAME;
 import br.octahedron.cotopaxi.datastore.jdo.PersistenceManagerPool;
+import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.ApplicationDomainModuleSpec;
+import br.octahedron.figgo.modules.ApplicationDomainModuleSpec.ActionSpec;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.ModuleSpec;
-import br.octahedron.figgo.modules.ApplicationDomainModuleSpec.ActionSpec;
 import br.octahedron.figgo.modules.ModuleSpec.Type;
 import br.octahedron.figgo.modules.admin.manager.DomainCreatedEvent;
 import br.octahedron.util.Log;
@@ -38,13 +41,15 @@ import br.octahedron.util.Log;
 @InterestedEvent(events = { DomainCreatedEvent.class })
 public class CreateDomainAuthorizationSubscriber implements Subscriber {
 
-	private static final String USERS_ROLE_NAME = "USERS";
-	private static final String ADMINS_ROLE_NAME = "ADMINS";
+
 
 	private static final Log logger = new Log(CreateDomainAuthorizationSubscriber.class);
 
 	@Inject
 	private AuthorizationManager authorizationManager;
+	
+	@Inject
+	private NamespaceManager namespaceManager;
 
 	/**
 	 * @param authorizationManager
@@ -53,6 +58,14 @@ public class CreateDomainAuthorizationSubscriber implements Subscriber {
 	public void setAuthorizationManager(AuthorizationManager authorizationManager) {
 		this.authorizationManager = authorizationManager;
 	}
+	
+	/**
+	 * @param namespaceManager the namespaceManager to set
+	 */
+	public void setNamespaceManager(NamespaceManager namespaceManager) {
+		this.namespaceManager = namespaceManager;
+	}
+
 
 	/*
 	 * (non-Javadoc)
@@ -65,12 +78,14 @@ public class CreateDomainAuthorizationSubscriber implements Subscriber {
 	public void eventPublished(Event event) {
 		DomainCreatedEvent domainEvent = (DomainCreatedEvent) event;
 		String domainName = domainEvent.getNamespace();
+		this.namespaceManager.changeToNamespace(domainName);
+		
 		String domainAdmin = domainEvent.getAdminID();
 		logger.info("Creating the default roles authorizations for domain: " + domainName + ". The domain admin is " + domainAdmin);
 
 		// create roles
-		this.authorizationManager.createRole(domainName, USERS_ROLE_NAME);
-		this.authorizationManager.createRole(domainName, ADMINS_ROLE_NAME);
+		this.authorizationManager.createRole(USERS_ROLE_NAME);
+		this.authorizationManager.createRole(ADMINS_ROLE_NAME);
 
 		// add actions to roles
 		for (Module m : Module.values()) {
@@ -81,9 +96,9 @@ public class CreateDomainAuthorizationSubscriber implements Subscriber {
 				for (ActionSpec action : spec.getModuleActions()) {
 					String name = action.getAction();
 					logger.debug("Module %s; Action %s", m.toString(), name);
-					this.authorizationManager.addActivitiesToRole(domainName, ADMINS_ROLE_NAME, name);
+					this.authorizationManager.addActivitiesToRole(ADMINS_ROLE_NAME, name);
 					if (!action.isAdministrativeOnly()) {
-						this.authorizationManager.addActivitiesToRole(domainName, USERS_ROLE_NAME, name);
+						this.authorizationManager.addActivitiesToRole(USERS_ROLE_NAME, name);
 					}
 				}
 			}
@@ -91,14 +106,14 @@ public class CreateDomainAuthorizationSubscriber implements Subscriber {
 
 		// add admin user to admin role
 		logger.info("Configuring the admin for domain %s. Admin: %s", domainName, domainAdmin);
-		this.authorizationManager.addUsersToRole(domainName, ADMINS_ROLE_NAME, domainAdmin);
-		this.authorizationManager.addUsersToRole(domainName, USERS_ROLE_NAME, domainAdmin);
-		this.createDomainUser(domainName, domainAdmin);
+		this.authorizationManager.addUsersToRole(ADMINS_ROLE_NAME, domainAdmin);
+		this.authorizationManager.addUsersToRole(USERS_ROLE_NAME, domainAdmin);
 		
-		PersistenceManagerPool.forceClose();
-	}
-	
-	private void createDomainUser(String domainName, String domainAdmin) {
+		// persist DomainUser information
+		this.namespaceManager.changeToGlobalNamespace();
 		this.authorizationManager.createDomainUser(domainName, domainAdmin, true);
+		
+		// Interceptors don't work for tasks, forcing PersistenceManager to close
+		PersistenceManagerPool.forceClose();
 	}
 }

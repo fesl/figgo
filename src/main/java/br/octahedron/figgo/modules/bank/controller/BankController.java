@@ -18,8 +18,8 @@
  */
 package br.octahedron.figgo.modules.bank.controller;
 
-import static br.octahedron.cotopaxi.controller.Converter.Builder.date;
 import static br.octahedron.commons.util.DateUtil.SHORT;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.date;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -31,6 +31,7 @@ import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
+import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespace;
 import br.octahedron.figgo.modules.bank.controller.validation.BankValidators;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
 import br.octahedron.figgo.modules.bank.manager.AccountManager;
@@ -43,6 +44,7 @@ import br.octahedron.figgo.modules.bank.manager.InsufficientBalanceException;
 @AuthenticationRequired
 @AuthorizationRequired
 @NamespaceRequired
+@OnlyForNamespace
 public class BankController extends Controller {
 
 	/*

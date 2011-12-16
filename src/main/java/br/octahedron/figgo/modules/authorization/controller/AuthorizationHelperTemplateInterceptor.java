@@ -25,72 +25,69 @@ import br.octahedron.cotopaxi.interceptor.TemplateInterceptor;
 import br.octahedron.cotopaxi.view.response.TemplateResponse;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 
-
 /**
- * A {@link TemplateIntercetor} that adds an AuthorizationHelper to 
- * view. 
+ * A {@link TemplateIntercetor} that adds an AuthorizationHelper to view.
  * 
  * @author Danilo Queiroz - daniloqueiroz@octahedron.com.br
  */
 public class AuthorizationHelperTemplateInterceptor extends TemplateInterceptor {
 
-    /*
-     * (non-Javadoc)
-     */
-    @Override
-    public void preRender(TemplateResponse response) {
-        response.addOutput("auth", new AuthorizationHelper(this.currentUser()));
-    }
+	/*
+	 * (non-Javadoc)
+	 */
+	@Override
+	public void preRender(TemplateResponse response) {
+		response.addOutput("auth", new AuthorizationHelper(this.currentUser()));
+	}
 
-    /**
-     * This class encapsulates the authorization manager and provides a helper
-     * method to be used by the view to check user authorizations.
-     * 
-     * When using velocity, the view can checks if an user has authorization for
-     * a given activity just by using $auth.activity
-     * 
-     * @author Danilo Queiroz
-     */
-    public class AuthorizationHelper extends SelfInjectable {
+	/**
+	 * This class encapsulates the authorization manager and provides a helper method to be used by
+	 * the view to check user authorizations.
+	 * 
+	 * When using velocity, the view can checks if an user has authorization for a given activity
+	 * just by using $auth.activity
+	 * 
+	 * @author Danilo Queiroz
+	 */
+	public class AuthorizationHelper extends SelfInjectable {
 
-    	@Inject
-        private AuthorizationManager authorizationManager;
+		@Inject
+		private AuthorizationManager authorizationManager;
 
-        @Inject
-        private NamespaceManager namespaceManager;
+		@Inject
+		private NamespaceManager namespaceManager;
 
-        private String userId;
-        private String domain;
+		private String userId;
+		private String domain;
 
-        /**
-         * @param userManager
-         *            the userManager to set
-         */
-        public void setAuthorizationManager(AuthorizationManager authorizationManager) {
-            this.authorizationManager = authorizationManager;
-        }
+		public AuthorizationHelper(String userId) {
+			this.userId = userId;
+		}
 
-        /**
-         * @param namespaceManager
-         *            the namespaceManager to set
-         */
-        public void setNamespaceManager(NamespaceManager namespaceManager) {
-            this.namespaceManager = namespaceManager;
-            this.domain = namespaceManager.currentNamespace();
-        }
-        
+		/**
+		 * @param userManager
+		 *            the userManager to set
+		 */
+		public void setAuthorizationManager(AuthorizationManager authorizationManager) {
+			this.authorizationManager = authorizationManager;
+		}
 
-        public AuthorizationHelper(String userId) {
-            this.userId = userId;
-        }
+		/**
+		 * @param namespaceManager
+		 *            the namespaceManager to set
+		 */
+		public void setNamespaceManager(NamespaceManager namespaceManager) {
+			this.namespaceManager = namespaceManager;
+			this.domain = namespaceManager.currentNamespace();
+		}
 
 		public boolean get(String activity) {
-            try {
-                this.namespaceManager.changeToGlobalNamespace();
-                return authorizationManager.isAuthorized(this.domain, this.userId, activity);
-            } finally {
-                this.namespaceManager.changeToPreviousNamespace();
-            }
-        }
-    }
+			try {
+				this.namespaceManager.changeToNamespace(this.domain);
+				return authorizationManager.isAuthorized(this.userId, activity);
+			} finally {
+				this.namespaceManager.changeToPreviousNamespace();
+			}
+		}
+	}
 }

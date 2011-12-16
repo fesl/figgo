@@ -22,6 +22,7 @@ import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
 import static junit.framework.Assert.assertTrue;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.junit.Before;
@@ -48,34 +49,14 @@ public class RoleDAOTest {
 	}
 
 	private void initDB() {
-		Role role = new Role("domain1", "admin");
+		Role role = new Role("admin");
 		role.addUsers("developer");
 		role.addActivities("commit_code", "create_tasks");
 		this.roleDAO.save(role);
-		role = new Role("domain1", "user");
+		role = new Role("user");
 		role.addUsers("developer", "tester");
 		role.addActivities("change_tasks", "pull_code");
 		this.roleDAO.save(role);
-		role = new Role("domain2", "admin");
-		role.addUsers("developer");
-		role.addActivities("commit_code", "create_tasks");
-		this.roleDAO.save(role);
-		role = new Role("domain2", "user");
-		role.addUsers("developer", "coach");
-		role.addActivities("pull_code", "change_tasks");
-		this.roleDAO.save(role);
-		role = new Role("domain3", "admin");
-		role.addUsers("developer", "coach");
-		role.addActivities("commit_code", "create_tasks");
-		this.roleDAO.save(role);
-		role = new Role("domain3", "user");
-		role.addUsers("developer", "coach", "tester");
-		role.addActivities("pull_code", "change_tasks");
-		this.roleDAO.save(role);
-		role = new Role("domain4", "user");
-		role.addUsers("developer", "coach", "tester");
-		role.addActivities("pull_code", "change_tasks");
-		this.roleDAO.save(role);		
 	}
 
 	@Test
@@ -84,59 +65,44 @@ public class RoleDAOTest {
 		assertTrue(roles.isEmpty());
 
 		roles = this.roleDAO.getUserRoles("developer");
-		assertEquals(7, roles.size());
+		assertEquals(2, roles.size());
 
 		roles = this.roleDAO.getUserRoles("coach");
-		assertEquals(4, roles.size());
+		assertEquals(0, roles.size());
 
 		roles = this.roleDAO.getUserRoles("tester");
-		assertEquals(3, roles.size());
+		assertEquals(1, roles.size());
 	}
 	
 	@Test
 	public void queryForUserRolesByDomain() {
-		List<Role> roles = this.roleDAO.getUserRoles("domain1", "none");
+		List<Role> roles = this.roleDAO.getUserRoles("none");
 		assertTrue(roles.isEmpty());
 		
-		roles = this.roleDAO.getUserRoles("domain1", "none");
+		roles = this.roleDAO.getUserRoles("none");
 		assertTrue(roles.isEmpty());
 
-		roles = this.roleDAO.getUserRoles("domain1", "developer");
+		roles = this.roleDAO.getUserRoles("developer");
 		assertEquals(2, roles.size());
 		
-		roles = this.roleDAO.getUserRoles("domain1", "tester");
-		assertEquals(1, roles.size());
-		
-		roles = this.roleDAO.getUserRoles("domain4", "coach");
+		roles = this.roleDAO.getUserRoles("tester");
 		assertEquals(1, roles.size());
 	}
 
 	@Test
 	public void queryForRole() {
 		// False
-		assertFalse(this.roleDAO.existsRoleFor("domain1", "sysadmin", "commit_code"));
-		assertFalse(this.roleDAO.existsRoleFor("domain1", "tester", "commit_code"));
-		assertFalse(this.roleDAO.existsRoleFor("domain2", "coach", "commit_code"));
+		assertFalse(this.roleDAO.existsRoleFor("sysadmin", "commit_code"));
+		assertFalse(this.roleDAO.existsRoleFor("tester", "commit_code"));
 
 		// True
-		assertTrue(this.roleDAO.existsRoleFor("domain3", "coach", "pull_code"));
-		assertTrue(this.roleDAO.existsRoleFor("domain1", "tester", "change_tasks"));
-		assertTrue(this.roleDAO.existsRoleFor("domain3", "coach", "create_tasks"));
+		assertTrue(this.roleDAO.existsRoleFor("tester", "change_tasks"));
 	}
 	
 	@Test
 	public void queryGetAll() {
-		List<Role> roles = this.roleDAO.getAll("domain3"); 
+		Collection<Role> roles = this.roleDAO.getAll();
 		assertEquals(2, roles.size());
-		
-		roles = this.roleDAO.getAll("domain1");
-		assertEquals(2, roles.size());
-		
-		roles = this.roleDAO.getAll("domain4");
-		assertEquals(1, roles.size());
-		
-		roles = this.roleDAO.getAll("domainX");
-		assertTrue(roles.isEmpty());
 	}
 
 }

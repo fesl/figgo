@@ -18,7 +18,8 @@
  */
 package br.octahedron.figgo;
 
-import static br.octahedron.cotopaxi.CotopaxiProperty.*;
+import static br.octahedron.cotopaxi.CotopaxiProperty.APPLICATION_BASE_URL;
+import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
 import static br.octahedron.cotopaxi.validation.Rule.Builder.required;
 import br.octahedron.commons.util.Mailer;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
@@ -27,6 +28,7 @@ import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
+import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespace;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
 
@@ -64,7 +66,6 @@ public class IndexController extends Controller {
 	/**
 	 * Shows initial land page or redirect user to dashboard/domain page
 	 */
-	@NamespaceRequired
 	public void getIndex() {
 		String username = this.currentUser();
 		boolean userLogged = (username != null);
@@ -73,30 +74,32 @@ public class IndexController extends Controller {
 			// user accessing the raw url (www), redirects it to dash board
 			if (!userLogged) {
 				// user not logged, show the initial land page
-				success(INDEX_TPL);
+				this.success(INDEX_TPL);
 			} else {
-				redirect("/dashboard");
+				this.redirect("/dashboard");
 			}
 		} else {
-			// user is accessing an specific domain page
+			this.forward("DomainIndex");
+		}
+	}
+
+	@AuthenticationRequired
+	@NamespaceRequired
+	@OnlyForNamespace
+	public void getDomainIndex() {
+		try {
 			out("domain", this.configurationManager.getDomainConfiguration());
-
-			boolean userExists = false;
-			try {
-				if (userLogged) {
-					namespaceManager.changeToGlobalNamespace();
-					userExists = this.authorizationManager.getUserDomains(username).contains(subDomain());
-				}
-			} finally {
-				namespaceManager.changeToPreviousNamespace();
-			}
-
-			if (userExists) {
+			namespaceManager.changeToGlobalNamespace();
+			boolean hasPermission = this.authorizationManager.getUserDomains(this.currentUser()).contains(this.subDomain());
+			if (hasPermission) {
 				success(DOMAIN_INDEX_TPL);
 			} else {
 				success(DOMAIN_PUBLIC_INDEX_TPL);
 			}
+		} finally {
+			namespaceManager.changeToPreviousNamespace();
 		}
+
 	}
 
 	/**
@@ -110,11 +113,11 @@ public class IndexController extends Controller {
 	public void getAbout() {
 		success(ABOUT_TPL);
 	}
-	
+
 	public void getContact() {
 		success(CONTACT_TPL);
 	}
-	
+
 	public void postContact() {
 		Validator validator = ContactValidator.getValidator();
 		if (validator.isValid()) {
@@ -126,14 +129,14 @@ public class IndexController extends Controller {
 			this.invalid(CONTACT_TPL);
 		}
 	}
-	
+
 	/**
 	 * @author vitoravelino
 	 */
 	private static class ContactValidator {
-		
+
 		private static Validator validator;
-		
+
 		protected static synchronized Validator getValidator() {
 			if (validator == null) {
 				validator = new Validator();
