@@ -22,7 +22,6 @@ import static br.octahedron.cotopaxi.controller.Converter.Builder.strArray;
 import static br.octahedron.figgo.modules.configuration.controller.ConfigurationController.BASE_DIR_TPL;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
-import br.octahedron.cotopaxi.controller.ConvertionException;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
 
@@ -55,7 +54,7 @@ public class ListDomainsController extends Controller {
 	 * TODO DOCUMENTAR
 	 * @throws ConvertionException 
 	 */
-	public void getDomainsInfo() throws ConvertionException {
+	public void getDomainsInfo() {
 		this.out("result", this.configurationManager.getDomainsConfiguration(in("domains", strArray(","))));
 		this.jsonSuccess();
 	}

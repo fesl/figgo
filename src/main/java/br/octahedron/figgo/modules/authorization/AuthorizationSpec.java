@@ -64,10 +64,12 @@ public class AuthorizationSpec implements ApplicationDomainModuleSpec {
 		actions.add(new ActionSpec("RemoveRole", true));
 		actions.add(new ActionSpec("AddRoleActivity", true));
 		actions.add(new ActionSpec("RemoveRoleActivity", true));
-		actions.add(new ActionSpec("EditUserRoles", true));
+		actions.add(new ActionSpec("ListUsersAndRoles", true));
 		actions.add(new ActionSpec("AddUserRole", true));
 		actions.add(new ActionSpec("RemoveUserRole", true));
 		actions.add(new ActionSpec("RemoveUserRoles", true));
+		actions.add(new ActionSpec("AcceptRequestUser", true));
+		actions.add(new ActionSpec("RejectRequestUser", true));
 
 		return actions;
 	}

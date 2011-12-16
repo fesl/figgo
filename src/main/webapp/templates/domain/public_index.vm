@@ -1,6 +1,8 @@
 #set( $title = "Figgo - $!{domain.Name}" )
 #parse( "templates/layout.vm" )
 
+#simpleHeader()
+
 #@body()
 <div class="left">
     <section id="about-intern">
@@ -25,4 +27,4 @@
 </div>
 #end
     
-#scripts()
+#public_scripts()
