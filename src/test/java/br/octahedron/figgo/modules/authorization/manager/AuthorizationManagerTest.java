@@ -222,13 +222,14 @@ public class AuthorizationManagerTest {
 		List<DomainUser> domains = new LinkedList<DomainUser>();
 		domains.add(new DomainUser("tester","domain1", true));
 		domains.add(new DomainUser("tester","domain2", true));
+		domains.add(new DomainUser("tester","domain3", false));
 		expect(this.domainUserDAO.getDomains("tester")).andReturn(domains);
 		expect(this.domainUserDAO.getDomains("newuser")).andReturn(Collections.EMPTY_LIST);
 		replay(this.domainUserDAO);
 		// test0
-		Collection<String> domains2 = this.authManager.getUserDomains("tester");
+		Collection<String> domains2 = this.authManager.getActiveUserDomains("tester");
 		assertEquals(2, domains2.size());
-		domains2 = this.authManager.getUserDomains("newuser");
+		domains2 = this.authManager.getActiveUserDomains("newuser");
 		assertTrue(domains2.isEmpty());
 		// verify
 		verify(this.domainUserDAO);

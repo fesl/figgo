@@ -102,7 +102,7 @@ public class UserController extends Controller {
 	@AuthenticationRequired
 	public void getDashboardUser() {
 		String userEmail = this.currentUser();
-		out("domains", this.authorizationManager.getUserDomains(userEmail));
+		out("domains", this.authorizationManager.getActiveUserDomains(userEmail));
 		success(DASHBOARD_TPL);
 	}
 

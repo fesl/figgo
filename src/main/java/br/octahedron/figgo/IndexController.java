@@ -90,7 +90,7 @@ public class IndexController extends Controller {
 		try {
 			out("domain", this.configurationManager.getDomainConfiguration());
 			namespaceManager.changeToGlobalNamespace();
-			boolean hasPermission = this.authorizationManager.getUserDomains(this.currentUser()).contains(this.subDomain());
+			boolean hasPermission = this.authorizationManager.getActiveUserDomains(this.currentUser()).contains(this.subDomain());
 			if (hasPermission) {
 				success(DOMAIN_INDEX_TPL);
 			} else {

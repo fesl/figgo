@@ -328,12 +328,14 @@ public class AuthorizationManager {
 	 * @return a collection of {@link String} representing all the domains that a user has at least
 	 *         one role.
 	 */
-	public Collection<String> getUserDomains(String username) {
+	public Collection<String> getActiveUserDomains(String username) {
 		Collection<DomainUser> domains = this.domainUserDAO.getDomains(username);
 		logger.debug("User %s has %d domain", username, domains.size());
 		Collection<String> domainNames = new ArrayList<String>(domains.size());
 		for (DomainUser d : domains) {
-			domainNames.add(d.getDomain());
+			if(d.isActive()) {
+				domainNames.add(d.getDomain());
+			}
 		}
 		return domainNames;
 	}
