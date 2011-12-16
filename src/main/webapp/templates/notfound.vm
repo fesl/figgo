@@ -1,8 +1,8 @@
 #set( $title = "Figgo - Página não encontrada" )
 #parse( "templates/layout.vm" )
 
-#@body()
+#@public_body()
 	<h1>404 not found</h1>
 #end
 
-#scripts()
+#public_scripts()

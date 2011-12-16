@@ -71,5 +71,5 @@
 #end
 
 #@scripts()
-    <script defer src="/js/user.js" />
+    <script src="/js/user.js"></script>
 #end

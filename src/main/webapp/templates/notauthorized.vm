@@ -1,8 +1,8 @@
 #set( $title = "Figgo - Não autorizado" )
 #parse( "templates/layout.vm" )
 
-#@body()
+#@public_body()
 	<h1>403 not authorized</h1>
 #end
 
-#scripts()
+#public_scripts()
