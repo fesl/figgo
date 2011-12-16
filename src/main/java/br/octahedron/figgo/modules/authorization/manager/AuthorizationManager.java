@@ -377,7 +377,7 @@ public class AuthorizationManager {
 	 * @param userId
 	 */
 	public void activateDomainUser(String domain, String userId) {
-		DomainUser domainUser = this.domainUserDAO.get(userId);
+		DomainUser domainUser = this.domainUserDAO.get(userId, domain);
 		domainUser.markAsActive();
 		this.eventBus.publish(new UserActivatedEvent(userId, domain));
 	}
