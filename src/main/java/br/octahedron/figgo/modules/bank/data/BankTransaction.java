@@ -28,8 +28,11 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 /**
- * @author Erick Moreno
+ * Represents an BankTransaction. It holds the origin and destination account, the transaction
+ * value, its timestamp and type.
  * 
+ * @author Erick Moreno
+ * @author Danilo Queiroz
  */
 @PersistenceCapable
 public class BankTransaction implements Serializable {
@@ -48,7 +51,7 @@ public class BankTransaction implements Serializable {
 	@Persistent
 	private String accountDest;
 	@Persistent
-	private Date date;
+	private Long timestamp;
 	@Persistent
 	private BigDecimal amount;
 	@Persistent
@@ -57,6 +60,7 @@ public class BankTransaction implements Serializable {
 	private TransactionType type;
 
 	/**
+	 * TODO comment
 	 * 
 	 * @param accountOrig
 	 * @param accountDest
@@ -67,34 +71,38 @@ public class BankTransaction implements Serializable {
 	public BankTransaction(String accountOrig, String accountDest, BigDecimal value, TransactionType type, String comment) {
 		this(accountOrig, accountDest, value, type, comment, new Date());
 	}
-	
+
+	/**
+	 * To be used by tests
+	 */
+	protected BankTransaction(String accountOrig, String accountDest, BigDecimal value, TransactionType type, String comment, Long timestamp) {
+		this.accountOrig = accountOrig;
+		this.accountDest = accountDest;
+		this.amount = value;
+		this.type = type;
+		this.comment = comment;
+		this.timestamp = timestamp;
+	}
+
+	/**
+	 * To be used by tests
+	 */
 	protected BankTransaction(String accountOrig, String accountDest, BigDecimal value, TransactionType type, String comment, Date date) {
 		this.accountOrig = accountOrig;
 		this.accountDest = accountDest;
 		this.amount = value;
 		this.type = type;
 		this.comment = comment;
-		this.date = date;
-	}
-
-	/**
-	 * Created only for tests purposes
-	 * 
-	 * @param accountOrig
-	 * @param accountDest
-	 * @param value
-	 * @param type
-	 * @param comment
-	 */
-	public BankTransaction(String accountOrig, String accountDest, BigDecimal value, TransactionType type, String comment, Long transactionId) {
-		this(accountOrig, accountDest, value, type, comment);
-		this.id = transactionId;
+		this.timestamp = date.getTime();
 	}
 
 	/**
 	 * @return the id
 	 */
 	public Long getId() {
+		if(this.id == null && Boolean.parseBoolean(System.getProperty("TEST_MODE"))) {
+			return Long.parseLong(this.comment);
+		}
 		return this.id;
 	}
 
@@ -116,7 +124,11 @@ public class BankTransaction implements Serializable {
 	 * @return the date
 	 */
 	public Date getDate() {
-		return this.date;
+		return new Date(this.timestamp);
+	}
+
+	public Long getTimestamp() {
+		return this.timestamp;
 	}
 
 	/**
@@ -139,7 +151,7 @@ public class BankTransaction implements Serializable {
 	public TransactionType getType() {
 		return this.type;
 	}
-	
+
 	public boolean isOrigin(String accountId) {
 		return accountOrig.equals(accountId);
 	}

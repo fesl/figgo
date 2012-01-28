@@ -43,6 +43,10 @@ import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
  * 
  */
 public class BankTransactionDAOMockTest {
+	
+	static {
+		System.setProperty("TEST_MODE", "true");
+	}
 
 	private DatastoreFacade datastore;
 	private BankTransactionDAO transactionDAO;
@@ -63,29 +67,29 @@ public class BankTransactionDAOMockTest {
 		Query query1 = createMock(Query.class);
 		List<BankTransaction> transactions1 = new LinkedList<BankTransaction>();
 		for (int i = 1; i < 6; i++) {
-			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
+			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, String.valueOf(i)));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query1);
-		query1.setFilter("id > :transactionId && accountOrig == :accId");
-		query1.setOrdering("id asc");
+		query1.setFilter("timestamp >= :timestamp && accountOrig == :accId");
+		query1.setOrdering("timestamp asc");
 		expect(query1.execute(lastTransactionId, myId)).andReturn(transactions1);
 
 		Query query2 = createMock(Query.class);
 		List<BankTransaction> transactions2 = new LinkedList<BankTransaction>();
 		for (int i = 6; i < 11; i++) {
-			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
+			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, String.valueOf(i)));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query2);
-		query2.setFilter("id > :transactionId && accountDest == :accId");
-		query2.setOrdering("id asc");
+		query2.setFilter("timestamp >= :timestamp && accountDest == :accId");
+		query2.setOrdering("timestamp asc");
 		expect(query2.execute(lastTransactionId, myId)).andReturn(transactions2);
 
 		replay(this.datastore, query1, query2);
 
 		Collection<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
 		assertEquals(10, result.size());
-		assertTrue(result.contains(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(1))));
-		assertTrue(result.contains(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(10))));
+		assertTrue(result.contains(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "1")));
+		assertTrue(result.contains(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "2")));
 		verify(this.datastore, query1, query2);
 	}
 
@@ -98,29 +102,29 @@ public class BankTransactionDAOMockTest {
 		Query query1 = createMock(Query.class);
 		List<BankTransaction> transactions1 = new LinkedList<BankTransaction>();
 		for (int i = 6; i < 11; i++) {
-			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
+			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, String.valueOf(i)));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query1);
-		query1.setFilter("id > :transactionId && accountOrig == :accId");
-		query1.setOrdering("id asc");
+		query1.setFilter("timestamp >= :timestamp && accountOrig == :accId");
+		query1.setOrdering("timestamp asc");
 		expect(query1.execute(lastTransactionId, myId)).andReturn(transactions1);
 
 		Query query2 = createMock(Query.class);
 		List<BankTransaction> transactions2 = new LinkedList<BankTransaction>();
 		for (int i = 1; i < 6; i++) {
-			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(i)));
+			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, String.valueOf(i)));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query2);
-		query2.setFilter("id > :transactionId && accountDest == :accId");
-		query2.setOrdering("id asc");
+		query2.setFilter("timestamp >= :timestamp && accountDest == :accId");
+		query2.setOrdering("timestamp asc");
 		expect(query2.execute(lastTransactionId, myId)).andReturn(transactions2);
 
 		replay(this.datastore, query1, query2);
 
 		Collection<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
 		assertEquals(10, result.size());
-		assertTrue(result.contains(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(1))));
-		assertTrue(result.contains(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "", new Long(10))));
+		assertTrue(result.contains(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "1")));
+		assertTrue(result.contains(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "10")));
 		verify(this.datastore, query1, query2);
 	}
 }

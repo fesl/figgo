@@ -37,8 +37,8 @@ import org.junit.Test;
 import br.octahedron.figgo.modules.bank.data.BankAccount;
 import br.octahedron.figgo.modules.bank.data.BankAccountDAO;
 import br.octahedron.figgo.modules.bank.data.BankTransaction;
-import br.octahedron.figgo.modules.bank.data.BankTransactionDAO;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
+import br.octahedron.figgo.modules.bank.data.BankTransactionDAO;
 
 /**
  * @author Vítor Avelino
@@ -207,11 +207,9 @@ public class AccountManagerTest {
 
 	@Test
 	public void getBalanceSomeTransactions() throws DisabledBankAccountException {
+		System.setProperty("TEST_MODE", "true");
 		String accID = "teste";
 		String accID2 = "teste2";
-		Long transID1 = new Long(3);
-		Long transID2 = new Long(6);
-		Long transID3 = new Long(234);
 		BigDecimal value1 = new BigDecimal(2.01);
 		BigDecimal value2 = new BigDecimal(123456.91);
 		BigDecimal value3 = new BigDecimal(23.31);
@@ -221,9 +219,9 @@ public class AccountManagerTest {
 		expect(this.accountDAO.get(accID)).andReturn(account);
 		List<BankTransaction> transactions = new LinkedList<BankTransaction>();
 
-		transactions.add(new BankTransaction(accID, accID2, value1, BankTransaction.TransactionType.TRANSFER, "1", transID1));
-		transactions.add(new BankTransaction(accID2, accID, value2, BankTransaction.TransactionType.TRANSFER, "2", transID2));
-		transactions.add(new BankTransaction(accID2, accID, value3, BankTransaction.TransactionType.TRANSFER, "3", transID3));
+		transactions.add(new BankTransaction(accID, accID2, value1, BankTransaction.TransactionType.TRANSFER, "1"));
+		transactions.add(new BankTransaction(accID2, accID, value2, BankTransaction.TransactionType.TRANSFER, "2"));
+		transactions.add(new BankTransaction(accID2, accID, value3, BankTransaction.TransactionType.TRANSFER, "3"));
 
 		expect(this.transactionDAO.getLastTransactions(accID, null)).andReturn(transactions);
 

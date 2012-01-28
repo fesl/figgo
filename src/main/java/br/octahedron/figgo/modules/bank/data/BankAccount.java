@@ -20,6 +20,7 @@ package br.octahedron.figgo.modules.bank.data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.jdo.annotations.NotPersistent;
@@ -28,12 +29,15 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import br.octahedron.figgo.modules.bank.TransactionInfoService;
+import br.octahedron.util.Log;
 
 /**
  * @author Danilo Queiroz
  */
 @PersistenceCapable
 public class BankAccount implements Serializable {
+	
+	private static final Log logger = new Log(BankAccount.class);
 
 	private static final long serialVersionUID = 7892638707825018254L;
 
@@ -45,15 +49,16 @@ public class BankAccount implements Serializable {
 	@Persistent
 	private BigDecimal value;
 	@Persistent
-	private Long lastTransactionId;
+	private Long lastTimestamp;
+	@Persistent
+	private Collection<Long> lastTransactionId = new ArrayList<Long>();
 	@NotPersistent
 	private transient TransactionInfoService transactionInfoService;
-	
-	
+
 	public BankAccount(String ownerId) {
 		this.ownerId = ownerId;
 		this.value = new BigDecimal(0);
-		this.lastTransactionId = null;
+		this.lastTimestamp = null;
 		this.enabled = true;
 	}
 
@@ -91,35 +96,52 @@ public class BankAccount implements Serializable {
 			throw new IllegalStateException("TransactionInfoService cannot be null. Must be set before balance operations");
 		}
 
-		Collection<BankTransaction> transactions = this.transactionInfoService.getLastTransactions(this.ownerId, this.lastTransactionId);
+		Collection<BankTransaction> transactions = this.transactionInfoService.getLastTransactions(this.ownerId, this.lastTimestamp);
 
 		if (!transactions.isEmpty()) {
 			BigDecimal transactionsBalance = new BigDecimal(0);
 
 			for (BankTransaction bankTransaction : transactions) {
-				if (bankTransaction.isOrigin(this.ownerId)) {
-					transactionsBalance = transactionsBalance.subtract(bankTransaction.getAmount());
-				} else {
-					transactionsBalance = transactionsBalance.add(bankTransaction.getAmount());
+				if (!this.lastTransactionId.contains(bankTransaction.getId())) {
+					// Transaction ID not used yet.
+					if (bankTransaction.isOrigin(this.ownerId)) {
+						transactionsBalance = transactionsBalance.subtract(bankTransaction.getAmount());
+					} else {
+						transactionsBalance = transactionsBalance.add(bankTransaction.getAmount());
+					}
+					this.updateLastTransactionData(bankTransaction);
 				}
-
 			}
 
-			// We need to know what happens if this sum result if lower than zero
-			// TODO LOG this event as a warning
 			this.value = this.value.add(transactionsBalance);
-			Object[] tArray = transactions.toArray();
-			this.lastTransactionId = ((BankTransaction) tArray[tArray.length - 1]).getId();
+			if (value.compareTo(BigDecimal.ZERO) < 0) {
+				logger.error("Something goes wrong - The account %s has a negative balance: %s", this.ownerId, this.value);
+			}
 		}
 
 		return this.value;
 	}
-	
+
+	/**
+	 * @param bankTransaction
+	 */
+	private void updateLastTransactionData(BankTransaction bankTransaction) {
+		long currentTransactionId = bankTransaction.getId();
+		Long currentTransactionTimestamp = bankTransaction.getTimestamp();
+		if (currentTransactionTimestamp.equals(this.lastTimestamp)) {
+			this.lastTransactionId.add(currentTransactionId);
+		} else {
+			this.lastTransactionId.clear();
+			this.lastTransactionId.add(currentTransactionId);
+			this.lastTimestamp = currentTransactionTimestamp;
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		return this.ownerId.hashCode();
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof BankAccount) {

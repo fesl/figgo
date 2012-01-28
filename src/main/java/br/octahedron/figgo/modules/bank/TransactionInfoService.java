@@ -32,22 +32,19 @@ import br.octahedron.figgo.modules.bank.data.BankTransaction;
 public interface TransactionInfoService {
 
 	/**
-	 * Return the last transactions for an account, with id greater with the given last used
-	 * transaction id.
+	 * Return the last transactions for an account, starting at the given date (inclusive).
 	 * 
-	 * This method ensures that the list's last element will be the one with the greater id.
-	 * However, there is no order guarantee for elements.
 	 * 
 	 * @param accountId
 	 *            the account id
-	 * @param lastUsedTransactionId
-	 *            the last {@link BankTransaction}. All {@link BankTransaction} returned will have
-	 *            id greater than this id. If you want to get all transactions for an account,
-	 *            lastUsedTransactionId should be <code>null</code>;
+	 * @param startDate
+	 *            the last {@link BankTransaction} timestamp (as long). All results timestamp will
+	 *            be equals or greater than the given start date. If you want to get all
+	 *            transactions for an account, lastUsedTransactionId should be <code>null</code>;
 	 * @return A list that contains all transactions for the given user, starting from the given
-	 *         {@link BankTransaction} id.
+	 *         {@link BankTransaction} startDate (inclusive).
 	 */
-	public Collection<BankTransaction> getLastTransactions(String accountId, Long lastUsedTransactioId);
+	public Collection<BankTransaction> getLastTransactions(String accountId, Long startDate);
 
 	/**
 	 * Get the transactions for a accountId, by date range. TODO improve
