@@ -53,7 +53,7 @@ public class AdminController extends Controller {
 	/**
 	 * Shows admin index page.
 	 */
-	public void getIndex() {
+	public void getAdminIndex() {
 		success(INDEX_TPL);
 	}
 	
