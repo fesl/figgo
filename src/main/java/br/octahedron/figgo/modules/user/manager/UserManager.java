@@ -19,7 +19,6 @@
 package br.octahedron.figgo.modules.user.manager;
 
 import java.util.Collection;
-import java.util.Collections;
 
 import br.octahedron.figgo.modules.user.data.User;
 import br.octahedron.figgo.modules.user.data.UserDAO;
