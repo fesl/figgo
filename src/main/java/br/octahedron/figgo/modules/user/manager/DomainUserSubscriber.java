@@ -19,6 +19,7 @@ package br.octahedron.figgo.modules.user.manager;
 
 import static br.octahedron.figgo.modules.configuration.DomainUtils.*;
 import br.octahedron.cotopaxi.datastore.jdo.PersistenceManagerPool;
+import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
@@ -41,11 +42,21 @@ public class DomainUserSubscriber implements Subscriber {
 	@Inject
 	private UserManager userManager;
 	
+	@Inject
+	private NamespaceManager namespaceManager;
+	
 	/**
 	 * @param userManager the userManager to set
 	 */
 	public void setUserManager(UserManager userManager) {
 		this.userManager = userManager;
+	}
+	
+	/**
+	 * @param namespaceManager the namespaceManager to set
+	 */
+	public void setNamespaceManager(NamespaceManager namespaceManager) {
+		this.namespaceManager = namespaceManager;
 	}
 
 	/*
@@ -55,7 +66,6 @@ public class DomainUserSubscriber implements Subscriber {
 	public void eventPublished(Event event) {
 		String domain;
 		String name = "";
-		
 		try {
 			DomainChangedEvent evt = (DomainChangedEvent) event;
 			domain = evt.getDomainConfiguration().getDomainName();
@@ -63,8 +73,9 @@ public class DomainUserSubscriber implements Subscriber {
 		} catch (ClassCastException e) {
 			DomainCreatedEvent evt = (DomainCreatedEvent) event;
 			domain = evt.getNamespace();
+		} finally {
+			this.namespaceManager.changeToPreviousNamespace();
 		}
-		
 		this.persistUser(domain, name);
 	}
 
@@ -73,11 +84,13 @@ public class DomainUserSubscriber implements Subscriber {
 	 */
 	private void persistUser(String domain, String name) {
 		String userId = generateDomainUserID(domain);
+		this.namespaceManager.changeToGlobalNamespace();
 		if (this.userManager.existsUser(userId)) { 
 			this.userManager.updateUser(userId, name, null, name);
 		} else {
 			this.userManager.createUser(userId, name, null, name);
 		}
+		this.namespaceManager.changeToPreviousNamespace();
 		PersistenceManagerPool.forceClose();
 	}
 
