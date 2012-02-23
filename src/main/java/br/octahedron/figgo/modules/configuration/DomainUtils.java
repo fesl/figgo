@@ -15,25 +15,27 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.bank.controller;
+package br.octahedron.figgo.modules.configuration;
 
-import static br.octahedron.figgo.modules.configuration.DomainUtils.generateDomainUserID;
-import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.figgo.modules.bank.data.BankAccount;
 
 /**
+ * Provides useful methods to deal with domains.
+ * 
  * @author Danilo Queiroz - dpenna.queiroz@gmail.com
  */
-public class AbstractBankController extends Controller {
+public class DomainUtils {
+
+	private static final String ADDRESS_SUFFIX = "@figgo.com.br";
 
 	/**
-	 * Gets the {@link BankAccount} ID for the current subdomain. It will only works properly when
-	 * the controller is in a subdomain.
+	 * Generates the {@link BankAccount} ID for the given domain.
 	 * 
-	 * @return The {@link BankAccount} ID for the current subdomain account.
+	 * @param domain
+	 *            The domain name.
+	 * @return The bank account id for the domain's account.
 	 */
-	protected String domainBankAccount() {
-		return generateDomainUserID(this.subDomain());
+	public static String generateDomainUserID(String domain) {
+		return domain.trim() + ADDRESS_SUFFIX;
 	}
-
 }

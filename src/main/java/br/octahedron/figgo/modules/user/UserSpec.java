@@ -23,6 +23,7 @@ import java.util.TreeSet;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.ModuleSpec;
+import br.octahedron.figgo.modules.user.manager.DomainUserSubscriber;
 import br.octahedron.figgo.modules.user.manager.UsersUploadSubscriber;
 
 /**
@@ -40,6 +41,7 @@ public class UserSpec implements ModuleSpec {
 	public Set<Class<? extends Subscriber>> getSubscribers() {
 		Set<Class<? extends Subscriber>> subscribers = new TreeSet<Class<? extends Subscriber>>();
 		subscribers.add(UsersUploadSubscriber.class);
+		subscribers.add(DomainUserSubscriber.class);
 		return subscribers;
 	}
 
