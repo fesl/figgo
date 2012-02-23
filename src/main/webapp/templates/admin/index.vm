@@ -11,8 +11,8 @@
         <header>
             <h1>Figgo Admin</h1>
         </header>
-        <p><a href="config/">Configurar Figgo</a></p>
-        <p><a href="domain/new">Criar novo domínio</a></p>
+        <p><a href="/admin/config/">Configurar Figgo</a></p>
+        <p><a href="/admin/domain/new">Criar novo domínio</a></p>
     </section>
 </div>
 #end

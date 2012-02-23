@@ -24,6 +24,7 @@ import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
+import br.octahedron.figgo.OnlyForGlobalSubdomainControllerInterceptor.OnlyForGlobal;
 import br.octahedron.figgo.modules.admin.controller.validation.AdminValidators;
 import br.octahedron.figgo.modules.admin.data.ApplicationConfiguration;
 import br.octahedron.figgo.modules.admin.manager.AdminManager;
@@ -34,6 +35,7 @@ import static br.octahedron.figgo.modules.admin.controller.validation.AdminValid
  */
 @AuthorizationRequired
 @AuthenticationRequired
+@OnlyForGlobal
 public class AdminController extends Controller {
 
 	private static final String BASE_DIR_TPL = "admin/";
