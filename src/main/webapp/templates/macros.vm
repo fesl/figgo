@@ -101,7 +101,7 @@
     
     <footer>
         <div class="wrapper">
-            <p><small><strong>Figgo</strong> é licenciado sob <a href="">GPLv3</a> e esta página é licenciada sob <a href="">Creative Commons</a>.</small></p>
+        	<p><small><strong>Figgo</strong> é licenciado sob <a href="https://www.gnu.org/licenses/gpl.html">GPLv3</a> e esta página é licenciada sob <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons</a>.</small></p>
         </div>
     </footer>
 #end
@@ -141,7 +141,7 @@
 
     <footer>
         <div class="wrapper">
-            <p><small><strong>Figgo</strong> é licenciado sob <a href="">GPLv3</a> e esta página é licenciada sob <a href="">Creative Commons</a>.</small></p>
+        	<p><small><strong>Figgo</strong> é licenciado sob <a href="https://www.gnu.org/licenses/gpl.html">GPLv3</a> e esta página é licenciada sob <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons</a>.</small></p>
         </div>
     </footer>
 #end
