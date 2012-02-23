@@ -53,7 +53,6 @@ public class ContractPaidSubscriber extends SelfInjectable implements Subscriber
 		try {
 			ServiceContractPaidEvent paidEvent = (ServiceContractPaidEvent) event;
 			ServiceContract serviceContract = paidEvent.getServiceContract();
-			// TODO
 			this.accountManager.transact(serviceContract.getContractor(), serviceContract.getProvider(), serviceContract.getAmount(), "",
 					TransactionType.PAYMENT);
 		} catch (Exception e) {
