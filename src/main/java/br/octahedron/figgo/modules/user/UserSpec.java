@@ -18,8 +18,8 @@
  */
 package br.octahedron.figgo.modules.user;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.ModuleSpec;
@@ -39,7 +39,7 @@ public class UserSpec implements ModuleSpec {
 
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
-		Set<Class<? extends Subscriber>> subscribers = new TreeSet<Class<? extends Subscriber>>();
+		Set<Class<? extends Subscriber>> subscribers = new LinkedHashSet<Class<? extends Subscriber>>();
 		subscribers.add(UsersUploadSubscriber.class);
 		subscribers.add(DomainUserSubscriber.class);
 		return subscribers;
