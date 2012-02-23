@@ -37,6 +37,7 @@ import static br.octahedron.figgo.modules.admin.controller.validation.AdminValid
 public class AdminController extends Controller {
 
 	private static final String BASE_DIR_TPL = "admin/";
+	private static final String INDEX_TPL = BASE_DIR_TPL + "index.vm";
 	private static final String CONFIG_APP_TPL = BASE_DIR_TPL + "config.vm";
 	private static final String NEW_DOMAIN_TPL = BASE_DIR_TPL + "domain/new.vm";
 	private static final String NEW_DOMAIN_URL = "/admin/domain/new";
@@ -46,6 +47,14 @@ public class AdminController extends Controller {
 	
 	public void setAdminManager(AdminManager adminManager) {
 		this.adminManager = adminManager;
+	}
+	
+	
+	/**
+	 * Shows admin index page.
+	 */
+	public void getIndex() {
+		success(INDEX_TPL);
 	}
 	
 	/**

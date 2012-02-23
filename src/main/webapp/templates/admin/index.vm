@@ -1,0 +1,20 @@
+#set( $title = "Figgo - Admin" )
+#parse( "templates/intern.vm" )
+
+#head()
+
+#simpleHeader()
+
+#@body()
+<div id="info-form" class="left">
+    <section>
+        <header>
+            <h1>Figgo Admin</h1>
+        </header>
+        <p><a href="config/">Configurar Figgo</a></p>
+        <p><a href="domain/new">Criar novo domínio</a></p>
+    </section>
+</div>
+#end
+
+#scripts()
