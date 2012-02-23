@@ -27,7 +27,6 @@ import java.util.Date;
 import br.octahedron.cotopaxi.CotopaxiProperty;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
-import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
@@ -45,7 +44,7 @@ import br.octahedron.figgo.modules.bank.manager.InsufficientBalanceException;
 @AuthorizationRequired
 @NamespaceRequired
 @OnlyForNamespace
-public class BankController extends Controller {
+public class BankController extends AbstractBankController {
 
 	/*
 	 * TODO public bank pages should be in other controller
@@ -70,7 +69,7 @@ public class BankController extends Controller {
 	}
 
 	/**
-	 * @param ex
+	 * Handler method for disabled accounts.
 	 */
 	private void handleDisabledAccount(String accountID, String template) {
 		this.out(INVALID, "ACCOUNT_INVALID");
@@ -143,20 +142,6 @@ public class BankController extends Controller {
 	}
 
 	/**
-	 * Posts parameters to get user's statement by transactions
-	 */
-	public void postStatementBank() {
-		Validator dateValidator = BankValidators.getDateValidator();
-		if (dateValidator.isValid()) {
-			this.out("transactions",
-					this.accountManager.getTransactions(this.currentUser(), this.in("startDate", date(SHORT)), this.in("endDate", date(SHORT))));
-			jsonSuccess();
-		} else {
-			jsonInvalid();
-		}
-	}
-
-	/**
 	 * Gets some important information about the bank
 	 * 
 	 * @throws DisabledBankAccountException
@@ -164,11 +149,11 @@ public class BankController extends Controller {
 	 *             occurs, indicates an DEFECT
 	 */
 	public void getStatsBank() throws DisabledBankAccountException {
-		BigDecimal balance = this.accountManager.getBalance(this.subDomain());
+		BigDecimal balance = this.accountManager.getBalance(this.domainBankAccount());
 		BigDecimal ballast = this.accountManager.getBallast();
 		this.out("balance", balance);
 		this.out("ballast", ballast);
-		this.out("inCirculation", ballast.subtract(balance));
+		this.out("inCirculation", ballast.subtract(balance)); // TODO move this from here
 		this.out("monthCirculation", this.accountManager.getCurrentAmountTransactions());
 		this.out("creditAmount", this.accountManager.getCurrentAmountCredit());
 		this.success(STATS_TPL);
@@ -184,6 +169,22 @@ public class BankController extends Controller {
 			Date endDate = this.in("endDate", date(SHORT));
 			this.out("circulation", this.accountManager.getAmountTransactions(startDate, endDate));
 			this.out("creditAmount", this.accountManager.getAmountCredit(startDate, endDate));
+			jsonSuccess();
+		} else {
+			jsonInvalid();
+		}
+	}
+
+	/**
+	 * Posts parameters to get user's statement by transactions
+	 * 
+	 * JSON method
+	 */
+	public void postStatementBank() {
+		Validator dateValidator = BankValidators.getDateValidator();
+		if (dateValidator.isValid()) {
+			this.out("transactions",
+					this.accountManager.getTransactions(this.currentUser(), this.in("startDate", date(SHORT)), this.in("endDate", date(SHORT))));
 			jsonSuccess();
 		} else {
 			jsonInvalid();

@@ -23,7 +23,6 @@ import java.math.BigDecimal;
 import br.octahedron.cotopaxi.CotopaxiProperty;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
-import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
@@ -42,7 +41,7 @@ import br.octahedron.figgo.modules.bank.manager.InsufficientBalanceException;
 @AuthorizationRequired
 @NamespaceRequired
 @OnlyForNamespace
-public class BankAdminController extends Controller {
+public class BankAdminController extends AbstractBankController {
 
 	/*
 	 * TODO public bank pages should be in other controller
@@ -74,7 +73,7 @@ public class BankAdminController extends Controller {
 	 *             occurs, indicates an DEFECT
 	 */
 	public void getShareBank() throws DisabledBankAccountException {
-		this.out("balance", this.accountManager.getBalance(this.subDomain()));
+		this.out("balance", this.accountManager.getBalance(this.domainBankAccount()));
 		this.success(SHARE_TPL);
 	}
 
@@ -86,7 +85,7 @@ public class BankAdminController extends Controller {
 	 *             occurs, indicates an DEFECT
 	 */
 	public void getBallastBank() throws DisabledBankAccountException {
-		this.out("balance", this.accountManager.getBalance(this.subDomain()));
+		this.out("balance", this.accountManager.getBalance(this.domainBankAccount()));
 		this.success(BALLAST_TPL);
 	}
 
@@ -102,12 +101,12 @@ public class BankAdminController extends Controller {
 			Validator requiredValidator = BankValidators.getShareValidator();
 			Validator amountValidator = BankValidators.getAmountValidator();
 			if (requiredValidator.isValid() && amountValidator.isValid()) {
-				this.accountManager.transact(this.subDomain(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"),
+				this.accountManager.transact(this.domainBankAccount(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"),
 						TransactionType.valueOf(this.in("type")));
 				this.redirect(SHARE_URL);
 			} else {
 				this.echo();
-				this.out("balance", this.accountManager.getBalance(this.subDomain()));
+				this.out("balance", this.accountManager.getBalance(this.domainBankAccount()));
 				this.invalid(SHARE_TPL);
 			}
 		} catch (InsufficientBalanceException e) {
@@ -130,11 +129,11 @@ public class BankAdminController extends Controller {
 	public void postBallastBank() throws InsufficientBalanceException, DisabledBankAccountException {
 		Validator amount = BankValidators.getAmountValidator();
 		if (amount.isValid()) {
-			this.accountManager.insertBallast(this.subDomain(), new BigDecimal(this.in("amount")), this.in("comment"));
+			this.accountManager.insertBallast(this.domainBankAccount(), new BigDecimal(this.in("amount")), this.in("comment"));
 			this.redirect(BALLAST_URL);
 		} else {
 			this.echo();
-			this.out("balance", this.accountManager.getBalance(this.subDomain()));
+			this.out("balance", this.accountManager.getBalance(this.domainBankAccount()));
 			this.invalid(BALLAST_TPL);
 		}
 	}
