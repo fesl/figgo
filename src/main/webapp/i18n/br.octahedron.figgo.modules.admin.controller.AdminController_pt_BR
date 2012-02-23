@@ -1,8 +1,0 @@
-# Validators
-DOMAIN_ALREADY_EXISTS=Domínio: não está disponível
-REQUIRED_DOMAIN_ID=Domínio: não pode ficar vazio
-REQUIRED_ADMIN_EMAIL=Administrador: não pode ficar vazio
-
-REQUIRED_ACCESS_KEY=Access Key: não pode ficar vazio
-REQUIRED_KEY_SECRET=Access Key Secret: não pode ficar vazio
-REQUIRED_ZONE=Zone ID: não pode ficar vazio

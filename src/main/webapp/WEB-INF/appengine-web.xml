@@ -2,12 +2,11 @@
 <appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
 
 	<!-- CHANGE IT FOR YOUR APPLICATION -->
-	<application></application>
-	<version></version>
+	<application>figgo-octa</application>
+	<version>maintenance</version>
 
 	<!-- Enables Sessions -->
 	<sessions-enabled>true</sessions-enabled>
-	<async-session-persistence enabled="true" />
 	<!-- Enables SSL -->
 	<ssl-enabled>true</ssl-enabled>
 	<!-- Enables the warming requests -->
