@@ -18,8 +18,9 @@
  */
 package br.octahedron.figgo.modules.bank.manager;
 
+import static br.octahedron.commons.util.DateUtil.getFirstDateOfCurrentMonth;
+
 import java.math.BigDecimal;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.logging.Logger;
@@ -27,9 +28,9 @@ import java.util.logging.Logger;
 import br.octahedron.figgo.modules.bank.data.BankAccount;
 import br.octahedron.figgo.modules.bank.data.BankAccountDAO;
 import br.octahedron.figgo.modules.bank.data.BankTransaction;
+import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
 import br.octahedron.figgo.modules.bank.data.BankTransactionDAO;
 import br.octahedron.figgo.modules.bank.data.SystemAccount;
-import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
 import br.octahedron.util.DateUtil;
 
 /**
@@ -128,7 +129,7 @@ public class AccountManager {
 	 * @return an amount representing the sum of all transactions made on the current month
 	 */
 	public BigDecimal getCurrentAmountTransactions() {
-		return this.transactionDAO.getAmountByDateRange(this.getFirstDateOfCurrentMonth(), DateUtil.getDate());
+		return this.transactionDAO.getAmountByDateRange(getFirstDateOfCurrentMonth(), DateUtil.getDate());
 	}
 
 	/**
@@ -152,7 +153,7 @@ public class AccountManager {
 	 *         destination
 	 */
 	public BigDecimal getCurrentAmountCredit() {
-		return this.transactionDAO.getAmountCreditByDateRange(SystemAccount.ID, this.getFirstDateOfCurrentMonth(), DateUtil.getDate());
+		return this.transactionDAO.getAmountCreditByDateRange(SystemAccount.ID, getFirstDateOfCurrentMonth(), DateUtil.getDate());
 	}
 
 	/**
@@ -177,15 +178,6 @@ public class AccountManager {
 	 */
 	public BigDecimal getBallast() {
 		return this.transactionDAO.getBallast();
-	}
-
-	/**
-	 * Returns a {@link Date} with the first day of the current month.
-	 */
-	private Date getFirstDateOfCurrentMonth() {
-		return br.octahedron.commons.util.DateUtil.parse(
-				"01/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR),
-				br.octahedron.commons.util.DateUtil.SHORT);
 	}
 
 	/**
@@ -224,13 +216,28 @@ public class AccountManager {
 	}
 
 	/**
-	 * Creates a bank account
+	 * Creates a new bank account
 	 */
 	private void createAccount(String ownerId) {
 		BankAccount account = new BankAccount(ownerId);
 		this.accountDAO.save(account);
 	}
 
+	/**
+	 * Creates a {@link BankTransaction} to be persisted.
+	 * 
+	 * @param accountOrig
+	 *            The origin account id
+	 * @param accountDest
+	 *            The destination account id
+	 * @param value
+	 *            The transaction absolute value
+	 * @param comment
+	 *            The transaction comment
+	 * @param type
+	 *            The transaction type.
+	 * @return The {@link BankTransaction}
+	 */
 	private BankTransaction createTransaction(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
 		return new BankTransaction(accountOrig, accountDest, value, type, comment);
 	}

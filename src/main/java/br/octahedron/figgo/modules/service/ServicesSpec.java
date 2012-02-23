@@ -25,6 +25,7 @@ import java.util.Set;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
+import br.octahedron.figgo.modules.service.manager.PaymentFailedSubscriber;
 import br.octahedron.figgo.modules.service.manager.ServiceCreatedSubscriber;
 import br.octahedron.figgo.modules.service.manager.ServiceUpdatedSubscriber;
 
@@ -58,6 +59,7 @@ public class ServicesSpec implements DomainModuleSpec {
 		Set<Class<? extends Subscriber>> subscribers = new LinkedHashSet<Class<? extends Subscriber>>();
 		subscribers.add(ServiceCreatedSubscriber.class);
 		subscribers.add(ServiceUpdatedSubscriber.class);
+		subscribers.add(PaymentFailedSubscriber.class);
 		return subscribers;
 	}
 

@@ -59,13 +59,21 @@ public class ServiceContract implements Serializable {
 	@Persistent
 	private Date date = new Date();
 
+	/**
+	 * For tests purpose.
+	 */
+	public ServiceContract(String id, Service service, String contractor, String provider) {
+		this(service, contractor, provider);
+		this.id = id;
+	}
+	
 	public ServiceContract(Service service, String contractor, String provider) {
 		this.service = service;
 		this.contractor = contractor;
 		this.provider = provider;
 		this.amount = service.getAmount();
 	}
-
+	
 	/**
 	 * @return the id
 	 */
@@ -96,11 +104,13 @@ public class ServiceContract implements Serializable {
 	}
 
 	/**
+	 * Set paid attribute to indicates this {@link ServiceContract} is paid or not.
+	 * 
 	 * @param paid
 	 *            the paid to set
 	 */
-	public void markAsPaid() {
-		this.paid = true;
+	public void setPaid(boolean paid) {
+		this.paid = paid;
 	}
 
 	/**

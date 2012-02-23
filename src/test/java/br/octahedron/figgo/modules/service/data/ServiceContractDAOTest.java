@@ -80,7 +80,7 @@ public class ServiceContractDAOTest {
 		// service4 completed but not paid
 		serviceContract = new ServiceContract(this.serviceDAO.get(this.servicesIds[3]), "Pessoa3", "Pessoa2");
 		serviceContract.setStatus(ServiceContractStatus.COMPLETED);
-		serviceContract.markAsPaid();
+		serviceContract.setPaid(true);
 		this.serviceContractDAO.save(serviceContract);
 	}
 

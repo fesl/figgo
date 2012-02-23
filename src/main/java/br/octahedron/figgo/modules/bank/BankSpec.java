@@ -18,13 +18,13 @@
  */
 package br.octahedron.figgo.modules.bank;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
+import br.octahedron.figgo.modules.bank.manager.ContractPaidSubscriber;
 import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
 import br.octahedron.figgo.modules.configuration.data.ModuleProperty;
 
@@ -59,7 +59,9 @@ public class BankSpec implements DomainModuleSpec {
 
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
-		return Collections.emptySet();
+		Set<Class<? extends Subscriber>> subscribers = new HashSet<Class<? extends Subscriber>>();
+		subscribers.add(ContractPaidSubscriber.class);
+		return subscribers;
 	}
 
 	@Override

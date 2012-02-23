@@ -40,13 +40,37 @@ import br.octahedron.figgo.modules.user.data.User;
  */
 public class ServiceManager {
 
-	private final ServiceDAO serviceDAO = new ServiceDAO();
-	private final ServiceCategoryDAO serviceCategoryDAO = new ServiceCategoryDAO();
-	private final ServiceContractDAO serviceContractDAO = new ServiceContractDAO();
-
+	private ServiceDAO serviceDAO = new ServiceDAO();
+	private ServiceCategoryDAO serviceCategoryDAO = new ServiceCategoryDAO();
+	private ServiceContractDAO serviceContractDAO = new ServiceContractDAO();
 	@Inject
 	private EventBus eventBus;
+	
+	/*
+	 * for tests purpose
+	 */
+	protected void setServiceCategoryDAO(ServiceCategoryDAO serviceCategoryDAO) {
+		this.serviceCategoryDAO = serviceCategoryDAO;
+	}
 
+	/*
+	 * for tests purpose
+	 */
+	protected void setServiceContractDAO(ServiceContractDAO serviceContractDAO) {
+		this.serviceContractDAO = serviceContractDAO;
+	}
+	
+	/*
+	 * for tests purpose
+	 */
+	protected void setServiceDAO(ServiceDAO serviceDAO) {
+		this.serviceDAO = serviceDAO;
+	}
+
+	/**
+	 * @param eventBus
+	 *            the eventBus to set
+	 */
 	public void setEventBus(EventBus eventBus) {
 		this.eventBus = eventBus;
 	}
@@ -309,24 +333,49 @@ public class ServiceManager {
 	}
 
 	/**
-	 * TODO ?????
+	 * Pays a service. It mark the service as paid and publishes a notification about this event.
+	 * 
+	 * If the given {@link ServiceContract} is already paid, nothing happens.
 	 * 
 	 * @param contractId
+	 *            The contract's id being paid.
+	 * @param userId
+	 *            The user's id who is performing the payment.
+	 * 
 	 * @throws UncompletedServiceContractException
+	 *             If the service contract isn't complete
 	 * @throws OnlyServiceContractorException
+	 *             If the user performing the payment isn't the contractor for given contract
 	 * @throws ServiceContractNotFoundException
+	 *             If there's no {@link ServiceContract} with the given contractId.
 	 */
-	public void makePayment(String contractId, String contractorId) throws UncompletedServiceContractException, OnlyServiceContractorException,
+	public void makePayment(String contractId, String userId) throws UncompletedServiceContractException, OnlyServiceContractorException,
 			ServiceContractNotFoundException {
 		ServiceContract serviceContract = this.getServiceContract(contractId);
 		if (serviceContract.getStatus() != ServiceContractStatus.COMPLETED) {
 			throw new UncompletedServiceContractException();
-		} else if (!serviceContract.getContractor().equals(contractId)) {
+		} else if (!serviceContract.getContractor().equals(userId)) {
 			throw new OnlyServiceContractorException();
 		}
 
-		serviceContract.markAsPaid();
-		this.eventBus.publish(new ServiceContractPaidEvent(serviceContract));
+		if (!serviceContract.isPaid()) {
+			serviceContract.setPaid(true);
+			this.eventBus.publish(new ServiceContractPaidEvent(serviceContract));
+		}
+	}
+
+	/**
+	 * Performs a payment rollback for the given contract. In other words, it marks the given
+	 * {@link ServiceContract} as no paid.
+	 * 
+	 * @param contractId
+	 *            The ServiceContract's Id
+	 * @throws ServiceContractNotFoundException
+	 *             If there's no contract with the given Id
+	 */
+	public void rollbackPayment(String contractId) throws ServiceContractNotFoundException {
+		ServiceContract serviceContract = this.getServiceContract(contractId);
+		serviceContract.setPaid(false);
 	}
 
 }
