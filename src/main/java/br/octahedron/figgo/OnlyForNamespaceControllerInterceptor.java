@@ -44,23 +44,17 @@ public class OnlyForNamespaceControllerInterceptor extends ControllerInterceptor
 	@Target(value = {ElementType.METHOD, ElementType.TYPE})
 	public @interface OnlyForNamespace {
 	}
-	/*
-	 * (non-Javadoc)
-	 */
+
 	@Override
 	public void execute(Annotation arg0) {
 		if (this.subDomain().equalsIgnoreCase("www")) {
-			log.debug("Module invalid for www");
+			log.debug("Invalid address for www");
 			this.notFound();
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 */
 	@Override
 	public Class<? extends Annotation> getInterceptorAnnotation() {
 		return OnlyForNamespace.class;
 	}
-
 }

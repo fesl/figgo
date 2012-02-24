@@ -26,6 +26,7 @@ import java.lang.annotation.Target;
 
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.interceptor.ControllerInterceptor;
+import br.octahedron.util.Log;
 
 /**
  * This interceptor only allows the controller to be executed if the subdomain is equals to 'www'.
@@ -36,32 +37,23 @@ import br.octahedron.cotopaxi.interceptor.ControllerInterceptor;
  * @author Danilo Queiroz - dpenna.queiroz@gmail.com
  */
 public class OnlyForGlobalSubdomainControllerInterceptor extends ControllerInterceptor {
+	
+	private static final Log log = new Log(OnlyForGlobalSubdomainControllerInterceptor.class); 
 
 	@Retention(value = RetentionPolicy.RUNTIME)
 	@Target(value = {ElementType.METHOD, ElementType.TYPE})
 	public @interface OnlyForGlobal {
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * br.octahedron.cotopaxi.interceptor.ControllerInterceptor#execute(java.lang.annotation.Annotation
-	 * )
-	 */
 	@Override
 	public void execute(Annotation arg0) {
 		if (!this.subDomain().equalsIgnoreCase("www")) {
+			log.debug("Address valid only for www");
 			this.notFound();
 		}
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see br.octahedron.cotopaxi.interceptor.ControllerInterceptor#getInterceptorAnnotation()
-	 */
 	@Override
 	public Class<? extends Annotation> getInterceptorAnnotation() {
 		return OnlyForGlobal.class;
