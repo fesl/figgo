@@ -16,14 +16,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.configuration.manager;
+package br.octahedron.figgo.modules.domain.manager;
 
 import java.util.logging.Logger;
 
 import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
-import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
+import br.octahedron.figgo.modules.domain.data.DomainConfigurationDAO;
 
 import com.google.appengine.api.memcache.MemcacheService;
 import com.google.appengine.api.memcache.MemcacheServiceFactory;

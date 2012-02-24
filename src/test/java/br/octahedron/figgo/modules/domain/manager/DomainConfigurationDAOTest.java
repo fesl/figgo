@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.configuration.manager;
+package br.octahedron.figgo.modules.domain.manager;
 
 import static org.junit.Assert.assertEquals;
 
@@ -29,8 +29,8 @@ import org.junit.Test;
 
 import br.octahedron.cotopaxi.datastore.namespace.AppEngineNamespaceManager;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
-import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
-import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
+import br.octahedron.figgo.modules.domain.data.DomainConfiguration;
+import br.octahedron.figgo.modules.domain.data.DomainConfigurationDAO;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;

@@ -18,7 +18,6 @@
  */
 package br.octahedron.figgo.modules.bank.controller.validation;
 
-import static br.octahedron.commons.util.DateUtil.SHORT;
 import static br.octahedron.cotopaxi.controller.Converter.Builder.bigDecimalNumber;
 import static br.octahedron.cotopaxi.controller.Converter.Builder.date;
 import static br.octahedron.cotopaxi.controller.Converter.Builder.string;
@@ -29,6 +28,7 @@ import static br.octahedron.cotopaxi.validation.Rule.Builder.notEquals;
 import static br.octahedron.cotopaxi.validation.Rule.Builder.regex;
 import static br.octahedron.cotopaxi.validation.Rule.Builder.required;
 import static br.octahedron.cotopaxi.validation.Rule.Builder.type;
+import static br.octahedron.figgo.util.DateUtil.SHORT;
 
 import java.math.BigDecimal;
 import java.util.Date;

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.commons.util;
+package br.octahedron.figgo.util;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -74,6 +74,6 @@ public class DateUtil {
 	 */
 	public static Date getFirstDateOfCurrentMonth() {
 		return parse("01/" + (Calendar.getInstance().get(Calendar.MONTH) + 1) + "/" + Calendar.getInstance().get(Calendar.YEAR),
-				br.octahedron.commons.util.DateUtil.SHORT);
+				br.octahedron.figgo.util.DateUtil.SHORT);
 	}
 }

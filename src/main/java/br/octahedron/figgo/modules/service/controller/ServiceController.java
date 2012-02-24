@@ -235,6 +235,7 @@ public class ServiceController extends Controller {
 				this.notFound();
 			}
 		} else {
+			// REVIEW is it correct?
 			this.jsonInvalid();
 		}
 	}

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.configuration.controller.validation;
+package br.octahedron.figgo.modules.domain.controller.validation;
 
 import static br.octahedron.cotopaxi.validation.Rule.Builder.*;
 import br.octahedron.cotopaxi.validation.Validator;

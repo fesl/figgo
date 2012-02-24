@@ -17,7 +17,7 @@
  */
 package br.octahedron.figgo.modules.user.manager;
 
-import static br.octahedron.figgo.modules.configuration.DomainUtils.*;
+import static br.octahedron.figgo.util.DomainUtil.generateDomainUserID;
 import br.octahedron.cotopaxi.datastore.jdo.PersistenceManagerPool;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.eventbus.Event;
@@ -25,7 +25,7 @@ import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.admin.manager.DomainCreatedEvent;
-import br.octahedron.figgo.modules.configuration.manager.DomainChangedEvent;
+import br.octahedron.figgo.modules.domain.manager.DomainChangedEvent;
 
 /**
  * This subscriber listen for domain changes (creation or update) to create an domain user account.

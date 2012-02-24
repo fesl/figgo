@@ -44,15 +44,6 @@ public class RequestAuthorizationController extends Controller {
 	
 
 	/**
-	 * POST /user/request
-	 */
-	public void postRequestUser() {
-		// TODO verificar se é subdomínio válido
-		this.authorizationManager.createDomainUser(this.subDomain(), this.currentUser(), false);
-		this.redirect("/");
-	}
-	
-	/**
 	 * GET /users
 	 */
 	@AuthenticationRequired
@@ -63,6 +54,16 @@ public class RequestAuthorizationController extends Controller {
 		this.success(LIST_USER_TPL);
 	}
 
+
+	/**
+	 * POST /user/request
+	 */
+	public void postRequestUser() {
+		// TODO verificar se é subdomínio válido
+		this.authorizationManager.createDomainUser(this.subDomain(), this.currentUser(), false);
+		this.redirect("/");
+	}
+	
 	/**
 	 * POST /user/request/accept
 	 */

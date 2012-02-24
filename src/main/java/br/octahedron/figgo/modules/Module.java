@@ -21,7 +21,7 @@ package br.octahedron.figgo.modules;
 import br.octahedron.figgo.modules.admin.AdminSpec;
 import br.octahedron.figgo.modules.authorization.AuthorizationSpec;
 import br.octahedron.figgo.modules.bank.BankSpec;
-import br.octahedron.figgo.modules.configuration.ConfigurationSpec;
+import br.octahedron.figgo.modules.domain.ConfigurationSpec;
 import br.octahedron.figgo.modules.service.ServicesSpec;
 import br.octahedron.figgo.modules.user.UserSpec;
 

@@ -16,9 +16,9 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.configuration.controller;
+package br.octahedron.figgo.modules.domain.controller;
 
-import static br.octahedron.figgo.modules.configuration.controller.validation.DomainValidator.getDomainValidator;
+import static br.octahedron.figgo.modules.domain.controller.validation.DomainValidator.getDomainValidator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +30,8 @@ import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespace;
 import br.octahedron.figgo.modules.Module;
-import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
-import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
+import br.octahedron.figgo.modules.domain.data.DomainConfiguration;
+import br.octahedron.figgo.modules.domain.manager.ConfigurationManager;
 
 /**
  * @author vitoravelino

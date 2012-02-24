@@ -16,19 +16,28 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.commons.util;
+package br.octahedron.figgo.modules.domain.manager;
 
-import java.text.Normalizer;
-
+import br.octahedron.cotopaxi.eventbus.Event;
+import br.octahedron.figgo.modules.domain.data.DomainConfiguration;
 
 /**
- * @author vitoravelino
- *
+ * Event to inform that a domain configuration has created
+ * 
+ * @author Vítor Avelino
  */
-public class TextNormalizer {
-	
-	public static String normalize(String text) {
-		return Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").replace(' ', '-').toLowerCase();
+public class DomainChangedEvent implements Event {
+
+	private static final long serialVersionUID = -6348483502587001585L;
+
+	private DomainConfiguration domainConfiguration;
+
+	public DomainChangedEvent(DomainConfiguration domainConfiguration) {
+		this.domainConfiguration = domainConfiguration;
+	}
+
+	public DomainConfiguration getDomainConfiguration() {
+		return this.domainConfiguration;
 	}
 
 }

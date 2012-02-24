@@ -18,8 +18,8 @@
  */
 package br.octahedron.figgo.modules.bank.controller;
 
-import static br.octahedron.commons.util.DateUtil.SHORT;
 import static br.octahedron.cotopaxi.controller.Converter.Builder.date;
+import static br.octahedron.figgo.util.DateUtil.SHORT;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -142,6 +142,22 @@ public class BankController extends AbstractBankController {
 	}
 
 	/**
+	 * Posts parameters to get user's statement by transactions
+	 * 
+	 * JSON method
+	 */
+	public void postStatementBank() {
+		Validator dateValidator = BankValidators.getDateValidator();
+		if (dateValidator.isValid()) {
+			this.out("transactions",
+					this.accountManager.getTransactions(this.currentUser(), this.in("startDate", date(SHORT)), this.in("endDate", date(SHORT))));
+			jsonSuccess();
+		} else {
+			jsonInvalid();
+		}
+	}
+
+	/**
 	 * Gets some important information about the bank
 	 * 
 	 * @throws DisabledBankAccountException
@@ -169,22 +185,6 @@ public class BankController extends AbstractBankController {
 			Date endDate = this.in("endDate", date(SHORT));
 			this.out("circulation", this.accountManager.getAmountTransactions(startDate, endDate));
 			this.out("creditAmount", this.accountManager.getAmountCredit(startDate, endDate));
-			jsonSuccess();
-		} else {
-			jsonInvalid();
-		}
-	}
-
-	/**
-	 * Posts parameters to get user's statement by transactions
-	 * 
-	 * JSON method
-	 */
-	public void postStatementBank() {
-		Validator dateValidator = BankValidators.getDateValidator();
-		if (dateValidator.isValid()) {
-			this.out("transactions",
-					this.accountManager.getTransactions(this.currentUser(), this.in("startDate", date(SHORT)), this.in("endDate", date(SHORT))));
 			jsonSuccess();
 		} else {
 			jsonInvalid();

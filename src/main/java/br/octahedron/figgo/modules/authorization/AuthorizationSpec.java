@@ -56,21 +56,23 @@ public class AuthorizationSpec implements ApplicationDomainModuleSpec {
 
 	public Set<ActionSpec> getModuleActions() {
 		Set<ActionSpec> actions = new HashSet<ActionSpec>();
-		actions.add(new ActionSpec("RequestUser"));
 		
+		// authorization controller actions
 		actions.add(new ActionSpec("ListRoles", true));
-		actions.add(new ActionSpec("ListUsers", true));
 		actions.add(new ActionSpec("NewRole", true));
 		actions.add(new ActionSpec("RemoveRole", true));
-		actions.add(new ActionSpec("AddRoleActivity", true));
-		actions.add(new ActionSpec("RemoveRoleActivity", true));
 		actions.add(new ActionSpec("ListUsersAndRoles", true));
 		actions.add(new ActionSpec("AddUserRole", true));
 		actions.add(new ActionSpec("RemoveUserRole", true));
 		actions.add(new ActionSpec("RemoveUserRoles", true));
+		actions.add(new ActionSpec("AddRoleActivity", true));
+		actions.add(new ActionSpec("RemoveRoleActivity", true));
+
+		// request authorization controller actions
+		actions.add(new ActionSpec("ListUsers", true));
 		actions.add(new ActionSpec("AcceptRequestUser", true));
 		actions.add(new ActionSpec("RejectRequestUser", true));
-
+		actions.add(new ActionSpec("RequestUser"));
 		return actions;
 	}
 }

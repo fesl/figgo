@@ -17,7 +17,7 @@
  */
 package br.octahedron.figgo.modules.bank.controller;
 
-import static br.octahedron.figgo.modules.configuration.DomainUtils.generateDomainUserID;
+import static br.octahedron.figgo.util.DomainUtil.generateDomainUserID;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.figgo.modules.bank.data.BankAccount;
 

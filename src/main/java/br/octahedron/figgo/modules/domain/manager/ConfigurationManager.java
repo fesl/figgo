@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.configuration.manager;
+package br.octahedron.figgo.modules.domain.manager;
 
 import java.util.Collection;
 import java.util.Date;
@@ -30,12 +30,12 @@ import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.ModuleSpec.Type;
-import br.octahedron.figgo.modules.configuration.ModulesInfoService;
-import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
-import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
-import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
-import br.octahedron.figgo.modules.configuration.data.ModuleConfigurationDAO;
-import br.octahedron.figgo.modules.configuration.data.ModuleProperty;
+import br.octahedron.figgo.modules.domain.ModulesInfoService;
+import br.octahedron.figgo.modules.domain.data.DomainConfiguration;
+import br.octahedron.figgo.modules.domain.data.DomainConfigurationDAO;
+import br.octahedron.figgo.modules.domain.data.ModuleConfiguration;
+import br.octahedron.figgo.modules.domain.data.ModuleConfigurationDAO;
+import br.octahedron.figgo.modules.domain.data.ModuleProperty;
 
 /**
  * This entity is responsible by manager all configurations for a domain, and the modules enabled

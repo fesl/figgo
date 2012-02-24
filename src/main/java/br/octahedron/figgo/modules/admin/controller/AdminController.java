@@ -18,7 +18,6 @@
  */
 package br.octahedron.figgo.modules.admin.controller;
 
-import static br.octahedron.figgo.Utils.getDomainURL;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
@@ -30,6 +29,7 @@ import br.octahedron.figgo.modules.admin.data.ApplicationConfiguration;
 import br.octahedron.figgo.modules.admin.manager.AdminManager;
 
 import static br.octahedron.figgo.modules.admin.controller.validation.AdminValidators.*;
+import static br.octahedron.figgo.util.DomainUtil.getDomainURL;
 /**
  * @author Vítor Avelino
  */

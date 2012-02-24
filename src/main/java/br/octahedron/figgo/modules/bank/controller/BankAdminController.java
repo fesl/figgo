@@ -78,18 +78,6 @@ public class BankAdminController extends AbstractBankController {
 	}
 
 	/**
-	 * Gets the bank ballast interface
-	 * 
-	 * @throws DisabledBankAccountException
-	 *             If the bank account is disabled - This kind of account can't be disabled, if this
-	 *             occurs, indicates an DEFECT
-	 */
-	public void getBallastBank() throws DisabledBankAccountException {
-		this.out("balance", this.accountManager.getBalance(this.domainBankAccount()));
-		this.success(BALLAST_TPL);
-	}
-
-	/**
 	 * Transfer from bank account to a user account
 	 * 
 	 * @throws DisabledBankAccountException
@@ -114,6 +102,18 @@ public class BankAdminController extends AbstractBankController {
 			this.echo();
 			this.invalid(SHARE_TPL);
 		}
+	}
+
+	/**
+	 * Gets the bank ballast interface
+	 * 
+	 * @throws DisabledBankAccountException
+	 *             If the bank account is disabled - This kind of account can't be disabled, if this
+	 *             occurs, indicates an DEFECT
+	 */
+	public void getBallastBank() throws DisabledBankAccountException {
+		this.out("balance", this.accountManager.getBalance(this.domainBankAccount()));
+		this.success(BALLAST_TPL);
 	}
 
 	/**

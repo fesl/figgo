@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules.bank.manager;
 
-import static br.octahedron.commons.util.DateUtil.getFirstDateOfCurrentMonth;
+import static br.octahedron.figgo.util.DateUtil.getFirstDateOfCurrentMonth;
 
 import java.math.BigDecimal;
 import java.util.Collection;

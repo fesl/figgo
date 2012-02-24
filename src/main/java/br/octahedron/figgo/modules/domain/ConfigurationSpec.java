@@ -16,16 +16,16 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.configuration;
+package br.octahedron.figgo.modules.domain;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.ApplicationDomainModuleSpec;
-import br.octahedron.figgo.modules.configuration.manager.DomainCreatedSubscriber;
-import br.octahedron.figgo.modules.configuration.manager.DomainChangedSubscriber;
-import br.octahedron.figgo.modules.configuration.manager.DomainUploadSubscriber;
+import br.octahedron.figgo.modules.domain.manager.DomainChangedSubscriber;
+import br.octahedron.figgo.modules.domain.manager.DomainCreatedSubscriber;
+import br.octahedron.figgo.modules.domain.manager.DomainUploadSubscriber;
 
 /**
  * @author vitoravelino

@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.configuration.manager;
+package br.octahedron.figgo.modules.domain.manager;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertFalse;
@@ -40,10 +40,11 @@ import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
-import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
-import br.octahedron.figgo.modules.configuration.data.DomainConfigurationDAO;
-import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
-import br.octahedron.figgo.modules.configuration.data.ModuleConfigurationDAO;
+import br.octahedron.figgo.modules.domain.data.DomainConfiguration;
+import br.octahedron.figgo.modules.domain.data.DomainConfigurationDAO;
+import br.octahedron.figgo.modules.domain.data.ModuleConfiguration;
+import br.octahedron.figgo.modules.domain.data.ModuleConfigurationDAO;
+import br.octahedron.figgo.modules.domain.manager.ConfigurationManager;
 
 /**
  * @author Danilo Queiroz

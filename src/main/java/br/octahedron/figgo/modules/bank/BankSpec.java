@@ -25,8 +25,8 @@ import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.bank.manager.ContractPaidSubscriber;
-import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
-import br.octahedron.figgo.modules.configuration.data.ModuleProperty;
+import br.octahedron.figgo.modules.domain.data.ModuleConfiguration;
+import br.octahedron.figgo.modules.domain.data.ModuleProperty;
 
 /**
  * @author Danilo Queiroz
@@ -67,13 +67,12 @@ public class BankSpec implements DomainModuleSpec {
 	@Override
 	public Set<ActionSpec> getModuleActions() {
 		Set<ActionSpec> actions = new HashSet<ActionSpec>();
-		
+		// BankController actions
 		actions.add(new ActionSpec("IndexBank"));
 		actions.add(new ActionSpec("TransferBank"));
 		actions.add(new ActionSpec("StatementBank"));
 		actions.add(new ActionSpec("StatsBank"));
-		
-		actions.add(new ActionSpec("AdminBank", true));
+		// BankAdminController
 		actions.add(new ActionSpec("ShareBank", true));
 		actions.add(new ActionSpec("BallastBank", true));
 		

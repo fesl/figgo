@@ -30,7 +30,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import br.octahedron.commons.util.TextNormalizer;
+import br.octahedron.figgo.util.TextNormalizer;
 
 /**
  * @author Erick Moreno

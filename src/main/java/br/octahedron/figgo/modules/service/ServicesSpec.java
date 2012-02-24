@@ -19,12 +19,11 @@
 package br.octahedron.figgo.modules.service;
 
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.figgo.modules.DomainModuleSpec;
-import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
+import br.octahedron.figgo.modules.domain.data.ModuleConfiguration;
 import br.octahedron.figgo.modules.service.manager.PaymentFailedSubscriber;
 import br.octahedron.figgo.modules.service.manager.ServiceCreatedSubscriber;
 import br.octahedron.figgo.modules.service.manager.ServiceUpdatedSubscriber;
@@ -56,7 +55,7 @@ public class ServicesSpec implements DomainModuleSpec {
 
 	@Override
 	public Set<Class<? extends Subscriber>> getSubscribers() {
-		Set<Class<? extends Subscriber>> subscribers = new LinkedHashSet<Class<? extends Subscriber>>();
+		Set<Class<? extends Subscriber>> subscribers = new HashSet<Class<? extends Subscriber>>();
 		subscribers.add(ServiceCreatedSubscriber.class);
 		subscribers.add(ServiceUpdatedSubscriber.class);
 		subscribers.add(PaymentFailedSubscriber.class);
@@ -70,22 +69,23 @@ public class ServicesSpec implements DomainModuleSpec {
 	public Set<ActionSpec> getModuleActions() {
 		Set<ActionSpec> actions = new HashSet<ActionSpec>();
 		
-		actions.add(new ActionSpec("ListServices"));
-		actions.add(new ActionSpec("ShowService"));
-		actions.add(new ActionSpec("AddProvider"));
-		actions.add(new ActionSpec("RemoveProvider"));
-		actions.add(new ActionSpec("UserServices"));
-
-		actions.add(new ActionSpec("ShowContracts"));
-		actions.add(new ActionSpec("ShowHistory"));
-		actions.add(new ActionSpec("EditContract"));
-		actions.add(new ActionSpec("PayContract"));
-		actions.add(new ActionSpec("RequestContract"));
-		actions.add(new ActionSpec("ServicesByCategory"));
-		
 		actions.add(new ActionSpec("NewService", true));
 		actions.add(new ActionSpec("EditService", true));
 		actions.add(new ActionSpec("RemoveService", true));
+		
+		actions.add(new ActionSpec("ListServices"));
+		actions.add(new ActionSpec("UserServices"));
+		actions.add(new ActionSpec("ShowService"));
+		actions.add(new ActionSpec("AddProvider"));
+		actions.add(new ActionSpec("RemoveProvider"));
+
+		actions.add(new ActionSpec("ShowContracts"));
+		actions.add(new ActionSpec("EditContract"));
+		actions.add(new ActionSpec("PayContract"));
+		actions.add(new ActionSpec("RequestContract"));
+		
+		actions.add(new ActionSpec("ServicesByCategory"));
+		
 		
 		return actions;
 	}

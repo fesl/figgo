@@ -16,7 +16,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.configuration.controller;
+package br.octahedron.figgo.modules.domain.controller;
 
 import static br.octahedron.cotopaxi.CotopaxiProperty.APPLICATION_BASE_URL;
 import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
@@ -25,7 +25,7 @@ import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.interceptor.TemplateInterceptor;
 import br.octahedron.cotopaxi.view.response.TemplateResponse;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
-import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
+import br.octahedron.figgo.modules.domain.manager.ConfigurationManager;
 
 /**
  * A response interceptor that adds the current DomainConfiguration to output

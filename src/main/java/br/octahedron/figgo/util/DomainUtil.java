@@ -1,6 +1,7 @@
 /*
- *  Figgo - https://www.ohloh.net/p/figgo/
- *  Copyright (C) 2011  Octahedron - FESL
+ *  Straight - A system to manage financial demands for small and decentralized
+ *  organizations.
+ *  Copyright (C) 2011  Octahedron 
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -15,17 +16,18 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.configuration;
+package br.octahedron.figgo.util;
 
+import static br.octahedron.cotopaxi.CotopaxiProperty.*;
 import br.octahedron.figgo.modules.bank.data.BankAccount;
 
 /**
- * Provides useful methods to deal with domains.
+ * Some utilitary methods for Figgo.
  * 
- * @author Danilo Queiroz - dpenna.queiroz@gmail.com
+ * @author Danilo Penna Queiroz
  */
-public class DomainUtils {
-
+public class DomainUtil {
+	
 	private static final String ADDRESS_SUFFIX = "@figgo.com.br";
 
 	/**
@@ -37,5 +39,23 @@ public class DomainUtils {
 	 */
 	public static String generateDomainUserID(String domain) {
 		return domain.trim() + ADDRESS_SUFFIX;
+	}
+	
+	/**
+	 * Gets the complete url for the given domain. Eg.: if the given domain is "octa" it should return
+	 * http://octa.figgo.com.br.
+	 * 
+	 * This method works for both testing and production environments
+	 * 
+	 * @param domain The domain 
+	 * @return The full url for the given domain
+	 */
+	public static String getDomainURL(String domain) {
+		String appURL = getProperty(APPLICATION_BASE_URL);
+		if (appURL.contains("www")) {
+			return appURL.replace("www", domain);
+		} else {
+			return appURL.replace("http://", "http://" + domain + ".");
+		}
 	}
 }

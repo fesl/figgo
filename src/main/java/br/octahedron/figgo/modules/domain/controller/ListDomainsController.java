@@ -16,14 +16,14 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.configuration.controller;
+package br.octahedron.figgo.modules.domain.controller;
 
 import static br.octahedron.cotopaxi.controller.Converter.Builder.strArray;
-import static br.octahedron.figgo.modules.configuration.controller.ConfigurationController.BASE_DIR_TPL;
+import static br.octahedron.figgo.modules.domain.controller.ConfigurationController.BASE_DIR_TPL;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
-import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
+import br.octahedron.figgo.modules.domain.manager.ConfigurationManager;
 
 /**
  * TODO DOCUMENTAR

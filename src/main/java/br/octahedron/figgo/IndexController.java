@@ -21,7 +21,6 @@ package br.octahedron.figgo;
 import static br.octahedron.cotopaxi.CotopaxiProperty.APPLICATION_BASE_URL;
 import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
 import static br.octahedron.cotopaxi.validation.Rule.Builder.required;
-import br.octahedron.commons.util.Mailer;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
@@ -30,7 +29,8 @@ import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespace;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
-import br.octahedron.figgo.modules.configuration.manager.ConfigurationManager;
+import br.octahedron.figgo.modules.domain.manager.ConfigurationManager;
+import br.octahedron.figgo.util.Mailer;
 
 /**
  * 

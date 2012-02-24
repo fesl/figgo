@@ -18,7 +18,7 @@
  */
 package br.octahedron.figgo.modules;
 
-import br.octahedron.figgo.modules.configuration.data.ModuleConfiguration;
+import br.octahedron.figgo.modules.domain.data.ModuleConfiguration;
 
 /**
  * @author danilo

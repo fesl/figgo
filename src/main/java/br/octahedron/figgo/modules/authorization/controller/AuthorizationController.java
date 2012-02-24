@@ -18,7 +18,6 @@
  */
 package br.octahedron.figgo.modules.authorization.controller;
 
-import static br.octahedron.cotopaxi.controller.Converter.Builder.strArray;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
@@ -76,36 +75,6 @@ public class AuthorizationController extends Controller {
 	}
 
 	/**
-	 * Get given users roles.
-	 * 
-	 * <b>AjaxMethod</b>
-	 */
-	public void getUserRoles() {
-		this.out("result", this.authorizationManager.getUsersRoles(this.in("users", strArray(","))));
-		this.jsonSuccess();
-	}
-
-	/**
-	 * Add activity to a role.
-	 * 
-	 * <b>AjaxMethod</b>
-	 */
-	public void postAddRoleActivity() {
-		this.authorizationManager.addActivitiesToRole(this.in("role"), this.in("activity"));
-		this.jsonSuccess();
-	}
-
-	/**
-	 * Remove an activity from a role
-	 * 
-	 * <b>AjaxMethod</b>
-	 */
-	public void postRemoveRoleActivity() {
-		this.authorizationManager.removeActivitiesToRole(this.in("role"), this.in("activity"));
-		this.jsonSuccess();
-	}
-
-	/**
 	 * Adds an user to a role
 	 * 
 	 * <b>AjaxMethod</b>
@@ -136,7 +105,39 @@ public class AuthorizationController extends Controller {
 		this.authorizationManager.removeUserFromRoles(this.in("user"), this.subDomain());
 		this.jsonSuccess();
 	}
-	
+
+	/**
+	 * Add activity to a role.
+	 * 
+	 * <b>AjaxMethod</b>
+	 */
+	public void postAddRoleActivity() {
+		this.authorizationManager.addActivitiesToRole(this.in("role"), this.in("activity"));
+		this.jsonSuccess();
+	}
+
+	/**
+	 * Remove an activity from a role
+	 * 
+	 * <b>AjaxMethod</b>
+	 */
+	public void postRemoveRoleActivity() {
+		this.authorizationManager.removeActivitiesToRole(this.in("role"), this.in("activity"));
+		this.jsonSuccess();
+	}
+
+	/**
+	 * Get given users roles.
+	 * 
+	 * <b>AjaxMethod</b>
+	 * 
+	 * REVIEW This action is not mapped and action isn't added to spec
+	 */
+//	public void getUserRoles() {
+//		this.out("result", this.authorizationManager.getUsersRoles(this.in("users", strArray(","))));
+//		this.jsonSuccess();
+//	}
+
 	// REVIEW change how this works - possible using async/ajax call
 	@Inject
 	private NamespaceManager namespaceManager;

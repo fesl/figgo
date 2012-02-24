@@ -16,28 +16,26 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package br.octahedron.figgo.modules.configuration.manager;
+package br.octahedron.figgo.modules.domain.data;
 
-import br.octahedron.cotopaxi.eventbus.Event;
-import br.octahedron.figgo.modules.configuration.data.DomainConfiguration;
+import br.octahedron.cotopaxi.datastore.jdo.GenericDAO;
 
 /**
- * Event to inform that a domain configuration has created
- * 
- * @author Vítor Avelino
+ * @author Danilo Queiroz
  */
-public class DomainChangedEvent implements Event {
+public class ModuleConfigurationDAO extends GenericDAO<ModuleConfiguration> {
 
-	private static final long serialVersionUID = -6348483502587001585L;
-
-	private DomainConfiguration domainConfiguration;
-
-	public DomainChangedEvent(DomainConfiguration domainConfiguration) {
-		this.domainConfiguration = domainConfiguration;
+	public ModuleConfigurationDAO() {
+		super(ModuleConfiguration.class);
 	}
 
-	public DomainConfiguration getDomainConfiguration() {
-		return this.domainConfiguration;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see br.octahedron.commons.database.GenericDAO#get(java.lang.Object)
+	 */
+	@Override
+	public ModuleConfiguration get(Object key) {
+		return (ModuleConfiguration) super.get(key);
 	}
-
 }
