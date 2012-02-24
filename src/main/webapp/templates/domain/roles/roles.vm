@@ -30,7 +30,7 @@
                 <tr>
                     <th>Atividade</th>
                 #foreach( $role in $roles ) 
-                    <th>$i18n.get($role.name) <a class="delete" href="/roles/delete/$role.name" data-confirm="Você tem certeza que deseja remover esse papel?"><small>remover?</small></a></th>
+                    <th>$i18n.get($role.name) <a class="delete" href="/roles/$role.name/delete" data-confirm="Você tem certeza que deseja remover esse papel?"><small>remover?</small></a></th>
                 #end
                 </tr>
             </thead>
