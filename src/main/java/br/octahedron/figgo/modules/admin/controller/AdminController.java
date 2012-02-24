@@ -19,18 +19,17 @@
 package br.octahedron.figgo.modules.admin.controller;
 
 import static br.octahedron.cotopaxi.controller.Converter.Builder.bool;
+import static br.octahedron.figgo.modules.admin.controller.validation.AdminValidators.getConfigValidator;
+import static br.octahedron.figgo.modules.admin.controller.validation.AdminValidators.getDomainValidator;
+import static br.octahedron.figgo.util.DomainUtil.getDomainURL;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.OnlyForGlobalSubdomainControllerInterceptor.OnlyForGlobal;
-import br.octahedron.figgo.modules.admin.controller.validation.AdminValidators;
 import br.octahedron.figgo.modules.admin.data.ApplicationConfiguration;
 import br.octahedron.figgo.modules.admin.manager.AdminManager;
-
-import static br.octahedron.figgo.modules.admin.controller.validation.AdminValidators.*;
-import static br.octahedron.figgo.util.DomainUtil.getDomainURL;
 /**
  * @author Vítor Avelino
  */
@@ -97,7 +96,7 @@ public class AdminController extends Controller {
 	 * Process new domain form
 	 */
 	public void postCreateDomain() {
-		Validator validator = AdminValidators.getDomainValidator();
+		Validator validator = getDomainValidator();
 		if (validator.isValid()) {
 			String domain = in("name");
 			this.adminManager.createDomain(domain, in("userId"), in("dns", bool()));

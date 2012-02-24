@@ -35,7 +35,7 @@ public class AdminValidators {
 	public static synchronized Validator getDomainValidator() {
 		if (domainValidator == null) {
 			domainValidator = new Validator();
-			domainValidator.add("name", required("REQUIRED_DOMAIN_ID"), new InexistentDomainRule());
+			domainValidator.add("name", required("REQUIRED_DOMAIN_ID"));
 			// TODO validate email for userId
 			domainValidator.add("userId", required("REQUIRED_ADMIN_EMAIL"));
 		}
