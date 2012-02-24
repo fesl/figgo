@@ -120,6 +120,7 @@ public class UserController extends Controller {
 		out("name", user.getName());
 		out("phoneNumber", user.getPhoneNumber());
 		out("description", user.getDescription());
+		out("domains", this.authorizationManager.getActiveUserDomains(this.currentUser()));
 		success(EDIT_USER_TPL);
 	}
 
@@ -147,7 +148,7 @@ public class UserController extends Controller {
 	/**
 	 * AJAX function to search users
 	 */
-	public void getSearchUsers() {
+	public void getLoadUsers() {
 		// TODO validate
 		String[] users = in("users", strArray(","));
 		ArrayList<String> validUsers = new ArrayList<String>();
