@@ -24,6 +24,7 @@ import br.octahedron.cotopaxi.eventbus.Event;
 import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.eventbus.NamespaceEvent;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.ModuleSpec;
 import br.octahedron.figgo.modules.ModuleSpec.Type;
@@ -62,13 +63,17 @@ public class DomainCreatedSubscriber extends AbstractNamespaceSubscriber {
 	protected void processEvent(Event event) {
 		String namespace = ((NamespaceEvent) event).getNamespace();
 		log.info("Creating domain configuration for domain " + namespace);
-		this.configurationManager.createDomainConfiguration(namespace);
-		for (Module m : Module.values()) {
-			ModuleSpec moduleSpec = m.getModuleSpec();
-			if (moduleSpec.getModuleType() == Type.DOMAIN) {
-				log.debug("Configuring module %s for domain %s", m.name(), namespace);
-				this.configurationManager.enableModule(m);
+		try {
+			this.configurationManager.createDomainConfiguration(namespace);
+			for (Module m : Module.values()) {
+				ModuleSpec moduleSpec = m.getModuleSpec();
+				if (moduleSpec.getModuleType() == Type.DOMAIN) {
+					log.debug("Configuring module %s for domain %s", m.name(), namespace);
+					this.configurationManager.enableModule(m);
+				}
 			}
+		} catch (DataAlreadyExistsException e) {
+			log.warning("Domain configuration already exists, nothing changed!");
 		}
 		PersistenceManagerPool.forceClose();
 	}

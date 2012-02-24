@@ -213,6 +213,17 @@ public class AuthorizationManager {
 		Role role = this.getRole(roleName);
 		role.addActivities(activities);
 	}
+	
+	/**
+	 * Removes all activities of a given role.
+	 * 
+	 * @param roleName
+	 *            roleName to have its activities updated
+	 */
+	public void removeActivitiesFromRole(String roleName) {
+		Role role = this.getRole(roleName);
+		role.removeActivities(role.getActivities());
+	}
 
 	/**
 	 * Removes the given activities to a specific role of a specific domain.

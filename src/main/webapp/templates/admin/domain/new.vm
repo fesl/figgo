@@ -32,6 +32,10 @@
                 <span>$i18n.get($invalid.userId)</span>
                 #end
             </div>
+            <div>
+                <label for="userId">Configurar DNS</label>
+                <input type="checkbox" checked="checked" id="dns" name="dns"/>
+            </div>
         </fieldset>
         <input type="submit" value="Criar núcleo" />
     </form>

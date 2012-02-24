@@ -18,7 +18,6 @@
  */
 package br.octahedron.figgo.modules.admin.manager;
 
-import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
 import static br.octahedron.figgo.modules.admin.data.ApplicationConfiguration.APPLICATION_NAME;
 import br.octahedron.cotopaxi.eventbus.EventBus;
 import br.octahedron.cotopaxi.inject.Inject;
@@ -36,7 +35,6 @@ import br.octahedron.util.Log;
  */
 public class AdminManager {
 
-	private static final String NOT_ROUTE53_PROPERTY = "NOT_USE_ROUTE53";
 	private static final Log log = new Log(AdminManager.class);
 
 	@Inject
@@ -95,15 +93,13 @@ public class AdminManager {
 	 * @throws Route53Exception
 	 *             if some error occurs when accessing route53 API
 	 */
-	public void createDomain(String domainName, String adminID) {
+	public void createDomain(String domainName, String adminID, boolean createDNS) {
 		if (this.hasApplicationConfiguration()) {
-			if (!Boolean.parseBoolean(getProperty(NOT_ROUTE53_PROPERTY))) {
+			if (createDNS) {
 				ApplicationConfiguration appConf = this.applicationConfigurationDAO.get(APPLICATION_NAME);
 				Route53Util
 						.createDomain(domainName, appConf.getRoute53AccessKeyID(), appConf.getRoute53AccessKeySecret(), appConf.getRoute53ZoneID());
-			} else {
-				log.info("%s Property set to true, will fire domain created event!", NOT_ROUTE53_PROPERTY);
-			}
+			} 
 			eventBus.publish(new DomainCreatedEvent(domainName, adminID));
 		} else {
 			throw new DataDoesNotExistsException("This application isn't configured");

@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.admin.controller;
 
+import static br.octahedron.cotopaxi.controller.Converter.Builder.bool;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
@@ -99,7 +100,7 @@ public class AdminController extends Controller {
 		Validator validator = AdminValidators.getDomainValidator();
 		if (validator.isValid()) {
 			String domain = in("name");
-			this.adminManager.createDomain(domain, in("userId"));
+			this.adminManager.createDomain(domain, in("userId"), in("dns", bool()));
 			redirect(getDomainURL(domain));
 		} else {
 			echo();

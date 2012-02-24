@@ -28,6 +28,7 @@ import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.modules.ApplicationDomainModuleSpec;
 import br.octahedron.figgo.modules.ApplicationDomainModuleSpec.ActionSpec;
+import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.ModuleSpec;
 import br.octahedron.figgo.modules.ModuleSpec.Type;
@@ -84,8 +85,14 @@ public class CreateDomainAuthorizationSubscriber implements Subscriber {
 		logger.info("Creating the default roles authorizations for domain: " + domainName + ". The domain admin is " + domainAdmin);
 
 		// create roles
-		this.authorizationManager.createRole(USERS_ROLE_NAME);
-		this.authorizationManager.createRole(ADMINS_ROLE_NAME);
+		for(String role : new String[]{ USERS_ROLE_NAME, ADMINS_ROLE_NAME}) {
+			try {
+				this.authorizationManager.createRole(role);
+			} catch (DataAlreadyExistsException ex) {
+				// Role already exists? ok, remove all activities from it
+				this.authorizationManager.removeActivitiesFromRole(role);
+			}
+		}
 
 		// add actions to roles
 		for (Module m : Module.values()) {
