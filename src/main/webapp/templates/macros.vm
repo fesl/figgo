@@ -47,7 +47,11 @@
                     #end
                     <span>
                         $user.name <br />
-                        <a href="${applicationBaseURL}dashboard">Dashboard</a>
+                        <ul class="inline">
+                            <li><a href="${applicationBaseURL}dashboard">Home</a></li>
+                            <li></li>
+                            <li><a href="${applicationBaseURL}user/edit">Preferências</a></li>
+                        </ul>
                     </span>
                 </div>
             </div>    
@@ -77,7 +81,11 @@
                     #end
                     <span>
                         $user.name <br /> 
-                        <a href="${applicationBaseURL}dashboard">Dashboard</a>
+                        <ul class="inline">
+                            <li><a href="${applicationBaseURL}dashboard">Home</a></li>
+                            <li></li>
+                            <li><a href="${applicationBaseURL}user/edit">Preferências</a></li>
+                        </ul>
                     </span>
                 </div>
                 <div id="shortcuts" class="right">
@@ -123,10 +131,18 @@
         <div id="header-bottom">
             <div class="wrapper">
                 <div id="avatar-info">
+                    #if ( $user.avatarKey )
+                    <img src="/serve/$user.avatarKey" />
+                    #else
                     <img src="http://lorempixum.com/45/45" />
+                    #end
                     <span>
                         $!{user.name} <br />
-                        <a href="${applicationBaseURL}dashboard">Dashboard</a>
+                        <ul class="inline">
+                            <li><a href="${applicationBaseURL}dashboard">Home</a></li>
+                            <li></li>
+                            <li><a href="${applicationBaseURL}user/edit">Preferências</a></li>
+                        </ul>
                     </span>
                 </div>
             </div>    

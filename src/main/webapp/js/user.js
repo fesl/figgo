@@ -9,7 +9,7 @@ $(function() {
 				domains = data.result;
 			for (i = 0; i < domainsLength; i += 1) {
 				currentLi = $domainsLi.filter("li[data-domain='"+domains[i].domainName+"']")[0]
-				currentLi.childNodes[1].src = domains[i].avatarKey || "http://lorempixum.com/32/32/";
+				currentLi.childNodes[1].src = "/serve/" + domains[i].avatarKey || "http://lorempixum.com/32/32/";
 				currentLi.childNodes[3].textContent = domains[i].name;
 			}
 			document.getElementById("loader").remove();

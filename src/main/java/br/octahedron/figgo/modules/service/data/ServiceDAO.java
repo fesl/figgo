@@ -76,4 +76,15 @@ public class ServiceDAO extends GenericDAO<Service> {
 		query.setFilter("categoryId == :categoryId");
 		return (Collection<Service>) query.execute(category);
 	}
+	
+	/* (non-Javadoc)
+	 * @see br.octahedron.cotopaxi.datastore.jdo.GenericDAO#getAll()
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<Service> getAll() {
+		Query query = this.datastoreFacade.createQueryForClass(Service.class);
+		query.setOrdering("name ascending");
+		return (Collection<Service>) query.execute();
+	}
 }
