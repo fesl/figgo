@@ -1,0 +1,11 @@
+As versões em produção devem ser numeradas da seguinte forma
+
+X-Y-Z
+
+Onde X indica o número da versão do figgo (ver a versão que se está trabalhando atualmente no github). Em geral este número de versão por si próprio já será um numero "composto". Ex.: '1-0' ou '1-1'.
+
+y indica um numero de versão para bug fixes apartir de uma versão específica. Por exemplo, suponha que a versão 1.1 está em produção, a equipe de desenvolvimento trabalhando na versão 1-1 e surge um bug crítico para ser corrigido na versão 1-0. A equipe deve fazer a correção na versão em produção, ou seja 1-0, e colocá-la em produção o mais breve possível. Neste caso a versão seria a versão seria 1-0-1.
+
+O Z indica o numero do deploy, sequenciamente. Por exemplo 1-0-1-1. Este numero deve ser utilizado para mudanças muito pequenas, que não caracterizem um bug fix crítico. Como por exemplo mudanças de configuração para melhor depuração de erros, mensagens de log adicionadas, erros de configuração durante o deploy e afins.
+
+Note que deve ser usado hifen ao invés de pontos para separar os numeros de versão.
