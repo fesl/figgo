@@ -19,6 +19,7 @@
 package br.octahedron.figgo.modules.authorization.controller;
 
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
+import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespace;
@@ -46,7 +47,6 @@ public class RequestAuthorizationController extends Controller {
 	/**
 	 * GET /users
 	 */
-	@AuthenticationRequired
 	public void getListUsers() {
 		// TODO verificar se é subdomínio válido
 		this.out("users", this.authorizationManager.getActiveUsers(this.subDomain()));
@@ -67,7 +67,7 @@ public class RequestAuthorizationController extends Controller {
 	/**
 	 * POST /user/request/accept
 	 */
-	@AuthenticationRequired
+	@AuthorizationRequired
 	public void postAcceptRequestUser() {
 		// TODO verificar se é subdomínio válido
 		this.authorizationManager.activateDomainUser(this.subDomain(), this.in("user"));
@@ -77,11 +77,10 @@ public class RequestAuthorizationController extends Controller {
 	/**
 	 * POST /user/request/reject
 	 */
-	@AuthenticationRequired
+	@AuthorizationRequired
 	public void postRejectRequestUser() {
 		// TODO verificar se é subdomínio válido
 		this.authorizationManager.removeDomainUser(this.subDomain(), this.in("user"));
 		this.redirect(BASE_USERS_URL);
 	}
-
 }

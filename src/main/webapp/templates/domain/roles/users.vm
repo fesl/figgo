@@ -72,7 +72,12 @@
                     <tr data-user="$user.userId">
                         <td>$user.Name</td>
                         <td>$user.UserId</td>
-                        <td><a href="/user/request/accept/$user.userId" data-type="url" data-confirm="Desejas realmente aceitar a requisição?">Aceitar</a> - <a href="/user/request/reject/$user.userId" data-type="url" data-confirm="Desejas realmente rejeitar a requisição?">Rejeitar</a></td>
+                       	#if ($auth.AcceptRequestUser) 
+                        <td><a href="/user/request/accept/$user.userId" data-type="url" data-confirm="Desejas realmente aceitar a requisição?">Aceitar</a></td>
+                        #end
+                        #if ($auth.RejectRequestUser)
+                        <td><a href="/user/request/reject/$user.userId" data-type="url" data-confirm="Desejas realmente rejeitar a requisição?">Rejeitar</a></td>
+                        #end
                     </tr>
                     #end
                 #else

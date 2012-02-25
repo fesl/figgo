@@ -311,7 +311,9 @@ public class AuthorizationManager {
 	 *         <code>false</code> otherwise.
 	 */
 	public boolean isAuthorized(String username, String activityName) {
-		return this.googleAuthorizer.isApplicationAdmin() || this.roleDAO.existsRoleFor(username, activityName);
+		boolean authorized = this.googleAuthorizer.isApplicationAdmin() || this.roleDAO.existsRoleFor(username, activityName);
+		logger.debug("User  %s is authorized to %s: %b", username, activityName, authorized);
+		return authorized;
 	}
 
 	/**

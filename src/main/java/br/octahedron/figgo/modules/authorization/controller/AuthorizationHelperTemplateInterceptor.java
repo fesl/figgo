@@ -37,7 +37,7 @@ public class AuthorizationHelperTemplateInterceptor extends TemplateInterceptor 
 	 */
 	@Override
 	public void preRender(TemplateResponse response) {
-		response.addOutput("auth", new AuthorizationHelper(this.currentUser()));
+		response.addOutput("auth", new AuthorizationHelper(this.currentUser(), this.subDomain()));
 	}
 
 	/**
@@ -60,8 +60,9 @@ public class AuthorizationHelperTemplateInterceptor extends TemplateInterceptor 
 		private String userId;
 		private String domain;
 
-		public AuthorizationHelper(String userId) {
+		public AuthorizationHelper(String userId, String domain) {
 			this.userId = userId;
+			this.domain = domain;
 		}
 
 		/**
@@ -78,7 +79,6 @@ public class AuthorizationHelperTemplateInterceptor extends TemplateInterceptor 
 		 */
 		public void setNamespaceManager(NamespaceManager namespaceManager) {
 			this.namespaceManager = namespaceManager;
-			this.domain = namespaceManager.currentNamespace();
 		}
 
 		public boolean get(String activity) {

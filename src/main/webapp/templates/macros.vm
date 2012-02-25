@@ -160,11 +160,9 @@
             #foreach( $module in $domain.ModulesEnabled )
                 <li #if( $module == $currentModule )class="selected"#end><a href="/$module.toLowerCase()">$i18n.get($module)</a></li>
             #end
+            <li><a href="/users">Usuários</a></li>
             #if ( $auth.EditDomain )
             <li><a href="/domain/edit">Preferências</a></li>
-            #end
-            #if ( $auth.ListUsers )
-            <li><a href="/users">Usuários</a></li>
             #end
         </ul>
     </section>
