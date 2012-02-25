@@ -326,7 +326,7 @@ public class AuthorizationManager {
 		// TODO why not APLICATION_DOMAIN activities too?
 		List<String> activities = new LinkedList<String>();
 		for (Module module : Module.values()) {
-			if (module.getModuleSpec().getModuleType() == Type.DOMAIN) {
+			if (module.getModuleSpec().getModuleType() != Type.APPLICATION_GLOBAL) {
 				for (ActionSpec action : ((DomainModuleSpec) module.getModuleSpec()).getModuleActions()) {
 					activities.add(action.getAction());
 				}
