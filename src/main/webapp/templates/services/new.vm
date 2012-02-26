@@ -34,6 +34,9 @@
                 <div>
                     <label for="category">Categoria</label>
                     <input id="category" class="autocomplete" type="text" name="category" value="$!{category}" />
+                    #if ( $invalid.category )
+                        <span>$invalid.category</span>
+                    #end
                 </div>
                 <div>
                     <label for="description">Descrição</label>
