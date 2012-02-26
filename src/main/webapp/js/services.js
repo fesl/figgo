@@ -42,13 +42,14 @@ $(function() {
 			$providers = $("#providers > ul"),
 			$service = $("#service"),
 			$notice = $(".notice");
+		
 		if ($this.hasClass('not')) {
 			$.ajax({
 				type: "POST",
-				url: "/service/" + $service[0].dataset['id'] + "/provider/new",
+				url: "/service/" + $service.data('id') + "/provider/new",
 			}).success(function(data) {
 				$this.removeClass('not');
-				$providers.prepend('<li data-user="' + data.userId + '">' + $providers[0].dataset['username'] + ' <a class="contract-link" href="/service/' + data.serviceId
+				$providers.prepend('<li data-user="' + data.userId + '">' + $providers.data('username') + ' <a class="contract-link" href="/service/' + data.serviceId
 					+ '/contract/' + data.userId + '">contratar</a></li>');
 				$notice.hide();
 				$providers.fadeIn();
@@ -56,10 +57,31 @@ $(function() {
 		} else {
 			$.ajax({
 				type: "POST",
-				url: "/service/" + $service[0].dataset['id'] + "/provider/delete",
+				url: "/service/" + $service.data('id') + "/provider/delete",
 			}).success(function(data) {
 				$this.addClass('not');
-				$providers.find("li[data-user='" + $providers[0].dataset["userid"] + "']")[0].remove();
+				$providers.find("li[data-user='" + $providers.data("userid") + "']")[0].remove();
+			});
+		}
+	});
+
+	$(".service").find(".thumbs-up").bind('click', function() {
+		var $this 	 = $(this),
+			$service = $this.closest('.service');
+		
+		if ($this.hasClass('not')) {
+			$.ajax({
+				type: "POST",
+				url: "/service/" + $service.data('id') + "/provider/new",
+			}).success(function(data) {
+				$this.removeClass('not');
+			});
+		} else {
+			$.ajax({
+				type: "POST",
+				url: "/service/" + $service.data('id') + "/provider/delete",
+			}).success(function(data) {
+				$this.addClass('not');
 			});
 		}
 	});

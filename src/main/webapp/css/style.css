@@ -765,17 +765,17 @@ table.roles tbody tr:hover {
   top: 12px;
   right: 12px; }
 
-#providers .thumbs-up {
-  cursor: pointer; }
 #providers > ul {
   display: none; }
 
 .thumbs-up {
   width: 16px;
   height: 16px;
-  vertical-align: text-top; }
+  vertical-align: text-top;
+  cursor: pointer; }
   .thumbs-up.not {
     opacity: 0.2;
+    -moz-opacity: 0.2;
     filter: alpha(opacity=20); }
 
 ul.contracts {
