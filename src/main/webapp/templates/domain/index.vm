@@ -11,7 +11,7 @@
 <div class="left">
     <section id="main-intern">
         <h2>Home</h2>
-        <p>$domain.description</p>
+        <p>$!domain.description</p>
     </section>
 </div>
 #end

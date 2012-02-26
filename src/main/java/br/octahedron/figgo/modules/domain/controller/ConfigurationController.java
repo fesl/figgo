@@ -65,6 +65,7 @@ public class ConfigurationController extends Controller {
 		this.out("name", domainConfiguration.getName());
 		this.out("url", domainConfiguration.getUrl());
 		this.out("maillist", domainConfiguration.getMailList());
+		this.out("description", domainConfiguration.getDescription());
 		this.success(EDIT_DOMAIN_TPL);
 	}
 
