@@ -51,6 +51,7 @@
             </table>
         </section>
 
+		#if ($auth.AcceptRequestUser || $auth.RejectRequestUser) 
         <section id="pending">
             <h4>Pendentes</h4>
             #if ( $pending.size() > 0 )
@@ -89,6 +90,7 @@
                 </tbody>
             </table>
         </section>
+        #end
     </section>
 </div>
 #end
