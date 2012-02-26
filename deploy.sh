@@ -1,24 +1,54 @@
 #! /bin/bash
 
-cat << EOF
-Olá, este script irá auxiliá-lo a realizar um deploy do figgo.
+alert() {
+	cat << EOF
+Olá, você está preste a realizar um novo deploy do figgo.
 
-O primeiro passo antes do deploy é ajustar o numero de versão no arquivo de 
-configuração do Appengine. Se você tem alguma dúvida de como atribuir o número
-da versão, olhe o arquivo 'VERSION_NUMBER'
+Este script irá auxiliá-lo nesta tarefa! 
 
-Depois será necessário alterar o arquivo de configuração da applicação para o ambiente
-de produção.
-
-Este script irá lhe auxiliar com estas tarefas!
-
-[Enter]
+[Enter para continuar]
 EOF
-read 
+	read 
+	return 0
+}
+update_version() {
+	actual=$(cat version)
+	echo "Versão atual $actual"
+	read -p "Digite a nova versão: " version
+	echo ${version} > version
+	return $?
+}
+build_project() {
+	/bin/bash ctpx clean && \
+	mvn clean test war:exploded && \
+	return $?
+}
+adjust_config() {
+	sed -i "/^    APPLICATION/d" target/deploy/WEB-INF/application.config && \
+	sed -i "s/^    #APPLICATION/    APPLICATION/g" target/deploy/WEB-INF/application.config 
+	return $?
+}
+deploy_app() {
+	version=$(cat version)
+	appcfg.sh -V $version update target/deploy
+	return $?
+}
+change_default() {
+	read -p "Deseja alterar a versão default do Figgo para a nova versão? [s/n] " resp
+	if [ $resp = "s" ]; then
+		version=$(cat version)
+		appcfg.sh -V $version set_default_version target/deploy
+		return $?
+	else
+		return 0
+	fi
+}
 
-./ctpx clean && \
-vim src/main/webapp/WEB-INF/appengine-web.xml && \
-vim src/main/webapp/WEB-INF/application.config && \
-echo "Building and deploying application" && \
-mvn test war:exploded && appcfg.sh update target/deploy && \
-git checkout src/main/webapp/WEB-INF/appengine-web.xml src/main/webapp/WEB-INF/application.config
+alert && \
+update_version && \
+build_project && \
+adjust_config && \
+deploy_app && \
+change_default
+exit
+
