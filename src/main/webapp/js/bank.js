@@ -52,17 +52,19 @@ $(function() {
             var $tbody = $table.find("tbody"); 
             $tbody.empty();
             if (data.transactions.length > 0) {
+                var dateTmp;
                 for (var i = 0, length = data.transactions.length; i < length; i+=1) {
-                    $tbody.append("<tr><td>" + data.transactions[i].date + "</td>\n" +
+                    dateTmp = new Date(data.transactions[i].date);
+                    $tbody.append("<tr><td>" + dateTmp.getDate() + "/" + (dateTmp.getMonth()+1) + "/" + dateTmp.getFullYear() + "</td>\n" +
                                   "<td>" + data.transactions[i].accountDest + "</td>\n" +
-                                  "<td>" + data.transactions[i].comment + "</td></tr>");
+                                  "<td>" + data.transactions[i].comment + "</td>\n" +
+                                  "<td>M$" + data.transactions[i].amount + "</td></tr>");
                 }
             } else {
                 $tbody.append("<tr><td colspan=\"4\">Não houve transações nesse período.</td></tr>");
             }
             $transactionsSection.show();
             $transactionsSection.find('h3').text("Transações entre " + startDate + " e " + endDate);
-            // TODO set balance
         }).error(function(data) {
             console.log('Não foi possível recuperar extrato', data);
         });
@@ -92,6 +94,7 @@ $(function() {
     var dates = $( "#startDate, #endDate" ).datepicker({
         defaultDate: "+1w",
         numberOfMonths: 2,
+        dateFormat: "dd/mm/yy",
         onSelect: function( selectedDate ) {
             var option = this.id == "startDate" ? "minDate" : "maxDate",
                 instance = $( this ).data( "datepicker" ),

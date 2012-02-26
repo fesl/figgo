@@ -30,9 +30,9 @@
                 <tr>
                     <td>
                         #if( $domain.avatarKey )
-                        <img src="$domain.avatarKey" alt="Avatar" title="Avatar do $domain.Name"/>
+                        <img src="/serve/$domain.avatarKey" alt="Avatar" title="Avatar"/>
                         #else
-                        <img src="http://lorempixum.com/32/32/" alt="Avatar" title="Avatar do $domain.Name" />
+                        <img src="http://lorempixum.com/32/32/" alt="Avatar" title="Avatar" />
                         #end
                         $domain.name
                     </td>

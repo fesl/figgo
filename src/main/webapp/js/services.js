@@ -4,7 +4,7 @@ $(function() {
         var cache = {},
             lastXhr;
         $searchCategoryInput.autocomplete({
-            minLength: 2,
+            minLength: 1,
             source: function( request, response ) {
                         var term = request.term;
                         if ( term in cache ) {

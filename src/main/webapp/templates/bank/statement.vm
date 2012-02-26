@@ -58,15 +58,11 @@
                 <thead>
                     <tr>
                         <th>Data</th>
-                        <th>Destino</th>
+                        <th>Origem/Destino</th>
                         <th>Comentário</th>
                         <th>Valor</th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <td colspan="3" class="balance">SALDO</td>
-                    <td class=#if( $balance >= 0 )"blue"#else"red"#end>M$ $numberFormat.format($balance)</td>
-                </tfoot>
                 <tbody>
                 </tbody>
             </table>

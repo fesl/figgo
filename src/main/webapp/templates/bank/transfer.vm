@@ -31,7 +31,7 @@
         <hr />
 
         <h3>Transferência</h3>
-        <span>Saldo atual: M$ $balance</span>
+        <span>Saldo atual: M$ $numberFormat.format($balance)</span>
 
         <form action="/bank/transfer" method="post" accept-charset="utf-8">
             <fieldset>
