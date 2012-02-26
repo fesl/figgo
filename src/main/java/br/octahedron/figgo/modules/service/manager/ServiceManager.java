@@ -31,6 +31,7 @@ import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractS
 import br.octahedron.figgo.modules.service.data.ServiceContractDAO;
 import br.octahedron.figgo.modules.service.data.ServiceDAO;
 import br.octahedron.figgo.modules.user.data.User;
+import br.octahedron.util.Log;
 
 /**
  * This entity is responsible by manage services
@@ -40,6 +41,8 @@ import br.octahedron.figgo.modules.user.data.User;
  */
 public class ServiceManager {
 
+	private static final Log logger = new Log(ServiceManager.class);
+	
 	private ServiceDAO serviceDAO = new ServiceDAO();
 	private ServiceCategoryDAO serviceCategoryDAO = new ServiceCategoryDAO();
 	private ServiceContractDAO serviceContractDAO = new ServiceContractDAO();
@@ -351,6 +354,7 @@ public class ServiceManager {
 	 */
 	public void makePayment(String contractId, String userId) throws UncompletedServiceContractException, OnlyServiceContractorException,
 			ServiceContractNotFoundException {
+		logger.debug("Trying to pay contract %s", contractId);
 		ServiceContract serviceContract = this.getServiceContract(contractId);
 		if (serviceContract.getStatus() != ServiceContractStatus.COMPLETED) {
 			throw new UncompletedServiceContractException();
@@ -359,6 +363,7 @@ public class ServiceManager {
 		}
 
 		if (!serviceContract.isPaid()) {
+			logger.info("Contract %s has been paid by %s", contractId, userId);
 			serviceContract.setPaid(true);
 			this.eventBus.publish(new ServiceContractPaidEvent(serviceContract));
 		}
