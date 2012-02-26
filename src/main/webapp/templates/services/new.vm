@@ -21,21 +21,21 @@
                     <label for="name">Nome</label>
                     <input type="text" name="name" value="$!{name}" />
                     #if ( $invalid.name )
-                        <span>$invalid.name</span>
+                        <span>$i18n.get($invalid.name)</span>
                     #end
                 </div>
                 <div>
                 <label for="amount">Valor</label>
                     <input type="text" name="amount" value="$!{amount}" />
                     #if ( $invalid.value )
-                        <span>$invalid.value</span>
+                        <span>$i18n.get($invalid.value)</span>
                     #end
                 </div>
                 <div>
                     <label for="category">Categoria</label>
                     <input id="category" class="autocomplete" type="text" name="category" value="$!{category}" />
                     #if ( $invalid.category )
-                        <span>$invalid.category</span>
+                        <span>$i18n.get($invalid.category)</span>
                     #end
                 </div>
                 <div>

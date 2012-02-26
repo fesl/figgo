@@ -21,14 +21,14 @@
                     <label for="name">Nome</label>
                     <input type="text" name="name" value="$!{name}" />
                     #if ( $invalid.name )
-                        <span>$invalid.name</span>
+                        <span>$i18n.get($invalid.name)</span>
                     #end
                 </div>
                 <div>
                 <label for="value">Valor</label>
                     <input type="text" name="amount" value="$!{amount}" />
                     #if ( $invalid.amount )
-                        <span>$invalid.amount</span>
+                        <span>$i18n.get($invalid.amount)</span>
                     #end
                 </div>
                 <div>
