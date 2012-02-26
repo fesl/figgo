@@ -49,6 +49,8 @@ $(function() {
 				url: "/service/" + $service.data('id') + "/provider/new",
 			}).success(function(data) {
 				$this.removeClass('not');
+				$this.attr('title', 'Eu faço!');
+				$this.attr('alt', 'Eu faço!');
 				$providers.prepend('<li data-user="' + data.userId + '">' + $providers.data('username') + ' <a class="contract-link" href="/service/' + data.serviceId
 					+ '/contract/' + data.userId + '">contratar</a></li>');
 				$notice.hide();
@@ -60,6 +62,8 @@ $(function() {
 				url: "/service/" + $service.data('id') + "/provider/delete",
 			}).success(function(data) {
 				$this.addClass('not');
+				$this.attr('title', 'Não faço!');
+				$this.attr('alt', 'Não faço!');
 				$providers.find("li[data-user='" + $providers.data("userid") + "']")[0].remove();
 			});
 		}
@@ -75,6 +79,8 @@ $(function() {
 				url: "/service/" + $service.data('id') + "/provider/new",
 			}).success(function(data) {
 				$this.removeClass('not');
+				$this.attr('title', 'Eu faço!');
+				$this.attr('alt', 'Eu faço!');
 			});
 		} else {
 			$.ajax({
@@ -82,6 +88,8 @@ $(function() {
 				url: "/service/" + $service.data('id') + "/provider/delete",
 			}).success(function(data) {
 				$this.addClass('not');
+				$this.attr('title', 'Não faço!');
+				$this.attr('alt', 'Não faço!');
 			});
 		}
 	});
