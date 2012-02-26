@@ -27,10 +27,14 @@
             #if ( $services.size() > 0 )
             <ul class="unstyled">
                 #foreach( $service in $services )
-                <li class="service">
+                <li class="service" data-id="${service.id}">
                     <header>
                         <h4><a href="/service/${service.id}">$service.name</a></h4>
-                        #if ( $service.hasProvider($user.userId) )<img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />#end
+                        #if ( $service.hasProvider($user.userId) )
+                        <img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />
+                        #else 
+                        <img class="thumbs-up not" src="/img/thumbs-up.png" title="Não faço!" alt="Não faço!" />
+                        #end
                     </header>
                     <p>$service.getShortDescription()</p>
                     <footer>
