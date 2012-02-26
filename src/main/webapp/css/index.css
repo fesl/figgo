@@ -447,17 +447,13 @@ html, body {
 #actions {
   width: 200px;
   padding: 10px 0 0 10px; }
+  #actions h2 {
+    color: white;
+    margin: 50px 0 0 20px; }
   #actions span {
     display: block;
     margin: 5px;
     text-align: center; }
-  #actions h2 {
-    padding: 35px 0 0 20px;
-    width: 270px;
-    height: 85px;
-    font-weight: bold;
-    color: white;
-    text-align: left; }
   #actions p a {
     color: white; }
   #actions a.btn {
