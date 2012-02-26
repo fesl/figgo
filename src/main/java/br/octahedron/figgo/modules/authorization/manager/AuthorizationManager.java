@@ -27,10 +27,10 @@ import java.util.Map;
 
 import br.octahedron.cotopaxi.eventbus.EventBus;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.figgo.modules.ApplicationDomainModuleSpec;
 import br.octahedron.figgo.modules.ApplicationDomainModuleSpec.ActionSpec;
 import br.octahedron.figgo.modules.DataAlreadyExistsException;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
-import br.octahedron.figgo.modules.DomainModuleSpec;
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.ModuleSpec.Type;
 import br.octahedron.figgo.modules.authorization.data.DomainUser;
@@ -327,7 +327,7 @@ public class AuthorizationManager {
 		List<String> activities = new LinkedList<String>();
 		for (Module module : Module.values()) {
 			if (module.getModuleSpec().getModuleType() != Type.APPLICATION_GLOBAL) {
-				for (ActionSpec action : ((DomainModuleSpec) module.getModuleSpec()).getModuleActions()) {
+				for (ActionSpec action : ((ApplicationDomainModuleSpec) module.getModuleSpec()).getModuleActions()) {
 					activities.add(action.getAction());
 				}
 			}

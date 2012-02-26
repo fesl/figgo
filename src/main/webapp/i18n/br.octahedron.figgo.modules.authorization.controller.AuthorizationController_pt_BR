@@ -25,3 +25,22 @@ ShowService=Visualizar serviço
 RemoveService=Remover serviços
 ListServices=Visualizar serviços
 ServicesByCategory=Visualizar serviços por categoria
+
+ListUsersAndRoles=Listar usuários e papéis 		
+RemoveRoleActivity=Remover atividades
+ListUsers=Listar usuários
+NewRole=Criar papel
+ListRoles=Listar papéis
+RemoveRole=Remover papel
+RemoveUserRoles=Remover papéis de usuário	
+AcceptRequestUser=Aceitar requisições de usuários
+RejectRequestUser=Rejeitar requisições de usuários
+RemoveUserRole=Remover papel de usuário
+AddRoleActivity=Adicionar atividade a papel
+AddUserRole=Adicionar papel a usuário
+
+EnableModuleDomain=Habilitar módulo		
+EditDomain=Editar configurações do coletivo
+DomainUpload=Atualizar avatar do coletivo
+ModuleDomain=Configurar Módulo
+DisableModuleDomain=Disabilitar módulo
