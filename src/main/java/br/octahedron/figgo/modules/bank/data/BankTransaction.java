@@ -19,6 +19,7 @@
 package br.octahedron.figgo.modules.bank.data;
 
 import java.io.Serializable;
+import static br.octahedron.figgo.util.DateUtil.getTime;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -69,7 +70,7 @@ public class BankTransaction implements Serializable {
 	 * @param comment
 	 */
 	public BankTransaction(String accountOrig, String accountDest, BigDecimal value, TransactionType type, String comment) {
-		this(accountOrig, accountDest, value, type, comment, new Date());
+		this(accountOrig, accountDest, value, type, comment, getTime());
 	}
 
 	/**

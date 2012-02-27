@@ -18,6 +18,9 @@
  */
 package br.octahedron.figgo.util;
 
+import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
+import static java.lang.Integer.parseInt;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,11 +29,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.octahedron.cotopaxi.CotopaxiProperty;
+
 /**
- * @author vitoravelino
+ * Utility class to deal with dates.
  * 
+ * @author vitoravelino
+ * @author Danilo Queiroz - dpenna.queiroz@gmail.com
  */
 public class DateUtil {
+
+	/**
+	 * Property to adjust the application timezone.
+	 * 
+	 * @see CotopaxiProperty
+	 */
+	public static final String TZ_PROPERTY = "CURRENT_TIMEZONE";
 
 	private static Map<String, SimpleDateFormat> formatters = new HashMap<String, SimpleDateFormat>();
 	public static String LONG = "dd/MM/yy HH:mm:ss";
@@ -39,6 +53,30 @@ public class DateUtil {
 	static {
 		formatters.put(LONG, new SimpleDateFormat(LONG));
 		formatters.put(SHORT, new SimpleDateFormat(SHORT));
+	}
+
+	/**
+	 * Get current time in milliseconds.
+	 * 
+	 * @return current time in milliseconds.
+	 */
+	public static long now() {
+		long now = System.currentTimeMillis();
+		String tzProp = getProperty(TZ_PROPERTY);
+		if (tzProp != null) {
+			int tz = parseInt(tzProp);
+			now += tz * 1000 * 3600;
+		}
+		return now;
+	}
+
+	/**
+	 * Gets the current time, for the current APPLICATION_TIMEZONE
+	 * 
+	 * @return The current time.
+	 */
+	public static Date getTime() {
+		return new Date(now());
 	}
 
 	public static String format(Date date) {

@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.service.data;
 
+import static br.octahedron.figgo.util.DateUtil.getTime;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -57,7 +58,7 @@ public class ServiceContract implements Serializable {
 	@Persistent
 	private Boolean paid = false;
 	@Persistent
-	private Date date = new Date();
+	private Date date = getTime();
 
 	/**
 	 * For tests purpose.

@@ -44,13 +44,12 @@ import br.octahedron.figgo.modules.domain.data.DomainConfiguration;
 import br.octahedron.figgo.modules.domain.data.DomainConfigurationDAO;
 import br.octahedron.figgo.modules.domain.data.ModuleConfiguration;
 import br.octahedron.figgo.modules.domain.data.ModuleConfigurationDAO;
-import br.octahedron.figgo.modules.domain.manager.ConfigurationManager;
 
 /**
  * @author Danilo Queiroz
  */
 public class ConfigurationManagerTest {
-
+	
 	private ConfigurationManager configurationManager;
 	private DomainConfigurationDAO domainDAO;
 	private ModuleConfigurationDAO moduleDAO;
