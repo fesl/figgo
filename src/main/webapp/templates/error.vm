@@ -4,8 +4,7 @@
 #@public_body()
 	<h1>500 Internal server error</h1>
 	<h2>$!{error.localizedMessage}</h2>
-	<h3>$!{error.localizedMessage}</h3>
-	<h4>$!{error.cause.message}</h4>
+	<h3>$!{error.cause.message}</h3>
 #end
 
 #public_scripts()
