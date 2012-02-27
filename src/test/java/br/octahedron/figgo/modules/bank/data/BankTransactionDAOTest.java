@@ -32,6 +32,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
+import br.octahedron.figgo.util.DateUtil;
 
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
@@ -46,7 +47,7 @@ public class BankTransactionDAOTest {
 	private static final Long date3;
 	
 	static {
-		date1 = new Date().getTime();
+		date1 = DateUtil.now();
 		date2 = date1+2*1000;
 		date3 = date2 +10;
 		try {
@@ -152,7 +153,7 @@ public class BankTransactionDAOTest {
 		assertEquals(new BigDecimal(150), account.getBalance());
 		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "4"));
 		assertEquals(new BigDecimal(100), account.getBalance());
-		Date now = new Date();
+		Date now = new Date(DateUtil.now());
 		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "5", now));
 		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "6", now));
 		assertEquals(new BigDecimal(0), account.getBalance());

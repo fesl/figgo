@@ -37,6 +37,7 @@ import org.junit.Test;
 
 import br.octahedron.cotopaxi.datastore.jdo.DatastoreFacade;
 import br.octahedron.figgo.modules.bank.data.BankTransaction.TransactionType;
+import br.octahedron.figgo.util.DateUtil;
 
 /**
  * @author Danilo Queiroz
@@ -63,11 +64,12 @@ public class BankTransactionDAOMockTest {
 		String myId = "Conta10";
 		String otherId = "Conta9";
 		Long lastTransactionId = new Long(0);
+		Long timestamp = DateUtil.now();
 
 		Query query1 = createMock(Query.class);
 		List<BankTransaction> transactions1 = new LinkedList<BankTransaction>();
 		for (int i = 1; i < 6; i++) {
-			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, String.valueOf(i)));
+			transactions1.add(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, String.valueOf(i), timestamp));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query1);
 		query1.setFilter("timestamp >= :timestamp && accountOrig == :accId");
@@ -77,7 +79,7 @@ public class BankTransactionDAOMockTest {
 		Query query2 = createMock(Query.class);
 		List<BankTransaction> transactions2 = new LinkedList<BankTransaction>();
 		for (int i = 6; i < 11; i++) {
-			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, String.valueOf(i)));
+			transactions2.add(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, String.valueOf(i), timestamp));
 		}
 		expect(this.datastore.createQueryForClass(BankTransaction.class)).andReturn(query2);
 		query2.setFilter("timestamp >= :timestamp && accountDest == :accId");
@@ -88,8 +90,8 @@ public class BankTransactionDAOMockTest {
 
 		Collection<BankTransaction> result = this.transactionDAO.getLastTransactions(myId, new Long(0));
 		assertEquals(10, result.size());
-		assertTrue(result.contains(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "1")));
-		assertTrue(result.contains(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "2")));
+		assertTrue(result.contains(new BankTransaction(myId, otherId, new BigDecimal(1), TransactionType.TRANSFER, "1", timestamp)));
+		assertTrue(result.contains(new BankTransaction(otherId, myId, new BigDecimal(1), TransactionType.TRANSFER, "2", timestamp)));
 		verify(this.datastore, query1, query2);
 	}
 

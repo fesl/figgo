@@ -217,9 +217,14 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		return sum;
 	}
 
+	/**
+	 * Compares banktransaction by timestamp. It ignores equals transactions, it means, if two
+	 * transactions have the same timestamp it will -1 arbitrarily.
+	 */
 	private class BankTransactionComparator implements Comparator<BankTransaction> {
 		public int compare(BankTransaction o1, BankTransaction o2) {
-			return (int) (o1.getId() - o2.getId());
+			int comp = (int) (o1.getTimestamp() - o2.getTimestamp());
+			return (comp != 0) ? comp : (int) (o1.getId() - o2.getId()); 
 		}
 	}
 
