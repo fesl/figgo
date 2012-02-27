@@ -4,6 +4,10 @@ SERVICES=Serviços
 true=Sim
 false=Não
 
+name=Nome
+currency=Moeda
+currencyAbreviation=Símbolo da Moeda
+
 INVALID_AMOUNT=Valor: deve ser maior que 0 (zero)
 
 NOT_VALID_DATE=Data: não é um formato válido (e.g.: dd/MM/yy)
