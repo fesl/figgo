@@ -21,11 +21,13 @@ package br.octahedron.figgo.modules.authorization.controller;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.controller.Controller;
+import br.octahedron.cotopaxi.controller.Converter;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceManager;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespace;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
+import br.octahedron.figgo.util.SafeStringConverter;
 
 /**
  * @author Vítor Avelino
@@ -36,6 +38,9 @@ import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 @NamespaceRequired
 @OnlyForNamespace
 public class AuthorizationController extends Controller {
+	
+	// TODO move this converter to cotopaxi.
+	private static Converter<String> safeStringConverter = new SafeStringConverter();
 
 	private static final String BASE_DIR_TPL = "domain/roles/";
 	private static final String LIST_ROLES_TPL = BASE_DIR_TPL + "roles.vm";
@@ -70,7 +75,7 @@ public class AuthorizationController extends Controller {
 	 * Removes an role
 	 */
 	public void postRemoveRole() {
-		this.authorizationManager.removeRole(this.in("role"));
+		this.authorizationManager.removeRole(this.in("role", safeStringConverter));
 		this.redirect(BASE_ROLES_URL);
 	}
 
@@ -80,7 +85,7 @@ public class AuthorizationController extends Controller {
 	 * <b>AjaxMethod</b>
 	 */
 	public void postAddUserRole() {
-		this.authorizationManager.addUsersToRole(this.in("role"), this.in("user"));
+		this.authorizationManager.addUsersToRole(this.in("role", safeStringConverter), this.in("user"));
 		this.jsonSuccess();
 	}
 
@@ -90,7 +95,7 @@ public class AuthorizationController extends Controller {
 	 * <b>AjaxMethod</b>
 	 */
 	public void postRemoveUserRole() {
-		this.authorizationManager.removeUserFromRole(this.in("role"), this.in("user"), this.subDomain());
+		this.authorizationManager.removeUserFromRole(this.in("role", safeStringConverter), this.in("user"), this.subDomain());
 		this.jsonSuccess();
 	}
 
@@ -112,7 +117,7 @@ public class AuthorizationController extends Controller {
 	 * <b>AjaxMethod</b>
 	 */
 	public void postAddRoleActivity() {
-		this.authorizationManager.addActivitiesToRole(this.in("role"), this.in("activity"));
+		this.authorizationManager.addActivitiesToRole(this.in("role", safeStringConverter), this.in("activity"));
 		this.jsonSuccess();
 	}
 
@@ -122,7 +127,7 @@ public class AuthorizationController extends Controller {
 	 * <b>AjaxMethod</b>
 	 */
 	public void postRemoveRoleActivity() {
-		this.authorizationManager.removeActivitiesToRole(this.in("role"), this.in("activity"));
+		this.authorizationManager.removeActivitiesToRole(this.in("role", safeStringConverter), this.in("activity"));
 		this.jsonSuccess();
 	}
 
@@ -161,7 +166,4 @@ public class AuthorizationController extends Controller {
 		this.namespaceManager.changeToPreviousNamespace();
 		this.success(EDIT_USERS_ROLES_TPL);
 	}
-
-	
-
 }
