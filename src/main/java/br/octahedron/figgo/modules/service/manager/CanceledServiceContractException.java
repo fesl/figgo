@@ -24,12 +24,12 @@ import br.octahedron.figgo.FiggoException;
  * @author vitoravelino
  *
  */
-public class UncompletedServiceContractException extends FiggoException {
+public class CanceledServiceContractException extends FiggoException {
 
 	private static final long serialVersionUID = -7265079213678153069L;
 
-	public UncompletedServiceContractException() {
-		super("CONTRACT_UNCOMPLETED");
+	public CanceledServiceContractException() {
+		super("CONTRACT_CANCELED");
 	}
 
 }

@@ -29,15 +29,13 @@ import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.FiggoException;
 import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespace;
+import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.service.controller.validation.ServiceValidators;
 import br.octahedron.figgo.modules.service.data.Service;
 import br.octahedron.figgo.modules.service.data.ServiceContract;
 import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
-import br.octahedron.figgo.modules.service.manager.InexistentServiceProviderException;
 import br.octahedron.figgo.modules.service.manager.NotServiceProviderException;
-import br.octahedron.figgo.modules.service.manager.ServiceContractNotFoundException;
 import br.octahedron.figgo.modules.service.manager.ServiceManager;
-import br.octahedron.figgo.modules.service.manager.ServiceNotFoundException;
 
 /**
  * @author Vítor Avelino
@@ -91,7 +89,7 @@ public class ServiceController extends Controller {
 			Service service = this.servicesManager.getService(this.in("id"));
 			this.out("service", service);
 			this.success(SHOW_SERVICE_TPL);
-		} catch (ServiceNotFoundException e) {
+		} catch (DataDoesNotExistsException e) {
 			this.notFound();
 		}
 	}
@@ -138,7 +136,7 @@ public class ServiceController extends Controller {
 			this.out("category", service.getCategory());
 			this.out("description", service.getDescription());
 			this.success(EDIT_SERVICE_TPL);
-		} catch (ServiceNotFoundException e) {
+		} catch (DataDoesNotExistsException e) {
 			this.notFound();
 		}
 	}
@@ -157,7 +155,7 @@ public class ServiceController extends Controller {
 				this.servicesManager.updateService(this.in("id"), this.in("name", safeString()), this.in("amount", bigDecimalNumber()),
 						this.in("category", safeString()), this.in("description", safeString()));
 				this.redirect(BASE_URL);
-			} catch (ServiceNotFoundException e) {
+			} catch (DataDoesNotExistsException e) {
 				this.notFound();
 			}
 		} else {
@@ -176,7 +174,7 @@ public class ServiceController extends Controller {
 		try {
 			this.servicesManager.removeService(this.in("id"));
 			this.redirect(BASE_URL);
-		} catch (ServiceNotFoundException e) {
+		} catch (DataDoesNotExistsException e) {
 			this.notFound();
 		}
 	}
@@ -211,7 +209,7 @@ public class ServiceController extends Controller {
 			this.out("contract", serviceContract);
 			this.out("status", serviceContract.getStatus());
 			this.success(EDIT_CONTRACT_TPL);
-		} catch (ServiceContractNotFoundException e) {
+		} catch (DataDoesNotExistsException e) {
 			this.notFound();
 		}
 	}
@@ -231,7 +229,7 @@ public class ServiceController extends Controller {
 				this.echo();
 				this.out("exception", i18n.get(this.locales(), e.getMessage()));
 				this.invalid(EDIT_CONTRACT_TPL);
-			} catch (ServiceContractNotFoundException e) {
+			} catch (DataDoesNotExistsException e) {
 				this.notFound();
 			}
 		} else {
@@ -267,7 +265,7 @@ public class ServiceController extends Controller {
 		try {
 			this.servicesManager.makePayment(this.in("id"), this.currentUser());
 			this.redirect(SHOW_CONTRACTS_URL);
-		} catch (ServiceContractNotFoundException e) {
+		} catch (DataDoesNotExistsException e) {
 			this.notFound();
 		} catch (FiggoException e) {
 			this.out("exception", i18n.get(this.locales(), e.getMessage()));
@@ -287,12 +285,11 @@ public class ServiceController extends Controller {
 	@AuthorizationRequired
 	public void postAddProvider() {
 		try {
-			Service service = this.servicesManager.getService(this.in("id"));
-			service.addProvider(this.currentUser());
+			this.servicesManager.addProvider(this.in("id"), this.currentUser());
 			this.out("userId", this.currentUser());
 			this.out("serviceId", this.in("id"));
 			this.jsonSuccess();
-		} catch (ServiceNotFoundException e) {
+		} catch (DataDoesNotExistsException e) {
 			this.notFound();
 		}
 	}
@@ -310,7 +307,7 @@ public class ServiceController extends Controller {
 		try {
 			this.out("service", this.servicesManager.removeProvider(this.in("id"), this.currentUser()));
 			this.jsonSuccess();
-		} catch (ServiceNotFoundException e) {
+		} catch (DataDoesNotExistsException e) {
 			this.notFound();
 		}
 	}
@@ -331,10 +328,10 @@ public class ServiceController extends Controller {
 			} else {
 				this.jsonInvalid();
 			}
-		} catch (InexistentServiceProviderException e) {
+		} catch (NotServiceProviderException e) {
 			this.out("exception", i18n.get(this.locales(), e.getMessage()));
 			this.jsonInvalid();
-		} catch (ServiceNotFoundException e) {
+		} catch (DataDoesNotExistsException e) {
 			this.notFound();
 		}
 	}

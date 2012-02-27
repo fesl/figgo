@@ -23,6 +23,7 @@ import br.octahedron.cotopaxi.eventbus.InterestedEvent;
 import br.octahedron.cotopaxi.eventbus.Subscriber;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.inject.SelfInjectable;
+import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.bank.manager.BankPaymentNotPerformedEvent;
 import br.octahedron.util.Log;
 
@@ -56,7 +57,7 @@ public class PaymentFailedSubscriber extends SelfInjectable implements Subscribe
 		BankPaymentNotPerformedEvent bankEvt = (BankPaymentNotPerformedEvent) event;
 		try {
 			this.serviceManager.rollbackPayment(bankEvt.getContractId());
-		} catch (ServiceContractNotFoundException e) {
+		} catch (DataDoesNotExistsException e) {
 			logger.error(e, "Error rolling service contract payment back. There's no contract with id %s", bankEvt.getContractId());
 		}
 

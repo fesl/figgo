@@ -23,6 +23,7 @@ import java.util.Collection;
 
 import br.octahedron.cotopaxi.eventbus.EventBus;
 import br.octahedron.cotopaxi.inject.Inject;
+import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.service.data.Service;
 import br.octahedron.figgo.modules.service.data.ServiceCategory;
 import br.octahedron.figgo.modules.service.data.ServiceCategoryDAO;
@@ -42,13 +43,13 @@ import br.octahedron.util.Log;
 public class ServiceManager {
 
 	private static final Log logger = new Log(ServiceManager.class);
-	
+
 	private ServiceDAO serviceDAO = new ServiceDAO();
 	private ServiceCategoryDAO serviceCategoryDAO = new ServiceCategoryDAO();
 	private ServiceContractDAO serviceContractDAO = new ServiceContractDAO();
 	@Inject
 	private EventBus eventBus;
-	
+
 	/*
 	 * for tests purpose
 	 */
@@ -62,7 +63,7 @@ public class ServiceManager {
 	protected void setServiceContractDAO(ServiceContractDAO serviceContractDAO) {
 		this.serviceContractDAO = serviceContractDAO;
 	}
-	
+
 	/*
 	 * for tests purpose
 	 */
@@ -76,6 +77,23 @@ public class ServiceManager {
 	 */
 	public void setEventBus(EventBus eventBus) {
 		this.eventBus = eventBus;
+	}
+
+	/**
+	 * Gets the {@link Service} with the given id
+	 * 
+	 * @return the {@link Service} with the given id, if exists, or <code>null</code>, if doesn't
+	 *         exists a user with the given id.
+	 * @throws DataDoesNotExistsException
+	 *             If there's no such service
+	 */
+	public Service getService(String serviceId) {
+		Service service = this.serviceDAO.get(serviceId);
+		if (service != null) {
+			return service;
+		} else {
+			throw new DataDoesNotExistsException();
+		}
 	}
 
 	/**
@@ -93,10 +111,10 @@ public class ServiceManager {
 	/**
 	 * Updates an service
 	 * 
-	 * @throws ServiceNotFoundException
+	 * @throws DataDoesNotExistsException
+	 *             If there's no such service
 	 */
-	public Service updateService(String serviceId, String name, BigDecimal value, String category, String description)
-			throws ServiceNotFoundException {
+	public Service updateService(String serviceId, String name, BigDecimal value, String category, String description) {
 		Service service = this.getService(serviceId);
 		String oldCategoryId = service.getCategoryId();
 		service.setName(name);
@@ -109,58 +127,51 @@ public class ServiceManager {
 	}
 
 	/**
-	 * Gets the {@link Service} with the given id
-	 * 
-	 * @return the {@link Service} with the given id, if exists, or <code>null</code>, if doesn't
-	 *         exists a user with the given id.
-	 * @throws ServiceNotFoundException
-	 */
-	public Service getService(String serviceId) throws ServiceNotFoundException {
-		Service service = this.serviceDAO.get(serviceId);
-		if (service != null) {
-			return service;
-		} else {
-			throw new ServiceNotFoundException();
-		}
-	}
-
-	/**
 	 * Adds a {@link User} that provides this service
 	 * 
-	 * @param serviceName
+	 * @param serviceId
+	 *            The service's id
 	 * @param userId
+	 *            The user's id
 	 * @return
+	 * 
+	 * @throws DataDoesNotExistsException
+	 *             If there's no such service
 	 */
-	public Service addProvider(String serviceId, String userId) {
+	public void addProvider(String serviceId, String userId) {
 		Service service = this.serviceDAO.get(serviceId);
 		service.addProvider(userId);
-		return service;
 	}
 
 	/**
 	 * Removes a {@link User} from the providers list
 	 * 
-	 * @param serviceName
+	 * @param serviceId
+	 *            The service's Id
 	 * @param userId
+	 *            The user's Id
 	 * @return
-	 * @throws ServiceNotFoundException
+	 * @throws DataDoesNotExistsException
+	 *             If there's no such service
+	 * 
+	 *             TODO really need to return the service?
 	 */
-	public Service removeProvider(String serviceId, String userId) throws ServiceNotFoundException {
+	public Service removeProvider(String serviceId, String userId) {
 		Service service = this.getService(serviceId);
 		service.removeProvider(userId);
 		return service;
 	}
 
-	/**
-	 * This method retrieves all {@link User} that provides this service
-	 * 
-	 * @param serviceName
-	 * @return An collection with userId
-	 */
-	public Collection<String> getServiceProviders(String serviceName) {
-		Service serv = this.serviceDAO.getServiceByName(serviceName);
-		return serv.getProviders();
-	}
+	// /**
+	// * This method retrieves all {@link User} that provides this service
+	// *
+	// * @param serviceName
+	// * @return An collection with userId
+	// */
+	// public Collection<String> getServiceProviders(String serviceName) {
+	// Service serv = this.serviceDAO.getServiceByName(serviceName);
+	// return serv.getProviders();
+	// }
 
 	/**
 	 * This method returns all {@link Service} that has the specified {@link User} (represented by
@@ -182,11 +193,14 @@ public class ServiceManager {
 	}
 
 	/**
-	 * @param serviceName
-	 * @return
-	 * @throws ServiceNotFoundException
+	 * Removes a service.
+	 * 
+	 * @param serviceId
+	 *            The service's id
+	 * @throws DataDoesNotExistsException
+	 *             If there's no such service
 	 */
-	public void removeService(String serviceId) throws ServiceNotFoundException {
+	public void removeService(String serviceId) {
 		Service service = this.getService(serviceId);
 		this.serviceDAO.delete(service);
 		this.eventBus.publish(new ServiceRemovedEvent(service));
@@ -194,18 +208,23 @@ public class ServiceManager {
 
 	// TODO Move this to ServiceCategoryManager
 	/**
+	 * Gets all service's categories
 	 * 
-	 * @return
+	 * @return All service's categories
 	 */
 	public Collection<ServiceCategory> getServiceCategories() {
 		return this.serviceCategoryDAO.getAll();
 	}
 
 	/**
+	 * Creates a new ServiceCategory
+	 * 
 	 * @param categoryId
+	 *            The category's Id
 	 * @param categoryName
+	 *            The category's name
 	 */
-	public void createServiceCategory(String categoryId, String categoryName) {
+	protected void createServiceCategory(String categoryId, String categoryName) {
 		if (!this.serviceCategoryDAO.exists(categoryId)) {
 			ServiceCategory serviceCategory = new ServiceCategory(categoryId, categoryName);
 			this.serviceCategoryDAO.save(serviceCategory);
@@ -213,34 +232,47 @@ public class ServiceManager {
 	}
 
 	/**
-	 * @param category
+	 * Cleans a category, it means, remove this category only if there's no service with this
+	 * category
+	 * 
+	 * @param categoryId
+	 *            The category's id
 	 */
-	public void cleanCategory(String category) {
-		Collection<Service> services = this.serviceDAO.getServicesByCategory(category);
+	protected void cleanCategory(String categoryId) {
+		Collection<Service> services = this.serviceDAO.getServicesByCategory(categoryId);
 		if (services.isEmpty()) {
-			this.serviceCategoryDAO.delete(category);
+			this.serviceCategoryDAO.delete(categoryId);
 		}
 	}
 
 	/**
-	 * @param in
-	 * @return
+	 * Get all services of a given category.
+	 * 
+	 * @param categoryId
+	 *            The category's Id
+	 * @return All services of a given category
 	 */
-	public Collection<Service> getServicesByCategory(String category) {
-		return this.serviceDAO.getServicesByCategory(category);
+	public Collection<Service> getServicesByCategory(String categoryId) {
+		return this.serviceDAO.getServicesByCategory(categoryId);
 	}
 
 	/**
-	 * @param category
-	 * @return
+	 * Checks if exists a category with the given id
+	 * 
+	 * @param categoryId
+	 *            The category's Id.
+	 * @return <code>true</code> if exists, <code>false</code> otherwise.
 	 */
-	public boolean existsServiceCategory(String category) {
-		return this.serviceCategoryDAO.exists(category);
+	public boolean existsServiceCategory(String categoryId) {
+		return this.serviceCategoryDAO.exists(categoryId);
 	}
 
 	/**
+	 * Get all categories if id starting with the given term
+	 * 
 	 * @param term
-	 * @return
+	 *            The category prefix
+	 * @return all categories if id starting with the given term
 	 */
 	public Collection<ServiceCategory> getCategoriesStartingWith(String term) {
 		return this.serviceCategoryDAO.getAllStartsWith("id", term);
@@ -251,14 +283,15 @@ public class ServiceManager {
 	/**
 	 * @param in
 	 * @return
-	 * @throws ServiceContractNotFoundException
+	 * @throws DataDoesNotExistsException
+	 *             If there's no such service
 	 */
-	public ServiceContract getServiceContract(String contractId) throws ServiceContractNotFoundException {
+	public ServiceContract getServiceContract(String contractId) {
 		ServiceContract serviceContract = this.serviceContractDAO.get(contractId);
 		if (serviceContract != null) {
 			return serviceContract;
 		} else {
-			throw new ServiceContractNotFoundException();
+			throw new DataDoesNotExistsException();
 		}
 	}
 
@@ -300,18 +333,19 @@ public class ServiceManager {
 	 * @param serviceName
 	 * @param contractor
 	 * @param provider
-	 * @throws InexistentServiceProviderException
-	 * @throws ServiceNotFoundException
+	 * @throws NotServiceProviderException
+	 *             If the given provider doesn't provide the given service
+	 * @throws DataDoesNotExistsException
+	 *             If there's no such service
 	 */
-	public void requestContract(String serviceId, String contractor, String provider) throws InexistentServiceProviderException,
-			ServiceNotFoundException {
+	public void requestContract(String serviceId, String contractor, String provider) throws NotServiceProviderException {
 		Service service = this.getService(serviceId);
 		if (service.hasProvider(provider)) {
 			ServiceContract serviceContract = new ServiceContract(service, contractor, provider);
 			this.serviceContractDAO.save(serviceContract);
 			this.eventBus.publish(new ServiceContractRequestedEvent(serviceContract));
 		} else {
-			throw new InexistentServiceProviderException();
+			throw new NotServiceProviderException();
 		}
 	}
 
@@ -322,10 +356,11 @@ public class ServiceManager {
 	 * @param status
 	 * @param providerId
 	 * @throws NotServiceProviderException
-	 * @throws ServiceContractNotFoundException
+	 *             If the given providerId isn't the provider for the given contract
+	 * @throws DataDoesNotExistsException
+	 *             If there's no such service
 	 */
-	public void updateContractStatus(String contractId, ServiceContractStatus status, String providerId) throws NotServiceProviderException,
-			ServiceContractNotFoundException {
+	public void updateContractStatus(String contractId, ServiceContractStatus status, String providerId) throws NotServiceProviderException {
 		ServiceContract serviceContract = this.getServiceContract(contractId);
 		if (serviceContract.getProvider().equals(providerId)) {
 			serviceContract.setStatus(status);
@@ -345,25 +380,25 @@ public class ServiceManager {
 	 * @param userId
 	 *            The user's id who is performing the payment.
 	 * 
-	 * @throws UncompletedServiceContractException
-	 *             If the service contract isn't complete
+	 * @throws CanceledServiceContractException
+	 *             If the service contract is canceled
 	 * @throws OnlyServiceContractorException
 	 *             If the user performing the payment isn't the contractor for given contract
-	 * @throws ServiceContractNotFoundException
-	 *             If there's no {@link ServiceContract} with the given contractId.
+	 * @throws DataDoesNotExistsException
+	 *             If there's no such service
 	 */
-	public void makePayment(String contractId, String userId) throws UncompletedServiceContractException, OnlyServiceContractorException,
-			ServiceContractNotFoundException {
+	public void makePayment(String contractId, String userId) throws CanceledServiceContractException, OnlyServiceContractorException {
 		logger.debug("Trying to pay contract %s", contractId);
 		ServiceContract serviceContract = this.getServiceContract(contractId);
-		if (serviceContract.getStatus() != ServiceContractStatus.COMPLETED) {
-			throw new UncompletedServiceContractException();
+		if (serviceContract.getStatus() == ServiceContractStatus.CANCELED) {
+			throw new CanceledServiceContractException();
 		} else if (!serviceContract.getContractor().equals(userId)) {
 			throw new OnlyServiceContractorException();
 		}
 
 		if (!serviceContract.isPaid()) {
 			logger.info("Contract %s has been paid by %s", contractId, userId);
+			serviceContract.setStatus(ServiceContractStatus.COMPLETED);
 			serviceContract.setPaid(true);
 			this.eventBus.publish(new ServiceContractPaidEvent(serviceContract));
 		}
@@ -375,10 +410,10 @@ public class ServiceManager {
 	 * 
 	 * @param contractId
 	 *            The ServiceContract's Id
-	 * @throws ServiceContractNotFoundException
-	 *             If there's no contract with the given Id
+	 * @throws DataDoesNotExistsException
+	 *             If there's no such service
 	 */
-	public void rollbackPayment(String contractId) throws ServiceContractNotFoundException {
+	public void rollbackPayment(String contractId) {
 		ServiceContract serviceContract = this.getServiceContract(contractId);
 		serviceContract.setPaid(false);
 	}

@@ -25,6 +25,7 @@ import java.math.BigDecimal;
 import org.junit.*;
 
 import br.octahedron.cotopaxi.eventbus.EventBus;
+import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.service.data.Service;
 import br.octahedron.figgo.modules.service.data.ServiceContract;
 import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
@@ -54,7 +55,7 @@ public class ServiceManagerTest {
 	}
 
 	@Test
-	public void testMakePayment1() throws UncompletedServiceContractException, OnlyServiceContractorException, ServiceContractNotFoundException {
+	public void testMakePayment1() throws CanceledServiceContractException, OnlyServiceContractorException{
 		contract.setStatus(ServiceContractStatus.COMPLETED);
 		expect(this.contractDAO.get("1")).andReturn(contract);
 		this.eventBus.publish(eq(new ServiceContractPaidEvent(contract)));
@@ -67,7 +68,7 @@ public class ServiceManagerTest {
 	}
 
 	@Test
-	public void testMakePayment2() throws UncompletedServiceContractException, OnlyServiceContractorException, ServiceContractNotFoundException {
+	public void testMakePayment2() throws CanceledServiceContractException, OnlyServiceContractorException{
 		contract.setStatus(ServiceContractStatus.COMPLETED);
 		contract.setPaid(true);
 		expect(this.contractDAO.get("1")).andReturn(contract);
@@ -79,20 +80,34 @@ public class ServiceManagerTest {
 		verify(this.contractDAO, this.eventBus);
 	}
 
-	@Test(expected = UncompletedServiceContractException.class)
-	public void testMakePaymentFailed1() throws UncompletedServiceContractException, OnlyServiceContractorException, ServiceContractNotFoundException {
+	@Test
+	public void testMakePaymentUncompleted() throws CanceledServiceContractException, OnlyServiceContractorException {
+		assertEquals(ServiceContractStatus.PENDING, this.contract.getStatus());
+		expect(this.contractDAO.get("1")).andReturn(contract);
+		this.eventBus.publish(eq(new ServiceContractPaidEvent(contract)));
+		replay(this.contractDAO, this.eventBus);
+		this.serviceManager.makePayment("1", "contractor@email");
+		assertTrue(this.contract.isPaid());
+		assertEquals(ServiceContractStatus.COMPLETED, this.contract.getStatus());
+		verify(this.contractDAO, this.eventBus);
+	}
+
+	@Test(expected = CanceledServiceContractException.class)
+	public void testMakePaymentFailed1() throws CanceledServiceContractException, OnlyServiceContractorException{
 		try {
+			contract.setStatus(ServiceContractStatus.CANCELED);
 			expect(this.contractDAO.get("1")).andReturn(contract);
 			replay(this.contractDAO, this.eventBus);
-			this.serviceManager.makePayment("1", "contractor@email");
+
+			this.serviceManager.makePayment("1", "other@email");
 		} finally {
 			assertFalse(this.contract.isPaid());
 			verify(this.contractDAO, this.eventBus);
 		}
 	}
-
+	
 	@Test(expected = OnlyServiceContractorException.class)
-	public void testMakePaymentFailed2() throws UncompletedServiceContractException, OnlyServiceContractorException, ServiceContractNotFoundException {
+	public void testMakePaymentFailed2() throws CanceledServiceContractException, OnlyServiceContractorException{
 		try {
 			contract.setStatus(ServiceContractStatus.COMPLETED);
 			expect(this.contractDAO.get("1")).andReturn(contract);
@@ -106,7 +121,7 @@ public class ServiceManagerTest {
 	}
 
 	@Test
-	public void testRollbackPayment1() throws ServiceContractNotFoundException {
+	public void testRollbackPayment1() {
 		contract.setStatus(ServiceContractStatus.COMPLETED);
 		contract.setPaid(true);
 		expect(this.contractDAO.get("1")).andReturn(contract);
@@ -119,7 +134,7 @@ public class ServiceManagerTest {
 	}
 
 	@Test
-	public void testRollbackPayment2() throws ServiceContractNotFoundException {
+	public void testRollbackPayment2() {
 		expect(this.contractDAO.get("1")).andReturn(contract);
 		replay(this.contractDAO, this.eventBus);
 
@@ -129,8 +144,8 @@ public class ServiceManagerTest {
 		verify(this.contractDAO, this.eventBus);
 	}
 
-	@Test(expected = ServiceContractNotFoundException.class)
-	public void testRollbackPaymentNotFound() throws ServiceContractNotFoundException {
+	@Test(expected = DataDoesNotExistsException.class)
+	public void testRollbackPaymentNotFound() {
 		expect(this.contractDAO.get("1")).andReturn(null);
 		replay(this.contractDAO, this.eventBus);
 		try {
