@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<project basedir=".." name="Straight" default="deploy">
+<project basedir=".." name="Figgo" default="deploy">
 	<property name="css.dir" location="${basedir}/src/main/webapp/css/"/>
 	<property name="js.dir" location="${basedir}/src/main/webapp/js/"/>
 	
