@@ -8,3 +8,5 @@ src/main/webapp/WEB-INF/classes/META-INF/
 src/main/webapp/WEB-INF/classes/META-INF/jdoconfig.xml
 src/main/webapp/WEB-INF/appengine-generated/
 src/main/webapp/WEB-INF/lib/
+migration_tools/target
+migration_tools/files
