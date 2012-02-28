@@ -70,7 +70,6 @@ public class UserController extends Controller {
 	/**
 	 * Shows new user form
 	 */
-	@OnlyForGlobal
 	@AuthenticationRequired(authenticationLevel = AuthenticationLevel.AUTHENTICATE)
 	public void getNewUser() {
 		String userEmail = this.currentUser();
@@ -85,7 +84,6 @@ public class UserController extends Controller {
 	/**
 	 * Process new user form
 	 */
-	@OnlyForGlobal
 	@AuthenticationRequired(authenticationLevel = AuthenticationLevel.AUTHENTICATE)
 	public void postCreateUser() {
 		Validator validator = getUserValidator();
