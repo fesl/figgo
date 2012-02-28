@@ -130,7 +130,7 @@ public class BankAccount implements Serializable {
 		Long currentTransactionTimestamp = bankTransaction.getTimestamp();
 		if (currentTransactionTimestamp.equals(this.lastTimestamp)) {
 			this.lastTransactionId.add(currentTransactionId);
-		} else {
+		} if( this.lastTimestamp == null || currentTransactionTimestamp.compareTo(this.lastTimestamp) > 0 ) {
 			this.lastTransactionId.clear();
 			this.lastTransactionId.add(currentTransactionId);
 			this.lastTimestamp = currentTransactionTimestamp;
