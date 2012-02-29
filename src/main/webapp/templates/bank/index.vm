@@ -30,6 +30,9 @@
         <hr />
 
         <h3>Minha conta</h3>
+        #if ( $transactions.size() > 0 )
+        <img class="loader" src="/img/ajax-loader.gif" />
+        #end
         <table class="bank">
             <thead>
                 <tr>
@@ -49,11 +52,11 @@
                 <tr>
                     <td>$dateFormat.format($transaction.Date)</td>
                     #if( $transaction.AccountDest == $user.userId )
-                    <td>$transaction.AccountOrig</td>
+                    <td class="user" data-user="$transaction.AccountOrig">$transaction.AccountOrig</td>
                     <td>$!{transaction.Comment}</td>
                     <td class="blue">$numberFormat.format($transaction.Amount)</td>
                     #else
-                    <td>$transaction.AccountDest</td>
+                    <td data-user="$transaction.AccountDest">$transaction.AccountDest</td>
                     <td>$!{transaction.Comment}</td>
                     <td class="red">-$numberFormat.format($transaction.Amount)</td>
                     #end
@@ -68,4 +71,6 @@
 </div>
 #end
 
-#scripts()
+#@scripts()
+    <script defer src="/js/bank.js"></script>
+#end
