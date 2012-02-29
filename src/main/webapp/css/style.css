@@ -692,18 +692,24 @@ table {
     border: 1px solid #dddddd;
     vertical-align: middle; }
 
-table td.balance {
+.bank td.balance {
   text-align: right; }
-table.bank th:nth-child(1) {
+.bank th:nth-child(1) {
   width: 15%; }
-table.bank th:nth-child(2) {
+.bank th:nth-child(2) {
   width: 34%; }
-table.bank th:nth-child(3) {
+.bank th:nth-child(3) {
   width: 34%; }
-table.bank th:nth-child(4) {
+.bank th:nth-child(4) {
   width: 17%; }
-table.bank tbody tr:last-child td {
+.bank tbody tr:last-child td {
   border-bottom: 1px solid #cccccc; }
+.bank td.blue {
+  color: blue; }
+.bank td.red {
+  color: red; }
+.bank td:last-child {
+  text-align: right; }
 
 #statement-transactions {
   display: none; }

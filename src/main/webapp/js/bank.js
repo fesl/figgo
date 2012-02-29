@@ -52,13 +52,14 @@ $(function() {
             var $tbody = $table.find("tbody"); 
             $tbody.empty();
             if (data.transactions.length > 0) {
-                var dateTmp;
+                var dateTmp, amountClass;
                 for (var i = 0, length = data.transactions.length; i < length; i+=1) {
                     dateTmp = new Date(data.transactions[i].date);
+                    amountType = (data.transactions[i].amount > 0) ? 'blue' : 'red';
                     $tbody.append("<tr><td>" + dateTmp.getDate() + "/" + (dateTmp.getMonth()+1) + "/" + dateTmp.getFullYear() + "</td>\n" +
                                   "<td>" + data.transactions[i].accountDest + "</td>\n" +
-                                  "<td>" + data.transactions[i].comment + "</td>\n" +
-                                  "<td>M$" + data.transactions[i].amount + "</td></tr>");
+                                  "<td>" + (data.transactions[i].comment ? data.transactions[i].comment : '') + "</td>\n" +
+                                  "<td class=\"" + amountType + "\">M$ " + data.transactions[i].amount.toFixed(2) + "</td></tr>");
                 }
             } else {
                 $tbody.append("<tr><td colspan=\"4\">Não houve transações nesse período.</td></tr>");
