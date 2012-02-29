@@ -17,6 +17,8 @@
  */
 package br.figgo;
 
+import static java.lang.Boolean.parseBoolean;
+import static java.lang.System.getProperty;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -64,6 +66,10 @@ public class UploadBankData {
 	private static DatastoreService ds;
 	private static int entities = 0;
 
+	private static boolean isDebug() {
+		return parseBoolean(getProperty("dbg", "false"));
+	}
+
 	public static void main(String[] args) throws IOException {
 		if (args.length != 2) {
 			System.err.println("Parâmetros: <dominio> <arquivo|diretório> ");
@@ -73,12 +79,15 @@ public class UploadBankData {
 		String path = args[1];
 		RemoteApiInstaller installer = null;
 		try {
-			installer = installRemoteApi();
+			if (!isDebug()) {
+				installer = installRemoteApi();
+				NamespaceManager.set(domain);
+			}
 			init();
-			NamespaceManager.set(domain);
 			process(path);
 		} catch (Exception e) {
 			System.err.printf("Ocorreu um erro. \nEntrada: %s - Error: %s\n", Arrays.toString(args), e.getMessage());
+			e.printStackTrace();
 		} finally {
 			if (installer != null)
 				installer.uninstall();
@@ -130,10 +139,13 @@ public class UploadBankData {
 				line++;
 				String read = scan.nextLine();
 				try {
-					insertTransaction(read, orig, dest);
+					if (!read.startsWith("#")) {
+						insertTransaction(read, orig, dest);
+					}
 				} catch (Exception e) {
 					System.err.printf("Erro lendo linha %d do arquivo %s: %s\n", line, file.getName(), e.getMessage());
 					System.err.printf(" Origem %s ; Destino: %s ; Original: %s\n", orig, dest, read);
+					e.printStackTrace();
 				}
 			}
 		} catch (Exception e) {
@@ -144,15 +156,20 @@ public class UploadBankData {
 	private static void insertTransaction(String read, String orig, String dest) throws ParseException {
 		Scanner scan = new Scanner(read);
 		scan.useDelimiter("::");
-		Entity e = new Entity("BankTransaction");
-		e.setProperty("accountDest", dest);
-		e.setProperty("accountOrig", orig);
 		String field = scan.next().trim();
-		e.setProperty("timestamp", df.parse(field).getTime());
-		e.setProperty("comment", scan.next().trim());
-		e.setProperty("amount", new Float(scan.next().trim()));
-		e.setProperty("type", "PAYMENT");
-		ds.put(e);
+		long time = df.parse(field).getTime();
+		String comment = scan.next().trim();
+		Float value = new Float(scan.next().trim());
+		if (!isDebug()) {
+			Entity e = new Entity("BankTransaction");
+			e.setProperty("accountDest", dest);
+			e.setProperty("accountOrig", orig);
+			e.setProperty("timestamp", time);
+			e.setProperty("comment", comment);
+			e.setProperty("amount", value);
+			e.setProperty("type", "PAYMENT");
+			ds.put(e);
+		}
 		entities++;
 	}
 }

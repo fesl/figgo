@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -34,17 +35,21 @@ public class TransformFile {
 					writeFile(file);
 				} catch (Exception e) {
 					System.err.printf("Erro processando arquivo %s:%d - %s\n", file.getName(), lineNumber, e.getMessage());
-					e.printStackTrace();
 				}
 			}
 		}
 	}
 
 	private static void processFile(File file) throws FileNotFoundException {
-		Scanner line = new Scanner(file);
-		while (line.hasNextLine()) {
+		Scanner scan = new Scanner(file);
+		while (scan.hasNextLine()) {
 			lineNumber++;
-			processLine(line.nextLine());
+			String line = scan.nextLine();
+			try {
+				processLine(line);
+			} catch (NoSuchElementException e) {
+				System.err.printf("Erro processando arquivo %s:%d - %s\n", file.getName(), lineNumber, line);
+			}
 		}
 	}
 
@@ -52,7 +57,6 @@ public class TransformFile {
 		if (line != null && !line.trim().isEmpty()) {
 			Scanner scan = new Scanner(line);
 			scan.useDelimiter(",");
-
 			String tk = scan.next();
 			if (!tk.isEmpty()) {
 				String date = tk;
