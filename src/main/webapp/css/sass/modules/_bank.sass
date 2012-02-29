@@ -1,7 +1,8 @@
-table
+.bank
+	display: none
 	td.balance
 		text-align: right
-	&.bank th
+	th
 		&:nth-child(1)
 			width: 15%
 		&:nth-child(2)
@@ -10,8 +11,15 @@ table
 			width: 34%
 		&:nth-child(4)
 			width: 17%
-	&.bank tbody tr:last-child td
+	tbody tr:last-child td
 		border-bottom: 1px solid #cccccc
+	td
+		&.blue
+			color: #0000ff
+		&.red
+			color: #ff0000
+		&:last-child
+			text-align: right
 
 #statement-transactions
 	display: none
