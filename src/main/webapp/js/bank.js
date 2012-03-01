@@ -37,9 +37,9 @@ $(function() {
         });
     }
 
-    var users = $("table").find(".user").map(function() { return this.innerHTML }).get();
+    var $transactionsTable = $("table"),
+        users = $transactionsTable.find(".user").map(function() { return this.innerHTML }).get();
     if (users.length) {
-        var $transactionsTable = $("table");
         $.get('/users/search/', {'users': users.join(",")}, function(data) {
             var i, currentLi,
                 usersLength = data.result.length,
@@ -53,6 +53,8 @@ $(function() {
         }).error(function(data) {
             console.log("não foi possível carregar dados dos usuários");
         });
+    } else {
+        $transactionsTable.fadeIn();
     }
 
     $("#statement-form").submit(function(e) {
