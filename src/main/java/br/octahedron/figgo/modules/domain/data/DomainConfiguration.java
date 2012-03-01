@@ -117,7 +117,10 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	 * @return description of domain
 	 */
 	public String getDescription() {
-		return this.description.getValue();
+		if (this.description != null) {
+			return this.description.getValue();
+		}
+		return "";
 	}
 
 	/**
