@@ -56,7 +56,7 @@
                     <td>$!{transaction.Comment}</td>
                     <td class="blue">$numberFormat.format($transaction.Amount)</td>
                     #else
-                    <td data-user="$transaction.AccountDest">$transaction.AccountDest</td>
+                    <td class="user" data-user="$transaction.AccountDest">$transaction.AccountDest</td>
                     <td>$!{transaction.Comment}</td>
                     <td class="red">-$numberFormat.format($transaction.Amount)</td>
                     #end

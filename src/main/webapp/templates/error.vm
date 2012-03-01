@@ -2,9 +2,8 @@
 #parse( "templates/layout.vm" )
 
 #@public_body()
-	<h1>500 Internal server error</h1>
-	<h2>$!{error.localizedMessage}</h2>
-	<h3>$!{error.cause.message}</h3>
+	<h2>Fuuuuuu!</h2>
+	<h3>Tente novamente mais tarde ou entre em contato conosco.</h3>
 #end
 
 #public_scripts()

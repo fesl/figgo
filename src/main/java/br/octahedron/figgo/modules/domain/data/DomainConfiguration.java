@@ -26,6 +26,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.datastore.Text;
+
 /**
  * Represents an domain configuration, as the domain name, and the enabled modules.
  * 
@@ -54,7 +56,7 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	private String mailList;
 
 	@Persistent
-	private String description;
+	private Text description;
 
 	@Persistent
 	private String avatarKey;
@@ -108,14 +110,17 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	 * @param description
 	 */
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = new Text(description);
 	}
 
 	/**
 	 * @return description of domain
 	 */
 	public String getDescription() {
-		return this.description;
+		if (this.description != null) {
+			return this.description.getValue();
+		}
+		return "";
 	}
 
 	/**

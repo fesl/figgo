@@ -41,6 +41,7 @@ public class IndexController extends Controller {
 	private static final String INDEX_TPL = "index.vm";
 	private static final String CONTACT_TPL = "contact.vm";
 	private static final String ABOUT_TPL = "about.vm";
+	private static final String ERROR_TPL = "error.vm";
 	private static final String DOMAIN_INDEX_TPL = "domain/index.vm";
 	private static final String DOMAIN_PUBLIC_INDEX_TPL = "domain/public_index.vm";
 
@@ -147,6 +148,10 @@ public class IndexController extends Controller {
 			}
 			return validator;
 		}
+	}
+	
+	public void postError() {
+		success(ERROR_TPL);
 	}
 
 }
