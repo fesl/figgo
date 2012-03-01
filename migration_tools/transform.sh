@@ -20,6 +20,7 @@ for file in *.csv; do
 	sed -i '/^Saldo*\|,,,,"MR$*\|^Data*\|,,,"MR$*/d' $file
 	sed -i 's/MR\$ //g' $file
 	sed -i 's/MR\$//g' $file
+	sed -i 's/R\$//g' $file
 	#sed -i 's/\"//g' $file
 	#awk -F, '{ print $1 "::" $2 "::" $3"."$4 > FILENAME }' $file 
 	if [[ $file =~ .-in\.csv ]]; then
