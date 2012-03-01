@@ -33,7 +33,7 @@
 		<property name="accountOrig" direction="asc" />
 		<property name="timestamp" direction="asc" />
 	</datastore-index>
-		<datastore-index kind="BankTransaction" ancestor="false"
+	<datastore-index kind="BankTransaction" ancestor="false"
 		source="manual">
 		<property name="accountDest" direction="asc" />
 		<property name="timestamp" direction="asc" />
