@@ -123,8 +123,8 @@ $(function() {
             data: {startDate: $startDate.val(), endDate: $endDate.val()}
         }).success(function(data) {
             $dynamicStats.find("h3").text("Informações no intervalo de " + $startDate.val() + " a " + $endDate.val());
-            $("#circulation").text(data.circulation);
-            $("#amount").text(data.creditAmount);
+            $("#circulation").text(data.circulation.toFixed(2));
+            $("#amount").text(data.creditAmount.toFixed(2));
             $dynamicStats.show();
         }).error(function(data) {
             console.log('Não foi possível recuperar stats do banco', data);
