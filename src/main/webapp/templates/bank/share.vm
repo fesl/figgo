@@ -36,16 +36,21 @@
         <form action="/bank/share" method="post" accept-charset="utf-8">
             <fieldset>
                 <legend>Transferir do banco</legend>
+                #if ($insufficient)
+                <div class="general">
+                    <span>$i18n.get($insufficient)</span>
+                </div>
+                #end
                 <div>
                     <label for="userId">Usuário</label>
-                    <input type="text" name="userId" class="autocomplete" />
+                    <input type="text" name="userId" class="autocomplete" value="$!{userId}" required />
                     #if ($invalid.userId)
                     <span>$i18n.get($invalid.userId)</span>
                     #end
                 </div>
                 <div>
                     <label for="amount">Valor</label>
-                    <input type="text" name="amount" />
+                    <input type="text" name="amount" value="$!{amount}" required />
                     #if ($invalid.amount)
                     <span>$i18n.get($invalid.amount)</span>
                     #end
@@ -53,8 +58,8 @@
                 <div>
                     <label for="type">Tipo</label>
                     <select type="text" name="type">
-                        <option value="PAYMENT">Pagamento</option>
-                        <option value="TRANSFER">Transferência</option>
+                        <option value="PAYMENT" #if($!{type} == 'PAYMENT')selected#end>Pagamento</option>
+                        <option value="TRANSFER" #if($!{type} == 'TRANSFER')selected#end>Transferência</option>
                     </select>
                     #if ($invalid.type)
                     <span>$i18n.get($invalid.type)</span>
@@ -62,7 +67,7 @@
                 </div>
                 <div>
                     <label for="comment">Comentário (opcional)</label>
-                    <textarea name="comment"></textarea>
+                    <textarea name="comment">$!{comment}</textarea>
                 </div>
             </fieldset>
             <input type="submit" value="Transferir" />

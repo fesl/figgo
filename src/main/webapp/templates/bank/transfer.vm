@@ -36,11 +36,11 @@
         <form action="/bank/transfer" method="post" accept-charset="utf-8">
             <fieldset>
                 <legend>Faça uma transferência</legend>
+                #if ($insufficient)
                 <div class="general">
-                    #if ($insufficient)
                     <span>$i18n.get($insufficient)</span>
-                    #end
                 </div>
+                #end
                 <div>
                     <label for="userId">Usuário</label>
                     <input type="text" name="userId" class="autocomplete" value="$!{userId}" required />

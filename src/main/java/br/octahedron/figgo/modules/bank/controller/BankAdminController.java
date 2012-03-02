@@ -98,7 +98,8 @@ public class BankAdminController extends AbstractBankController {
 				this.invalid(SHARE_TPL);
 			}
 		} catch (InsufficientBalanceException e) {
-			this.out(INVALID, "INSUFFICIENT_FUNDS");
+			this.out("balance", this.accountManager.getBalance(this.domainBankAccount()));
+			this.out("insufficient", "INSUFFICIENT_FUNDS");
 			this.echo();
 			this.invalid(SHARE_TPL);
 		}
