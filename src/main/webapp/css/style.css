@@ -395,6 +395,9 @@ fieldset {
     *line-height: 1.5; }
   fieldset div {
     margin: 0 0 15px; }
+  fieldset div.general {
+    margin-left: 143px;
+    color: #c43c35; }
 
 label, input, select, textarea {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

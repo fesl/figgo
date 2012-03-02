@@ -10,3 +10,5 @@ INVALID_DATE_RANGE=Fim: não pode ser anterior ao Início
 
 INVALID_TRANSACTION_DESTINATION=Usuário: não existe
 INVALID_USERID=Usuário: inválido (formato de email)
+
+INSUFFICIENT_FUNDS=Você não possui saldo para realizar a transação

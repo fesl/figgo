@@ -106,8 +106,9 @@ public class BankController extends AbstractBankController {
 
 	/**
 	 * Posts a transfer between users
+	 * @throws DisabledBankAccountException 
 	 */
-	public void postTransferBank() {
+	public void postTransferBank() throws DisabledBankAccountException {
 		Validator input = BankValidators.getTransferValidator();
 		Validator amountValidator = BankValidators.getAmountValidator();
 		try {
@@ -123,7 +124,8 @@ public class BankController extends AbstractBankController {
 		} catch (DisabledBankAccountException ex) {
 			this.handleDisabledAccount(ex.getMessage(), TRANSFER_TPL);
 		} catch (InsufficientBalanceException e) {
-			this.out(INVALID, "INSUFFICIENT_FUNDS");
+			this.out("balance", this.accountManager.getBalance(this.currentUser()));
+			this.out("insufficient", "INSUFFICIENT_FUNDS");
 			this.echo();
 			this.invalid(TRANSFER_TPL);
 		}
