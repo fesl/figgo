@@ -110,6 +110,9 @@ public class DomainConfiguration implements Serializable, Comparable<DomainConfi
 	 * @param description
 	 */
 	public void setDescription(String description) {
+		if (description == null) {
+			description = "";
+		}
 		this.description = new Text(description);
 	}
 
