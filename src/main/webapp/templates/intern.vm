@@ -1,4 +1,4 @@
-#set( $jqueryVersion = "1.6.4" )
+#set( $jqueryVersion = "1.7.1" )
 
 <!doctype html>
 <!--[if lt IE 7]> <html class="no-js ie6 oldie" dir="ltr" lang="pt-BR"> <![endif]-->
