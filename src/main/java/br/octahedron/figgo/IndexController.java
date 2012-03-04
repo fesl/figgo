@@ -28,6 +28,7 @@ import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespace;
+import br.octahedron.figgo.modules.DataDoesNotExistsException;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.figgo.modules.domain.manager.ConfigurationManager;
 import br.octahedron.figgo.util.Mailer;
@@ -97,6 +98,8 @@ public class IndexController extends Controller {
 			} else {
 				success(DOMAIN_PUBLIC_INDEX_TPL);
 			}
+		} catch (DataDoesNotExistsException e) {
+			this.notFound();
 		} finally {
 			namespaceManager.changeToPreviousNamespace();
 		}
