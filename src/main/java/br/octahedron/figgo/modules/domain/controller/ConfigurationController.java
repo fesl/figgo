@@ -32,6 +32,7 @@ import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespac
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.domain.data.DomainConfiguration;
 import br.octahedron.figgo.modules.domain.manager.ConfigurationManager;
+import br.octahedron.figgo.util.SafeStringConverter;
 
 /**
  * @author vitoravelino
@@ -74,7 +75,7 @@ public class ConfigurationController extends Controller {
 	 */
 	public void postEditDomain() {
 		if (getDomainValidator().isValid()) {
-			this.configurationManager.updateDomainConfiguration(this.in("name"), this.in("url"), this.in("maillist"), this.in("description"));
+			this.configurationManager.updateDomainConfiguration(this.in("name"), this.in("url"), this.in("maillist"), this.in("description", new SafeStringConverter()));
 			this.redirect(ROOT_URL);
 		} else {
 			this.echo();

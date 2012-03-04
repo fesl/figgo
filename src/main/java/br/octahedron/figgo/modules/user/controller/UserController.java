@@ -20,7 +20,7 @@ package br.octahedron.figgo.modules.user.controller;
 
 import static br.octahedron.cotopaxi.CotopaxiProperty.APPLICATION_BASE_URL;
 import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
-import static br.octahedron.cotopaxi.controller.Converter.Builder.strArray;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.*;
 import static br.octahedron.figgo.modules.user.controller.validation.UserValidators.getUserValidator;
 
 import java.util.ArrayList;
@@ -28,12 +28,14 @@ import java.util.ArrayList;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired.AuthenticationLevel;
 import br.octahedron.cotopaxi.controller.Controller;
+import br.octahedron.cotopaxi.controller.Converter.Builder;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.OnlyForGlobalSubdomainControllerInterceptor.OnlyForGlobal;
 import br.octahedron.figgo.modules.authorization.manager.AuthorizationManager;
 import br.octahedron.figgo.modules.user.data.User;
 import br.octahedron.figgo.modules.user.manager.UserManager;
+import br.octahedron.figgo.util.SafeStringConverter;
 
 /**
  * @author Danilo Queiroz - daniloqueiroz@octahedron.com.br
@@ -88,7 +90,7 @@ public class UserController extends Controller {
 	public void postCreateUser() {
 		Validator validator = getUserValidator();
 		if (validator.isValid()) {
-			this.userManager.createUser(this.currentUser(), in("name"), in("phoneNumber"), in("description"));
+			this.userManager.createUser(this.currentUser(), this.in("name", safeString()), this.in("phoneNumber", safeString()), this.in("description", new SafeStringConverter()));
 			redirect(getProperty(APPLICATION_BASE_URL));
 		} else {
 			out("email", this.currentUser());

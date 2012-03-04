@@ -7,7 +7,7 @@
 
 #@body()
 <div class="left">
-    <section id="about-intern">
+    <section id="about-intern" class="user">
         <h2>$user.name</h2>
         #if( $user.avatarKey )
         <a href="/user/upload"><img id="avatar" src="/serve/$user.avatarKey" alt="Avatar do usuário" /></a>
@@ -19,7 +19,7 @@
             <li>$user.phoneNumber</li>
         </ul>
         #if ($user.description)
-        <p>$user.description</p>
+        <section class="description">$user.description</section>
         #end
     </section>
 
@@ -70,9 +70,15 @@
                     <span>$invalid.phoneNumber</span>
                     #end
                 </div>
-                <div>
+                <div id="description-area">
+                    <ul>
+                        <li><a class="selected" data-action="text" href="#">Texto</a></li>
+                        <li></li>
+                        <li><a data-action="preview" href="#">Visualização</a></li>
+                    </ul>
                     <label for="description">Descrição</label>
-                    <textarea name="description">$!{description}</textarea>
+                    <textarea id="description" name="description" rows="9">$!{description}</textarea>
+                    <div id="markdown-preview"></div>
                 </div>
             </fieldset>
             <input type="submit" value="É hora de mudar!" />

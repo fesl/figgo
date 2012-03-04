@@ -1,27 +1,56 @@
 div.roles 
-	overflow: hidden
-	margin: 0
-	> div
-		width: 50%
-		float: left
+    overflow: hidden
+    margin: 0
+    > div
+        width: 50%
+        float: left
 
 table.domain
-	thead th
-		&:nth-child(1)
-			width: 40%
-		&:nth-child(2)
-			width: 40%
-		&:nth-child(3)
-			width: 20%
+    thead th
+        &:nth-child(1)
+            width: 40%
+        &:nth-child(2)
+            width: 40%
+        &:nth-child(3)
+            width: 20%
 
 #domains
-	min-height: 500px
-	padding-bottom: 20px
+    min-height: 500px
+    padding-bottom: 20px
 
 /* roles */
 #new-role
-	display: none
+    display: none
 
 table.roles
-	tbody tr:hover
-		background-color: #eee
+    tbody tr:hover
+        background-color: #eee
+
+#description-area
+    position: relative
+    ul
+        width: 200px
+        margin: 0 0 5px 143px
+        li
+            display: inline
+            &:nth-child(2n)
+                border-left: 1px solid #DADADA
+                border-right: 1px solid #F8F8F8
+                margin: 0 9px 0 5px
+        a
+            text-align: center
+    .selected
+        color: #444
+        font-weight: bold
+
+#markdown-preview
+    width: 575px
+    height: 300px
+    box-shadow: 0 0 1px #ccc
+    margin-left: 145px
+    margin-top: -20px
+    overflow: auto
+    display: none
+
+#main-intern.index
+    display: none

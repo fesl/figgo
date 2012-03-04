@@ -752,6 +752,35 @@ table.domain thead th:nth-child(3) {
 table.roles tbody tr:hover {
   background-color: #eeeeee; }
 
+#description-area {
+  position: relative; }
+  #description-area ul {
+    width: 200px;
+    margin: 0 0 5px 143px; }
+    #description-area ul li {
+      display: inline; }
+      #description-area ul li:nth-child(2n) {
+        border-left: 1px solid #dadada;
+        border-right: 1px solid #f8f8f8;
+        margin: 0 9px 0 5px; }
+    #description-area ul a {
+      text-align: center; }
+  #description-area .selected {
+    color: #444444;
+    font-weight: bold; }
+
+#markdown-preview {
+  width: 575px;
+  height: 300px;
+  box-shadow: 0 0 1px #cccccc;
+  margin-left: 145px;
+  margin-top: -20px;
+  overflow: auto;
+  display: none; }
+
+#main-intern.index {
+  display: none; }
+
 .thumbsup {
   position: absolute;
   top: 0;

@@ -9,11 +9,10 @@
 #domainSidebar()
 
 <div class="left">
-    <section id="main-intern">
-        <h2>Home</h2>
-        <p>$!domain.description</p>
-    </section>
+    <section id="main-intern" class="index">$!domain.description</section>
 </div>
 #end
     
-#scripts()
+#@scripts()
+    <script defer src="/js/domain.js"></script>
+#end
