@@ -69,23 +69,25 @@ public class BankTransactionDAOTest {
 
 	public void createTransactions() {
 		// storing transactions
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "1", date1));
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2", date2));
-		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "3", date3));
+		this.bankTransactionDAO.save(new BankTransaction(SystemAccount.ID, "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "1", date1));
+		this.bankTransactionDAO.save(new BankTransaction(SystemAccount.ID, "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2", date2));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", SystemAccount.ID, new BigDecimal(50), TransactionType.DEPOSIT, "3", date3));
 	}
 
 	private void createDateTransactions() throws ParseException {
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter
+		this.bankTransactionDAO.save(new BankTransaction(SystemAccount.ID, "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter
 				.parse("16/01/2011")));
-		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", SystemAccount.ID, new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter
 				.parse("10/01/2011")));
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter
+		this.bankTransactionDAO.save(new BankTransaction(SystemAccount.ID, "Conta1", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter
 				.parse("11/01/2011")));
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta3", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter
+		this.bankTransactionDAO.save(new BankTransaction(SystemAccount.ID, "Conta3", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter
 				.parse("11/01/2011")));
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta2", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter
+		this.bankTransactionDAO.save(new BankTransaction(SystemAccount.ID, "Conta2", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter
 				.parse("12/01/2011")));
-		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", "Conta2", new BigDecimal(10), TransactionType.DEPOSIT, "2", formatter
+				.parse("12/01/2011")));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", SystemAccount.ID, new BigDecimal(100), TransactionType.DEPOSIT, "2", formatter
 				.parse("13/01/2011")));
 	}
 
@@ -137,11 +139,11 @@ public class BankTransactionDAOTest {
 		BankAccount account = new BankAccount("Conta1");
 		account.setTransactionInfoService(this.bankTransactionDAO);
 		assertEquals(new BigDecimal(150), account.getBalance());
-		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "4"));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", SystemAccount.ID, new BigDecimal(50), TransactionType.DEPOSIT, "4"));
 		assertEquals(new BigDecimal(100), account.getBalance());
 		Thread.sleep(1000);
-		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "5"));
-		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "6"));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", SystemAccount.ID, new BigDecimal(50), TransactionType.DEPOSIT, "5"));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", SystemAccount.ID, new BigDecimal(50), TransactionType.DEPOSIT, "6"));
 		assertEquals(new BigDecimal(0), account.getBalance());
 	}
 	
@@ -151,49 +153,47 @@ public class BankTransactionDAOTest {
 		BankAccount account = new BankAccount("Conta1");
 		account.setTransactionInfoService(this.bankTransactionDAO);
 		assertEquals(new BigDecimal(150), account.getBalance());
-		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "4"));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", SystemAccount.ID, new BigDecimal(50), TransactionType.DEPOSIT, "4"));
 		assertEquals(new BigDecimal(100), account.getBalance());
 		Date now = new Date(DateUtil.now());
-		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "5", now));
-		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(50), TransactionType.DEPOSIT, "6", now));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", SystemAccount.ID, new BigDecimal(50), TransactionType.DEPOSIT, "5", now));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", SystemAccount.ID, new BigDecimal(50), TransactionType.DEPOSIT, "6", now));
 		assertEquals(new BigDecimal(0), account.getBalance());
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "Conta1", new BigDecimal(50), TransactionType.DEPOSIT, "7", now));
-		this.bankTransactionDAO.save(new BankTransaction("Conta1", "FiggoBank", new BigDecimal(10), TransactionType.DEPOSIT, "8"));
+		this.bankTransactionDAO.save(new BankTransaction(SystemAccount.ID, "Conta1", new BigDecimal(50), TransactionType.DEPOSIT, "7", now));
+		this.bankTransactionDAO.save(new BankTransaction("Conta1", SystemAccount.ID, new BigDecimal(10), TransactionType.DEPOSIT, "8"));
 		assertEquals(new BigDecimal(40), account.getBalance());
 	}
 
 	@Test
 	public void getBallast() {
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+		this.bankTransactionDAO.save(new BankTransaction(SystemAccount.ID, "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+		this.bankTransactionDAO.save(new BankTransaction(SystemAccount.ID, "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
 		assertEquals(new BigDecimal(200), this.bankTransactionDAO.getBallast());
 
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
-		this.bankTransactionDAO.save(new BankTransaction("FiggoBank", "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+		this.bankTransactionDAO.save(new BankTransaction(SystemAccount.ID, "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
+		this.bankTransactionDAO.save(new BankTransaction(SystemAccount.ID, "mundo", new BigDecimal(100), TransactionType.DEPOSIT, "2"));
 		assertEquals(new BigDecimal(400), this.bankTransactionDAO.getBallast());
 	}
 
 	@Test
 	public void getTransactionsByDateRange() throws ParseException {
 		this.createDateTransactions();
-		assertEquals(1, this.bankTransactionDAO.getTransactionsByDateRange("Conta1", formatter.parse("12/01/11"), formatter.parse("15/01/11")).size());
-		assertEquals(2, this.bankTransactionDAO.getTransactionsByDateRange("Conta1", formatter.parse("11/01/11"), formatter.parse("15/01/11")).size());
+		assertEquals(2, this.bankTransactionDAO.getTransactionsByDateRange("Conta1", formatter.parse("12/01/11"), formatter.parse("15/01/11")).size());
+		assertEquals(3, this.bankTransactionDAO.getTransactionsByDateRange("Conta1", formatter.parse("11/01/11"), formatter.parse("15/01/11")).size());
 	}
 
 	@Test
 	public void getAmountCreditByDateRange() throws ParseException {
 		this.createDateTransactions();
-		assertEquals(BigDecimal.ZERO,
-				this.bankTransactionDAO.getAmountCreditByDateRange("Conta1", formatter.parse("12/01/11"), formatter.parse("15/01/11")));
-		assertEquals(new BigDecimal(100),
-				this.bankTransactionDAO.getAmountCreditByDateRange("Conta1", formatter.parse("11/01/11"), formatter.parse("15/01/11")));
+		assertEquals(BigDecimal.ZERO, this.bankTransactionDAO.getAmountCreditByDateRange("Conta1", formatter.parse("12/01/11"), formatter.parse("15/01/11")));
+		assertEquals(new BigDecimal(10), this.bankTransactionDAO.getAmountCreditByDateRange("Conta2", formatter.parse("11/01/11"), formatter.parse("15/01/11")));
 	}
 
 	@Test
 	public void getAmountTransactionsByDateRange() throws ParseException {
 		this.createDateTransactions();
-		assertEquals(new BigDecimal(200), this.bankTransactionDAO.getAmountByDateRange(formatter.parse("12/01/11"), formatter.parse("15/01/11")));
-		assertEquals(new BigDecimal(400), this.bankTransactionDAO.getAmountByDateRange(formatter.parse("11/01/11"), formatter.parse("15/01/11")));
+		assertEquals(new BigDecimal(110), this.bankTransactionDAO.getAllAmountByDateRange(formatter.parse("12/01/11"), formatter.parse("15/01/11")));
+		assertEquals(new BigDecimal(110), this.bankTransactionDAO.getAllAmountByDateRange(formatter.parse("11/01/11"), formatter.parse("15/01/11")));
 	}
 
 }

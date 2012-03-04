@@ -129,7 +129,7 @@ public class AccountManager {
 	 * @return an amount representing the sum of all transactions made on the current month
 	 */
 	public BigDecimal getCurrentAmountTransactions() {
-		return this.transactionDAO.getAmountByDateRange(getFirstDateOfCurrentMonth(), DateUtil.getDate());
+		return this.transactionDAO.getAllAmountByDateRange(getFirstDateOfCurrentMonth(), DateUtil.getDate());
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class AccountManager {
 	 * @return an amount representing the sum of all transactions made on the date range
 	 */
 	public BigDecimal getAmountTransactions(Date startDate, Date endDate) {
-		return this.transactionDAO.getAmountByDateRange(startDate, endDate);
+		return this.transactionDAO.getAllAmountByDateRange(startDate, endDate);
 	}
 
 	/**
@@ -152,8 +152,8 @@ public class AccountManager {
 	 * @return an amount representing the sum of all credit transactions that has bank as
 	 *         destination
 	 */
-	public BigDecimal getCurrentAmountCredit() {
-		return this.transactionDAO.getAmountCreditByDateRange(SystemAccount.ID, getFirstDateOfCurrentMonth(), DateUtil.getDate());
+	public BigDecimal getCurrentCreditAmount(String domainAccount) {
+		return this.transactionDAO.getAmountCreditByDateRange(domainAccount, getFirstDateOfCurrentMonth(), DateUtil.getDate());
 	}
 
 	/**
@@ -165,10 +165,10 @@ public class AccountManager {
 	 *            endDate of the range
 	 * 
 	 * @return an amount representing the sum of all credit transactions that has bank as
-	 *         destination
+	 *         destination except when origin is {@link SystemAccount}
 	 */
-	public BigDecimal getAmountCredit(Date startDate, Date endDate) {
-		return this.transactionDAO.getAmountCreditByDateRange(SystemAccount.ID, startDate, endDate);
+	public BigDecimal getCreditAmount(String domainAccount, Date startDate, Date endDate) {
+		return this.transactionDAO.getAmountCreditByDateRange(domainAccount, startDate, endDate);
 	}
 
 	/**

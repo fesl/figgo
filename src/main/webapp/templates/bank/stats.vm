@@ -36,14 +36,14 @@
                 <ul class="unstyled">
                     <li>Saldo: M$ $numberFormat.format($balance)</li>
                     <li>Lastro: M$ $numberFormat.format($ballast)</li>
-                    <li>Em circulação: M$ $numberFormat.format($inCirculation)</li>
+                    <li>Em circulação: M$ $numberFormat.format($ballast.subtract($balance))</li>
                 </ul>
             </div>
             <div class="left">
                 <h3>Informações do banco no mês atual</h3>
                 <ul class="unstyled">
-                    <li>Movimentação: M$ $numberFormat.format($monthCirculation)</li>
-                    <li>Retorno: M$ $numberFormat.format($creditAmount)</li>
+                    <li>Movimentação: M$ $numberFormat.format($currentAmountTransactions)</li>
+                    <li>Retorno: M$ $numberFormat.format($currentCreditAmount)</li>
                 </ul>
             </div>
         </section>

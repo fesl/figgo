@@ -171,12 +171,11 @@ public class BankController extends AbstractBankController {
 		BigDecimal ballast = this.accountManager.getBallast();
 		this.out("balance", balance);
 		this.out("ballast", ballast);
-		this.out("inCirculation", ballast.subtract(balance)); // TODO move this from here
-		this.out("monthCirculation", this.accountManager.getCurrentAmountTransactions());
-		this.out("creditAmount", this.accountManager.getCurrentAmountCredit());
+		this.out("currentAmountTransactions", this.accountManager.getCurrentAmountTransactions());
+		this.out("currentCreditAmount", this.accountManager.getCurrentCreditAmount(this.domainBankAccount()));
 		this.success(STATS_TPL);
 	}
-
+	
 	/**
 	 * Posts parameters to get bank's static information
 	 */
@@ -185,8 +184,8 @@ public class BankController extends AbstractBankController {
 		if (dateValidator.isValid()) {
 			Date startDate = this.in("startDate", date(SHORT));
 			Date endDate = this.in("endDate", date(SHORT));
-			this.out("circulation", this.accountManager.getAmountTransactions(startDate, endDate));
-			this.out("creditAmount", this.accountManager.getAmountCredit(startDate, endDate));
+			this.out("amountTransactions", this.accountManager.getAmountTransactions(startDate, endDate));
+			this.out("creditAmount", this.accountManager.getCreditAmount(this.domainBankAccount(), startDate, endDate));
 			jsonSuccess();
 		} else {
 			jsonInvalid();

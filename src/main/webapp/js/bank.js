@@ -146,7 +146,7 @@ $(function() {
             data: {startDate: $startDate.val(), endDate: $endDate.val()}
         }).success(function(data) {
             $dynamicStats.find("h3").text("Informações no intervalo de " + $startDate.val() + " a " + $endDate.val());
-            $("#circulation").text(accounting.formatMoney(data.circulation));
+            $("#circulation").text(accounting.formatMoney(data.amountTransactions));
             $("#amount").text(accounting.formatMoney(data.creditAmount));
             $dynamicStats.show();
         }).error(function(data) {

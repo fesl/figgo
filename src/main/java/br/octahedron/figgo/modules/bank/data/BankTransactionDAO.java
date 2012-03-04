@@ -90,7 +90,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	}
 
 	/**
-	 * Returns the bank amount credit specified by a date range
+	 * Returns an account credit amount specified by a date range
 	 * 
 	 * @param accountId
 	 *            accountId of the account
@@ -105,7 +105,9 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		Collection<BankTransaction> transactions = this.getCreditTransactionsByDateRange(accountId, startDate, endDate);
 		BigDecimal sum = BigDecimal.ZERO;
 		for (BankTransaction transaction : transactions) {
-			sum = sum.add(transaction.getAmount());
+			if (!transaction.getAccountOrig().equals(SystemAccount.ID)) {
+				sum = sum.add(transaction.getAmount());				
+			}
 		}
 		return sum;
 	}
@@ -121,13 +123,15 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 * @return an amount representing the sum of all transactions made on the date range
 	 */
 	@SuppressWarnings("unchecked")
-	public BigDecimal getAmountByDateRange(Date startDate, Date endDate) {
+	public BigDecimal getAllAmountByDateRange(Date startDate, Date endDate) {
 		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
 		query.setFilter("timestamp >= :startDate && timestamp <= :endDate");
 		List<BankTransaction> transactions = (List<BankTransaction>) query.execute(startDate.getTime(), endDate.getTime());
 		BigDecimal sum = BigDecimal.ZERO;
 		for (BankTransaction transaction : transactions) {
-			sum = sum.add(transaction.getAmount());
+			if (!transaction.getAccountOrig().equals(SystemAccount.ID)) {
+				sum = sum.add(transaction.getAmount());
+			}
 		}
 		return sum;
 	}
