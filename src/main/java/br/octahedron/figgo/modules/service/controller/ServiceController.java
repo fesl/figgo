@@ -36,6 +36,7 @@ import br.octahedron.figgo.modules.service.data.ServiceContract;
 import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
 import br.octahedron.figgo.modules.service.manager.NotServiceProviderException;
 import br.octahedron.figgo.modules.service.manager.ServiceManager;
+import br.octahedron.figgo.util.SafeStringConverter;
 
 /**
  * @author Vítor Avelino
@@ -86,7 +87,7 @@ public class ServiceController extends Controller {
 	@AuthorizationRequired
 	public void getShowService() {
 		try {
-			Service service = this.servicesManager.getService(this.in("id"));
+			Service service = this.servicesManager.getService(this.in("id", safeString()));
 			this.out("service", service);
 			this.success(SHOW_SERVICE_TPL);
 		} catch (DataDoesNotExistsException e) {
@@ -129,7 +130,7 @@ public class ServiceController extends Controller {
 	@AuthorizationRequired
 	public void getEditService() {
 		try {
-			Service service = this.servicesManager.getService(this.in("id"));
+			Service service = this.servicesManager.getService(this.in("id", safeString()));
 			this.out("id", service.getId());
 			this.out("name", service.getName());
 			this.out("amount", service.getAmount());
@@ -205,7 +206,7 @@ public class ServiceController extends Controller {
 	 */
 	public void getEditContract() {
 		try {
-			ServiceContract serviceContract = this.servicesManager.getServiceContract(this.in("id"));
+			ServiceContract serviceContract = this.servicesManager.getServiceContract(this.in("id", safeString()));
 			this.out("contract", serviceContract);
 			this.out("status", serviceContract.getStatus());
 			this.success(EDIT_CONTRACT_TPL);
@@ -223,7 +224,7 @@ public class ServiceController extends Controller {
 		Validator existentContractStatusValidator = ServiceValidators.getExistentContractStatusValidator();
 		if (existentContractStatusValidator.isValid()) {
 			try {
-				this.servicesManager.updateContractStatus(this.in("id"), ServiceContractStatus.valueOf(this.in("status")), this.currentUser());
+				this.servicesManager.updateContractStatus(this.in("id", safeString()), ServiceContractStatus.valueOf(this.in("status", safeString())), this.currentUser());
 				this.redirect(SHOW_CONTRACTS_URL);
 			} catch (NotServiceProviderException e) {
 				this.echo();
@@ -263,7 +264,7 @@ public class ServiceController extends Controller {
 	public void postPayContract() {
 		// FIXME use json
 		try {
-			this.servicesManager.makePayment(this.in("id"), this.currentUser());
+			this.servicesManager.makePayment(this.in("id", safeString()), this.currentUser());
 			this.redirect(SHOW_CONTRACTS_URL);
 		} catch (DataDoesNotExistsException e) {
 			this.notFound();
@@ -285,9 +286,9 @@ public class ServiceController extends Controller {
 	@AuthorizationRequired
 	public void postAddProvider() {
 		try {
-			this.servicesManager.addProvider(this.in("id"), this.currentUser());
+			this.servicesManager.addProvider(this.in("id", safeString()), this.currentUser());
 			this.out("userId", this.currentUser());
-			this.out("serviceId", this.in("id"));
+			this.out("serviceId", this.in("id", safeString()));
 			this.jsonSuccess();
 		} catch (DataDoesNotExistsException e) {
 			this.notFound();
@@ -305,7 +306,7 @@ public class ServiceController extends Controller {
 	@AuthorizationRequired
 	public void postRemoveProvider() {
 		try {
-			this.out("service", this.servicesManager.removeProvider(this.in("id"), this.currentUser()));
+			this.out("service", this.servicesManager.removeProvider(this.in("id", safeString()), this.currentUser()));
 			this.jsonSuccess();
 		} catch (DataDoesNotExistsException e) {
 			this.notFound();
@@ -323,7 +324,7 @@ public class ServiceController extends Controller {
 		try {
 			Validator contractValidator = ServiceValidators.getContractValidator();
 			if (contractValidator.isValid()) {
-				this.servicesManager.requestContract(this.in("id"), this.currentUser(), this.in("provider"));
+				this.servicesManager.requestContract(this.in("id", safeString()), this.currentUser(), this.in("provider", safeString()));
 				this.jsonSuccess();
 			} else {
 				this.jsonInvalid();
@@ -344,7 +345,7 @@ public class ServiceController extends Controller {
 	 * Receives the category prefix as <code>term</code>
 	 */
 	public void getSearchCategory() {
-		this.out("result", servicesManager.getCategoriesStartingWith(in("term")));
+		this.out("result", servicesManager.getCategoriesStartingWith(this.in("term", new SafeStringConverter())));
 		jsonSuccess();
 	}
 }

@@ -20,6 +20,7 @@ package br.octahedron.figgo.modules.upload.controller;
 
 import static br.octahedron.cotopaxi.CotopaxiProperty.APPLICATION_BASE_URL;
 import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.safeString;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
 import br.octahedron.cotopaxi.blobstore.BlobstoreController;
@@ -43,7 +44,7 @@ public class UploadController extends BlobstoreController {
 	}
 
 	public void getServeBlob() {
-		this.serve(this.in("key"));
+		this.serve(this.in("key", safeString()));
 	}
 
 	public void getUserUpload() {
@@ -73,8 +74,8 @@ public class UploadController extends BlobstoreController {
 		if (!this.serverName().equals(getProperty(APPLICATION_BASE_URL))) {
 			BlobKey blobKey = this.blobKey("file");
 			if (blobKey != null) {
-				this.eventBus.publish(new DomainUploadEvent(this.in("subdomain"), blobKey.getKeyString()));
-				this.redirect(String.format("http://%s.%s", this.in("subdomain"), getProperty("APPLICATION_DOMAIN")));
+				this.eventBus.publish(new DomainUploadEvent(this.in("subdomain", safeString()), blobKey.getKeyString()));
+				this.redirect(String.format("http://%s.%s", this.in("subdomain", safeString()), getProperty("APPLICATION_DOMAIN")));
 			} else {
 				this.redirect("/domain/upload");
 			}

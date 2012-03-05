@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import br.octahedron.cotopaxi.CotopaxiProperty;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.*;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
@@ -89,7 +90,7 @@ public class BankAdminController extends AbstractBankController {
 			Validator requiredValidator = BankValidators.getShareValidator();
 			Validator amountValidator = BankValidators.getAmountValidator();
 			if (requiredValidator.isValid() && amountValidator.isValid()) {
-				this.accountManager.transact(this.domainBankAccount(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"),
+				this.accountManager.transact(this.domainBankAccount(), this.in("userId", safeString()), new BigDecimal(this.in("amount")), this.in("comment", safeString()),
 						TransactionType.valueOf(this.in("type")));
 				this.redirect(SHARE_URL);
 			} else {
@@ -130,7 +131,7 @@ public class BankAdminController extends AbstractBankController {
 	public void postBallastBank() throws InsufficientBalanceException, DisabledBankAccountException {
 		Validator amount = BankValidators.getAmountValidator();
 		if (amount.isValid()) {
-			this.accountManager.insertBallast(this.domainBankAccount(), new BigDecimal(this.in("amount")), this.in("comment"));
+			this.accountManager.insertBallast(this.domainBankAccount(), new BigDecimal(this.in("amount")), this.in("comment", safeString()));
 			this.redirect(BALLAST_URL);
 		} else {
 			this.echo();

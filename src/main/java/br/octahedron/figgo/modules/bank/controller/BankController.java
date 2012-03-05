@@ -19,6 +19,7 @@
 package br.octahedron.figgo.modules.bank.controller;
 
 import static br.octahedron.cotopaxi.controller.Converter.Builder.date;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.safeString;
 import static br.octahedron.figgo.util.DateUtil.SHORT;
 
 import java.math.BigDecimal;
@@ -113,7 +114,7 @@ public class BankController extends AbstractBankController {
 		Validator amountValidator = BankValidators.getAmountValidator();
 		try {
 			if (input.isValid() && amountValidator.isValid()) {
-				this.accountManager.transact(this.currentUser(), this.in("userId"), new BigDecimal(this.in("amount")), this.in("comment"),
+				this.accountManager.transact(this.currentUser(), this.in("userId", safeString()), new BigDecimal(this.in("amount")), this.in("comment", safeString()),
 						TransactionType.valueOf(this.in("type")));
 				this.redirect(BASE_URL);
 			} else {

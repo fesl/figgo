@@ -19,6 +19,7 @@
 package br.octahedron.figgo.modules.admin.controller;
 
 import static br.octahedron.cotopaxi.controller.Converter.Builder.bool;
+import static br.octahedron.cotopaxi.controller.Converter.Builder.safeString;
 import static br.octahedron.figgo.modules.admin.controller.validation.AdminValidators.getConfigValidator;
 import static br.octahedron.figgo.modules.admin.controller.validation.AdminValidators.getDomainValidator;
 import static br.octahedron.figgo.util.DomainUtil.getDomainURL;
@@ -30,6 +31,7 @@ import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.OnlyForGlobalSubdomainControllerInterceptor.OnlyForGlobal;
 import br.octahedron.figgo.modules.admin.data.ApplicationConfiguration;
 import br.octahedron.figgo.modules.admin.manager.AdminManager;
+
 /**
  * @author Vítor Avelino
  */
@@ -43,67 +45,67 @@ public class AdminController extends Controller {
 	private static final String CONFIG_APP_TPL = BASE_DIR_TPL + "config.vm";
 	private static final String NEW_DOMAIN_TPL = BASE_DIR_TPL + "domain/new.vm";
 	private static final String NEW_DOMAIN_URL = "/admin/domain/new";
-	
+
 	@Inject
 	private AdminManager adminManager;
-	
+
 	public void setAdminManager(AdminManager adminManager) {
 		this.adminManager = adminManager;
 	}
-	
-	
+
 	/**
 	 * Shows admin index page.
 	 */
 	public void getAdminIndex() {
-		success(INDEX_TPL);
+		this.success(INDEX_TPL);
 	}
-	
+
 	/**
-	 *  Shows app config form
+	 * Shows app config form
 	 */
 	public void getAppConfig() {
-		if (adminManager.hasApplicationConfiguration()) {
+		if (this.adminManager.hasApplicationConfiguration()) {
 			ApplicationConfiguration applicationConfiguration = this.adminManager.getApplicationConfiguration();
-			out("accessKey", applicationConfiguration.getRoute53AccessKeyID());
-			out("keySecret", applicationConfiguration.getRoute53AccessKeySecret());
-			out("zone", applicationConfiguration.getRoute53ZoneID());
+			this.out("accessKey", applicationConfiguration.getRoute53AccessKeyID());
+			this.out("keySecret", applicationConfiguration.getRoute53AccessKeySecret());
+			this.out("zone", applicationConfiguration.getRoute53ZoneID());
 		}
-		success(CONFIG_APP_TPL);
+		this.success(CONFIG_APP_TPL);
 	}
-	
+
 	/**
-	 * Process app config form 
+	 * Process app config form
 	 */
 	public void postAppConfig() {
-		if ( getConfigValidator().isValid() ) {
-			this.adminManager.configureApplication(in("accessKey"), in("keySecret"), in("zone"));
-			redirect(NEW_DOMAIN_URL);
+		if (getConfigValidator().isValid()) {
+			this.adminManager.configureApplication(this.in("accessKey", safeString()), this.in("keySecret", safeString()),
+					this.in("zone", safeString()));
+			this.redirect(NEW_DOMAIN_URL);
 		} else {
-			echo();
-			invalid(CONFIG_APP_TPL);
+			this.echo();
+			this.invalid(CONFIG_APP_TPL);
 		}
 	}
-	
+
 	/**
 	 * Shows new domain form
 	 */
 	public void getCreateDomain() {
-		success(NEW_DOMAIN_TPL);
+		this.success(NEW_DOMAIN_TPL);
 	}
-	
+
 	/**
 	 * Process new domain form
 	 */
 	public void postCreateDomain() {
 		Validator validator = getDomainValidator();
 		if (validator.isValid()) {
-			String domain = in("name");
-			this.adminManager.createDomain(domain, in("userId"), in("dns", bool()));
-			redirect(getDomainURL(domain));
+			String domain = this.in("name", safeString());
+			this.adminManager.createDomain(domain, this.in("userId", safeString()), this.in("dns", bool()));
+			this.redirect(getDomainURL(domain));
 		} else {
-			echo();
-			invalid(NEW_DOMAIN_TPL);
+			this.echo();
+			this.invalid(NEW_DOMAIN_TPL);
 		}
 	}
 }

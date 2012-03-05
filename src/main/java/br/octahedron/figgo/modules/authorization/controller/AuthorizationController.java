@@ -67,7 +67,7 @@ public class AuthorizationController extends Controller {
 	 * Creates a new role
 	 */
 	public void postNewRole() {
-		this.authorizationManager.createRole(this.in("name"), this.values("activities"));
+		this.authorizationManager.createRole(this.in("name", safeStringConverter), this.values("activities"));
 		this.redirect(BASE_ROLES_URL);
 	}
 
@@ -85,7 +85,7 @@ public class AuthorizationController extends Controller {
 	 * <b>AjaxMethod</b>
 	 */
 	public void postAddUserRole() {
-		this.authorizationManager.addUsersToRole(this.in("role", safeStringConverter), this.in("user"));
+		this.authorizationManager.addUsersToRole(this.in("role", safeStringConverter), this.in("user", safeStringConverter));
 		this.jsonSuccess();
 	}
 
@@ -95,7 +95,7 @@ public class AuthorizationController extends Controller {
 	 * <b>AjaxMethod</b>
 	 */
 	public void postRemoveUserRole() {
-		this.authorizationManager.removeUserFromRole(this.in("role", safeStringConverter), this.in("user"), this.subDomain());
+		this.authorizationManager.removeUserFromRole(this.in("role", safeStringConverter), this.in("user", safeStringConverter), this.subDomain());
 		this.jsonSuccess();
 	}
 
@@ -107,7 +107,7 @@ public class AuthorizationController extends Controller {
 	 * <b>AjaxMethod</b>
 	 */
 	public void postRemoveUserRoles() {
-		this.authorizationManager.removeUserFromRoles(this.in("user"), this.subDomain());
+		this.authorizationManager.removeUserFromRoles(this.in("user", safeStringConverter), this.subDomain());
 		this.jsonSuccess();
 	}
 
@@ -117,7 +117,7 @@ public class AuthorizationController extends Controller {
 	 * <b>AjaxMethod</b>
 	 */
 	public void postAddRoleActivity() {
-		this.authorizationManager.addActivitiesToRole(this.in("role", safeStringConverter), this.in("activity"));
+		this.authorizationManager.addActivitiesToRole(this.in("role", safeStringConverter), this.in("activity", safeStringConverter));
 		this.jsonSuccess();
 	}
 
@@ -127,7 +127,7 @@ public class AuthorizationController extends Controller {
 	 * <b>AjaxMethod</b>
 	 */
 	public void postRemoveRoleActivity() {
-		this.authorizationManager.removeActivitiesToRole(this.in("role", safeStringConverter), this.in("activity"));
+		this.authorizationManager.removeActivitiesToRole(this.in("role", safeStringConverter), this.in("activity", safeStringConverter));
 		this.jsonSuccess();
 	}
 

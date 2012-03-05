@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.domain.controller;
 
+import static br.octahedron.cotopaxi.controller.Converter.Builder.safeString;
 import static br.octahedron.figgo.modules.domain.controller.validation.DomainValidator.getDomainValidator;
 
 import java.util.HashMap;
@@ -32,7 +33,6 @@ import br.octahedron.figgo.OnlyForNamespaceControllerInterceptor.OnlyForNamespac
 import br.octahedron.figgo.modules.Module;
 import br.octahedron.figgo.modules.domain.data.DomainConfiguration;
 import br.octahedron.figgo.modules.domain.manager.ConfigurationManager;
-import br.octahedron.figgo.util.SafeStringConverter;
 
 /**
  * @author vitoravelino
@@ -75,7 +75,7 @@ public class ConfigurationController extends Controller {
 	 */
 	public void postEditDomain() {
 		if (getDomainValidator().isValid()) {
-			this.configurationManager.updateDomainConfiguration(this.in("name"), this.in("url"), this.in("maillist"), this.in("description", new SafeStringConverter()));
+			this.configurationManager.updateDomainConfiguration(this.in("name", safeString()), this.in("url", safeString()), this.in("maillist", safeString()), this.in("description", safeString()));
 			this.redirect(ROOT_URL);
 		} else {
 			this.echo();
@@ -87,8 +87,8 @@ public class ConfigurationController extends Controller {
 	 * Shows edit module form
 	 */
 	public void getModuleDomain() {
-		this.out("name", this.in("module"));
-		this.out("module", this.configurationManager.getModuleConfiguration(Module.valueOf(this.in("module").toUpperCase())));
+		this.out("name", this.in("module", safeString()));
+		this.out("module", this.configurationManager.getModuleConfiguration(Module.valueOf(this.in("module", safeString()).toUpperCase())));
 		this.success(MODULE_CONFIG_TPL);
 	}
 
@@ -97,7 +97,7 @@ public class ConfigurationController extends Controller {
 	 */
 	public void postModuleDomain() {
 		// TODO validate
-		Module module = Module.valueOf(this.in("module").toUpperCase());
+		Module module = Module.valueOf(this.in("module", safeString()).toUpperCase());
 		Map<String, String> properties = new HashMap<String, String>();
 		for (String key : this.input()) {
 			if (key.startsWith("__")) {
@@ -110,13 +110,13 @@ public class ConfigurationController extends Controller {
 
 	public void postEnableModuleDomain() {
 		// TODO validate
-		this.configurationManager.enableModule(Module.valueOf(this.in("module").toUpperCase()));
+		this.configurationManager.enableModule(Module.valueOf(this.in("module", safeString()).toUpperCase()));
 		this.jsonSuccess();
 	}
 
 	public void postDisableModuleDomain() {
 		// TODO validate
-		this.configurationManager.disableModule(this.in("module").toUpperCase());
+		this.configurationManager.disableModule(this.in("module", safeString()).toUpperCase());
 		this.jsonSuccess();
 	}
 }
