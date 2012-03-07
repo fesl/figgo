@@ -29,6 +29,12 @@ build_project() {
 	mvn clean test war:exploded && \
 	return $?
 }
+adjust_config(){
+	if [ ${appid} == "dev-figgo" ]
+        then
+                sed -i "s/figgo.com.br/oggif.com.br/g" target/deploy/WEB-INF/application.config 
+        fi
+}
 deploy_app() {
 	appcfg.sh -A ${appid} -V ${version} update target/deploy
 	return $?
@@ -50,6 +56,7 @@ fi
 
 alert && \
 build_project && \
+adjust_config && \
 deploy_app && \
 change_default
 exit
