@@ -26,9 +26,9 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:git://github.com/Octahedron/figgo.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com:Octahedron/figgo.git</developerConnection>
-		<url>http://github.com/Octahedron/figgo/</url>
+		<connection>scm:git:git://github.com/fesl/figgo.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com:fesl/figgo.git</developerConnection>
+		<url>http://github.com/fesl/figgo/</url>
 	</scm>
 
 	<developers>
@@ -161,6 +161,21 @@
 
 		</plugins>
 	</build>
+	<!-- Reporting -->
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<formats>
+						<format>xml</format>
+					</formats>
+				</configuration>
+			</plugin>
+		</plugins>
+	</reporting>
 	<!-- dependencies -->
 	<dependencies>
 		<!-- Test dependencies -->
