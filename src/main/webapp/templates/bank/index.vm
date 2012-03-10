@@ -24,6 +24,9 @@
                 #if ( $auth.ShareBank )
                 <li><a href="/bank/share">Transferência do banco</a></li>
                 #end
+                #if ( $auth.ShareBank )
+                <li><a href="/bank/balances">Lista de saldos</a></li>
+                #end
             </ul>
         </nav>
 
