@@ -71,8 +71,8 @@ then
 fi
 
 alert && \
-update_version && \
 build_project && \
+update_version && \
 adjust_config && \
 deploy_app && \
 change_default
