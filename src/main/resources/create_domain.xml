@@ -8,7 +8,7 @@
          <Change>
             <Action>CREATE</Action>
             <ResourceRecordSet>
-               <Name>{domain}.figgo.com.br.</Name>
+               <Name>{domain}.</Name>
                <Type>CNAME</Type>
                <TTL>600</TTL>
                <ResourceRecords>

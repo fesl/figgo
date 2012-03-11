@@ -34,7 +34,7 @@
             </div>
             <div>
                 <label for="userId">Configurar DNS</label>
-                <input type="checkbox" checked="checked" id="dns" name="dns"/>
+                <input type="checkbox" checked="checked" id="dns" name="dns" value="true"/>
             </div>
         </fieldset>
         <input type="submit" value="Criar núcleo" />

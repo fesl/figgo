@@ -50,7 +50,7 @@ public class TestRoute53Util {
 
 	@Test
 	public void generateRequestBodyTest() {
-		String body = Route53Util.generateRequestBody("test");
+		String body = Route53Util.generateRequestBody("test.figgo.com.br");
 		assertNotNull(body);
 		assertTrue(body.contains("test.figgo.com.br"));
 		// System.out.println("**"+body+"**");

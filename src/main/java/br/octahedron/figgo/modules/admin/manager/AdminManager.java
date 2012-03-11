@@ -18,6 +18,7 @@
  */
 package br.octahedron.figgo.modules.admin.manager;
 
+import static br.octahedron.cotopaxi.CotopaxiProperty.getProperty;
 import static br.octahedron.figgo.modules.admin.data.ApplicationConfiguration.APPLICATION_NAME;
 import br.octahedron.cotopaxi.eventbus.EventBus;
 import br.octahedron.cotopaxi.inject.Inject;
@@ -96,9 +97,10 @@ public class AdminManager {
 	public void createDomain(String domainName, String adminID, boolean createDNS) {
 		if (this.hasApplicationConfiguration()) {
 			if (createDNS) {
+				String fullDomain = domainName + "." + getProperty("APPLICATION_DOMAIN");
 				ApplicationConfiguration appConf = this.applicationConfigurationDAO.get(APPLICATION_NAME);
 				Route53Util
-						.createDomain(domainName, appConf.getRoute53AccessKeyID(), appConf.getRoute53AccessKeySecret(), appConf.getRoute53ZoneID());
+						.createDomain(fullDomain, appConf.getRoute53AccessKeyID(), appConf.getRoute53AccessKeySecret(), appConf.getRoute53ZoneID());
 			} 
 			eventBus.publish(new DomainCreatedEvent(domainName, adminID));
 		} else {
