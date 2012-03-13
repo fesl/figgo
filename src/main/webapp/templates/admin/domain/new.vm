@@ -20,7 +20,7 @@
             <legend>Criação de núcleo</legend>
             <div>
                 <label for="name">Domínio</label>
-                <input type="text" id="name" name="name" value="$!{name}" required autofocus/> .figgo.com.br
+                <input type="text" id="name" name="name" value="$!{name}" required autofocus/> .$applicationDomain
                 #if ( $invalid.name )
                 <span>$i18n.get($invalid.name)</span>
                 #end
