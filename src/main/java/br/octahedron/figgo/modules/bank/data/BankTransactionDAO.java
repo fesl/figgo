@@ -77,14 +77,14 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 
 	@SuppressWarnings("unchecked")
 	protected Collection<BankTransaction> getCreditTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
-		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		Query query = this.createQuery();
 		query.setFilter("accountDest == :accountId && timestamp >= :startDate && timestamp <= :endDate");
 		return (List<BankTransaction>) query.execute(accountId, startDate.getTime(), endDate.getTime());
 	}
 
 	@SuppressWarnings("unchecked")
 	protected Collection<BankTransaction> getDebitTransactionsByDateRange(String accountId, Date startDate, Date endDate) {
-		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		Query query = this.createQuery();
 		query.setFilter("accountOrig == :accountId && timestamp >= :startDate && timestamp <= :endDate");
 		return (List<BankTransaction>) query.execute(accountId, startDate.getTime(), endDate.getTime());
 	}
@@ -124,7 +124,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 */
 	@SuppressWarnings("unchecked")
 	public BigDecimal getAllAmountByDateRange(Date startDate, Date endDate) {
-		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		Query query = this.createQuery();
 		query.setFilter("timestamp >= :startDate && timestamp <= :endDate");
 		List<BankTransaction> transactions = (List<BankTransaction>) query.execute(startDate.getTime(), endDate.getTime());
 		BigDecimal sum = BigDecimal.ZERO;
@@ -141,12 +141,12 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 */
 	@SuppressWarnings("unchecked")
 	private Collection<BankTransaction> getLastTransactionsFrom(String accountId, Long lastUsedTransaction) {
-		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		Query query = this.createQuery();
 		query.setFilter("timestamp >= :timestamp && accountOrig == :accId");
 		query.setOrdering("timestamp asc");
 		List<BankTransaction> transactions1 = (List<BankTransaction>) query.execute(lastUsedTransaction, accountId);
 
-		query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		query = this.createQuery();
 		query.setFilter("timestamp >= :timestamp && accountDest == :accId");
 		query.setOrdering("timestamp asc");
 		List<BankTransaction> transactions2 = (List<BankTransaction>) query.execute(lastUsedTransaction, accountId);
@@ -159,7 +159,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 */
 	@SuppressWarnings("unchecked")
 	private Collection<BankTransaction> getAllTransactions(String accountId, long count) {
-		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		Query query = this.createQuery();
 		query.setFilter("accountOrig == :accId");
 		query.setOrdering("timestamp asc");
 		if (count > 0) {
@@ -167,7 +167,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		}
 		List<BankTransaction> transactions1 = (List<BankTransaction>) query.execute(accountId);
 
-		query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		query = this.createQuery();
 		query.setFilter("accountDest == :accId");
 		query.setOrdering("timestamp asc");
 		if (count > 0) {
@@ -211,7 +211,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 */
 	@SuppressWarnings("unchecked")
 	public BigDecimal getBallast() {
-		Query query = this.datastoreFacade.createQueryForClass(BankTransaction.class);
+		Query query = this.createQuery();
 		query.setFilter("accountOrig == :accOrig");
 		List<BankTransaction> transactions = (List<BankTransaction>) query.execute(SystemAccount.ID);
 		BigDecimal sum = BigDecimal.ZERO;

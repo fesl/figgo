@@ -44,7 +44,7 @@ public class ServiceDAO extends GenericDAO<Service> {
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<Service> getUserServices(String userId) {
-		Query query = this.datastoreFacade.createQueryForClass(Service.class);
+		Query query = this.createQuery();
 		query.setFilter("providers == :userId");
 		return (Collection<Service>) query.execute(userId);
 	}
@@ -60,7 +60,7 @@ public class ServiceDAO extends GenericDAO<Service> {
 	 */
 	@SuppressWarnings("unchecked")
 	public Service getServiceByName(String serviceName) {
-		Query query = this.datastoreFacade.createQueryForClass(Service.class);
+		Query query = this.createQuery();
 		query.setFilter("name == :serviceName");
 		Collection<Service> results = (Collection<Service>) query.execute(serviceName);
 		return (results.size() > 0) ? results.iterator().next() : null;
@@ -72,7 +72,7 @@ public class ServiceDAO extends GenericDAO<Service> {
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<Service> getServicesByCategory(String category) {
-		Query query = this.datastoreFacade.createQueryForClass(Service.class);
+		Query query = this.createQuery();
 		query.setFilter("categoryId == :categoryId");
 		return (Collection<Service>) query.execute(category);
 	}
@@ -83,7 +83,7 @@ public class ServiceDAO extends GenericDAO<Service> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Service> getAll() {
-		Query query = this.datastoreFacade.createQueryForClass(Service.class);
+		Query query = this.createQuery();
 		query.setOrdering("name ascending");
 		return (Collection<Service>) query.execute();
 	}

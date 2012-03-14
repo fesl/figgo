@@ -27,7 +27,7 @@ import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractS
 
 /**
  * @author Vítor Avelino
- *
+ * 
  */
 public class ServiceContractDAO extends GenericDAO<ServiceContract> {
 
@@ -37,54 +37,57 @@ public class ServiceContractDAO extends GenericDAO<ServiceContract> {
 
 	/**
 	 * TODO
+	 * 
 	 * @param userId
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<ServiceContract> getOpenedProvidedContracts(String userId) {
-		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
+		Query query = this.createQuery();
 		query.setFilter("provider == :userId && paid == :paid");
 		query.setOrdering("id desc");
 		return (Collection<ServiceContract>) query.execute(userId, false);
 	}
-	
+
 	/**
 	 * TODO
+	 * 
 	 * @param userId
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<ServiceContract> getOpenedHiredContracts(String userId) {
-		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
+		Query query = this.createQuery();
 		query.setFilter("contractor == :userId && paid == :paid");
 		query.setOrdering("id desc");
 		return (Collection<ServiceContract>) query.execute(userId, false);
 	}
-	
+
 	/**
 	 * TODO
+	 * 
 	 * @param userId
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<ServiceContract> getProvidedContracts(String userId) {
-		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
+		Query query = this.createQuery();
 		query.setFilter("provider == :userId && status == :status && paid == true");
 		query.setOrdering("id desc");
 		return (Collection<ServiceContract>) query.execute(userId, ServiceContractStatus.COMPLETED, true);
 	}
-	
+
 	/**
 	 * TODO
+	 * 
 	 * @param userId
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
 	public Collection<ServiceContract> getHiredContracts(String userId) {
-		Query query = this.datastoreFacade.createQueryForClass(ServiceContract.class);
+		Query query = this.createQuery();
 		query.setFilter("contractor == :userId && status == :status && paid == :paid");
 		query.setOrdering("id desc");
 		return (Collection<ServiceContract>) query.execute(userId, ServiceContractStatus.COMPLETED, true);
 	}
-
 }
