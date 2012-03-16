@@ -71,9 +71,4 @@ $(function() {
 		e.preventDefault();
 	});
 
-	var $descriptionAbout = $('#about-intern').find(".description");
-	if ($('#about-intern').hasClass('user')) {
-		$descriptionAbout.html(parserMarkdown.makeHtml($descriptionAbout.text())).fadeIn();
-	}
-
 });

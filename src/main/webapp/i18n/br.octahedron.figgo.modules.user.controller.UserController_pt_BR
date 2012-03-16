@@ -4,3 +4,5 @@ REQUIRED_USER_PHONE=Telefone: não pode ficar vazio
 
 INVALID_USER_NAME=Nome: deve conter apenas de A-Z com no mínimo dois caracteres
 INVALID_USER_PHONE=Telefone: deve estar em um dos formatos (XXXXXXXX, XXXX-XXXX, XX XXXX XXXX, XX XXXX-XXXX)
+
+MAX_LENGTH_DESCRIPTION=Tamanho máximo pertimido de 140 caracteres

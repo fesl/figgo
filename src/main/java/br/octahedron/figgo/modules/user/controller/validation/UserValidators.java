@@ -35,6 +35,7 @@ public class UserValidators {
 			userValidator = new Validator();
 			userValidator.add("name", required("REQUIRED_USER_NAME"), regex("([a-zA-ZáéíóúÁÉÍÓÚÂÊÎÔÛâêîôûÃÕãõçÇ] *){2,}", "INVALID_USER_NAME"));
 			userValidator.add("phoneNumber", required("REQUIRED_USER_PHONE"), regex("^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$", "INVALID_USER_PHONE"));
+			userValidator.add("shortDescription", maxLength(140, "MAX_LENGTH_DESCRIPTION"));
 		}
 		return userValidator;
 	}
