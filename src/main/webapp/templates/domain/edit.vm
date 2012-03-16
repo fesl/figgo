@@ -39,9 +39,11 @@
                 </div>
                 <div id="description-area">
                     <ul>
-                        <li><a class="selected" data-action="text" href="#">Texto</a></li>
+                        <li><a class="selected selectable" data-action="text" href="#">Texto</a></li>
                         <li></li>
-                        <li><a data-action="preview" href="#">Visualização</a></li>
+                        <li><a class="selectable" data-action="preview" href="#">Visualização</a></li>
+                        <li></li>
+                        <li>(<a target="_blank" title="Sintaxe Markdown" href="http://ajuda.figgo.com.br/ajuda/sintaxe-markdown">?</a>)</li>
                     </ul>
                     <label for="description">Descrição</label>
                     <textarea id="description" name="description" rows="9">$!{description}</textarea>
