@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired.AuthenticationLevel;
 import br.octahedron.cotopaxi.controller.Controller;
-import br.octahedron.cotopaxi.controller.Converter.Builder;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
 import br.octahedron.figgo.OnlyForGlobalSubdomainControllerInterceptor.OnlyForGlobal;
