@@ -8,3 +8,4 @@ INVALID_AMOUNT=Valor: deve ser maior que 0 (zero)
 INVALID_USERID=Usuário: inválido (formato de email)
 
 INSUFFICIENT_FUNDS=O banco não possui saldo para realizar a transação
+USER_INSUFFICIENT_FUNDS=O usuário não possui saldo para realizar o pagamento

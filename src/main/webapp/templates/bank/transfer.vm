@@ -25,6 +25,9 @@
                 #if ( $auth.ShareBank )
                 <li><a href="/bank/share">Transferência do banco</a></li>
                 #end
+                #if ( $auth.CollectBank )
+                <li><a href="/bank/collect">Efetuar cobrança</a></li>
+                #end
             </ul>
         </nav>
 

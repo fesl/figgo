@@ -43,6 +43,7 @@ public class BankValidators {
 	private static Validator valueValidator;
 	private static Validator transferValidator;
 	private static Validator shareValidator;
+	private static Validator collectValidator;
 	private static Validator dateValidator;
 
 	/**
@@ -81,6 +82,23 @@ public class BankValidators {
 			shareValidator.add("type", required("REQUIRED_TRANSACTION_TYPE"), new ExistentTransferTypeRule());
 		}
 		return shareValidator;
+	}
+	
+	/**
+	 * A validator for collect transfers that checks the required fields
+	 * 
+	 * For transfer it checks:
+	 * 
+	 * userId - required, valid user id
+	 * 
+	 */
+	public static synchronized Validator getCollectValidator() {
+		if (collectValidator == null) {
+			collectValidator = new Validator();
+			collectValidator.add("userId", required("REQUIRED_TRANSASCTION_USERID"),
+					regex("[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}", "INVALID_USERID"));
+		}
+		return collectValidator;
 	}
 
 	/**

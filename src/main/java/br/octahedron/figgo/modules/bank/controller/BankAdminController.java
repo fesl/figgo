@@ -18,12 +18,12 @@
  */
 package br.octahedron.figgo.modules.bank.controller;
 
+import static br.octahedron.cotopaxi.controller.Converter.Builder.safeString;
+
 import java.math.BigDecimal;
 
-import br.octahedron.cotopaxi.CotopaxiProperty;
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
-import static br.octahedron.cotopaxi.controller.Converter.Builder.*;
 import br.octahedron.cotopaxi.datastore.namespace.NamespaceRequired;
 import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.validation.Validator;
@@ -47,11 +47,10 @@ public class BankAdminController extends AbstractBankController {
 	/*
 	 * TODO public bank pages should be in other controller
 	 */
-	private static final String INVALID = CotopaxiProperty.getProperty(CotopaxiProperty.INVALID_PROPERTY);
-
 	private static final String BASE_DIR_TPL = "bank/";
 	private static final String BALLAST_TPL = BASE_DIR_TPL + "ballast.vm";
 	private static final String SHARE_TPL = BASE_DIR_TPL + "share.vm";
+	private static final String COLLECT_TPL = BASE_DIR_TPL + "collect.vm";
 	private static final String BASE_URL = "/bank";
 	private static final String BALLAST_URL = BASE_URL + "/ballast";
 	private static final String SHARE_URL = BASE_URL + "/share";
@@ -106,6 +105,44 @@ public class BankAdminController extends AbstractBankController {
 		}
 	}
 
+	/**
+	 * Gets the bank share interface
+	 * 
+	 * @throws DisabledBankAccountException
+	 *             If the bank account is disabled - This kind of account can't be disabled, if this
+	 *             occurs, indicates an DEFECT
+	 */
+	public void getCollectBank() throws DisabledBankAccountException {
+		this.success(COLLECT_TPL);
+	}
+
+	/**
+	 * Transfer from bank account to a user account
+	 * 
+	 * @throws DisabledBankAccountException
+	 *             If the bank account is disabled - This kind of account can't be disabled, if this
+	 *             occurs, indicates an DEFECT
+	 */
+	public void postCollectBank() throws DisabledBankAccountException {
+		try {
+			Validator requiredValidator = BankValidators.getCollectValidator();
+			Validator amountValidator = BankValidators.getAmountValidator();
+			if (requiredValidator.isValid() && amountValidator.isValid()) {
+				// transfer from user to bank
+				this.accountManager.transact(this.in("userId", safeString()), this.domainBankAccount(), new BigDecimal(this.in("amount")), this.in("comment", safeString()),
+						TransactionType.PAYMENT);
+				this.redirect(this.relativeRequestedUrl());
+			} else {
+				this.echo();
+				this.invalid(COLLECT_TPL);
+			}
+		} catch (InsufficientBalanceException e) {
+			this.out("insufficient", "USER_INSUFFICIENT_FUNDS");
+			this.echo();
+			this.invalid(COLLECT_TPL);
+		}
+	}
+	
 	/**
 	 * Gets the bank ballast interface
 	 * 
