@@ -25,9 +25,14 @@ fi
 	return 0
 }
 update_version() {
-	actual=$(cat version)
-	echo "Versão atual $actual"
-	read -p "Digite a nova versão (ou enter para mesma versao): " version
+	if [ ${appid} == "dev-figgo" ]
+	then
+		version=$(date +%Y%m%d-%H%M)
+	else
+		actual=$(cat version)
+		echo "Versão atual $actual"
+		read -p "Digite a nova versão (ou enter para mesma versao): " version
+	fi
 	if [ ${version} ]
 	then
 		echo ${version} > version
@@ -76,5 +81,11 @@ update_version && \
 adjust_config && \
 deploy_app && \
 change_default
-exit
+
+res=$?
+if [ ${appid} == "dev-figgo" ]
+then
+	git checkout -- version
+fi
+exit ${res}
 
