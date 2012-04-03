@@ -36,7 +36,6 @@ import br.octahedron.figgo.modules.service.data.ServiceContract;
 import br.octahedron.figgo.modules.service.data.ServiceContract.ServiceContractStatus;
 import br.octahedron.figgo.modules.service.manager.NotServiceProviderException;
 import br.octahedron.figgo.modules.service.manager.ServiceManager;
-import br.octahedron.figgo.util.SafeStringConverter;
 
 /**
  * @author Vítor Avelino
@@ -345,7 +344,7 @@ public class ServiceController extends Controller {
 	 * Receives the category prefix as <code>term</code>
 	 */
 	public void getSearchCategory() {
-		this.out("result", servicesManager.getCategoriesStartingWith(this.in("term", new SafeStringConverter())));
+		this.out("result", servicesManager.getCategoriesStartingWith(this.in("term", safeString())));
 		jsonSuccess();
 	}
 }
