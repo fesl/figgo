@@ -75,6 +75,7 @@ public class BankSpec implements DomainModuleSpec {
 		// BankAdminController
 		actions.add(new ActionSpec("ShareBank", true));
 		actions.add(new ActionSpec("BallastBank", true));
+		actions.add(new ActionSpec("CollectBank", true));
 		
 		return actions;
 	}

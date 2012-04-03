@@ -9,6 +9,7 @@ StatsBank=Visualizar estatísticas do banco
 StatementBank=Visualizar extratos
 BallastBank=Inserção de lastro
 ShareBank=Realizar transferências direto do banco
+CollectBank=Efetuar cobranças
 
 ShowContracts=Visualizar serviços prestados
 RequestContract=Requisitar serviço
