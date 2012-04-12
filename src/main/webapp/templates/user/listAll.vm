@@ -1,0 +1,51 @@
+#set( $title = "Figgo - Usuários" )
+#parse( "templates/intern.vm" )
+
+#head()
+
+#fullHeader()
+
+#@body()
+<div class="left">
+    <section>
+        <h2>Usuários</h2>
+        <p></p>
+    </section>
+</div>
+<div class="left">
+    <section id="main-intern">
+        <h2>Lista de usuários</h2>
+        <form>
+            <input type="text" id="domain-search" placeholder="Nome do usuário" />
+        </form>
+        <table id="domains">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+            #foreach( $user in $users )
+                <tr>
+                    <td>
+                        #if( $user.avatarKey )
+                        <img src="/serve/$user.avatarKey" alt="Avatar" title="Avatar"/>
+                        #else
+                        <img src="http://lorempixum.com/32/32/" alt="Avatar" title="Avatar" />
+                        #end
+                        $user.name
+                    </td>
+                    <td>$user.userId</td>
+                </tr>
+            #end
+            </tbody>
+        </table>
+    </section>
+</div>
+#end
+
+#@scripts()
+    <script src="/js/libs/jquery.uitablefilter.js"></script>
+    <script src="/js/domain.js"></script>
+#end
