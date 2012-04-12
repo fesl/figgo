@@ -45,6 +45,7 @@ public class UserController extends Controller {
 	static final String DASHBOARD_TPL = BASE_DIR_TPL + "dashboard.vm";
 	static final String NEW_USER_TPL = BASE_DIR_TPL + "new.vm";
 	static final String EDIT_USER_TPL = BASE_DIR_TPL + "edit.vm";
+	static final String LIST_ALL_USERS = BASE_DIR_TPL + "listAll.vm";
 	static final String EDIT_USER_URL = "/users/edit";
 
 	@Inject
@@ -107,6 +108,16 @@ public class UserController extends Controller {
 		String userEmail = this.currentUser();
 		out("domains", this.authorizationManager.getActiveUserDomains(userEmail));
 		success(DASHBOARD_TPL);
+	}
+	
+	/**
+	 * Retrieves all users
+	 */
+	@OnlyForGlobal
+	@AuthenticationRequired
+	public void getAllUsers() {
+		out("users", this.userManager.getAllUsers());
+		success(LIST_ALL_USERS);
 	}
 
 	/**

@@ -102,12 +102,21 @@ public class UserManager {
 	}
 	
 	/**
-	 * Retrivies a collection of {@link User} which has its names in <code>usersId</code>.
+	 * Retrieves a collection of {@link User} which has its names in <code>usersId</code>.
 	 * 
 	 * @param term
 	 * @return
 	 */
 	public Collection<User> getUsersIn(String[] usersId) {
 		return this.userDAO.getUsersIn(usersId);
+	}
+	
+	/**
+	 * Retrieves all {@link User}.
+	 * 
+	 * @return
+	 */
+	public Collection<User> getAllUsers() {
+		return this.userDAO.getAll();
 	}
 }
