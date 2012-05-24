@@ -23,6 +23,7 @@ import static br.octahedron.figgo.util.DateUtil.getFirstDateOfCurrentMonth;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import br.octahedron.figgo.modules.bank.data.BankAccount;
@@ -240,5 +241,20 @@ public class AccountManager {
 	 */
 	private BankTransaction createTransaction(String accountOrig, String accountDest, BigDecimal value, String comment, TransactionType type) {
 		return new BankTransaction(accountOrig, accountDest, value, type, comment);
+	}
+
+	/**
+	 * Gets all account balances. 
+	 * @return a HashMap with tke accountID as the key and the account's balance as the value.
+	 * @throws DisabledBankAccountException
+	 * 
+	 */
+	public HashMap<String, BigDecimal> getAllBalances() throws DisabledBankAccountException {
+
+		HashMap<String, BigDecimal> balances = new HashMap<String, BigDecimal>();
+		Collection<BankAccount> accounts = accountDAO.getAll();
+		for (BankAccount account : accounts)
+			balances.put(account.getOwnerId(), getBalance(account.getOwnerId()));
+		return balances;
 	}
 }

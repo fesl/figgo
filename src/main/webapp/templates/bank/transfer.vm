@@ -28,6 +28,7 @@
                 #if ( $auth.CollectBank )
                 <li><a href="/bank/collect">Efetuar cobrança</a></li>
                 #end
+                <li><a href="/bank/balances">Listar saldos</a></li> 
             </ul>
         </nav>
 

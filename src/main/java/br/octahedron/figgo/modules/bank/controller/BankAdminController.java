@@ -21,6 +21,7 @@ package br.octahedron.figgo.modules.bank.controller;
 import static br.octahedron.cotopaxi.controller.Converter.Builder.safeString;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
 
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
@@ -51,9 +52,11 @@ public class BankAdminController extends AbstractBankController {
 	private static final String BALLAST_TPL = BASE_DIR_TPL + "ballast.vm";
 	private static final String SHARE_TPL = BASE_DIR_TPL + "share.vm";
 	private static final String COLLECT_TPL = BASE_DIR_TPL + "collect.vm";
+	private static final String BALANCES_TPL = BASE_DIR_TPL + "balances.vm";
 	private static final String BASE_URL = "/bank";
 	private static final String BALLAST_URL = BASE_URL + "/ballast";
 	private static final String SHARE_URL = BASE_URL + "/share";
+	private static final String BALANCES_URL = BASE_URL + "/balances";
 
 	@Inject
 	private AccountManager accountManager;
@@ -175,5 +178,16 @@ public class BankAdminController extends AbstractBankController {
 			this.out("balance", this.accountManager.getBalance(this.domainBankAccount()));
 			this.invalid(BALLAST_TPL);
 		}
+	}
+	
+	/**
+	 * Gets balances from all user accounts.
+	 * @throws DisabledBankAccountException
+	 */
+	public void getAllBalances() throws DisabledBankAccountException {
+		
+		HashMap<String, BigDecimal> balances = accountManager.getAllBalances();
+		this.out("balances",  balances);
+		this.success(BALANCES_TPL);
 	}
 }
