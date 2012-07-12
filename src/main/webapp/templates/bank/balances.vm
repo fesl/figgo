@@ -12,11 +12,11 @@
 
 <div class="left">
 	<section id="main-intern">
-   	 <h3>Acesso rápido</h3>
+		<h3>Acesso rápido</h3>
         <nav>
             <ul class="two-column-shortcuts">
                 <li><a href="/bank">Minha conta</a></li>
-                <li><a href="/bank/transfer">Trasferência</a></li>
+                <li><a href="/bank/transfer">Transferência</a></li>
                 <li><a href="/bank/statement">Extrato</a></li>
                 <li><a href="/bank/stats">Estatísticas</a></li>
                 #if ( $auth.BallastBank )
@@ -28,7 +28,9 @@
                 #if ( $auth.CollectBank )
                 <li><a href="/bank/collect">Efetuar cobrança</a></li>
                 #end
+                #if ( $auth.BalancesBank )
                 <li><a href="/bank/balances">Listar saldos</a></li>
+                #end
             </ul>
         </nav>       
         

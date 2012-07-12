@@ -22,6 +22,7 @@ import static br.octahedron.cotopaxi.controller.Converter.Builder.safeString;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Set;
 
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
@@ -56,7 +57,6 @@ public class BankAdminController extends AbstractBankController {
 	private static final String BASE_URL = "/bank";
 	private static final String BALLAST_URL = BASE_URL + "/ballast";
 	private static final String SHARE_URL = BASE_URL + "/share";
-	private static final String BALANCES_URL = BASE_URL + "/balances";
 
 	@Inject
 	private AccountManager accountManager;
@@ -92,8 +92,8 @@ public class BankAdminController extends AbstractBankController {
 			Validator requiredValidator = BankValidators.getShareValidator();
 			Validator amountValidator = BankValidators.getAmountValidator();
 			if (requiredValidator.isValid() && amountValidator.isValid()) {
-				this.accountManager.transact(this.domainBankAccount(), this.in("userId", safeString()), new BigDecimal(this.in("amount")), this.in("comment", safeString()),
-						TransactionType.valueOf(this.in("type")));
+				this.accountManager.transact(this.domainBankAccount(), this.in("userId", safeString()), new BigDecimal(this.in("amount")),
+						this.in("comment", safeString()), TransactionType.valueOf(this.in("type")));
 				this.redirect(SHARE_URL);
 			} else {
 				this.echo();
@@ -132,8 +132,8 @@ public class BankAdminController extends AbstractBankController {
 			Validator amountValidator = BankValidators.getAmountValidator();
 			if (requiredValidator.isValid() && amountValidator.isValid()) {
 				// transfer from user to bank
-				this.accountManager.transact(this.in("userId", safeString()), this.domainBankAccount(), new BigDecimal(this.in("amount")), this.in("comment", safeString()),
-						TransactionType.PAYMENT);
+				this.accountManager.transact(this.in("userId", safeString()), this.domainBankAccount(), new BigDecimal(this.in("amount")),
+						this.in("comment", safeString()), TransactionType.PAYMENT);
 				this.redirect(this.relativeRequestedUrl());
 			} else {
 				this.echo();
@@ -145,7 +145,7 @@ public class BankAdminController extends AbstractBankController {
 			this.invalid(COLLECT_TPL);
 		}
 	}
-	
+
 	/**
 	 * Gets the bank ballast interface
 	 * 
@@ -179,15 +179,20 @@ public class BankAdminController extends AbstractBankController {
 			this.invalid(BALLAST_TPL);
 		}
 	}
-	
+
 	/**
 	 * Gets balances from all user accounts.
+	 * 
 	 * @throws DisabledBankAccountException
 	 */
 	public void getAllBalances() throws DisabledBankAccountException {
-		
 		HashMap<String, BigDecimal> balances = accountManager.getAllBalances();
-		this.out("balances",  balances);
+		/* Rounding the balances up to 2 decimal digits for better user display */
+		Set<String> keys = balances.keySet();
+		for (String key: keys)
+			balances.put(key, balances.get(key).setScale(2, BigDecimal.ROUND_HALF_UP));
+		/* end rounding algorithm */
+		this.out("balances", balances);
 		this.success(BALANCES_TPL);
 	}
 }
