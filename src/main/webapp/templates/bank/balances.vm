@@ -28,7 +28,7 @@
                 #if ( $auth.CollectBank )
                 <li><a href="/bank/collect">Efetuar cobrança</a></li>
                 #end
-                #if ( $auth.BalancesBank )
+                #if ( $auth.AllBalancesBank )
                 <li><a href="/bank/balances">Listar saldos</a></li>
                 #end
             </ul>

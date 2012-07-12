@@ -185,7 +185,7 @@ public class BankAdminController extends AbstractBankController {
 	 * 
 	 * @throws DisabledBankAccountException
 	 */
-	public void getAllBalances() throws DisabledBankAccountException {
+	public void getAllBalancesBank() throws DisabledBankAccountException {
 		HashMap<String, BigDecimal> balances = accountManager.getAllBalances();
 		/* Rounding the balances up to 2 decimal digits for better user display */
 		Set<String> keys = balances.keySet();
