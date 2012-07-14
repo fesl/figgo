@@ -47,10 +47,10 @@
 	            	#foreach( $key in $balances.keySet() )
 				    <tr>
 			        	<td>$key</td>
-			            <td>$balances.get($key)</td>
+			            <td>$numberFormat.format($balances.get($key))</td>
 					</tr>
 					#end
-	            <tr>	
+	            </tr>
             </tbody>
         </table>
     </section>

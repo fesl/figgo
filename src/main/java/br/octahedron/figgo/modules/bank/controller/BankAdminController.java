@@ -22,7 +22,6 @@ import static br.octahedron.cotopaxi.controller.Converter.Builder.safeString;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.Set;
 
 import br.octahedron.cotopaxi.auth.AuthenticationRequired;
 import br.octahedron.cotopaxi.auth.AuthorizationRequired;
@@ -187,11 +186,6 @@ public class BankAdminController extends AbstractBankController {
 	 */
 	public void getAllBalancesBank() throws DisabledBankAccountException {
 		HashMap<String, BigDecimal> balances = accountManager.getAllBalances();
-		/* Rounding the balances up to 2 decimal digits for better user display */
-		Set<String> keys = balances.keySet();
-		for (String key: keys)
-			balances.put(key, balances.get(key).setScale(2, BigDecimal.ROUND_HALF_UP));
-		/* end rounding algorithm */
 		this.out("balances", balances);
 		this.success(BALANCES_TPL);
 	}
