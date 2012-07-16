@@ -16,7 +16,7 @@
             <div class="wrapper">
                 <a href="/"><h1 class="ir">Figgo</h1></a>
                 <ul class="inline">
-                    <li><a href="${applicationBaseURL}about">Sobre</a></li>
+                    <li><a href="http://ajuda.figgo.com.br/sobre">Sobre</a></li>
                     <li></li>
                     <li><a href="${applicationBaseURL}contact">Contato</a></li>
                 </ul>
@@ -31,7 +31,7 @@
             <div class="wrapper">
                 <a href="/"><h1 class="ir">Figgo</h1></a>
                 <ul class="inline">
-                    <li><a href="${applicationBaseURL}about">Sobre</a></li>
+                    <li><a href="http://ajuda.figgo.com.br/sobre">Sobre</a></li>
                     <li></li>
                     <li><a href="${applicationBaseURL}contact">Contato</a></li>
                 </ul>
@@ -65,7 +65,7 @@
             <div class="wrapper">
                 <a href="/"><h1 class="ir">Figgo</h1></a>
                 <ul class="inline">
-                    <li><a href="${applicationBaseURL}about">Sobre</a></li>
+                    <li><a href="http://ajuda.figgo.com.br/sobre">Sobre</a></li>
                     <li></li>
                     <li><a href="${applicationBaseURL}contact">Contato</a></li>
                 </ul>
@@ -121,7 +121,7 @@
             <div class="wrapper">
                 <a href="/"><h1 class="ir">Figgo</h1></a>
                 <ul class="inline">
-                    <li><a href="${applicationBaseURL}about">Sobre</a></li>
+                    <li><a href="http://ajuda.figgo.com.br/sobre">Sobre</a></li>
                     <li></li>
                     <li><a href="${applicationBaseURL}contact">Contato</a></li>
                 </ul>
