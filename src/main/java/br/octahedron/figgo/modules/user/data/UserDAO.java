@@ -20,12 +20,15 @@ package br.octahedron.figgo.modules.user.data;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import javax.jdo.Query;
 
 import br.octahedron.cotopaxi.datastore.jdo.GenericDAO;
+import br.octahedron.figgo.util.DomainUtil;
 
 /**
  * @author Erick Moreno
@@ -55,6 +58,20 @@ public class UserDAO extends GenericDAO<User> {
 		result.addAll(searchResultEmail);
 		result.addAll(searchResultName);
 		return result;
+	}
+	
+	/* (non-Javadoc)
+	 * @see br.octahedron.cotopaxi.datastore.jdo.GenericDAO#getAll()
+	 */
+	@Override
+	public Collection<User> getAll() {
+		List<User> users = new LinkedList<User>();
+		for (User user : super.getAll()) {
+			if (!user.getUserId().endsWith(DomainUtil.ADDRESS_SUFFIX)) {
+				users.add(user);
+			}
+		}
+		return users;
 	}
 	
 	

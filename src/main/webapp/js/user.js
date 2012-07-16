@@ -21,6 +21,12 @@ $(function() {
 		});
 	}
 
+	// /users
+	var $usersTable = $("#users");
+	$("#user-search").keyup(function(e) {
+    	$.uiTableFilter( $usersTable, this.value, "Nome" );
+	});
+
 	// used on description textarea
 	/**
 	  * showdown.js -- A javascript port of Markdown.

@@ -19,6 +19,7 @@
 package br.octahedron.figgo.util;
 
 import static br.octahedron.cotopaxi.CotopaxiProperty.*;
+import br.octahedron.cotopaxi.CotopaxiProperty;
 import br.octahedron.figgo.modules.bank.data.BankAccount;
 
 /**
@@ -28,7 +29,7 @@ import br.octahedron.figgo.modules.bank.data.BankAccount;
  */
 public class DomainUtil {
 	
-	private static final String ADDRESS_SUFFIX = "@figgo.com.br";
+	public static final String ADDRESS_SUFFIX = CotopaxiProperty.getProperty("APPLICATION_DOMAIN");
 
 	/**
 	 * Generates the {@link BankAccount} ID for the given domain.

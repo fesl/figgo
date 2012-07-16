@@ -16,9 +16,9 @@
     <section id="main-intern">
         <h2>Lista de usuários</h2>
         <form>
-            <input type="text" id="domain-search" placeholder="Nome do usuário" />
+            <input type="text" id="user-search" placeholder="Nome do usuário" />
         </form>
-        <table id="domains">
+        <table id="users">
             <thead>
                 <tr>
                     <th>Nome</th>
@@ -47,5 +47,5 @@
 
 #@scripts()
     <script src="/js/libs/jquery.uitablefilter.js"></script>
-    <script src="/js/domain.js"></script>
+    <script src="/js/user.js"></script>
 #end
