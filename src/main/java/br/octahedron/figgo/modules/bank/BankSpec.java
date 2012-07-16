@@ -32,7 +32,9 @@ import br.octahedron.figgo.modules.domain.data.ModuleProperty;
  * @author Danilo Queiroz
  */
 public class BankSpec implements DomainModuleSpec {
-
+	
+	public static final String CURRENCY_SYMBOL = "currencyAbreviation"; 
+	
 	@Override
 	public Type getModuleType() {
 		return Type.DOMAIN;
@@ -48,7 +50,7 @@ public class BankSpec implements DomainModuleSpec {
 		ModuleConfiguration bankConfig = new ModuleConfiguration(Module.BANK.name());
 		bankConfig.addProperty(new ModuleProperty("name", "Banco", "[A-Za-z0-9 _-]{5,}", "O nome do banco."));
 		bankConfig.addProperty(new ModuleProperty("currency", "Dinheiro", "", "O nome da moeda do banco."));
-		bankConfig.addProperty(new ModuleProperty("currencyAbreviation", "$", "", "A abreviação para a moeda do banco."));
+		bankConfig.addProperty(new ModuleProperty(CURRENCY_SYMBOL, "$", "", "A abreviação para a moeda do banco."));
 		return bankConfig;
 	}
 

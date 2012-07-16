@@ -51,7 +51,13 @@
             </thead>
             <tfoot>
                 <td colspan="3" class="balance">SALDO</td>
-                <td class=#if( $balance >= 0 )"blue"#else"red"#end>M$ $numberFormat.format($balance)</td>
+                #if( $balance > 0 )
+                <td class="blue">$currencySymbol $numberFormat.format($balance)</td>
+                #elseif( $balance < 0 )
+                <td class="red">-$currencySymbol $numberFormat.format($balance)</td>
+                #else
+                <td>$currencySymbol $numberFormat.format($balance)</td>
+                #end
             </tfoot>
             <tbody>
             #if( $transactions.size() > 0 )

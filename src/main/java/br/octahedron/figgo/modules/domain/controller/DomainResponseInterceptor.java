@@ -25,6 +25,9 @@ import br.octahedron.cotopaxi.inject.Inject;
 import br.octahedron.cotopaxi.interceptor.TemplateInterceptor;
 import br.octahedron.cotopaxi.view.response.TemplateResponse;
 import br.octahedron.figgo.modules.DataDoesNotExistsException;
+import br.octahedron.figgo.modules.Module;
+import br.octahedron.figgo.modules.bank.BankSpec;
+import br.octahedron.figgo.modules.domain.data.ModuleConfiguration;
 import br.octahedron.figgo.modules.domain.manager.ConfigurationManager;
 
 /**
@@ -66,6 +69,8 @@ public class DomainResponseInterceptor extends TemplateInterceptor {
 			String subdomain = this.subDomain();
 			if (!subdomain.equals("www")) {
 				this.namespaceManager.changeToNamespace(subdomain);
+				ModuleConfiguration moduleConfiguration = this.configurationManager.getModuleConfiguration(Module.BANK);
+				response.addOutput("currencySymbol", moduleConfiguration.getPropertyValue(BankSpec.CURRENCY_SYMBOL));
 				response.addOutput("domain", this.configurationManager.getDomainConfiguration());
 				response.addOutput("modules", this.configurationManager.getModulesInfoService());
 			}

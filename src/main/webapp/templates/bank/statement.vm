@@ -60,7 +60,7 @@
         <hr />
         <section id="statement-transactions">
             <h3>Transações</h3>
-            <table class="bank">
+            <table class="bank" data-symbol="$currencySymbol">
                 <thead>
                     <tr>
                         <th>Data</th>

@@ -47,7 +47,13 @@
 	            	#foreach( $key in $balances.keySet() )
 				    <tr>
 			        	<td class="user" data-user="$key">$key</td>
-			            <td>$numberFormat.format($balances.get($key))</td>
+			            #if( $balances.get($key) > 0 )
+                        <td class="blue">$currencySymbol $numberFormat.format($balances.get($key))</td>
+                        #elseif( $balances.get($key) < 0 )
+                        <td class="red">$currencySymbol $numberFormat.format($balances.get($key))</td>
+                        #else
+                        <td>$currencySymbol $numberFormat.format($balances.get($key))</td>
+                        #end
 					</tr>
 					#end
 	            </tr>
