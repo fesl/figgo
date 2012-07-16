@@ -30,8 +30,6 @@
     <hr />
 
     <section id="domains">
-	    
-    
     	<h3>Coletivos associados</h3>
         #if( $domains.size() > 0 )
         <img id="loader" src="/img/ajax-loader.gif" />
@@ -47,7 +45,8 @@
         <p>Nenhum coletivo associado.</p>
         #end
         <hr/>
-        <a href="domain/list">Listar coletivos</a>
+        <a href="domain/list">Listar coletivos</a> <br />
+        <a href="users/list">Listar usuários</a>
     </section>
 </div>
 
