@@ -46,7 +46,7 @@
                 <tr>
 	            	#foreach( $key in $balances.keySet() )
 				    <tr>
-			        	<td>$key</td>
+			        	<td class="user" data-user="$key">$key</td>
 			            <td>$numberFormat.format($balances.get($key))</td>
 					</tr>
 					#end
