@@ -29,7 +29,7 @@ import br.octahedron.figgo.modules.bank.data.BankAccount;
  */
 public class DomainUtil {
 	
-	public static final String ADDRESS_SUFFIX = CotopaxiProperty.getProperty("APPLICATION_DOMAIN");
+	public static final String ADDRESS_SUFFIX = "@" + CotopaxiProperty.getProperty("APPLICATION_DOMAIN");
 
 	/**
 	 * Generates the {@link BankAccount} ID for the given domain.
