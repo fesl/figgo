@@ -162,7 +162,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	private Collection<BankTransaction> getAllTransactions(String accountId, long count) {
 		Query query = this.createQuery();
 		query.setFilter("accountOrig == :accId");
-		query.setOrdering("timestamp asc");
+		query.setOrdering("timestamp desc");
 		if (count > 0) {
 			query.setRange(0, count);
 		}
@@ -170,7 +170,7 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 
 		query = this.createQuery();
 		query.setFilter("accountDest == :accId");
-		query.setOrdering("timestamp asc");
+		query.setOrdering("timestamp desc");
 		if (count > 0) {
 			query.setRange(0, count);
 		}
