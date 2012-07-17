@@ -62,16 +62,17 @@
             <tbody>
             #if( $transactions.size() > 0 )
                 #foreach( $transaction in $transactions )
+                    #set( $index = $transactions.size() - $velocityCount )
                 <tr>
-                    <td>$dateFormat.format($transaction.Date)</td>
-                    #if( $transaction.AccountDest == $user.userId )
-                    <td class="user" data-user="$transaction.AccountOrig">$transaction.AccountOrig</td>
-                    <td>$!{transaction.Comment}</td>
-                    <td class="blue">$numberFormat.format($transaction.Amount)</td>
+                    <td>$dateFormat.format($transactions.get($index).Date)</td>
+                    #if( $transactions.get($index).AccountDest == $user.userId )
+                    <td class="user" data-user="$transactions.get($index).AccountOrig">$transactions.get($index).AccountOrig</td>
+                    <td>$!{transactions.get($index).Comment}</td>
+                    <td class="blue">$numberFormat.format($transactions.get($index).Amount)</td>
                     #else
-                    <td class="user" data-user="$transaction.AccountDest">$transaction.AccountDest</td>
-                    <td>$!{transaction.Comment}</td>
-                    <td class="red">-$numberFormat.format($transaction.Amount)</td>
+                    <td class="user" data-user="$transactions.get($index).AccountDest">$transactions.get($index).AccountDest</td>
+                    <td>$!{transactions.get($index).Comment}</td>
+                    <td class="red">-$numberFormat.format($transactions.get($index).Amount)</td>
                     #end
                 </tr>
                 #end

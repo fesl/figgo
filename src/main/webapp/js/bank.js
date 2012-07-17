@@ -72,7 +72,7 @@ $(function() {
             $(".loader").remove();
             $transactionsTable.fadeIn();
         }).error(function(data) {
-            console.log("não foi possível carregar dados dos usuários");
+            console.log("Não foi possível carregar dados dos usuários");
         });
     } else {
         $transactionsTable.fadeIn();
@@ -84,6 +84,7 @@ $(function() {
         $transactionsSection = $("#statement-transactions"),
         startDate = $this.find('input[name=startDate]').val(),
         endDate = $this.find('input[name=endDate]').val();
+        
         $table.hide();
         $.ajax({
             type: "POST",
@@ -93,21 +94,22 @@ $(function() {
             var $tbody = $table.find("tbody"); 
             $tbody.empty();
             if (data.transactions.length > 0) {
-                var dateTmp, 
-                    amountClass, 
-                    isDebit;
+                var dateTmp, amountClass, isDebit,
+                    tableRows = '';
                 
                 for (var i = 0, length = data.transactions.length; i < length; i+=1) {
                     dateTmp = new Date(data.transactions[i].date);
                     isDebit = (data.transactions[i].accountOrig === data.user.userId) ? true : false;
                     amountType = isDebit ? 'red' : 'blue';
                     accountToShow = isDebit ? data.transactions[i].accountDest : data.transactions[i].accountOrig;
-                    console.log(data.transactions[i]);
-                    $tbody.append("<tr><td>" + dateTmp.getDate() + "/" + (dateTmp.getMonth()+1) + "/" + dateTmp.getFullYear() + "</td>\n" +
-                                  "<td class=\"user\" data-user=\"" + accountToShow + "\">" + accountToShow + "</td>\n" +
-                                  "<td>" + ((data.transactions[i].comment) ? data.transactions[i].comment : '') + "</td>\n" +
-                                  "<td class=\"" + amountType + "\">" + ((isDebit) ? "-" : "") + "M$ " + accounting.formatMoney(data.transactions[i].amount) + "</td></tr>");
+                    tableRows += "<tr> \
+                                    <td>" + dateTmp.getDate() + "/" + (dateTmp.getMonth()+1) + "/" + dateTmp.getFullYear() + "</td>\n \
+                                    <td class=\"user\" data-user=\"" + accountToShow + "\">" + accountToShow + "</td>\n \
+                                    <td>" + ((data.transactions[i].comment) ? data.transactions[i].comment : '') + "</td>\n \
+                                    <td class=\"" + amountType + "\">" + ((isDebit) ? "-" : "") + $table.data('symbol') + " " + accounting.formatMoney(data.transactions[i].amount) + "</td> \
+                                 </tr>";
                 }
+                $tbody.append(tableRows)
 
                 var users = $tbody.find(".user").map(function() { return this.innerHTML }).get();
                 if (users.length) {
@@ -117,11 +119,11 @@ $(function() {
                             users = data.result;
                         for (i = 0; i < usersLength; i += 1) {
                             currentLi = $tbody.find("td[data-user='" + users[i].userId+"']");
-                            currentLi.text(users[i].name);
+                            currentLi.text(users[i].name || users[i].userId);
                         }
                         $table.fadeIn();
                     }).error(function(data) {
-                        console.log("não foi possível carregar dados dos usuários");
+                        console.log("Não foi possível carregar dados dos usuários");
                     });
                 }
             } else {

@@ -12,7 +12,7 @@ $(function() {
 				currentLi = $domainsLi.filter("li[data-domain='"+domains[i].domainName+"']")[0]
 				imgSrc = domains[i].avatarKey ? "/serve/" + domains[i].avatarKey : "http://lorempixum.com/32/32/";
 				currentLi.childNodes[1].src = imgSrc;
-				currentLi.childNodes[3].textContent = domains[i].name;
+				currentLi.childNodes[3].textContent = domains[i].name || users[i].userId;
 			}
 			document.getElementById("loader").remove();
 			$domainsLi.fadeIn();

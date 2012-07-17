@@ -11,8 +11,8 @@
 #domainSidebar()
 
 <div class="left">
-	<section id="main-intern">
-		<h3>Acesso rápido</h3>
+    <section id="main-intern">
+        <h3>Acesso rápido</h3>
         <nav>
             <ul class="two-column-shortcuts">
                 <li><a href="/bank">Minha conta</a></li>
@@ -43,20 +43,18 @@
                 </tr>
             </thead>
             <tbody>
+                #foreach( $key in $balances.keySet() )
                 <tr>
-	            	#foreach( $key in $balances.keySet() )
-				    <tr>
-			        	<td class="user" data-user="$key">$key</td>
-			            #if( $balances.get($key) > 0 )
-                        <td class="blue">$currencySymbol $numberFormat.format($balances.get($key))</td>
-                        #elseif( $balances.get($key) < 0 )
-                        <td class="red">$currencySymbol $numberFormat.format($balances.get($key))</td>
-                        #else
-                        <td>$currencySymbol $numberFormat.format($balances.get($key))</td>
-                        #end
-					</tr>
-					#end
-	            </tr>
+                    <td class="user" data-user="$key">$key</td>
+                    #if( $balances.get($key) > 0 )
+                    <td class="blue">$currencySymbol $numberFormat.format($balances.get($key))</td>
+                    #elseif( $balances.get($key) < 0 )
+                    <td class="red">$currencySymbol $numberFormat.format($balances.get($key))</td>
+                    #else
+                    <td>$currencySymbol $numberFormat.format($balances.get($key))</td>
+                    #end
+                </tr>
+                #end
             </tbody>
         </table>
     </section>

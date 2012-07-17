@@ -22,9 +22,8 @@ $(function() {
 				dataType: "json",
 				data: {role: $this.attr('id'), user: userId}
 			}).success(function(data) {
-				console.log("removeu!");
 			}).error(function(data) {
-				alert('não foi possível remover role do usuário')
+				alert('Não foi possível remover role do usuário')
 			});
 		}
 	});
@@ -77,7 +76,7 @@ $(function() {
 				users = data.result;
 			for (i = 0; i < usersLength; i += 1) {
 				currentLi = $providers.find("tr[data-user='"+users[i].userId+"']")[0]
-				currentLi.childNodes[1].textContent = users[i].name;
+				currentLi.childNodes[1].textContent = users[i].name || users[i].userId;
 			}
 			$(".loader").remove();
 			$providers.fadeIn();
