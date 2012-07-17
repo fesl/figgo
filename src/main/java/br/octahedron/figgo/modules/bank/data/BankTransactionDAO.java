@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -190,11 +191,11 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 		TreeSet<BankTransaction> result = new TreeSet<BankTransaction>(new BankTransactionComparator());
 		result.addAll(transactions1);
 		result.addAll(transactions2);
-
+		
 		if (count == Long.MIN_VALUE) {
 			return result;
 		} else {
-			TreeSet<BankTransaction> other = new TreeSet<BankTransaction>(new BankTransactionComparator());
+			List<BankTransaction> other = new LinkedList<BankTransaction>();
 			Iterator<BankTransaction> itr = result.descendingIterator();
 			while (itr.hasNext() && count != 0) {
 				other.add(itr.next());
@@ -227,8 +228,8 @@ public class BankTransactionDAO extends GenericDAO<BankTransaction> implements T
 	 */
 	private class BankTransactionComparator implements Comparator<BankTransaction> {
 		public int compare(BankTransaction o1, BankTransaction o2) {
-			int comp = (int) (o1.getTimestamp() - o2.getTimestamp());
-			return (comp != 0) ? comp : (int) (o1.getId() - o2.getId()); 
+			int comp = o1.getTimestamp().compareTo(o2.getTimestamp());
+            return (comp != 0) ? comp : o1.getId().compareTo(o2.getId()); 
 		}
 	}
 
