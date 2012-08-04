@@ -31,12 +31,12 @@
 	<datastore-index kind="BankTransaction" ancestor="false"
 		source="manual">
 		<property name="accountOrig" direction="asc" />
-		<property name="timestamp" direction="asc" />
+		<property name="timestamp" direction="desc" />
 	</datastore-index>
 	<datastore-index kind="BankTransaction" ancestor="false"
 		source="manual">
 		<property name="accountDest" direction="asc" />
-		<property name="timestamp" direction="asc" />
+		<property name="timestamp" direction="desc" />
 	</datastore-index>
 
 </datastore-indexes>
