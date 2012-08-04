@@ -25,7 +25,7 @@ fi
 	return 0
 }
 update_version() {
-	if [ ${appid} == "dev-figgo" ]
+	if [ '${appid}' = 'dev-figgo' ]
 	then
 		version=$(date +%Y%m%d-%H%M)
 	else
@@ -56,14 +56,14 @@ adjust_config() {
 }
 deploy_app() {
 	version=$(cat version)
-	appcfg.sh -A ${appid} -V ${version} update target/deploy
+	$appcfg -A ${appid} -V ${version} update target/deploy
 	return $?
 }
 change_default() {
 	read -p "Deseja alterar a versão default do Figgo para a nova versão? [s/n] " resp
 	if [ $resp = "s" ]; then
 		version=$(cat version)
-		appcfg.sh -A ${appid} -V ${version} set_default_version target/deploy
+		$appcfg -A ${appid} -V ${version} set_default_version target/deploy
 		return $?
 	else
 		return 0
@@ -75,6 +75,12 @@ then
 	appid=$2
 fi
 
+if [ -z ${GAE_JAVA_HOME} ]; then
+    echo "GAE_JAVA_HOME not defined!"
+    exit
+fi
+appcfg=${GAE_JAVA_HOME}/bin/appcfg.sh
+
 alert && \
 build_project && \
 update_version && \
@@ -83,7 +89,7 @@ deploy_app && \
 change_default
 
 res=$?
-if [ ${appid} == "dev-figgo" ]
+if [ '${appid}' = 'dev-figgo' ]
 then
 	git checkout -- version
 fi
