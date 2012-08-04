@@ -57,7 +57,7 @@ $(function() {
 
 	var parserMarkdown = new Showdown.converter(),
 		$description = $('#description');
-	$("#description-area").on('click', '.selectable', function(e) {
+	$("#description-area").on('click', 'a', function(e) {
 		switch ($(this).data('action')) {
 			case 'preview':
 				$('#description').hide();
