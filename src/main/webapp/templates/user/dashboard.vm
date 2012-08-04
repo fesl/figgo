@@ -19,7 +19,7 @@
             <li>$user.phoneNumber</li>
         </ul>
         #if ($user.description)
-        <p>$user.shortDescription</p>
+        <section class="description">$user.description</section>
         #end
     </section>
 

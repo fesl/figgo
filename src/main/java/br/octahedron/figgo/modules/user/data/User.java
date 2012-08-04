@@ -45,34 +45,16 @@ public class User implements Serializable, Comparable<User> {
 	@Persistent
 	private String avatarKey;
 	@Persistent
-	private String shortDescription;
-	@Persistent
 	private String description;
 
-	public User(String userId, String name, String phoneNumber, String shortDescription) {
+	public User(String userId, String name, String phoneNumber, String description) {
 		this.userId = userId.toLowerCase();
 		this.name = name;
 		this.nameLowerCase = this.name.toLowerCase();
 		this.phoneNumber = phoneNumber;
-		this.shortDescription = shortDescription;
-		this.description = shortDescription;
+		this.description = description;
 	}
 
-	/**
-	 * @return the short description
-	 */
-	public String getShortDescription() {
-		return this.shortDescription;
-	}
-
-	/**
-	 * @param shortDescription
-	 *            the short description to set
-	 */
-	public void setShortDescription(String shortDescription) {
-		this.shortDescription = shortDescription;
-	}
-	
 	/**
 	 * @return the description
 	 */

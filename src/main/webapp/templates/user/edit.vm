@@ -19,7 +19,7 @@
             <li>$user.phoneNumber</li>
         </ul>
         #if ($user.description)
-        <p>$user.description</p>
+        <section class="description">$user.description</section>
         #end
     </section>
 
@@ -60,23 +60,16 @@
                     <label for="name">Nome</label>
                     <input type="text" id="name" name="name" value="$!{name}" required />
                     #if ($invalid.name)
-                    <span>$i18n.get($invalid.name)</span>
+                    <span>$invalid.name</span>
                     #end
                 </div>
                 <div>
                     <label for="phoneNumber">Telefone</label>
                     <input type="text" name="phoneNumber" value="$!{phoneNumber}" pattern="^(([0-9]{2}|\\([0-9]{2}\\))[ ])?[0-9]{4}[-. ]?[0-9]{4}$" required />
                     #if ($invalid.phoneNumber)
-                    <span>$i18n.get($invalid.phoneNumber)</span>
+                    <span>$invalid.phoneNumber</span>
                     #end
                 </div>
-                <div>
-	                <label for="shortDescription">Descrição curta (sidebar)</label>
-	                <textarea id="shortDescription" name="shortDescription">$!{shortDescription}</textarea>
-	                #if ( $invalid.shortDescription )
-	                <span>$i18n.get($invalid.shortDescription)</span>
-	                #end
-	            </div>
                 <div id="description-area">
                     <ul>
                         <li><a class="selected selectable" data-action="text" href="#">Texto</a></li>

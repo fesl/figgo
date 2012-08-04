@@ -86,7 +86,7 @@ public class DomainUserSubscriber implements Subscriber {
 		String userId = generateDomainUserID(domain);
 		this.namespaceManager.changeToGlobalNamespace();
 		if (this.userManager.existsUser(userId)) { 
-			this.userManager.updateUser(userId, name, null, name, name);
+			this.userManager.updateUser(userId, name, null, name);
 		} else {
 			this.userManager.createUser(userId, name, null, name);
 		}

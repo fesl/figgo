@@ -36,11 +36,8 @@
                 #end
             </div>
             <div>
-                <label for="description">Descrição curta</label>
-                <textarea id="description" name="shortDescription">$!{shortDescription}</textarea>
-                #if ( $invalid.shortDescription )
-                <span>$i18n.get($invalid.shortDescription)</span>
-                #end
+                <label for="description">Descrição</label>
+                <textarea id="description" name="description">$!{description}</textarea>
             </div>
         </fieldset>
         <input type="submit" value="Fazer parte!" />

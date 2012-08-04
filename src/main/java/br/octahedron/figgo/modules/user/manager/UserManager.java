@@ -41,8 +41,8 @@ public class UserManager {
 	/**
 	 * Creates a {@link User} with passed parameters
 	 */
-	public User createUser(String userId, String name, String phoneNumber, String shortDescription) {
-		User user = new User(userId, name, phoneNumber, shortDescription);
+	public User createUser(String userId, String name, String phoneNumber, String description) {
+		User user = new User(userId, name, phoneNumber, description);
 		this.userDAO.save(user);
 		return user;
 	}
@@ -50,11 +50,10 @@ public class UserManager {
 	/**
 	 * Updates {@link User} properties with passed parameters
 	 */
-	public User updateUser(String userId, String name, String phoneNumber, String shortDescription, String description) {
+	public User updateUser(String userId, String name, String phoneNumber, String description) {
 		User user = this.userDAO.get(userId);
 		user.setName(name);
 		user.setPhoneNumber(phoneNumber);
-		user.setShortDescription(shortDescription);
 		user.setDescription(description);
 		// This object will be updated to the DB by JDO persistence manager
 		return user;

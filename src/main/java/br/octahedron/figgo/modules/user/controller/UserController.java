@@ -90,7 +90,7 @@ public class UserController extends Controller {
 	public void postCreateUser() {
 		Validator validator = getUserValidator();
 		if (validator.isValid()) {
-			this.userManager.createUser(this.currentUser(), this.in("name", safeString()), this.in("phoneNumber", safeString()), this.in("shortDescription", new SafeStringConverter()));
+			this.userManager.createUser(this.currentUser(), this.in("name", safeString()), this.in("phoneNumber", safeString()), this.in("description", new SafeStringConverter()));
 			redirect(getProperty(APPLICATION_BASE_URL));
 		} else {
 			out("email", this.currentUser());
@@ -129,7 +129,6 @@ public class UserController extends Controller {
 		User user = this.userManager.getUser(this.currentUser());
 		out("name", user.getName());
 		out("phoneNumber", user.getPhoneNumber());
-		out("shortDescription", user.getShortDescription());
 		out("description", user.getDescription());
 		out("domains", this.authorizationManager.getActiveUserDomains(this.currentUser()));
 		success(EDIT_USER_TPL);
@@ -140,7 +139,7 @@ public class UserController extends Controller {
 	public void postUpdateUser() {
 		Validator validator = getUserValidator();
 		if (validator.isValid()) {
-			this.userManager.updateUser(this.currentUser(), this.in("name", safeString()), this.in("phoneNumber", safeString()), this.in("shortDescription", safeString()), this.in("description", safeString()));
+			this.userManager.updateUser(this.currentUser(), in("name"), in("phoneNumber"), in("description"));
 			redirect(getProperty(APPLICATION_BASE_URL));
 		} else {
 			echo();
@@ -152,7 +151,7 @@ public class UserController extends Controller {
 	 * AJAX function to search user
 	 */
 	public void getSearchUser() {
-		this.out("result", userManager.getUsersStartingWith(this.in("term", safeString())));
+		this.out("result", userManager.getUsersStartingWith(in("term")));
 		jsonSuccess();
 	}
 
