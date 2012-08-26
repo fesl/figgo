@@ -56,14 +56,14 @@ adjust_config() {
 }
 deploy_app() {
 	version=$(cat version)
-	appcfg.sh -A ${appid} -V ${version} update target/deploy
+	${GAE_SDK_HOME}/bin/appcfg.sh -A ${appid} -V ${version} update target/deploy
 	return $?
 }
 change_default() {
 	read -p "Deseja alterar a versão default do Figgo para a nova versão? [s/n] " resp
 	if [ $resp = "s" ]; then
 		version=$(cat version)
-		appcfg.sh -A ${appid} -V ${version} set_default_version target/deploy
+		${GAE_SDK_HOME}/bin/appcfg.sh -A ${appid} -V ${version} set_default_version target/deploy
 		return $?
 	else
 		return 0
