@@ -8,7 +8,7 @@
 #@body()
 #domainSidebar()
 
-<div class="left">
+<div id="domain-preferences" class="left">
     <section id="main-intern">
         <h3>Configurações do domínio</h3>
         <p><span class="label important">Atenção!</span> As operações de cada formulário são feitas individualmente.</p>
@@ -22,7 +22,7 @@
                     <span>$i18n.get($invalid.name)</span>
                     #end
                 </div>
-                <div>   
+                <div>
                     <label for="url">Site</label>
                     <input type="text" id="url" name="url" value="$!{url}" required />
                     #if ($invalid.url)
@@ -39,9 +39,9 @@
                 </div>
                 <div id="description-area">
                     <ul>
-                        <li><a class="selected" data-action="text" href="#">Texto</a></li>
+                        <li><a id="viewText" class="selected" href="#">Texto</a></li>
                         <li></li>
-                        <li><a data-action="preview" href="#">Visualização</a></li>
+                        <li><a id="viewPreview" href="#">Visualização</a></li>
                     </ul>
                     <label for="description">Descrição</label>
                     <textarea id="description" name="description" rows="9">$!{description}</textarea>
@@ -57,7 +57,7 @@
                 <legend>$i18n.get($module)</legend>
                 <div>
                     <label for="$module">Ativado?</label>
-                    <input type="checkbox" id="$module" name="$module" data-url="/domain/module/$module.toLowerCase()/" #if( $modules.isModuleEnabled($module) )checked#end /> 
+                    <input type="checkbox" id="$module" name="$module" data-url="/domain/module/$module.toLowerCase()/" #if( $modules.isModuleEnabled($module) )checked#end />
 						#if( $modules.hasDomainSpecificConfiguration($module) )<a href="/domain/module/$module.toLowerCase()">Configurar</a>#end
                 </div>
             </fieldset>
@@ -68,5 +68,5 @@
 #end
 
 #@scripts()
-    <script defer src="/js/domain.js"></script>
+    <script src="/js/app/domain/main.js"></script>
 #end

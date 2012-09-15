@@ -161,7 +161,7 @@
 #end
 
 #macro( domainSidebar )
-<div class="left">
+<div class="left sidebar">
     <section id="about-intern">
         <h2>$domain.Name</h2>
         #if( $domain.AvatarKey )

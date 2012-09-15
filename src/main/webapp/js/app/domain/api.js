@@ -7,6 +7,13 @@ define(['jquery', 'plugins/events'], function() {
       $.get('/domains', {domains: data}, function(data) {
         Events.trigger('domainapi:getDomainsInfo', data.result);
       });
+    },
+
+    updateModule: function(module, status) {
+      var action = (status) ? 'enable' : 'disable';
+      $.post('/domain/module/'+module+'/'+action, function(data) {
+        Events.trigger('domainapi:updateModule', data.result);
+      });
     }
   };
 
