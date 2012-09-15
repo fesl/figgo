@@ -37,7 +37,6 @@ define(['plugins/events', 'plugins/showdown', 'plugins/template', 'app/user/api'
         applicationDomain: Util.getApplicationDomain()
       },
       callback: function(template) {
-        console.log($userDomains);
         $userDomains.find('.loader').remove();
         $userDomains.append(template);
       }

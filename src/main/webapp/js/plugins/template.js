@@ -21,7 +21,7 @@ define(['jquery', 'lodash'], function() {
       _loadTemplate: function(templateId, options) {
         var that = this,
             compiler = _,
-            jqXHR = this._jqXHRs[templateId] || $.get('js/templates/' + templateId + '.html');
+            jqXHR = this._jqXHRs[templateId] || $.get('/js/templates/' + templateId + '.html');
 
         this._jqXHRs[templateId] = jqXHR;
         jqXHR.done(function(resp) {

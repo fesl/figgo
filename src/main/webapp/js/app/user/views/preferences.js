@@ -46,26 +46,5 @@ define(['plugins/showdown'], function() {
     $(target).addClass('selected');
   };
 
-  // var parserMarkdown = new Showdown.converter(),
-  //   $description = $('#description');
-  // $("#description-area").on('click', 'a', function(e) {
-  //   switch ($(this).data('action')) {
-  //     case 'preview':
-  //       $('#description').hide();
-  //       $description.text($description.val());
-  //       $('#markdown-preview').html(parserMarkdown.makeHtml($description.text())).show();
-  //       break;
-  //     case 'text':
-  //       $('#markdown-preview').hide();
-  //       $('#description').show();
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  //   $('#description-area').find('.selected').removeClass('selected');
-  //   $(this).addClass('selected');
-  //   e.preventDefault();
-  // });
-
   return Preferences;
 });

@@ -31,13 +31,13 @@
 
     <section class="user-domains">
         <h3>Coletivos associados</h3>
-        <img id="loader" src="/img/ajax-loader.gif" />
+        <img class="loader" src="/img/ajax-loader.gif" />
     </section>
 
     <hr/>
 
-    <a href="domain/list">Listar coletivos</a> <br />
-    <a href="users/list">Listar usuários</a>
+    <a href="/domain/list">Listar coletivos</a> <br />
+    <a href="/users/list">Listar usuários</a>
 </div>
 <div class="left">
     <section id="main-intern">
