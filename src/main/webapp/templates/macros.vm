@@ -1,11 +1,9 @@
-#macro( head )    
+#macro( head )
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
     <link rel="stylesheet" href="/css/style.css">
     $!bodyContent
-    <script src="/js/libs/modernizr.min.js"></script>
-    <!--[if (gte IE 6) & (lte IE 8)]>
-        <script src="/js/libs/selectivizr.js"></script>
-    <![endif]-->
+    <script src="/js/modernizr.js"></script>
+    <script data-main="/js/config" src="/js/require.js"></script>
 </head>
 <body>
 #end
@@ -54,7 +52,7 @@
                         </ul>
                     </span>
                 </div>
-            </div>    
+            </div>
         </div>
     </header>
 #end
@@ -80,7 +78,7 @@
                     <img src="http://lorempixum.com/45/45" />
                     #end
                     <span>
-                        $user.name <br /> 
+                        $user.name <br />
                         <ul class="inline">
                             <li><a href="${applicationBaseURL}dashboard">Home</a></li>
                             <li></li>
@@ -95,7 +93,7 @@
                         <li><a href="/services/mine">Meus serviços</a></li>
                     </ul>
                 </div>
-            </div>    
+            </div>
         </div>
     </header>
 #end
@@ -106,7 +104,7 @@
             $!bodyContent
         </div>
     </div>
-    
+
     <footer>
         <div class="wrapper">
         	<p><small><strong>Figgo</strong> é licenciado sob <a href="https://www.gnu.org/licenses/gpl.html">GPLv3</a> e esta página é licenciada sob <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/">Creative Commons</a>.</small></p>
@@ -145,7 +143,7 @@
                         </ul>
                     </span>
                 </div>
-            </div>    
+            </div>
         </div>
     #end
     </header>
@@ -186,9 +184,6 @@
 #end
 
 #macro( public_scripts )
-    <script defer src="http://ajax.googleapis.com/ajax/libs/jquery/${jqueryVersion}/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/js/libs/jquery-${jqueryVersion}.min.js">\x3C/script>')</script>
-    <script defer src="/js/script.js"></script>
     <script>
         var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview'],['_trackPageLoadTime']];
         (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
@@ -200,9 +195,6 @@
 #end
 
 #macro( scripts )
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/${jqueryVersion}/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="/js/libs/jquery-${jqueryVersion}.min.js">\x3C/script>')</script>
-    <script src="/js/script.js"></script>
     $!bodyContent
     <script> <!-- Google Analytics -->
         var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview'],['_trackPageLoadTime']];

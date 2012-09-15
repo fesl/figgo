@@ -6,7 +6,7 @@
 #simpleHeader()
 
 #@body()
-<div class="left">
+<div id="user-sidebar" class="left sidebar">
     <section id="about-intern" class="user">
         <h2>$user.name</h2>
         #if( $user.avatarKey )
@@ -19,35 +19,26 @@
             <li>$user.phoneNumber</li>
         </ul>
         #if ($user.description)
-        <section class="description">$user.description</section>
+        <p class="user-short-description">$user.description</p>
         #end
     </section>
 
     <hr />
-    
+
     <a href="/user/edit">Preferências</a>
-    
+
     <hr />
 
-    <section id="domains">
-    	<h3>Coletivos associados</h3>
-        #if( $domains.size() > 0 )
-        <img id="loader" src="/img/ajax-loader.gif" />
-        <ul class="unstyled">
-            #foreach( $domain in $domains )
-            <li class="organization" data-domain="$domain">
-                <img alt="Avatar" />
-                <a href="http://$domain.$applicationDomain"></a>
-            </li>
-        #end
-        </ul>
-        #else
-        <p>Nenhum coletivo associado.</p>
-        #end
-        <hr/>
-        <a href="domain/list">Listar coletivos</a> <br />
-        <a href="users/list">Listar usuários</a>
+    <section class="user-domains">
+        <h3>Coletivos associados</h3>
+        <img class="loader" src="/img/ajax-loader.gif" />
     </section>
+
+    <hr/>
+
+    <a href="domain/list">Listar coletivos</a> <br />
+    <a href="users/list">Listar usuários</a>
+
 </div>
 
 <div class="left">
@@ -74,5 +65,5 @@
 #end
 
 #@scripts()
-    <script src="/js/user.js"></script>
+    <script src="/js/app/user/main.js"></script>
 #end

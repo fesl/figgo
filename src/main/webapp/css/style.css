@@ -512,7 +512,7 @@ select:focus {
   outline: 1px dotted #666666; }
 
 input[disabled], select[disabled], textarea[disabled], input[readonly], select[readonly], textarea[readonly] {
-  background-color: #f5f5f5;
+  background-color: whitesmoke;
   border-color: #dddddd;
   cursor: not-allowed; }
 
@@ -631,6 +631,10 @@ body {
 .wrapper > div:first-child {
   width: 174px; }
 
+.sidebar {
+  padding-right: 20px;
+  border-right: 1px solid #e0e0e0; }
+
 #about-intern {
   width: 170px; }
   #about-intern img {
@@ -657,7 +661,7 @@ body {
 #main-intern {
   width: 725px;
   min-height: 500px;
-  margin-left: 30px;
+  margin-left: -1px;
   padding: 0 0 20px 30px;
   border-left: 1px solid #e0e0e0; }
   #main-intern ul {
@@ -754,16 +758,16 @@ table.roles tbody tr:hover {
 
 #description-area {
   position: relative; }
-  #description-area ul {
+  #description-area > ul {
     width: 200px;
     margin: 0 0 5px 143px; }
-    #description-area ul li {
+    #description-area > ul li {
       display: inline; }
-      #description-area ul li:nth-child(2n) {
+      #description-area > ul li:nth-child(2n) {
         border-left: 1px solid #dadada;
         border-right: 1px solid #f8f8f8;
         margin: 0 9px 0 5px; }
-    #description-area ul a {
+    #description-area > ul a {
       text-align: center; }
   #description-area .selected {
     color: #444444;
@@ -777,6 +781,8 @@ table.roles tbody tr:hover {
   margin-top: -20px;
   overflow: auto;
   display: none; }
+  #markdown-preview ul {
+    margin-left: 20px; }
 
 #main-intern.index {
   display: none; }

@@ -14,12 +14,13 @@
 	<warmup-requests-enabled>true</warmup-requests-enabled>
 	<!-- Enables concurrent requests -->
 	<threadsafe>true</threadsafe>
-	
+
 	<!-- Static files -->
 	<static-files>
 		<include path="/img/**" />
 		<include path="/css/**.css" />
 		<include path="/js/**.js" />
+		<include path="/js/**.html" />
 		<include path="/robots.txt" />
 		<include path="/favicon.ico" />
         <exclude path="/templates/**.vm" />

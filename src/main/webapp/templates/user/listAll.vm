@@ -7,18 +7,18 @@
 
 #@body()
 <div class="left">
-    <section>
+    <section class="sidebar">
         <h2>Usuários</h2>
-        <p></p>
+        <p>Ao lado, você pode conferir todos os usuários cadastrados no Figgo.</p>
     </section>
 </div>
 <div class="left">
-    <section id="main-intern">
+    <section id="main-intern" class="user-list">
         <h2>Lista de usuários</h2>
         <form>
             <input type="text" id="user-search" placeholder="Nome do usuário" />
         </form>
-        <table id="users">
+        <table class="users-table">
             <thead>
                 <tr>
                     <th>Nome</th>
@@ -46,6 +46,5 @@
 #end
 
 #@scripts()
-    <script src="/js/libs/jquery.uitablefilter.js"></script>
-    <script src="/js/user.js"></script>
+    <script src="/js/app/user/main.js"></script>
 #end

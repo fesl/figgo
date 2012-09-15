@@ -1,0 +1,12 @@
+<% if (domains) { %>
+  <ul class="unstyled">
+  <% _.each(domains, function(domain) { %>
+    <li class="organization">
+      <img alt="Avatar" src="<%= parseAvatar(domain) %>" />
+      <a href="http://<%- domain.domainName %>.<%- applicationDomain %>"><%- domain.name %></a>
+    </li>
+  <% }); %>
+  </ul>
+<% } else { %>
+  <p>Nenhum coletivo associado.</p>
+<% } %>

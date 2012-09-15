@@ -6,7 +6,7 @@
 #fullHeader()
 
 #@body()
-<div class="left">
+<div id="user-sidebar" class="left sidebar">
     <section id="about-intern" class="user">
         <h2>$user.name</h2>
         #if( $user.avatarKey )
@@ -26,33 +26,26 @@
     <hr />
 
     <a href="/user/edit">Preferências</a>
-    
+
     <hr />
 
-    <section>
+    <section class="user-domains">
         <h3>Coletivos associados</h3>
-        #if( $domains.size() > 0 )
         <img id="loader" src="/img/ajax-loader.gif" />
-        <ul class="unstyled">
-            #foreach( $domain in $domains )
-            <li class="organization" data-domain="$domain">
-                <img alt="Avatar" />
-                <a href="http://$domain.$applicationDomain"></a>
-            </li>
-        #end
-        </ul>
-        #else
-        <p>Nenhum coletivo associado.</p>
-        #end
     </section>
+
+    <hr/>
+
+    <a href="domain/list">Listar coletivos</a> <br />
+    <a href="users/list">Listar usuários</a>
 </div>
 <div class="left">
     <section id="main-intern">
         <p><span class="label important">Atenção!</span> Faça um favor a si mesmo, preencha de forma correta e verídica a fim de evitar problemas futuros.</p>
-        
+
         <hr />
-        
-        <form action="/user/edit" method="post" accept-charset="utf-8">
+
+        <form id="user-preferences" action="/user/edit" method="post" accept-charset="utf-8">
             <fieldset>
                 <legend>Atualização da conta</legend>
                 <input type="hidden" name="_method" value="put" />
@@ -72,9 +65,9 @@
                 </div>
                 <div id="description-area">
                     <ul>
-                        <li><a class="selected" data-action="text" href="#">Texto</a></li>
+                        <li><a id="viewText" class="selected" href="#">Texto</a></li>
                         <li></li>
-                        <li><a data-action="preview" href="#">Visualização</a></li>
+                        <li><a id="viewPreview" href="#">Visualização</a></li>
                     </ul>
                     <label for="description">Descrição</label>
                     <textarea id="description" name="description" rows="9">$!{description}</textarea>
@@ -88,5 +81,5 @@
 #end
 
 #@scripts()
-    <script defer src="/js/user.js" />
+    <script defer src="/js/app/user/main.js" />
 #end

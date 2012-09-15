@@ -105,9 +105,18 @@ public class UserController extends Controller {
 	@OnlyForGlobal
 	@AuthenticationRequired
 	public void getDashboardUser() {
-		String userEmail = this.currentUser();
-		out("domains", this.authorizationManager.getActiveUserDomains(userEmail));
 		success(DASHBOARD_TPL);
+	}
+	
+	/**
+	 * /user/domains - Retrieves the domains of user in a json object
+	 */
+	@OnlyForGlobal
+	@AuthenticationRequired
+	public void getUserDomains() {
+		String userEmail = this.currentUser();
+		this.out("domains", this.authorizationManager.getActiveUserDomains(userEmail));
+		this.jsonSuccess();
 	}
 	
 	/**
