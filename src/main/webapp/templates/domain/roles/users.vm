@@ -8,10 +8,10 @@
 #@body()
 #domainSidebar()
 
-<div class="left">
+<div id="users-domain" class="left">
     <section id="main-intern">
         <h3>Usuários no domínio</h3>
-        
+
         <nav>
             <ul class="two-column-shortcuts">
                 #if ( $auth.ListUsers )
@@ -28,77 +28,19 @@
 
         <hr />
 
-        <section id="active">
+        <section id="active-users">
             <h4>Ativos</h4>
             <img class="loader" src="/img/ajax-loader.gif" />
-            <table class="has-users">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th>Perfis</th>
-                    </tr>
-                </thead>
-                <tbody>
-                #foreach( $user in $users )
-                    <tr data-user="$user.userId">
-                        <td>$user.name</td>
-                        <td class="second">$user.userId</td>
-                        <td>$user.roles</td>
-                    </tr>
-                #end
-                </tbody>
-            </table>
         </section>
 
-		#if ($auth.AcceptRequestUser || $auth.RejectRequestUser) 
-        <section id="pending">
+        <section id="pending-users" data-accept="$auth.AcceptRequestUser" data-reject="$auth.RejectRequestUser">
             <h4>Pendentes</h4>
-            #if ( $pending.size() > 0 )
             <img class="loader" src="/img/ajax-loader.gif" />
-            <table class="has-users">
-            #else
-            <table>
-            #end
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>Email</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                #if ( $pending.size() > 0 )
-                    #foreach( $user in $pending )
-                    <tr data-user="$user.userId">
-                        <td>$user.Name</td>
-                        <td>$user.UserId</td>
-                       	#if ($auth.AcceptRequestUser) 
-                        <td><a href="/user/request/accept/$user.userId" data-type="url" data-confirm="Desejas realmente aceitar a requisição?">Aceitar</a></td>
-                        #else
-                        <td></td>
-                        #end
-                        #if ($auth.RejectRequestUser)
-                        <td><a href="/user/request/reject/$user.userId" data-type="url" data-confirm="Desejas realmente rejeitar a requisição?">Rejeitar</a></td>
-                        #else
-                        <td></td>
-                        #end
-                    </tr>
-                    #end
-                #else
-                    <tr>
-                        <td colspan="4">Nenhum usuário pendente</td>
-                    </tr>
-                #end
-                </tbody>
-            </table>
         </section>
-        #end
     </section>
 </div>
 #end
 
 #@scripts()
-    <script src="/js/roles.js"></script>
+    <script src="/js/app/roles/main.js"></script>
 #end

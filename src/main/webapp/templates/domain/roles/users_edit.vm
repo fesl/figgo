@@ -8,34 +8,13 @@
 #@body()
 #domainSidebar()
 <div class="left">
-	<section id="main-intern">
+	<section id="main-intern" class="roles-users" data-user="$user.userId">
 		<h3>Usuários e suas permissões</h3>
-
 		<img class="loader" src="/img/ajax-loader.gif" />
-        <table id="roles-users" class="has-users">
-            <thead>
-                <tr>
-                    <th>Usuário</th>
-                #foreach( $role in $roles ) 
-                    <th>$i18n.get($role.name)</a></th>
-                #end
-                </tr>
-            </thead>
-            <tbody>
-            #foreach( $user in $users )
-                <tr data-user="${user.userId}">
-                    <td>$user.userId</td>
-                #foreach( $role in $roles )
-                    <td><input id="${role.name}" data-role="${role.name}" data-user="${user.userId}" type="checkbox" #if( $role.containsUser($user.userId) ) checked #end /></td>
-                #end
-                </tr>
-            #end
-            </tbody>
-        </table>
     </section>
 </div>
 #end
 
 #@scripts()
-	<script src="/js/roles.js"></script>
+	<script src="/js/app/roles/main.js"></script>
 #end

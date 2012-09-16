@@ -1,0 +1,20 @@
+<table>
+  <thead>
+    <tr>
+      <th>Usuário</th>
+    <% _.each(roles, function(role) { %>
+      <th><%- i18n(role.name) %></a></th>
+    <% }); %>
+    </tr>
+  </thead>
+  <tbody>
+  <% _.each(users, function(user) { %>
+    <tr>
+      <td><%- user.name %></td>
+    <% _.each(roles, function(role) { %>
+      <td><input data-role="<%- role.name %>" data-user="<%- user.userId %>" type="checkbox" <%= hasRole(role, user) %>/></td>
+    <% }); %>
+    </tr>
+  <% }); %>
+  </tbody>
+</table>

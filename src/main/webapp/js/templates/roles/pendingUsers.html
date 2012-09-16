@@ -1,0 +1,29 @@
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% if (users.length) { %>
+    <% _.each(users, function(user) { %>
+      <tr>
+        <td><%- user.name %></td>
+        <% if (canAccept) { %>
+        <td><a href="/user/request/accept/<%- user.userId %>" data-type="url" data-confirm="Desejas realmente aceitar a requisição?">Aceitar</a></td>
+        <% } %>
+        <% if (canAccept) { %>
+        <td><a href="/user/request/reject/<%- user.userId %>" data-type="url" data-confirm="Desejas realmente rejeitar a requisição?">Rejeitar</a></td>
+        <% } %>
+      </tr>
+    <% }); %>
+  <% } else { %>
+    <tr>
+      <td colspan="4">Nenhum usuário pendente</td>
+    </tr>
+  <% } %>
+  </tbody>
+</table>

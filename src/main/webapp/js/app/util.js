@@ -47,12 +47,3 @@ define(function()  {
 
 //     return ret.join('').replace(/[^-A-Za-z0-9]+/g, '-').toLowerCase();
 // }
-
-// $(document).delegate('a[data-type="url"]', 'click', function(e) {
-//     e.preventDefault();
-//     if (confirm(this.dataset['confirm'])) {
-//         var form = $('<form method="post" action="' + this.href + '"></form>');
-//         form.appendTo('body');
-//         form.submit();
-//     }
-// });

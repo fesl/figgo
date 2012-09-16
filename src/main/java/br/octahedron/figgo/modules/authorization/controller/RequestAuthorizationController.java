@@ -53,7 +53,16 @@ public class RequestAuthorizationController extends Controller {
 		this.out("pending", this.authorizationManager.getNonActiveUsers(this.subDomain()));
 		this.success(LIST_USER_TPL);
 	}
-
+	
+	/**
+	 * GET /users.json
+	 */
+	public void getListUsersJSON() {
+		// TODO verificar se é subdomínio válido
+		this.out("active", this.authorizationManager.getActiveUsers(this.subDomain()));
+		this.out("pending", this.authorizationManager.getNonActiveUsers(this.subDomain()));
+		this.jsonSuccess();
+	}
 
 	/**
 	 * POST /user/request

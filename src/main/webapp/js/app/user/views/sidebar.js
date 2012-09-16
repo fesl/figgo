@@ -17,8 +17,8 @@ define(['plugins/events', 'plugins/showdown', 'plugins/template', 'app/user/api'
     this._getUserDomains();
 
     // TODO: rename these events names (suggestions?)
-    Events.on('userapi:getUserDomains', this._getDomainsInfo, this);
-    Events.on('domainapi:getDomainsInfo', this.renderDomains, this);
+    Events.on('UserAPI:getUserDomains', this._getDomainsInfo, this);
+    Events.on('DomainAPI:getDomainsInfo', this.renderDomains, this);
   };
 
   Sidebar.prototype.renderDescription = function() {

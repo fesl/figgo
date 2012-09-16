@@ -1,0 +1,24 @@
+<table>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Papéis</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% if (users.length) { %>
+    <% _.each(users, function(user) { %>
+      <tr>
+        <td><%- user.name %></td>
+        <td class="second"><%- user.userId %></td>
+        <td>???</td>
+      </tr>
+    <% }); %>
+  <% } else { %>
+    <tr>
+      <td>Nenhum usuário ativo</td>
+    </tr>
+  <% } %>
+  </tbody>
+</table>

@@ -62,6 +62,14 @@ public class AuthorizationController extends Controller {
 		this.out("activities", this.authorizationManager.getActivities());
 		this.success(LIST_ROLES_TPL);
 	}
+	
+	/**
+	 * /roles/json
+	 */
+	public void getListRolesJSON() {
+		this.out("roles", this.authorizationManager.getRoles());
+		this.jsonSuccess();
+	}
 
 	/**
 	 * Creates a new role
@@ -166,4 +174,5 @@ public class AuthorizationController extends Controller {
 		this.namespaceManager.changeToPreviousNamespace();
 		this.success(EDIT_USERS_ROLES_TPL);
 	}
+	
 }
