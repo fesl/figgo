@@ -1,0 +1,9 @@
+<% if (providers.length) { %>
+  <ul class="unstyled">
+  <% _.each(providers, function(provider) { %>
+    <li data-user="<%- provider.userId %>"><span><%- provider.name %></span><% if (provider.userId !== me) { %> (<a data-type="url" data-confirm="Você tem certeza que deseja contratar esse serviço?" href="/service/<%- service %>/contract/<%- provider.userId %>">contratar</a>)<% } %></li>
+  <% }); %>
+  </ul>
+<% } else { %>
+  <p class="notice">Nenhum prestador deste serviço até o momento.</p>
+<% } %>

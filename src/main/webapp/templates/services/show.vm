@@ -10,8 +10,8 @@
 #domainSidebar()
 
 <div class="left">
-    <section id="main-intern">
-        <section id="service" data-id="$service.id">
+    <section id="main-intern" class="service-details" data-service="$service.id" data-user="$user.userId" data-username="$user.name">
+        <section>
             <h3>$!{service.name}</h3>
             <small><a href="/services/$service.categoryId">$!{service.category}</a></small>
             <p>$!{service.description}</p>
@@ -31,26 +31,17 @@
             <h3>
                 Prestadores
                 #if ( $service.hasProvider($user.userId) )
-                <img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />
+                <img class="thumbs-up" data-service="$service.id" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />
                 #else
-                <img class="thumbs-up not" src="/img/thumbs-up.png" title="Não faço!" alt="Não faço!" />
+                <img class="thumbs-up not" data-service="$service.id" src="/img/thumbs-up.png" title="Não faço!" alt="Não faço!" />
                 #end
             </h3>
-            <ul class="contracts unstyled" data-username="$user.name" data-userid="$user.userId">
-            #foreach( $provider in $service.providers )
-                <li data-user="$provider"><span>$provider</span> <a href="/service/$service.id/contract/$provider">contratar</a></li>
-            #end
-            </ul>
-            #if( $service.providers.size() > 0 )
             <img class="loader" src="/img/ajax-loader.gif" />
-            #else
-            <p class="notice">Nenhum prestador deste serviço até o momento.</p>
-            #end
         </section>
     </section>
 </div>
 #end
 
 #@scripts()
-    <script src="/js/services.js"></script>
+    <script src="/js/app/service/main.js"></script>
 #end

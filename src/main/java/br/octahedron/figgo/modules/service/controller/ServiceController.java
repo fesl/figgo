@@ -324,9 +324,9 @@ public class ServiceController extends Controller {
 			Validator contractValidator = ServiceValidators.getContractValidator();
 			if (contractValidator.isValid()) {
 				this.servicesManager.requestContract(this.in("id"), this.currentUser(), this.in("provider", safeString()));
-				this.jsonSuccess();
+				this.redirect(SHOW_CONTRACTS_URL);
 			} else {
-				this.jsonInvalid();
+				this.invalid(SHOW_SERVICE_TPL);
 			}
 		} catch (NotServiceProviderException e) {
 			this.out("exception", i18n.get(this.locales(), e.getMessage()));
@@ -346,5 +346,18 @@ public class ServiceController extends Controller {
 	public void getSearchCategory() {
 		this.out("result", servicesManager.getCategoriesStartingWith(this.in("term", safeString())));
 		jsonSuccess();
+	}
+	
+	/**
+	 * /service/{id}/providers.json
+	 */
+	public void getProvidersJSON() {
+		try {
+			Service service = this.servicesManager.getService(this.in("id"));
+			this.out("providers", service.getProviders());
+			this.jsonSuccess();
+		} catch (DataDoesNotExistsException e) {
+			this.jsonInvalid();
+		}
 	}
 }

@@ -8,7 +8,7 @@ $(function() {
             source: function( request, response ) {
                         var term = request.term;
                         if ( term in cache ) {
-                            response(  
+                            response(
                                     $.map( cache[term].result, function( item ) {
                                         return {
                                             label: item.name,
@@ -18,12 +18,12 @@ $(function() {
                             );
                             return;
                         }
-        
-                        lastXhr = $.getJSON( "/services/category/search/" + term.normalize(), 
+
+                        lastXhr = $.getJSON( "/services/category/search/" + term.normalize(),
                             function( data, status, xhr ) {
                             cache[ term ] = data;
                             if ( xhr === lastXhr ) {
-                                response( 
+                                response(
                                     $.map( data.result, function( item ) {
                                         return {
                                             label: item.name,
@@ -42,7 +42,7 @@ $(function() {
 			$providers = $("#providers > ul"),
 			$service = $("#service"),
 			$notice = $(".notice");
-		
+
 		if ($this.hasClass('not')) {
 			$.ajax({
 				type: "POST",
@@ -72,7 +72,7 @@ $(function() {
 	$(".service").find(".thumbs-up").bind('click', function() {
 		var $this 	 = $(this),
 			$service = $this.closest('.service');
-		
+
 		if ($this.hasClass('not')) {
 			$.ajax({
 				type: "POST",
@@ -93,8 +93,9 @@ $(function() {
 			});
 		}
 	});
-	
-	$("#providers > ul").delegate('a', 'click', function(e) {
+
+	// used to contract a service inside service view
+    $("#providers > ul").delegate('a', 'click', function(e) {
 		var $providers = $("#providers > ul");
 		$.ajax({
 			type: "POST",
@@ -104,8 +105,9 @@ $(function() {
 		});
 		e.preventDefault();
 	});
-	
-	var users = $("#providers > ul").find('li').map(function() { return this.dataset['user'] }).get();
+
+	// display users names in service view
+    var users = $("#providers > ul").find('li').map(function() { return this.dataset['user'] }).get();
 	if (users.length) {
 		var $providers = $("#providers > ul");
 		$.get('/users/search/', {'users': users.join(",")}, function(data) {
@@ -123,6 +125,7 @@ $(function() {
 		});
 	}
 
+    // display users names in contract view
 	users = $("dd.provider").map(function() { return this.textContent }).get();
 	if (users.length) {
 		var $providers = $("dd.provider");

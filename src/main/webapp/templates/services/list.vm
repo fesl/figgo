@@ -21,19 +21,19 @@
         </nav>
 
         <hr />
-        
+
         <section>
             <h3>Serviços #if ( $auth.NewService )<small><a href="/services/new">Criar novo</a></small>#end</h3>
             #if ( $services.size() > 0 )
             <ul class="unstyled">
                 #foreach( $service in $services )
-                <li class="service" data-id="${service.id}">
+                <li class="service">
                     <header>
                         <h4><a href="/service/${service.id}">$service.name</a></h4>
                         #if ( $service.hasProvider($user.userId) )
-                        <img class="thumbs-up" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />
-                        #else 
-                        <img class="thumbs-up not" src="/img/thumbs-up.png" title="Não faço!" alt="Não faço!" />
+                        <img class="thumbs-up" data-service="${service.id}" src="/img/thumbs-up.png" title="Eu faço!" alt="Eu faço!" />
+                        #else
+                        <img class="thumbs-up not" data-service="${service.id}" src="/img/thumbs-up.png" title="Não faço!" alt="Não faço!" />
                         #end
                     </header>
                     <p>$service.getShortDescription()</p>
@@ -51,7 +51,7 @@
     </section>
 </div>
 #end
-    
+
 #@scripts()
-    <script src="/js/services.js"></script>
+    <script src="/js/app/service/main.js"></script>
 #end
