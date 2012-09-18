@@ -572,7 +572,7 @@ ul.pills > li {
   border-right: 1px solid #c1c1c1; }
   ul.pills > li:last-child {
     border-right: none; }
-  ul.pills > li.active > a {
+  ul.pills > li .selected {
     color: #444444;
     font-weight: bold; }
 

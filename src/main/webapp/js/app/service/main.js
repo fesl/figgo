@@ -3,7 +3,7 @@ require(['jquery', 'app/service/views/contracts', 'app/service/views/newService'
       NewService = require('app/service/views/newService'),
       Service    = require('app/service/views/service'),
       ThumbsUp   = require('app/service/views/thumbsUp'),
-      $contracts = $('.contracts'),
+      $contracts = $('#contracts'),
       $service   = $('.service-details'),
       $newService = $('.new-service'),
       $thumbsUp  = $('.thumbs-up');

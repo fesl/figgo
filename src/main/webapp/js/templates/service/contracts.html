@@ -1,0 +1,129 @@
+<ul id="services-type" class="inline pills">
+  <li><a class="selected" href="#" id="viewOpened">Em aberto</a></li>
+  <li><a href="#" id="viewProvided">Prestados</a></li>
+  <li><a href="#" id="viewHired">Contratados</a></li>
+</ul>
+
+<div id="opened" class="pill-container">
+  <section>
+    <h4>Prestados</h3>
+    <% if (providedOpened.length) { %>
+    <ul class="unstyled contracts">
+      <% _.each(providedOpened, function(contract) { %>
+      <li class="service">
+        <header>
+          <a href="/service/<%- contract.service.id %>"><h4><%- contract.service.name %></h4></a>
+        </header>
+        <dl>
+          <dt>Contratante</dt>
+          <dd class="provider"><%- users[contract.contractor].name %></dd>
+          <dt>Status</dt>
+          <dd><%= i18n(contract.status) %></dd>
+          <% if (contract.status === 'COMPLETED') { %>
+          <dt>Pago?</dt>
+          <dd><%= i18n(contract.paid) %></dd>
+          <% } %>
+        </dl>
+        <footer>
+          <%- formatMoney(contract.amount) %>
+          <span class="contract"><a href="/services/contract/<%- contract.id %>/edit">Editar</a></span>
+        </footer>
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <p>Nenhum serviço prestado em aberto até o momento.</p>
+    <% } %>
+  </section>
+
+  <section>
+    <h4>Contratados</h3>
+    <% if (hiredOpened.length) { %>
+    <ul class="unstyled contracts">
+      <% _.each(hiredOpened, function(contract) { %>
+      <li class="service">
+        <header>
+          <a href="/service/<%- contract.service.id %>"><h4><%- contract.service.name %></h4></a>
+        </header>
+        <dl>
+          <dt>Prestador</dt>
+          <dd class="provider"><%- users[contract.provider].name %></dd>
+          <dt>Status</dt>
+          <dd><%= i18n(contract.status) %></dd>
+          <% if (contract.status === 'COMPLETED') { %>
+          <dt>Pago?</dt>
+          <dd><%= i18n(contract.paid) %></dd>
+          <% } %>
+        </dl>
+        <footer>
+          <%- formatMoney(contract.amount) %>
+          <span class="contract"><a class="inside-link" data-type="url" data-confirm="Você tem certeza que deseja pagar?" href="/services/contract/<%- contract.id %>/pay">Pagar</a></span>
+        </footer>
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <p>Nenhum serviço contratado em aberto até o momento.</p>
+    <% } %>
+  </section>
+</div> <!-- #opened -->
+
+<div id="provided" class="pill-container">
+  <section>
+    <% if (provided.length) { %>
+    <ul class="unstyled">
+      <% _.each(provided, function(contract) { %>
+      <li class="service">
+        <header>
+          <a href="/service/<%- contract.service.id %>"><h4><%- contract.service.name %></h4></a>
+        </header>
+        <dl>
+          <dt>Contratante</dt>
+          <dd class="provider"><%- users[contract.contractor].name %></dd>
+          <dt>Status</dt>
+          <dd><%= i18n(contract.status) %></dd>
+          <dt>Pago?</dt>
+          <dd><%= i18n(contract.paid) %></dd>
+        </dl>
+        <footer>
+          <%- formatMoney(contract.amount) %>
+          <span class="contract"><a href="/services/contract/<%- contract.id %>/edit">Editar</a></span>
+        </footer>
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <p>Nenhum serviço prestado concluído até o momento.</p>
+    <% } %>
+  </section>
+</div> <!-- #provided -->
+
+<div id="hired" class="pill-container">
+  <section>
+    <% if (hired.length) { %>
+    <ul class="unstyled contracts">
+      <% _.each(hired, function(contract) { %>
+      <li class="service">
+        <header>
+          <a href="/service/<%- contract.service.id %>"><h4><%- contract.service.name %></h4></a>
+        </header>
+        <dl>
+          <dt>Prestador</dt>
+          <dd class="provider"><%- users[contract.provider].name %></dd>
+          <dt>Status</dt>
+          <dd><%= i18n(contract.status) %></dd>
+          <dt>Pago?</dt>
+          <dd><%= i18n(contract.paid) %></dd>
+        </dl>
+        <footer>
+          <%- formatMoney(contract.amount) %>
+          <span class="contract"><a href="/services/contract/<%- contract.id %>/edit">Editar</a></span>
+        </footer>
+      </li>
+      <% }); %>
+    </ul>
+    <% } else { %>
+    <p>Nenhum serviço contratado concluído até o momento.</p>
+    <% } %>
+  </section>
+</div> <!-- #hired -->

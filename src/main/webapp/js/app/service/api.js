@@ -14,6 +14,18 @@ define(['jquery', 'lodash', 'plugins/events'], function() {
       $.get('/service/'+service+'/providers', function(data) {
         Events.trigger('ServiceAPI:getProviders', data.providers);
       });
+    },
+
+    getContracts: function() {
+      $.get('/services/contracts.json', function(data) {
+        Events.trigger('ServiceAPI:getContracts', data);
+      });
+    },
+
+    searchCategory: function(term) {
+      $.get( "/services/category/search/" + term, function( data, status, xhr ) {
+        Events.trigger('ServiceAPI:searchCategory', term, data, xhr);
+      });
     }
   };
 

@@ -191,11 +191,18 @@ public class ServiceController extends Controller {
 	 * Shows all contracts (opened, hired and provided) for current user
 	 */
 	public void getShowContracts() {
-		this.out("providedOpenedContracts", this.servicesManager.getOpenedProvidedContracts(this.currentUser()));
-		this.out("hiredOpenedContracts", this.servicesManager.getOpenedHiredContracts(this.currentUser()));
-		this.out("hiredContracts", this.servicesManager.getHiredContracts(this.currentUser()));
-		this.out("providedContracts", this.servicesManager.getProvidedContracts(this.currentUser()));
 		this.success(LIST_CONTRACTS_TPL);
+	}
+	
+	/**
+	 * Shows all contracts (opened, hired and provided) for current user
+	 */
+	public void getShowContractsJSON() {
+		this.out("providedOpened", this.servicesManager.getOpenedProvidedContracts(this.currentUser()));
+		this.out("hiredOpened", this.servicesManager.getOpenedHiredContracts(this.currentUser()));
+		this.out("hired", this.servicesManager.getHiredContracts(this.currentUser()));
+		this.out("provided", this.servicesManager.getProvidedContracts(this.currentUser()));
+		this.jsonSuccess();
 	}
 
 	/**

@@ -15,17 +15,11 @@ define(['jquery', 'app/service/api', 'app/user/api', 'plugins/events', 'plugins/
   };
 
   Service.prototype.init = function() {
-    this.attachEvents();
     this._getProviders();
 
     Events.on('ServiceAPI:updateProvider', this._updateProvidersList, this);
     Events.on('ServiceAPI:getProviders', this._getUsersDetails, this);
     Events.on('UserAPI:getUsersDetails', this.renderProvidersList, this);
-  };
-
-  Service.prototype.attachEvents = function(e, users) {
-    var updateProvider = $.proxy(this.updateProvider, this);
-    this.$el.on('click', updateProvider);
   };
 
   Service.prototype.renderProvidersList = function(e, providers) {
