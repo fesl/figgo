@@ -1,8 +1,8 @@
-require(['jquery', 'app/service/views/contracts', 'app/service/views/newService', 'app/service/views/service', 'app/service/views/thumbsUp'], function() {
-  var Contracts  = require('app/service/views/contracts'),
-      NewService = require('app/service/views/newService'),
-      Service    = require('app/service/views/service'),
-      ThumbsUp   = require('app/service/views/thumbsUp'),
+define(function(require) {
+  var Contracts  = require('services/views/contracts'),
+      NewService = require('services/views/newService'),
+      Service    = require('services/views/service'),
+      ThumbsUp   = require('services/views/thumbsUp'),
       $contracts = $('#contracts'),
       $service   = $('.service-details'),
       $newService = $('.new-service'),
