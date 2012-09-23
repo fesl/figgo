@@ -12,7 +12,5 @@
     <section id="main-intern" class="index">$!domain.description</section>
 </div>
 #end
-    
-#@scripts()
-    <script defer src="/js/domain.js"></script>
-#end
+
+#scripts()

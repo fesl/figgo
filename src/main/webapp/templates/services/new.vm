@@ -1,4 +1,5 @@
 #set( $title = "Figgo - $!{domain.Name} - Serviços" )
+#set( $module = "services" )
 #set( $currentModule = "SERVICES" )
 #parse( "templates/intern.vm" )
 
@@ -49,6 +50,4 @@
 </div>
 #end
 
-#@scripts()
-    <script src="/js/app/service/main.js"></script>
-#end
+#scripts()

@@ -1,4 +1,5 @@
 #set( $title = "Figgo - Minha conta" )
+#set( $module = "user" )
 #parse( "templates/intern.vm" )
 
 #head()
@@ -80,6 +81,4 @@
 </div>
 #end
 
-#@scripts()
-    <script defer src="/js/app/user/main.js" />
-#end
+#scripts()

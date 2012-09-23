@@ -1,4 +1,5 @@
 #set( $title = "Figgo - $!{domain.Name} - Serviços" )
+#set( $module = "services" )
 #set( $currentModule = "SERVICES" )
 #parse( "templates/intern.vm" )
 
@@ -20,7 +21,7 @@
         </nav>
 
         <hr />
-        
+
         <section>
             <h3>Disponíveis</h3>
             #if ( $services.size() > 0 )
@@ -47,6 +48,4 @@
 </div>
 #end
 
-#@scripts()
-    <script src="/js/services.js"></script>
-#end
+#scripts()

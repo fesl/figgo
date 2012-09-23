@@ -1,4 +1,5 @@
 #set( $title = "Figgo - Dashboard" )
+#set( $module = "user" )
 #parse( "templates/intern.vm" )
 
 #head()
@@ -64,6 +65,4 @@
 </div>
 #end
 
-#@scripts()
-    <script src="/js/app/user/main.js"></script>
-#end
+#scripts()

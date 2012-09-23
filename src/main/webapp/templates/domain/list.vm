@@ -1,4 +1,5 @@
 #set( $title = "Figgo - Coletivos" )
+#set( $module = "domain" )
 #parse( "templates/intern.vm" )
 
 #head()
@@ -45,6 +46,4 @@
 </div>
 #end
 
-#@scripts()
-    <script src="/js/app/domain/main.js"></script>
-#end
+#scripts()

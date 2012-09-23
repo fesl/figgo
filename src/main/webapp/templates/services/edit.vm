@@ -1,4 +1,5 @@
 #set( $title = "Figgo - $!{domain.Name} - Serviços" )
+#set( $module = "services" )
 #set( $currentModule = "SERVICES" )
 #parse( "templates/intern.vm" )
 
@@ -45,8 +46,5 @@
     </section>
 </div>
 #end
-    
-#@scripts()
-    <script src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
-    <script src="/js/services.js"></script>
-#end
+
+#scripts()

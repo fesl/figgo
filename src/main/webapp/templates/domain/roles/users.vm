@@ -1,4 +1,5 @@
 #set( $title = "Figgo - Usuários do domínio" )
+#set( $module = "roles" )
 #parse( "templates/intern.vm" )
 
 #head()
@@ -41,6 +42,4 @@
 </div>
 #end
 
-#@scripts()
-    <script src="/js/app/roles/main.js"></script>
-#end
+#scripts()

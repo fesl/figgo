@@ -1,4 +1,5 @@
 #set( $title = "Figgo - Permissões" )
+#set( $module = "roles" )
 #parse( "templates/intern.vm" )
 
 #head()
@@ -49,6 +50,4 @@
 </div>
 #end
 
-#@scripts()
-    <script defer src="/js/app/roles/main.js"></script>
-#end
+#scripts()
