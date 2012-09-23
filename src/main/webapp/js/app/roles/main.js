@@ -1,7 +1,7 @@
-require(['jquery', 'app/roles/views/users', 'app/roles/views/rolesUsers', 'app/roles/views/roles'], function() {
-  var Users      = require('app/roles/views/users'),
-      RolesUsers = require('app/roles/views/rolesUsers'),
-      Roles      = require('app/roles/views/roles'),
+define(function(require) {
+  var Users      = require('roles/views/users'),
+      RolesUsers = require('roles/views/rolesUsers'),
+      Roles      = require('roles/views/roles'),
       $users     = $('#users-domain'),
       $rolesUsers = $('.roles-users'),
       $roles      = $('.roles');

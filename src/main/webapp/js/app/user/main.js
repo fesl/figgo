@@ -1,7 +1,7 @@
-require(['jquery', 'app/user/views/sidebar', 'app/user/views/search', 'app/user/views/preferences'], function() {
-  var Sidebar      = require('app/user/views/sidebar'),
-      Search       = require('app/user/views/search'),
-      Preferences  = require('app/user/views/preferences'),
+define(function(require) {
+  var Sidebar      = require('user/views/sidebar'),
+      Search       = require('user/views/search'),
+      Preferences  = require('user/views/preferences'),
       $sidebar     = $('#user-sidebar'),
       $search      = $('.user-list'),
       $preferences = $('#user-preferences');

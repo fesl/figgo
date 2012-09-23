@@ -1,7 +1,7 @@
-define(['jquery', 'app/roles/api'], function() {
+define(['jquery', 'roles/api'], function() {
   'use strict';
 
-  var RolesAPI = require('app/roles/api');
+  var RolesAPI = require('roles/api');
 
   var Roles = function(options) {
     this.$el = options.el;

@@ -1,4 +1,4 @@
-define(['plugins/showdown'], function() {
+define(['jquery', 'plugins/showdown'], function() {
   'use strict';
 
   var Showdown = require('plugins/showdown');

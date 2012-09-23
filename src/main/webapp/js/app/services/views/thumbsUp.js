@@ -1,7 +1,7 @@
-define(['jquery', 'app/service/api', 'plugins/events'], function() {
+define(['jquery', 'services/api', 'plugins/events'], function() {
   'use strict';
 
-  var ServiceAPI = require('app/service/api'),
+  var ServiceAPI = require('services/api'),
       Events     = require('plugins/events');
 
   var ThumbsUp = function(options) {

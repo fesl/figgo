@@ -1,7 +1,7 @@
-define(['jquery', 'plugins/jquery-ui.custom.min', 'app/service/api', 'plugins/events'], function() {
+define(['jquery', 'plugins/jquery-ui.custom.min', 'services/api', 'plugins/events'], function() {
   'use strict';
 
-  var ServiceAPI = require('app/service/api'),
+  var ServiceAPI = require('services/api'),
       Events     = require('plugins/events');
 
   var NewService = function(options) {

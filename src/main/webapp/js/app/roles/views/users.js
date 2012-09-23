@@ -1,9 +1,9 @@
-define(['jquery', 'lodash', 'app/roles/api', 'app/user/api', 'plugins/template'], function() {
+define(['jquery', 'lodash', 'roles/api', 'user/api', 'plugins/template'], function() {
   'use strict';
 
   var Events = require('plugins/events'),
-      RolesAPI = require('app/roles/api'),
-      UserAPI  = require('app/user/api'),
+      RolesAPI = require('roles/api'),
+      UserAPI  = require('user/api'),
       TemplateManager = require('plugins/template');
 
   var Users = function(options) {

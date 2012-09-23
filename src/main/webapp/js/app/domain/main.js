@@ -1,6 +1,6 @@
-require(['jquery', 'app/domain/views/search', 'app/domain/views/preferences'], function() {
-  var Search       = require('app/domain/views/search'),
-      Preferences  = require('app/domain/views/preferences'),
+define(function(require) {
+  var Search       = require('domain/views/search'),
+      Preferences  = require('domain/views/preferences'),
       $search      = $('.domain-list'),
       $preferences = $('#domain-preferences');
 

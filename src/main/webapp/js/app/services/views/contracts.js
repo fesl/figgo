@@ -1,9 +1,9 @@
-define(['jquery', 'app/service/api', 'app/user/api', 'app/util', 'plugins/events', 'plugins/accounting', 'plugins/template'], function() {
+define(['jquery', 'services/api', 'user/api', 'util', 'plugins/events', 'plugins/accounting', 'plugins/template'], function() {
   'use strict';
 
-  var ServiceAPI = require('app/service/api'),
-      UserAPI    = require('app/user/api'),
-      Util       = require('app/util'),
+  var ServiceAPI = require('services/api'),
+      UserAPI    = require('user/api'),
+      Util       = require('util'),
       Events     = require('plugins/events'),
       Accounting = require('plugins/accounting'),
       TemplateManager = require('plugins/template');

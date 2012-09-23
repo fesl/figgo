@@ -21,7 +21,8 @@ require.config({
     'user': 'app/user',
     'services': 'app/services',
     'roles': 'app/roles',
-    'bank': 'app/bank'
+    'bank': 'app/bank',
+    'util': 'app/util'
   }
 });
 

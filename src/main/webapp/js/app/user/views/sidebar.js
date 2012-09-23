@@ -1,11 +1,11 @@
-define(['plugins/events', 'plugins/showdown', 'plugins/template', 'app/user/api', 'app/domain/api', 'app/util'], function() {
+define(['jquery', 'plugins/events', 'plugins/showdown', 'plugins/template', 'user/api', 'domain/api', 'util'], function() {
   'use strict';
 
   var Events    = require('plugins/events'),
       Showdown  = require('plugins/showdown'),
-      UserAPI   = require('app/user/api'),
-      DomainAPI = require('app/domain/api'),
-      Util      = require('app/util'),
+      UserAPI   = require('user/api'),
+      DomainAPI = require('domain/api'),
+      Util      = require('util'),
       TemplateManager = require('plugins/template');
 
   var Sidebar = function(options) {

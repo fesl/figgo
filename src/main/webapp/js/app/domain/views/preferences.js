@@ -1,8 +1,8 @@
-define(['plugins/showdown', 'app/domain/api'], function() {
+define(['plugins/showdown', 'domain/api'], function() {
   'use strict';
 
   var Showdown = require('plugins/showdown'),
-      DomainAPI = require('app/domain/api');
+      DomainAPI = require('domain/api');
 
   var Preferences = function(options) {
     this.$el = options.el;
