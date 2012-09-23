@@ -2,10 +2,10 @@
     <link rel="shortcut icon" type="image/x-icon" href="/img/favicon.png" />
     <link rel="stylesheet" href="/css/style.css">
     $!bodyContent
-    <script src="/js/modernizr.js"></script>
-    <script data-main="/js/config" src="/js/require.js"></script>
+    <script src="/js/vendor/modernizr.js"></script>
+    <script data-main="/js/main" src="/js/vendor/require.js"></script>
 </head>
-<body>
+<body data-module="$module">
 #end
 
 #macro( simpleHeader )
@@ -113,7 +113,7 @@
 #end
 
 #macro( public_body )
-<body>
+<body data-module="$module">
     <header>
         <div id="header-top">
             <div class="wrapper">

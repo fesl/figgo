@@ -14,13 +14,25 @@ require.config({
   },
 
   paths: {
-    jquery: 'jquery',
-    lodash: 'lodash',
-    modernizr: 'modernizr',
+    'jquery': 'vendor/jquery',
+    'lodash': 'vendor/lodash',
+    'modernizr': 'vendor/modernizr',
+    'domain': 'app/domain',
+    'user': 'app/user',
+    'services': 'app/services',
+    'roles': 'app/roles',
+    'bank': 'app/bank'
   }
 });
 
 define(['jquery'], function() {
+  var module;
+  // every page refers to its module and every module has its own javascript main code
+  if (module = $(document.body).data('module'))  {
+    require([module + '/main']);
+  }
+
+  // this must go somewhere else
   $(document).on('click', 'a[data-type=url]', function(e) {
     e.preventDefault();
     if (confirm(this.dataset['confirm'])) {
