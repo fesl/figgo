@@ -1,4 +1,5 @@
 #set( $title = "Figgo - $!{domain.Name} - Banco" )
+#set( $module = "bank" )
 #set( $currentModule = "BANK" )
 #parse( "templates/intern.vm" )
 
@@ -10,7 +11,7 @@
 #domainSidebar()
 
 <div class="left">
-    <section id="main-intern">
+    <section id="main-intern" class="my-account">
         <h3>Acesso rápido</h3>
         <nav>
             <ul class="two-column-shortcuts">
@@ -37,54 +38,9 @@
         <hr />
 
         <h3>Minha conta</h3>
-        #if ( $transactions.size() > 0 )
         <img class="loader" src="/img/ajax-loader.gif" />
-        #end
-        <table class="bank">
-            <thead>
-                <tr>
-                    <th>Data</th>
-                    <th>Origem/Destino</th>
-                    <th>Comentário</th>
-                    <th>Valor</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <td colspan="3" class="balance">SALDO</td>
-                #if( $balance > 0 )
-                <td class="blue">$currencySymbol $numberFormat.format($balance)</td>
-                #elseif( $balance < 0 )
-                <td class="red">-$currencySymbol $numberFormat.format($balance)</td>
-                #else
-                <td>$currencySymbol $numberFormat.format($balance)</td>
-                #end
-            </tfoot>
-            <tbody>
-            #if( $transactions.size() > 0 )
-                #foreach( $transaction in $transactions )
-                    #set( $index = $transactions.size() - $velocityCount )
-                <tr>
-                    <td>$dateFormat.format($transactions.get($index).Date)</td>
-                    #if( $transactions.get($index).AccountDest == $user.userId )
-                    <td class="user" data-user="$transactions.get($index).AccountOrig">$transactions.get($index).AccountOrig</td>
-                    <td>$!{transactions.get($index).Comment}</td>
-                    <td class="blue">$numberFormat.format($transactions.get($index).Amount)</td>
-                    #else
-                    <td class="user" data-user="$transactions.get($index).AccountDest">$transactions.get($index).AccountDest</td>
-                    <td>$!{transactions.get($index).Comment}</td>
-                    <td class="red">-$numberFormat.format($transactions.get($index).Amount)</td>
-                    #end
-                </tr>
-                #end
-            #else
-                <tr><td colspan="4">Nenhuma transação até o momento.</td></tr>
-            #end
-            </tbody>
-        </table>
     </section>
 </div>
 #end
 
-#@scripts()
-    <script defer src="/js/bank.js"></script>
-#end
+#scripts()

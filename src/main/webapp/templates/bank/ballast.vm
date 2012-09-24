@@ -1,4 +1,5 @@
 #set( $title = "Figgo - ${domain.Name} - Banco - Admin" )
+#set( $module = "bank" )
 #parse( "templates/intern.vm" )
 
 #@head()
@@ -59,8 +60,5 @@
     </section>
 </div>
 #end
-    
-#@scripts()
-    <script defer src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
-    <script defer src="/js/bank.js"></script>
-#end
+
+#scripts()

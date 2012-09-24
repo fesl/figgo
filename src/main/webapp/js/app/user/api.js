@@ -21,6 +21,12 @@ define(['jquery', 'lodash', 'plugins/events'], function() {
       $.get('/users/search', {users: users}, function(data) {
         Events.trigger(options.event, data.result);
       });
+    },
+
+    searchUser: function(term) {
+      $.get( "/user/search/" + term, function( data, status, xhr ) {
+        Events.trigger('UserAPI:searchUser', term, data, xhr);
+      });
     }
   };
 

@@ -12,9 +12,33 @@ define(['lodash'], function()  {
     return result;
   }
 
+  // extract this to i10n
+  function formatDate(milliseconds) {
+    var date = new Date(milliseconds),
+        ddMMyyyy, hhmmss, day, month, hour, minutes, seconds;
+
+    day = _prefixTimeMagnitude(date.getDate());
+    month = _prefixTimeMagnitude(date.getMonth());
+    ddMMyyyy = day + '/' + month + '/' + date.getFullYear();
+    hour = _prefixTimeMagnitude(date.getHours());
+    minutes = _prefixTimeMagnitude(date.getMinutes());
+    seconds = _prefixTimeMagnitude(date.getSeconds());
+    hhmmss = hour + ':' + minutes + ':' + seconds;
+
+    return ddMMyyyy + ' ' + hhmmss;
+  }
+
+  function _prefixTimeMagnitude(magnitude) {
+    if (magnitude < 10) {
+      return '0' + magnitude
+    }
+    return magnitude;
+  }
+
   return {
     getApplicationDomain: getApplicationDomain,
-    arrayToObject: arrayToObject
+    arrayToObject: arrayToObject,
+    formatDate: formatDate
   }
 });
 

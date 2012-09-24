@@ -91,6 +91,20 @@ public class BankController extends AbstractBankController {
 			this.handleDisabledAccount(ex.getMessage(), INDEX_TPL);
 		}
 	}
+	
+	/**
+	 * Shows the initial bank page for a user
+	 */
+	public void getMyAccountJSON() {
+		try {
+			this.out("balance", this.accountManager.getBalance(this.currentUser()));
+			this.out("transactions", this.accountManager.getLastNTransactions(this.currentUser(), 5));
+			this.jsonSuccess();
+		} catch (DisabledBankAccountException ex) {
+			this.out("error", ex.getMessage());
+			this.jsonInvalid();
+		}
+	}
 
 	/**
 	 * Shows the page for transfers between users

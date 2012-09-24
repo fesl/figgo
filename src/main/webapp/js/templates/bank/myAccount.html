@@ -1,0 +1,40 @@
+<table class="bank">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Origem/Destino</th>
+      <th>Comentário</th>
+      <th>Valor</th>
+    </tr>
+  </thead>
+  <tfoot>
+    <td colspan="3" class="balance">SALDO</td>
+    <% if (balance > 0) { %>
+    <td class="blue"><%= formatMoney(balance, 'MR$') %></td>
+    <% } else if (balance < 0) { %>
+    <td class="red"><%= formatMoney(balance * -1, 'MR$') %></td>
+    <% } else { %>
+    <td><%= formatMoney(balance, 'MR$') %></td>
+    <% } %>
+  </tfoot>
+  <tbody>
+  <% if (transactions.length) { %>
+    <% _.each(transactions.reverse(), function(transaction) { %>
+    <tr>
+      <td><%= formatDate(transaction.date) %></td>
+      <% if (transaction.accountDest === user.userId) { %>
+      <td><%- users[transaction.accountOrig].name %></td>
+      <td><%- transaction.comment %></td>
+      <td class="blue"><%= formatMoney(transaction.amount) %></td>
+      <% } else { %>
+      <td><%- users[transaction.accountDest].name %></td>
+      <td><%- transaction.comment %></td>
+      <td class="red">-<%= formatMoney(transaction.amount) %></td>
+      <% } %>
+    </tr>
+    <% }); %>
+  <% } else { %>
+    <tr><td colspan="4">Nenhuma transação até o momento.</td></tr>
+  <% } %>
+  </tbody>
+</table>

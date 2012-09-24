@@ -5,7 +5,7 @@
     <script src="/js/vendor/modernizr.js"></script>
     <script data-main="/js/main" src="/js/vendor/require.js"></script>
 </head>
-<body data-module="$module">
+<body data-module="$!module">
 #end
 
 #macro( simpleHeader )
@@ -113,7 +113,7 @@
 #end
 
 #macro( public_body )
-<body data-module="$module">
+<body data-module="$!module">
     <header>
         <div id="header-top">
             <div class="wrapper">

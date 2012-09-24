@@ -699,26 +699,24 @@ table {
     border: 1px solid #dddddd;
     vertical-align: middle; }
 
-.bank {
-  display: none; }
-  .bank td.balance {
-    text-align: right; }
-  .bank th:nth-child(1) {
-    width: 15%; }
-  .bank th:nth-child(2) {
-    width: 34%; }
-  .bank th:nth-child(3) {
-    width: 34%; }
-  .bank th:nth-child(4) {
-    width: 17%; }
-  .bank tbody tr:last-child td {
-    border-bottom: 1px solid #cccccc; }
-  .bank td.blue {
-    color: blue; }
-  .bank td.red {
-    color: red; }
-  .bank td:last-child {
-    text-align: right; }
+.bank .balance {
+  text-align: right; }
+.bank th:nth-child(1) {
+  width: 15%; }
+.bank th:nth-child(2) {
+  width: 34%; }
+.bank th:nth-child(3) {
+  width: 34%; }
+.bank th:nth-child(4) {
+  width: 17%; }
+.bank tbody tr:last-child td {
+  border-bottom: 1px solid #cccccc; }
+.bank td.blue {
+  color: blue; }
+.bank td.red {
+  color: red; }
+.bank td:last-child {
+  text-align: right; }
 
 #statement-transactions {
   display: none; }

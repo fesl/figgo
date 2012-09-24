@@ -1,4 +1,5 @@
 #set( $title = "Figgo - $!{domain.Name} - Banco - Extrato" )
+#set( $module = "bank" )
 #parse( "templates/intern.vm" )
 
 #@head()
@@ -35,7 +36,7 @@
         </nav>
 
         <hr />
-        
+
         <section id="general-stats">
             <div class="left">
                 <h3>Informações atuais do banco</h3>
@@ -86,8 +87,5 @@
     </section>
 </div>
 #end
-    
-#@scripts()
-    <script defer src="/js/libs/jquery-ui-1.8.16.custom.min.js"></script>
-    <script defer src="/js/bank.js"></script>
-#end
+
+#scripts()
