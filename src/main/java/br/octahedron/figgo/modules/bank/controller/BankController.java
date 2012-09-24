@@ -194,16 +194,16 @@ public class BankController extends AbstractBankController {
 	/**
 	 * Posts parameters to get bank's static information
 	 */
-	public void postStatsBank() {
+	public void getStatsJSON() {
 		Validator dateValidator = BankValidators.getDateValidator();
 		if (dateValidator.isValid()) {
 			Date startDate = this.in("startDate", date(SHORT));
 			Date endDate = this.in("endDate", date(SHORT));
 			this.out("amountTransactions", this.accountManager.getAmountTransactions(startDate, endDate));
 			this.out("creditAmount", this.accountManager.getCreditAmount(this.domainBankAccount(), startDate, endDate));
-			jsonSuccess();
+			this.jsonSuccess();
 		} else {
-			jsonInvalid();
+			this.jsonInvalid();
 		}
 	}
 }

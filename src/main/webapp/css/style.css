@@ -726,9 +726,6 @@ table {
   #general-stats > div {
     width: 50%; }
 
-#dynamic-stats {
-  display: none; }
-
 div.roles {
   overflow: hidden;
   margin: 0; }

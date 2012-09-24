@@ -57,7 +57,7 @@
 
         <hr />
 
-        <section>
+        <section class="stats">
             <h3>Movimentação e retorno em outros períodos?</h3>
             <form id="stats-form" action="/bank/stats" method="post">
                 <fieldset>
@@ -75,15 +75,7 @@
             </form>
 
             <hr />
-
-            <section id="dynamic-stats">
-                <h3></h3>
-                <ul class="unstyled">
-                    <li>Movimentação: $currencySymbol <span id="circulation"></span></li>
-                    <li>Retorno: $currencySymbol <span id="amount"></span></li>
-                </ul>
-            </section>
-        </section>
+        </section> <!-- .stats -->
     </section>
 </div>
 #end
