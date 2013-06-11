@@ -29,7 +29,7 @@ $(function() {
             source: function( request, response ) {
                         var term = request.term;
                         if ( term in cache ) {
-                            response(  
+                            response(
                                     $.map( cache[term].result, function( item ) {
                                         return {
                                             label: item.name + " <" + item.userId + ">",
@@ -39,12 +39,12 @@ $(function() {
                             );
                             return;
                         }
-        
-                        lastXhr = $.getJSON( "/user/search/" + term, 
+
+                        lastXhr = $.getJSON( "/user/search/" + term,
                             function( data, status, xhr ) {
                             cache[ term ] = data;
                             if ( xhr === lastXhr ) {
-                                response( 
+                                response(
                                     $.map( data.result, function( item ) {
                                         return {
                                             label: item.name + " <" + item.userId + ">",
@@ -61,19 +61,35 @@ $(function() {
     var $transactionsTable = $("table"),
         users = $transactionsTable.find(".user").map(function() { return this.innerHTML }).get();
     if (users.length) {
-        $.get('/users/search/', {'users': users.join(",")}, function(data) {
+        function showTable(result) {
             var i, currentLi,
-                usersLength = data.result.length,
-                users = data.result;
+                usersLength = result.length,
+                users = result;
             for (i = 0; i < usersLength; i += 1) {
                 currentLi = $transactionsTable.find("td[data-user='" + users[i].userId+"']");
                 currentLi.text(users[i].name);
             }
             $(".loader").remove();
             $transactionsTable.fadeIn();
-        }).error(function(data) {
-            console.log("Não foi possível carregar dados dos usuários");
-        });
+        }
+
+        var result = [];
+        var i, j, temparray, trips,
+            chunks = [],
+            chunk = 20;
+        for (i = 0, j = users.length; i < j; i += chunk) {
+            temparray = users.slice(i, i + chunk);
+            chunks.push(temparray);
+        }
+        for (i = chunks.length - 1, trips = 0; i >= 0; i--) {
+            $.get('/users/search/', {'users': chunks[i].join(",")}, function(data) {
+                result = result.concat(data.result);
+                trips += 1;
+                if (trips === chunks.length) showTable(result);
+            }).error(function(data) {
+                console.log("Não foi possível carregar dados dos usuários");
+            });
+        };
     } else {
         $transactionsTable.fadeIn();
     }
@@ -84,19 +100,19 @@ $(function() {
         $transactionsSection = $("#statement-transactions"),
         startDate = $this.find('input[name=startDate]').val(),
         endDate = $this.find('input[name=endDate]').val();
-        
+
         $table.hide();
         $.ajax({
             type: "POST",
             url: "/bank/statement",
             data: {startDate: startDate, endDate: endDate}
         }).success(function(data) {
-            var $tbody = $table.find("tbody"); 
+            var $tbody = $table.find("tbody");
             $tbody.empty();
             if (data.transactions.length > 0) {
                 var dateTmp, amountClass, isDebit,
                     tableRows = '';
-                
+
                 for (var i = 0, length = data.transactions.length; i < length; i+=1) {
                     dateTmp = new Date(data.transactions[i].date);
                     isDebit = (data.transactions[i].accountOrig === data.user.userId) ? true : false;
@@ -113,18 +129,35 @@ $(function() {
 
                 var users = $tbody.find(".user").map(function() { return this.innerHTML }).get();
                 if (users.length) {
-                    $.get('/users/search/', {'users': users.join(",")}, function(data) {
+                    function showTable(result) {
                         var i, currentLi,
-                            usersLength = data.result.length,
-                            users = data.result;
+                            usersLength = result.length,
+                            users = result;
                         for (i = 0; i < usersLength; i += 1) {
                             currentLi = $tbody.find("td[data-user='" + users[i].userId+"']");
                             currentLi.text(users[i].name || users[i].userId);
                         }
+                        console.log(result)
                         $table.fadeIn();
-                    }).error(function(data) {
-                        console.log("Não foi possível carregar dados dos usuários");
-                    });
+                    }
+
+                    var result = [];
+                    var i, j, temparray, trips,
+                        chunks = [],
+                        chunk = 20;
+                    for (i = 0, j = users.length; i < j; i += chunk) {
+                        temparray = users.slice(i, i + chunk);
+                        chunks.push(temparray);
+                    }
+                    for (i = chunks.length - 1, trips = 0; i >= 0; i--) {
+                        $.get('/users/search/', {'users': chunks[i].join(",")}, function(data) {
+                            result = result.concat(data.result);
+                            trips += 1;
+                            if (trips === chunks.length) showTable(result);
+                        }).error(function(data) {
+                            console.log("Não foi possível carregar dados dos usuários");
+                        });
+                    };
                 }
             } else {
                 $tbody.append("<tr><td colspan=\"4\">Não houve transações nesse período.</td></tr>");
@@ -136,7 +169,7 @@ $(function() {
         });
         e.preventDefault();
     });
-    
+
     $("#stats-form").submit(function(e) {
         var $this = $(this),
             $startDate = $this.find('input[name=startDate]'),
@@ -173,5 +206,5 @@ $(function() {
             }
         });
     }
-    
+
 });
