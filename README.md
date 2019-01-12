@@ -37,7 +37,7 @@ Used to view layer files.
 Facades are the entry points for a module functionality. You must use them! Every module should have at least one facade to export this functionalities. If a module is accessed only internally, by other modules, it only needs a internal facade. If a module export functionalities for the view layer, it needs an external facade too.
 
 ## Facades Tests
-To write a facade test class you can use mocks for modules funcionalities and let the complex cases to be tested on more specifics tests (when you write an facade the module is probably already tested).
+To write a facade test class you can use mocks for modules functionalities and let the complex cases to be tested on more specifics tests (when you write an facade the module is probably already tested).
 
 ## Managers Tests
 To write managers tests you can use mocks for the managers DAOs. Remember that all the possibly  and complex business cases must me tested here.
